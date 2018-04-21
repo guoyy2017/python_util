@@ -1,0 +1,49 @@
+Rabbit模式大概分为以下三种：单一模式、普通模式、镜像模式
+参考 https://www.cnblogs.com/web424/p/6761153.html
+交换机(Exchange)
+交换机有四种类型,分别为Direct,topic,headers,Fanout
+1).Direct是RabbitMQ默认的交换机模式,也是最简单的模式.即创建消息队列的时候,指定一个BindingKey.当发送者发送消息的时候,指定对应的Key.当Key和消息队列的BindingKey一致的时候,消息将会被发送到该消息队列中.
+2).topic转发信息主要是依据通配符,队列和交换机的绑定主要是依据一种模式(通配符+字符串),而当发送消息的时候,只有指定的Key和该模式相匹配的时候,消息才会被发送到该消息队列中.
+3).headers也是根据一个规则进行匹配,在消息队列和交换机绑定的时候会指定一组键值对规则,而发送消息的时候也会指定一组键值对规则,当两组键值对规则相匹配的时候,消息会被发送到匹配的消息队列中.
+4).Fanout是路由广播的形式,将会把消息发给绑定它的全部队列,即便设置了key,也会被忽略.
+
+安装 RabbitMQ 需要安装Erlang环境
+
+先装依赖 build-essential libncurses5-dev libssl-dev m4 unixodbc unixodbc-dev freeglut3-dev libwxgtk2.8-dev xsltproc fop  tk8.5
+
+yum install erlang
+命令
+erl
+看版本
+
+自动安装
+yum install rabbitmq-server
+参看状态
+service rabbitmq-server status
+
+完成后安装RabbitMQ：
+先下载rpm：
+#wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.6/rabbitmq-server-3.6.6-1.el7.noarch.rpm
+下载完成后安装：
+#yum install rabbitmq-server-3.6.6-1.el7.noarch.rpm
+完成后启动服务：
+#service rabbitmq-server start
+可以查看服务状态：
+#service rabbitmq-server status
+
+配置文件
+#cd /etc/rabbitmq/
+#vim rabbitmq.config
+
+保存配置后重启服务：
+#service rabbitmq-server stop
+#service rabbitmq-server start
+
+安装插件
+#/sbin/rabbitmq-plugins enable rabbitmq_management
+重启rabbitmq服务
+#service rabbitmq-server restart
+到此,就可以通过http://ip:15672 使用guest,guest 进行登陆web页面了
+
+
+安装python client：使用pip install pika
