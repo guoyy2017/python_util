@@ -1,0 +1,3 @@
+pip install ***
+pip install ***.zip/tar.gz/tar (本地下载文件)
+pip install -e git+https://github.com/**** git地址下载
