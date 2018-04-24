@@ -9,6 +9,8 @@
 
 '''
 错误重试模块
+from retrying import retry
+
 from retry import retry
 
 @retry(tries=5, delay=2)
