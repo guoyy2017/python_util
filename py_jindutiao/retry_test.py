@@ -21,5 +21,10 @@ do_something()
 '''
 # from retry import retry
 
+userids = []
+auther_userid = None
+
+print 1 + 4 if len(userids) > 0 or auther_userid else 0
+
 if __name__ == '__main__':
     pass
