@@ -1,3 +1,121 @@
 pip install ***
 pip install ***.zip/tar.gz/tar (本地下载文件)
 pip install -e git+https://github.com/**** git地址下载
+pip install *** -i **** (指定源下载)
+
+sql 解析工具
+sqlparse有几个最简单的工具：split，format，parse，分别是提取sql单个语句、格式化sql的语句以及解析sql
+pip install sqlparse
+
+sql  语句对象化
+https://pypi.org/project/python-sql/
+pip install python-sql
+'''
+>>> from sql import *
+>>> from sql.aggregate import *
+>>> from sql.conditionals import *
+'''
+
+显示货币格式以及它的数值
+pip install currencies
+
+redis 对象化
+https://pypi.org/project/redisco/
+pip install redisco
+'''
+from redisco import models
+
+'''
+
+url 短地址
+pip install pyshorteners
+https://pypi.org/project/pyshorteners/
+
+JWT 只支持python3
+pip install jwt
+https://pypi.org/project/jwt/
+
+
+pyquery 像jquery操作html
+https://pythonhosted.org/pyquery/
+https://github.com/gawel/pyquery
+
+python库——robobrowser
+轻量的爬虫 简单的内存浏览器
+pip install robobrowser -i http://pypi.douban.com/simple/
+
+网页动态爬虫
+ghost driver 与selenium合体的过程
+http://www.cnblogs.com/nbkhic/p/4217714.html
+
+envoy
+Python Subprocesses for Humans
+pip install envoy
+https://github.com/kennethreitz/envoy
+https://blog.csdn.net/junli_chen/article/details/78295454 功能说明
+'''
+import envoy
+r = envoy.run()
+r.status_code
+r.std_out
+r.history
+
+run 函数
+run(command, data=None, timeout=None, kill_timeout=None, env=None, cwd=None) 函数是 envoy 模块的主要接口，用来在子进程里执行 Shell 命令。
+
+首先解释一下 run() 函数的各个参数的含义
+
+command 需要执行的 Shell 命令（可以包含管道，但是不允许包含 && 或者 ; 之类的符号）；
+data 通过管道传入 Shell 命令的内容；
+timeout 子进程执行超时时间；
+kill_timeout 终止子进程失败的超时时间，超过这个时间将直接杀死子进程；
+env 环境变量；
+cwd Current Working Directory，工作目录
+'''
+
+日志工具
+pip install Logbook
+
+函数编程问题
+pip install cytoolz
+
+fn.py
+http://www.infoq.com/cn/articles/fn.py-functional-programming-python
+
+包管理工具
+pip install curdling
+curd install flask
+
+搭建自己的python 源站
+配置文件是~/.pip/pip.conf
+pypiserver
+https://blog.csdn.net/wangjianno2/article/details/53365089
+发布命令
+python setup.py register -r test-pypi
+python setup.py sdist upload -r test-pypi
+
+
+
+pip-tools：保证 Python 包依赖关系更新的一组工具
+pip install pip-tools
+https://pypi.org/project/pip-tools/
+
+
+多进程处理
+https://blog.csdn.net/mmc2015/article/details/51835190
+
+pip install joblib
+https://pypi.org/project/joblib/
+'''
+from joblib import Parallel, delayed
+Parallel(n_jobs=2) #多进程处理
+函数delayed是一个创建元组(function, args, kwargs)的简单技巧
+默认情况下，Parallel使用Python的多进程模块(multiprocessing)来fork工作进程
+为了使用多线程，只需在构造Parallel的时候设置backend='threading'即可
+Parallel(n_jobs=2, backend="threading")
+
+'''
+
+python模块之codecs: 自然语言编码转换
+
+
