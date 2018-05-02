@@ -119,3 +119,165 @@ Parallel(n_jobs=2, backend="threading")
 python模块之codecs: 自然语言编码转换
 
 
+flask 表单校验模块
+pip install flask-wtf
+https://blog.csdn.net/kuangshp128/article/details/62233246
+
+'''
+一、安装pip install flask-wtf
+二、创建一个flask的项目引入相对应的包
+from flask import Flask,render_template
+import flask
+#引入模块
+from flask_wtf import FlaskForm,CsrfProtect
+#如果输入的是字符串那么就用StringField,如果是整数那么就用IntegerField
+from wtforms import StringField,IntegerField
+#验证方式
+from wtforms.validators import Length,EqualTo,InputRequired
+1
+2
+3
+4
+5
+6
+7
+8
+三、配置文件
+#coding:utf8
+import os
+SECRET_KEY = os.urandom(24)
+1
+2
+3
+四、配置
+import config
+app = Flask(__name__)
+app.debug = True
+app.config.from_object(config)
+CsrfProtect(app)
+1
+2
+3
+4
+5
+五、创建一个验证的类
+class RegistForm(FlaskForm):
+    username = StringField(validators=[Length(min=3,max=10,message=u"用户名长度有问题")])
+    password = StringField(validators=[Length(min=6,max=20)])
+    age = IntegerField(validators=[InputRequired()])
+1
+2
+3
+4
+六、在路由代码中使用
+@app.route('/',methods=["GET","POST"])
+def index():
+    if flask.request.method == "GET":
+        return render_template("index.html")
+    else:
+        form = RegistForm(flask.request.form)
+        if form.validate():
+            username = form.username.data
+            password =form.password.data
+            print username,password
+            return u"登录成功"
+        else:
+            print form.errors
+            return u"错误"
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+注意点:创建的验证类的字段要和前端html模板页面的name值的一样的
+
+七、WTForms支持的HTML标准字段
+字段类型      说　　明
+StringField 文本字段
+TextAreaField 多行文本字段
+PasswordField 密码文本字段
+HiddenField 隐藏文本字段
+DateField 文本字段，值为 datetime.date 格式
+DateTimeField 文本字段，值为 datetime.datetime 格式
+IntegerField 文本字段，值为整数
+DecimalField 文本字段，值为 decimal.Decimal
+FloatField 文本字段，值为浮点数
+BooleanField 复选框，值为 True 和 False
+RadioField 一组单选框
+SelectField 下拉列表
+SelectMultipleField 下拉列表，可选择多个值
+FileField 文件上传字段
+SubmitField 表单提交按钮
+FormField 把表单作为字段嵌入另一个表单
+FieldList 一组指定类型的字段
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+八、常见的验证函数
+验证函数 说　　明
+Email 验证电子邮件地址
+EqualTo 比较两个字段的值；常用于要求输入两次密码进行确认的情况
+IPAddress 验证 IPv4 网络地址
+Length 验证输入字符串的长度
+NumberRange 验证输入的值在数字范围内
+Optional 无输入值时跳过其他验证函数
+Required 确保字段中有数据
+Regexp 使用正则表达式验证输入值
+URL 验证 URL
+AnyOf 确保输入值在可选值列表中
+NoneOf 确保输入值不在可选值列表中
+'''
+
+flask  跨域问题
+pip install flask-cors
+
+from flask_cors import *
+
+app = Flask(__name__)
+CORS(app, supports_credentials=True)
+
+
+命令行输入菜单模式
+pip install tty_menu
+
+'''
+from tty_menu import tty_menu
+
+l = ['a', 'b', 'c']
+pos = tty_menu(l, "What is your word?")
+
+print("Your word is %s" % (l[pos]))
+'''
+
+Flask-Markdown markdown 渲染
+pip install Flask-Markdown
+https://pythonhosted.org/Flask-Markdown/
+
+Markdown  处理
+pip install Markdown
+pip install markdown
+
