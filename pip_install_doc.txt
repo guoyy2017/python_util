@@ -7,6 +7,10 @@ pip install ***==*.*.* （安装指定版本）
 
 pip install -U ***（已经安装就升级到最新）
 
+命令工具模块 有command group(含子命令)
+pip install click
+https://www.cnblogs.com/alexkn/p/6980400.html
+
 FLASK
 数据迁移模块 Alembic
 pip install Flask-Migrate
