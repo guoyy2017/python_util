@@ -2,6 +2,18 @@ pip install ***
 pip install ***.zip/tar.gz/tar (本地下载文件)
 pip install -e git+https://github.com/**** git地址下载
 pip install *** -i **** (指定源下载)
+pip install ***==*.*.* （安装指定版本）
+
+
+pip install -U ***（已经安装就升级到最新）
+
+FLASK
+数据迁移模块 Alembic
+pip install Flask-Migrate
+
+股票模块
+pip install tushare --upgrade
+http://tushare.org/index.html#id3
 
 sql 解析工具
 sqlparse有几个最简单的工具：split，format，parse，分别是提取sql单个语句、格式化sql的语句以及解析sql
@@ -26,6 +38,9 @@ pip install redisco
 from redisco import models
 
 '''
+
+python 版本dns
+https://github.com/rthalley/dnspython.git
 
 url 短地址
 pip install pyshorteners
@@ -281,3 +296,61 @@ Markdown  处理
 pip install Markdown
 pip install markdown
 
+#密码输入使用
+import getpass
+a = getpass.getpass('input passwd:')
+
+#linux 环境下使用
+import sys, tty, termios
+https://www.cnblogs.com/Richardzhu/p/5162289.html
+
+Dramatiq 是一个 Python 3 （3.5或更高版本）分布式任务处理库
+https://www.oschina.net/p/Dramatiq
+
+
+# pip --help
+
+Usage:
+  pip <command> [options]
+
+Commands:
+  install                     安装包.
+  uninstall                   卸载包.
+  freeze                      按着一定格式输出已安装包列表
+  list                        列出已安装包.
+  show                        显示包详细信息.
+  search                      搜索包，类似yum里的search.
+  wheel                       Build wheels from your requirements.
+  zip                         不推荐. Zip individual packages.
+  unzip                       不推荐. Unzip individual packages.
+  bundle                      不推荐. Create pybundles.
+  help                        当前帮助.
+
+General Options:
+  -h, --help                  显示帮助.
+  -v, --verbose               更多的输出，最多可以使用3次
+  -V, --version               现实版本信息然后退出.
+  -q, --quiet                 最少的输出.
+  --log-file <path>           覆盖的方式记录verbose错误日志，默认文件：/root/.pip/pip.log
+  --log <path>                不覆盖记录verbose输出的日志.
+  --proxy <proxy>             Specify a proxy in the form [user:passwd@]proxy.server:port.
+  --timeout <sec>             连接超时时间 (默认15秒).
+  --exists-action <action>    Default action when a path already exists: (s)witch, (i)gnore, (w)ipe, (b)ackup.
+  --cert <path>               证书.
+
+
+
+inspect python 模块内容检测模块
+'''
+inspect.signature（fn)将返回一个inspect.Signature类型的对象，值为fn这个函数的所有参数
+
+inspect.Signature对象的paramerters属性是一个mappingproxy（映射）类型的对象，值为一个有序字典（Orderdict)。
+
+这个字典里的key是即为参数名，str类型
+
+这个字典里的value是一个inspect.Parameter类型的对象，根据我的理解，这个对象里包含的一个参数的各种信息
+
+inspect.Parameter对象的kind属性是一个_ParameterKind枚举类型的对象，值为这个参数的类型（可变参数，关键词参数，etc）
+
+inspect.Parameter对象的default属性：如果这个参数有默认值，即返回这个默认值，如果没有，返回一个inspect._empty类。
+'''
