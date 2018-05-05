@@ -16,6 +16,12 @@ yum install erlang
 erl
 看版本
 
+# 添加erlang solutions源
+ $ wget https://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm
+ $ sudo rpm -Uvh erlang-solutions-1.0-1.noarch.rpm
+
+ $ sudo yum install erlang
+
 自动安装
 yum install rabbitmq-server
 参看状态
