@@ -12,3 +12,21 @@ https://free.modao.cc/
 
 设计稿同步给开发的工具
 https://www.lanhuapp.com/
+
+代码api doc 生成工具
+http://apidocjs.com/
+
+各种漂亮标签
+http://shields.io/
+
+linux 命令学习
+http://wangchujiang.com/linux-command/
+
+各种cdn资源（css,js） 可以上传自己的
+https://cdnjs.com/api
+
+小图标查找地址
+http://www.iconfont.cn/
+
+图片压缩地址
+https://tinypng.com/
