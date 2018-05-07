@@ -53,3 +53,158 @@ service rabbitmq-server status
 
 
 安装python client：使用pip install pika
+
+说明文档
+http://www.diggerplus.org/archives/3110
+
+https://www.cnblogs.com/luxiaoxun/p/3918054.html
+
+管理命令
+添加管理员
+rabbitmqctl add_user user user_pw
+删除管理员
+rabbitmqctl delete_user user
+查看管理员
+rabbitmqctl list_users
+修改密码
+rabbitmqctl change_password user user_pw
+
+建立 vhost
+rabbitmqctl add_vhost /pyhtest
+
+设置权限
+rabbitmqctl set_permissions -p /pyhtest pyh “.*” “.*” “.*”
+后面三个”*”代表pyh用户拥有对/pyhtest的配置、写、读全部权限
+
+授权
+
+1. 用户管理
+
+用户管理包括增加用户，删除用户，查看用户列表，修改用户密码。
+
+相应的命令
+
+(1) 新增一个用户
+
+rabbitmqctl  add_user  Username  Password
+
+(2) 删除一个用户
+
+rabbitmqctl  delete_user  Username
+
+(3) 修改用户的密码
+
+rabbitmqctl  change_password  Username  Newpassword
+
+(4) 查看当前用户列表
+
+rabbitmqctl  list_users
+
+2. 用户角色
+
+按照个人理解，用户角色可分为五类，超级管理员, 监控者, 策略制定者, 普通管理者以及其他。
+
+(1) 超级管理员(administrator)
+
+可登陆管理控制台(启用management plugin的情况下)，可查看所有的信息，并且可以对用户，策略(policy)进行操作。
+
+(2) 监控者(monitoring)
+
+可登陆管理控制台(启用management plugin的情况下)，同时可以查看rabbitmq节点的相关信息(进程数，内存使用情况，磁盘使用情况等)
+
+(3) 策略制定者(policymaker)
+
+可登陆管理控制台(启用management plugin的情况下), 同时可以对policy进行管理。但无法查看节点的相关信息(上图红框标识的部分)。
+
+与administrator的对比，administrator能看到这些内容
+
+(4) 普通管理者(management)
+
+仅可登陆管理控制台(启用management plugin的情况下)，无法看到节点信息，也无法对策略进行管理。
+
+(5) 其他
+
+无法登陆管理控制台，通常就是普通的生产者和消费者。
+
+了解了这些后，就可以根据需要给不同的用户设置不同的角色，以便按需管理。
+
+设置用户角色的命令为：
+
+rabbitmqctl  set_user_tags  User  Tag
+
+User为用户名， Tag为角色名(对应于上面的administrator，monitoring，policymaker，management，或其他自定义名称)。
+
+也可以给同一用户设置多个角色，例如
+
+rabbitmqctl  set_user_tags  hncscwc  monitoring  policymaker
+
+3. 用户权限
+
+用户权限指的是用户对exchange，queue的操作权限，包括配置权限，读写权限。配置权限会影响到exchange，queue的声明和删除。读写权限影响到从queue里取消息，向exchange发送消息以及queue和exchange的绑定(bind)操作。
+
+例如： 将queue绑定到某exchange上，需要具有queue的可写权限，以及exchange的可读权限；向exchange发送消息需要具有exchange的可写权限；从queue里取数据需要具有queue的可读权限。详细请参考官方文档中"How permissions work"部分。
+
+相关命令为：
+
+(1) 设置用户权限
+
+rabbitmqctl  set_permissions  -p  VHostPath  User  ConfP  WriteP  ReadP
+
+(2) 查看(指定hostpath)所有用户的权限信息
+
+rabbitmqctl  list_permissions  [-p  VHostPath]
+
+(3) 查看指定用户的权限信息
+
+rabbitmqctl  list_user_permissions  User
+
+(4)  清除用户的权限信息
+
+rabbitmqctl  clear_permissions  [-p VHostPath]  User
+
+===============================
+
+
+
+
+
+
+
+
+技术术语编辑
+AMQP模型（AMQP Model）：一个由关键实体和语义表示的逻辑框架，遵从AMQP规范的服务器必须提供这些实体和语义。为了实现本规范中定义的语义，客户端可以发送命令来控制AMQP服务器。
+连接（Connection）：一个网络连接，比如TCP/IP套接字连接。
+会话（Session）：端点之间的命名对话。在一个会话上下文中，保证“恰好传递一次”。
+信道（Channel）：多路复用连接中的一条独立的双向数据流通道。为会话提供物理传输介质。
+客户端（Client）：AMQP连接或者会话的发起者。AMQP是非对称的，客户端生产和消费消息，服务器存储和路由这些消息。
+服务器（Server）：接受客户端连接，实现AMQP消息队列和路由功能的进程。也称为“消息代理”。
+端点（Peer）：AMQP对话的任意一方。一个AMQP连接包括两个端点（一个是客户端，一个是服务器）。
+搭档（Partner）：当描述两个端点之间的交互过程时，使用术语“搭档”来表示“另一个”端点的简记法。比如我们定义端点A和端点B，当它们进行通信时，端点B是端点A的搭档，端点A是端点B的搭档。
+片段集（Assembly）：段的有序集合，形成一个逻辑工作单元。
+段（Segment）：帧的有序集合，形成片段集中一个完整子单元。
+帧（Frame）：AMQP传输的一个原子单元。一个帧是一个段中的任意分片。
+控制（Control）：单向指令，AMQP规范假设这些指令的传输是不可靠的。
+命令（Command）：需要确认的指令，AMQP规范规定这些指令的传输是可靠的。
+异常（Exception）：在执行一个或者多个命令时可能发生的错误状态。
+类（Class）：一批用来描述某种特定功能的AMQP命令或者控制。
+消息头（Header）：描述消息数据属性的一种特殊段。
+消息体（Body）：包含应用程序数据的一种特殊段。消息体段对于服务器来说完全透明——服务器不能查看或者修改消息体。
+消息内容（Content）：包含在消息体段中的的消息数据。
+交换器（Exchange）：服务器中的实体，用来接收生产者发送的消息并将这些消息路由给服务器中的队列。
+交换器类型（Exchange Type）：基于不同路由语义的交换器类。
+消息队列（Message Queue）：一个命名实体，用来保存消息直到发送给消费者。
+绑定器（Binding）：消息队列和交换器之间的关联。
+绑定器关键字（Binding Key）：绑定的名称。一些交换器类型可能使用这个名称作为定义绑定器路由行为的模式。
+路由关键字（Routing Key）：一个消息头，交换器可以用这个消息头决定如何路由某条消息。
+持久存储（Durable）：一种服务器资源，当服务器重启时，保存的消息数据不会丢失。
+临时存储（Transient）：一种服务器资源，当服务器重启时，保存的消息数据会丢失。
+持久化（Persistent）：服务器将消息保存在可靠磁盘存储中，当服务器重启时，消息不会丢失。
+非持久化（Non-Persistent）：服务器将消息保存在内存中，当服务器重启时，消息可能丢失。
+消费者（Consumer）：一个从消息队列中请求消息的客户端应用程序。
+生产者（Producer）：一个向交换器发布消息的客户端应用程序。
+虚拟主机（Virtual Host）：一批交换器、消息队列和相关对象。虚拟主机是共享相同的身份认证和加密环境的独立服务器域。客户端应用程序在登录到服务器之后，可以选择一个虚拟主机。
+下面这些术语在AMQP规范的上下文中没有特别的意义：
+主题：通常指发布消息；AMQP规范用一种或多种交换器来实现主题。
+服务：通常等同于服务器。AMQP规范使用“服务器”这个术语来兼容IETF的标准术语，并且明确了协议中每个部分的角色（两方也可能是AMQP服务）。
+消息代理：等同于服务器。AMQP规范使用术语“客户端”和“服务器”来兼容IETF的标准术语。
+

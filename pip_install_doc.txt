@@ -8,6 +8,10 @@ pip install ***==*.*.* （安装指定版本）
 pip install -U ***（已经安装就升级到最新）
 
 
+时间模块处理
+pip install moment
+https://github.com/zachwill/moment
+
 版本管理
 pythonz
 https://github.com/saghul/pythonz

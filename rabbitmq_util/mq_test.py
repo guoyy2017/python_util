@@ -27,19 +27,27 @@ channel：消息通道，在客户端的每个连接里，可建立多个channel
 
 import pika
 
-#连接队列服务器
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-channel = connection.channel()
+# #连接队列服务器
+# connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+# channel = connection.channel()
+#
+# #创建队列。有就不管，没有就自动创建
+# channel.queue_declare(queue='hello')
+#
+# #使用默认的交换机发送消息。exchange为空就使用默认的
+# channel.basic_publish(exchange='', routing_key='hello', body='Hello World!')
+# print(" [x] Sent 'Hello World!'")
+# connection.close()
 
-#创建队列。有就不管，没有就自动创建
-channel.queue_declare(queue='hello')
 
-#使用默认的交换机发送消息。exchange为空就使用默认的
+#测试代码
+import time
+credential = pika.PlainCredentials('yyg','seek1234')
+conn = pika.BlockingConnection(pika.ConnectionParameters(host='192.168.0.199',virtual_host='/coin',credentials=credential))
+channel = conn.channel()
+channel.queue_declare(queue='hello', durable=True)
 channel.basic_publish(exchange='', routing_key='hello', body='Hello World!')
-print(" [x] Sent 'Hello World!'")
-connection.close()
-
-
-
+time.sleep(20)
+conn.close()
 if __name__ == '__main__':
     pass
