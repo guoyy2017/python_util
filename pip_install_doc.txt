@@ -23,6 +23,11 @@ https://github.com/hmarr/mongoengine
 pip install click
 https://www.cnblogs.com/alexkn/p/6980400.html
 
+JCC python java c++ 模块
+JCC 是 Python 的一个包，主要用来生成 C++ 代码以在 C++ 和 Python 程序中调用 Java 代码
+pip install JCC
+https://pypi.org/project/JCC/#downloads
+
 FLASK
 数据迁移模块 Alembic
 pip install Flask-Migrate
