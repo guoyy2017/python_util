@@ -5,6 +5,8 @@ https://github.com/lewish/asciiflow2
 +----------+
 |maidou|yyg|
 +----------+
+中文版本地址
+http://www.7gugu.com/asciiflow/index.html
 
 
 磨刀 原型工具
@@ -30,3 +32,27 @@ http://www.iconfont.cn/
 
 图片压缩地址
 https://tinypng.com/
+
+
+画文本代码图的python 工具
+https://github.com/elfmedy/AsciiFlow
+     +------------+    +------+
+     |            |    |      |
+     | box abcdef |<---+      |
+     |            |    |      |
+     +-----+------+    |      |
+           |           |      |
+           v           |      |
+     +------------+    ++-----+
+     |    box     |     |
+     |     b      |     v
+     +-----+------+   +---+
+           |          |   |
+           |          |   |
+           |          |   |
+           +--------->|   |
+                      |   |
+                      |   |
+                      |   |
+                      |   |
+                      +---+
