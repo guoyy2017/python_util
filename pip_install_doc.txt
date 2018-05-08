@@ -7,6 +7,9 @@ pip install ***==*.*.* （安装指定版本）
 
 pip install -U ***（已经安装就升级到最新）
 
+python 项目查找网址
+https://pypi.org/
+
 
 时间模块处理
 pip install moment
@@ -435,3 +438,68 @@ pip install flask_whooshalchemy
 
 RedLock Python 和 Redis 实现的分布式锁
 https://github.com/glasslion/redlock
+
+markdown工具
+pip install mkdocs
+mkdocs --version
+http://www.mkdocs.org/
+https://github.com/mkdocs/mkdocs/
+使用方法
+mkdocs new my-project
+cd my-project
+mkdocs serve
+https://blog.csdn.net/kevindgk/article/details/52388542
+
+
+postgresql 工具
+pip install PyGreSQL
+https://pypi.org/project/PyGreSQL/
+
+
+BT是一个灵活的Python量化回溯测试框架，用于检验量化交易策略。该框架允许用户轻松地创建策。
+FFN是一个Python的金融功能分析模块库，包含许多量化金融常用的功能，包括投资回报分析、绘图及常用的数据变换。
+bt项目网址，http://pmorissette.github.io/bt/
+fn项目网址，http://pmorissette.github.io/ffn/
+
+
+
+Celery是Python开发的分布式任务调度模块
+pip install Celery
+
+
+图像处理函数库
+pip install pymorph
+http://luispedro.org/software/pymorph/
+https://pythonhosted.org/pymorph/
+
+tproxy tcp代理
+pip install tproxy
+https://github.com/benoitc/tproxy
+
+clojure-py clojure  python 实现
+https://github.com/drewr/clojure-py
+
+
+cheat 命令提醒工具
+pip install cheat
+https://github.com/chrisallenlane/cheat
+
+
+Pykka 项目的目的是为 Python 提供了易用的并发操作抽象层，使用 Actor 模式
+pip install pykka
+https://github.com/jodal/pykka
+
+自动测试工具
+pip install nose
+命令
+nosetests
+
+
+转拼音工具
+pip install pypinyin
+文档
+https://pypi.org/project/pypinyin/
+
+
+
+

@@ -59,3 +59,8 @@ https://github.com/elfmedy/AsciiFlow
 
 
 学习使用postgresql
+安装配置
+https://blog.csdn.net/DaSo_CSDN/article/details/75330009
+https://www.postgresql.org
+学习地址
+https://www.yiibai.com/postgresql/
