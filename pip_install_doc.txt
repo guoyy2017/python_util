@@ -384,3 +384,54 @@ inspect.Parameter对象的kind属性是一个_ParameterKind枚举类型的对象
 
 inspect.Parameter对象的default属性：如果这个参数有默认值，即返回这个默认值，如果没有，返回一个inspect._empty类。
 '''
+
+
+
+Pyrex 是一种专门设计用来编写 Python 扩展模块的语言
+
+
+浏览器实现的python 解析器
+http://www.skulpt.org/
+
+python 数值计算库 类numpy
+blaze
+https://github.com/blaze/blaze
+
+python svg 库
+pip install pygal
+https://github.com/Kozea/pygal
+
+
+denyhosts SSHD自动屏蔽IP的功能
+https://github.com/denyhosts/denyhosts
+
+
+ooredis 基于 redis-py 之上的一个 Mapper ，让你以更 pythonic 的方式来操作 Redis
+https://github.com/huangz1990/ooredis
+
+
+python 工作流
+Pinball 是由 Pinterest 开发的可伸缩工作流管理器，提供高度可定制的特性
+https://www.oschina.net/translate/open-sourcing-pinball 中文说明
+https://github.com/pinterest/pinball
+pip install pinball
+
+
+
+piep (发音 “pipe”) 是一个命令行工具，它可以让你使用 Python 的语法来调用 awk, sed, grep, tr, cut 等工具，因为这些工具的使用参数非常复杂，使用 piep 就可以简化这些工具的使用
+http://gfxmonk.net/dist/doc/piep/#getting-it 工具使用说明
+pip install piep
+
+piep 代替awk, sed, grep, tr, cut
+
+
+Whoosh 是一个纯python实现的全文搜索组件。Whoosh不但功能完善，还非常的快
+https://pypi.org/project/Whoosh/
+pip install Whoosh
+
+https://github.com/gyllstromk/Flask-WhooshAlchemy
+pip install flask_whooshalchemy
+
+
+RedLock Python 和 Redis 实现的分布式锁
+https://github.com/glasslion/redlock
