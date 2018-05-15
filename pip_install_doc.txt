@@ -7,6 +7,9 @@ pip install ***==*.*.* （安装指定版本）
 
 pip install -U ***（已经安装就升级到最新）
 
+pip 安装依赖 [] 中为依赖安装 多个用,分割
+pip install ***[**1,**2]
+
 python 项目查找网址
 https://pypi.org/
 
@@ -500,6 +503,122 @@ pip install pypinyin
 文档
 https://pypi.org/project/pypinyin/
 
+
+celery 监控工具
+$ pip install celery[librabbitmq]
+$ pip install celery[librabbitmq,redis,auth,msgpack]
+
+
+以下是可用的捆绑：
+
+序列化
+celery[auth]:	使用 auth 序列化。
+celery[msgpack]:
+ 	使用 msgpack 序列化。
+celery[yaml]:	使用 yaml 序列化。
+并发
+celery[eventlet]:
+ 	使用 eventlet 池。
+celery[gevent]:	使用 gevent 池。
+celery[threads]:
+ 	使用线程池。
+传输和后端
+celery[librabbitmq]:
+ 	使用 librabbitmq 的 C 库.
+celery[redis]:	使用 Redis 作为消息传输方式或结果后端。
+celery[mongodb]:
+ 	使用 MongoDB 作为消息传输方式（ 实验性 ），或是结果后端（ 已支持 ）。
+celery[sqs]:	使用 Amazon SQS 作为消息传输方式（ 实验性 ）。
+celery[memcache]:
+ 	使用 memcache 作为结果后端。
+celery[cassandra]:
+ 	使用 Apache Cassandra 作为结果后端。
+celery[couchdb]:
+ 	使用 CouchDB 作为消息传输方式（ 实验性 ）。
+celery[couchbase]:
+ 	使用 CouchBase 作为结果后端。
+celery[beanstalk]:
+ 	使用 Beanstalk 作为消息传输方式（ 实验性 ）。
+celery[zookeeper]:
+ 	使用 Zookeeper 作为消息传输方式。
+celery[zeromq]:	使用 ZeroMQ 作为消息传输方式（ 实验性 ）。
+celery[sqlalchemy]:
+ 	使用 SQLAlchemy 作为消息传输方式（ 实验性 ），或作为结果后端（ 已支持 ）。
+celery[pyro]:	使用 Pyro4 消息传输方式（ 实验性 ）。
+celery[slmq]:	使用 SoftLayer Message Queue 传输（ 实验性 ）。
+
+pip install flower
+https://pypi.org/project/flower/
+http://flower.readthedocs.io/en/latest/install.html#usage
+'''
+flower -A proj --port=5555
+celery flower -A proj --address=127.0.0.1 --port=5555
+celery flower -A proj --broker=amqp://guest:guest@localhost:5672//
+'''
+
+
+
+kombu消息框架
+https://blog.csdn.net/weixin_37947156/article/details/76374347
+https://blog.csdn.net/spch2008/article/details/11530007
+http://kombu.readthedocs.io/en/latest/
+pip install kombu
+https://github.com/celery/kombu
+
+
+flask  websocket 支持
+Flask-Sockets和Flask-SocketIO
+pip install Flask-SocketIO
+https://blog.csdn.net/u012062760/article/details/53993306
+
+
+socketIO 客户端
+pip install socketIO-client
+https://pypi.org/project/socketIO-client/
+https://github.com/miguelgrinberg/Flask-SocketIO/  查看下demo 学习
+socketio的start_background_task函数用于新建一个线程，处理业务，在线程中在请求上下文中调用收发功能函数
+https://github.com/shenyushun/flask-socketio-doc-zh/blob/master/Flask-SocketIO%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3.md
+
+python 时区模块
+pip install pytz
+https://pypi.org/project/pytz/
+
+依赖包管理
+pip install pigar
+https://github.com/Damnever/pigar
+
+pymesos 是一个纯 Python 开发的 Mesos 调度器和执行器
+pip install pymesos
+https://github.com/douban/pymesos
+A pure python implementation of Apache Mesos scheduler, executor and operator.
+
+textract 是一个 Python 库，用来从各种文档中提取文本信息
+pip install textract
+https://github.com/deanmalmgren/textract
+http://textract.readthedocs.io/en/stable/
+
+
+pip install mongopool
+https://github.com/uberVU/mongo-pool
+
+
+
+flask-compress会给http响应增加两个http头：vary、content-encoding,并压缩响应的数据
+pip install Flask-Compress
+from flask_compress import Compress
+app = Flask(__name__)
+Compress(app)
+
+登录模块
+https://www.cnblogs.com/minsons/p/8045916.html
+pip install flask_login
+login_manager = LoginManager()
+app.config[‘SECRET_KEY‘]=‘234324234‘   #随意设置
+login_manager.init_app(app)
+
+
+coverage 测试代码块覆盖率
+pip install coverage
 
 
 

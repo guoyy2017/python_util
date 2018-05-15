@@ -1,0 +1,58 @@
+http://docs.jinkan.org/docs/celery/
+celery 启动模式
+#celery -A tasks worker
+
+#建议用python 启动文件的方式启动 worker 是工作模式 celery默认启动的worker数为内核个数，如果指定启动个数，用参数-c
+python tasks.py worker -c 2
+
+#backend:消息中间件类型
+from celery import Celery,platforms
+platforms.C_FORCE_ROOT = True       #用户解决root用户无法启动worker的问题
+
+使用说明
+# app是Celery类的实例，创建的时候添加了celery.tasks这个模块，也就是包含了celery/tasks.py这个文件
+app = Celery('celery',include=['celery.tasks'])
+# 把Celery配置存放进celery/celeryconfig.py文件，使用app.config_from_object加载配置
+app.config_from_object('celery.celeryconfig')
+
+配置文件内容
+# 使用Redis作为消息代理
+BROKER_URL = 'redis://192.168.189.100:6379/0'
+
+# 把任务结果保存在Redis中
+CELERY_RESULT_BACKEND = 'redis://192.168.189.100:6379/1'
+
+# 任务序列化和反序列化使用msgpack方案
+CELERY_TASK_SERIALIZER = 'msgpack'
+
+# 读取任务结果一般性能要求不高，所以使用了可读性更好的JSON
+CELERY_RESULT_SERIALIZER = 'json'
+
+# 任务过期时间，这样写更加明显
+CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24
+
+# 指定接受的内容类型
+CELERY_ACCEPT_CONTENT = ['json', 'msgpack']
+
+celery支持定时任务
+from celery.schedules import crontab
+
+celery单独启动一个进程来定时发起这些任务
+
+启动任务调度器 celery beat
+
+多队列
+app.conf.update(
+     CELERY_ROUTES={
+          "add1":{"queue":"queue_add1"},
+          "add2":{"queue":"queue_add2"},
+          "add3":{"queue":"queue_add3"},
+          "add4":{"queue":"queue_add4"},
+        },
+)
+
+指定处理队列
+python tasks.py worker -c 2 -Q q_1
+
+同时预取得消息个数，比如如果CELERYD_PREFETCH_MULTIPLIER=2，那么如果现在对于1个worker，有一个状态是STARTED, 那么可以有2个处于RECEVED状态(如果有的话)
+

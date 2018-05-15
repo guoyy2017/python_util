@@ -64,3 +64,19 @@ https://blog.csdn.net/DaSo_CSDN/article/details/75330009
 https://www.postgresql.org
 学习地址
 https://www.yiibai.com/postgresql/
+
+热力图
+https://www.growingio.com/
+
+神策数据（统计数据）
+https://www.sensorsdata.cn/
+
+mqtt 安装教程 （低成本的pub/sub）
+https://blog.csdn.net/a493203176/article/details/72328607
+安装插件
+https://blog.csdn.net/u012112647/article/details/79817294
+下载地址 http://mosquitto.org/files/source/
+wget http://mosquitto.org/files/source/mosquitto-1.5.tar.gz
+启动命令 mosquitto
+mosquitto_sub -t 主题名 -i 用户名 （后面的“-i 用户名可省略”）
+mosquitto_pub -t 主题名 -i 用户名 -m 要发送的消息
