@@ -507,6 +507,7 @@ https://pypi.org/project/pypinyin/
 celery 监控工具
 $ pip install celery[librabbitmq]
 $ pip install celery[librabbitmq,redis,auth,msgpack]
+https://blog.csdn.net/qq_28921653/article/details/79555212
 
 
 以下是可用的捆绑：
@@ -619,6 +620,13 @@ login_manager.init_app(app)
 
 coverage 测试代码块覆盖率
 pip install coverage
+
+
+Zipline python（股票）算法交易库
+pip install zipline
+
+内存管理
+pip install psutil
 
 
 

@@ -80,3 +80,10 @@ wget http://mosquitto.org/files/source/mosquitto-1.5.tar.gz
 启动命令 mosquitto
 mosquitto_sub -t 主题名 -i 用户名 （后面的“-i 用户名可省略”）
 mosquitto_pub -t 主题名 -i 用户名 -m 要发送的消息
+
+
+短地址生成网址
+http://suo.im/
+
+
+
