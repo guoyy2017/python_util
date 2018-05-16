@@ -13,6 +13,9 @@ pip install ***[**1,**2]
 python 项目查找网址
 https://pypi.org/
 
+绝对引用时用
+from __future__ import absolute_import
+
 
 时间模块处理
 pip install moment
@@ -627,6 +630,38 @@ pip install zipline
 
 内存管理
 pip install psutil
+
+
+使用 Python RQ 的 Python 执行后台任务
+pip install rq
+http://python-rq.org/
+http://xiaorui.cc/2015/04/01/python-rq%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97/
+
+
+https://github.com/mattupstate/flask-rq
+pip install flask-rq
+pip install rq-dashboard
+
+延时执行
+pip install python-delay==0.4
+https://pypi.org/project/python-delay/
+
+
+python 调试工具
+pip install pudb
+
+定时任务 编辑系统crontab 任务
+pip install python-crontab
+https://pypi.org/project/python-crontab/
+
+轻量级定时任务
+pip install schedule
+
+错误检查模块
+pip install faulthandler
+import faulthandler
+faulthandler.enable()
+
 
 
 
