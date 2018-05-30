@@ -86,4 +86,26 @@ mosquitto_pub -t 主题名 -i 用户名 -m 要发送的消息
 http://suo.im/
 
 
+在线画图地址
+https://www.processon.com/diagrams
+https://www.lucidchart.com/
+
+ajax 拦截器
+https://github.com/wendux/Ajax-hook
+
+
+
+刷机工具
+一片云
+阿里
+土豆短信
+手机号码池
+速码
+http://www.eobzz.com/
+http://www.aimazu.com/index.html
+
+
+
+
+
 

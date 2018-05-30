@@ -10,6 +10,10 @@ pip install -U ***（已经安装就升级到最新）
 pip 安装依赖 [] 中为依赖安装 多个用,分割
 pip install ***[**1,**2]
 
+
+python 学习地址 https://blog.csdn.net/Akino_Rito/article/details/79646589
+https://blog.csdn.net/hanzihan123/article/details/41898643
+
 python 项目查找网址
 https://pypi.org/
 
@@ -662,6 +666,193 @@ pip install faulthandler
 import faulthandler
 faulthandler.enable()
 
+TOKEN 认证
+flask-httpauth
+https://www.cnblogs.com/Erick-L/p/7060806.html
+
+
+python 爬虫框架
+pip install Scrapy
+http://scrapy-chs.readthedocs.io/zh_CN/latest/intro/tutorial.html
+
+创建一个Scrapy项目
+scrapy startproject myclaw
+
+scrapy crawl dmoz
+
+创建一个新的spider:
+
+scrapy genspider mydomain mydomain.com
+
+全局命令:
+
+startproject
+settings
+runspider
+shell
+fetch
+view
+version
+项目(Project-only)命令:
+
+crawl
+check
+list
+edit
+parse
+genspider
+deploy
+bench
+
+创建模版
+scrapy genspider -d basic
+
+查看列表
+scrapy list
+
+jwt python版本
+pip install pyjwt
+'''
+import jwt
+
+encoded_jwt = jwt.encode({'some': 'payload'}, 'secret', algorithm='HS256')
+encoded_jwt
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoicGF5bG9hZCJ9.4twFt5NiznN84AWoo1d7KO1T_yoc0Z6XOpOVswacPZg'
+
+jwt.decode(encoded_jwt, 'secret', algorithms=['HS256'])
+{'some': 'payload'}
+'''
+
+xpath
+import codecs
+from lxml import etree
 
 
 
+流计算
+pip install pulsar
+
+pip install streamparse
+https://github.com/Parsely/streamparse
+
+Luigi是基于python语言的，可帮助建立复杂流式批处理任务管理系统
+pip install luigi
+
+Kivy python 写android
+pip install Kivy
+
+主流的比较流行的Python量化开源框架
+https://www.jianshu.com/p/1658f319bfdc
+
+分布式计算框架
+pip install dispy
+https://blog.csdn.net/suzyu12345/article/details/53909688
+http://dispy.sourceforge.net/index.html docs
+http://dispy.sourceforge.net/dispy.html
+python -m pip install pycos
+提供服务
+dispynode.py -c 2 -i 192.168.0.121 -p 51348 -s secret
+一行命令处理
+dispy.py -f /some/file1 -f file2 -a "arg11 arg12" -a "arg21 arg22" -a "arg3" /some/program
+
+
+提速装饰器
+pip install decorator
+https://github.com/micheles/decorator
+from decorator import decorator
+
+
+发邮件
+pip install yagmail[all]
+https://github.com/kootenpv/yagmail
+
+
+python分布式计算框架PP(Parallel Python)集群模式
+pip install pp 即可安装pp库
+https://www.parallelpython.com/content/view/17/31/
+
+事件触发
+pip install pyee
+https://pyee.readthedocs.io/en/latest/
+
+In [1]: from pyee import EventEmitter
+
+In [2]: ee = EventEmitter()
+
+In [3]: @ee.on('event')
+   ...: def event_handler():
+   ...:     print('BANG BANG')
+   ...:
+
+In [4]: ee.emit('event')
+BANG BANG
+
+In [5]:
+
+
+颜色日志化
+pip install hues
+https://github.com/prashnts/hues
+
+数字人可见
+pip install -e git+https://github.com/jmoiron/humanize.git
+https://github.com/jmoiron/humanize
+
+表格化显示
+pip install tabulate
+https://pypi.org/project/tabulate/
+
+
+python的numba加速
+pip install numba
+https://pypi.org/project/numba/
+
+日志处理
+pip install structlog
+
+时间美化
+pip install Delorean
+
+
+Cola：一个分布式爬虫框架
+依赖
+pip install pyyaml
+
+
+web 框架
+https://pypi.org/project/falcon/
+pip install falcon
+
+网络框架
+https://pypi.org/project/diesel/
+pip install diesel
+
+
+ip访问限制
+flask_limiter
+http://flask-limiter.readthedocs.io/en/stable/
+https://pypi.org/project/Flask-Limiter/
+pip install Flask-Limiter
+
+
+速率限制
+https://pypi.org/project/ratelimiter/
+pip install ratelimiter
+
+
+'''
+flask + gevent
+'''
+from gevent import monkey
+monkey.patch_all()
+from flask import Flask
+from gevent import pywsgi
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Hello World'
+
+server = pywsgi.WSGIServer(('127.0.0.1', 5000), app)
+server.serve_forever()
