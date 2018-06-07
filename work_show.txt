@@ -93,6 +93,15 @@ https://www.lucidchart.com/
 ajax 拦截器
 https://github.com/wendux/Ajax-hook
 
+test manager soft
+http://www.zentao.net/book/zentaopmshelp/90.html
+
+内存数据库
+Apache Ignite剖析
+
+类nginx服务器
+web服务器Tengine
+
 
 
 刷机工具

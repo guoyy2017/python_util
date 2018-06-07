@@ -856,3 +856,47 @@ def index():
 
 server = pywsgi.WSGIServer(('127.0.0.1', 5000), app)
 server.serve_forever()
+
+
+http://python.jobbole.com/84003/
+FLASK 获取用户真实IP
+从request.headers获取
+
+Python
+
+real_ip = request.headers.get('X-Real-Ip', request.remote_addr)
+1
+real_ip = request.headers.get('X-Real-Ip', request.remote_addr)
+或者, 使用werkzeug的middleware 文档
+
+Python
+
+from werkzeug.contrib.fixers import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app)
+1
+2
+from werkzeug.contrib.fixers import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
+
+
+https://www.zhihu.com/question/23760468
+上下文 管理器
+from contextlib import contextmanager
+
+
+python调试
+pip install pystack
+pip install pdbx
+pip install remote-pdb
+pip install pystack-debugger
+
+用法
+@property
+
+@cached-property
+pip install cached-property
+
+from cached_property import threaded_cached_property
+
+from cached_property import cached_property_with_ttl
