@@ -98,9 +98,17 @@ http://www.zentao.net/book/zentaopmshelp/90.html
 
 内存数据库
 Apache Ignite剖析
+https://ignite.apache.org/download.cgi#maven
 
 类nginx服务器
 web服务器Tengine
+
+
+加壳
+https://lm.virbox.com/fangan.html
+
+反编译工具
+dnspy中文
 
 
 
@@ -112,6 +120,11 @@ web服务器Tengine
 速码
 http://www.eobzz.com/
 http://www.aimazu.com/index.html
+
+
+云服务
+滴滴云
+https://www.didiyun.com/activity.html?channel=3254&gclid=EAIaIQobChMI363Tv9fL2wIVRW29Ch047QKREAEYASAAEgKng_D_BwE
 
 
 

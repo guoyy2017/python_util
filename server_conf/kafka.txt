@@ -1,0 +1,17 @@
+下载地址
+http://kafka.apache.org/downloads.html
+
+安装指导
+https://www.cnblogs.com/wangyangliuping/p/5546465.html
+1.下载
+wget http://mirror.bit.edu.cn/apache/kafka/1.1.0/kafka_2.12-1.1.0.tgz
+
+2.Kafka目录介绍
+/bin 操作kafka的可执行脚本，还包含windows下脚本
+
+/config 配置文件所在目录
+
+/libs 依赖库目录
+
+/logs 日志数据目录，目录kafka把server端日志分为5种类型，分为:server,request,state，log-cleaner，controller
+

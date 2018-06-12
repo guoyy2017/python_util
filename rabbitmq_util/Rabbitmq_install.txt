@@ -1,5 +1,8 @@
 Rabbit模式大概分为以下三种：单一模式、普通模式、镜像模式
+http://www.rabbitmq.com/getstarted.html
 参考 https://www.cnblogs.com/web424/p/6761153.html
+学习
+https://blog.csdn.net/whoamiyang/article/details/54954780
 交换机(Exchange)
 交换机有四种类型,分别为Direct,topic,headers,Fanout
 1).Direct是RabbitMQ默认的交换机模式,也是最简单的模式.即创建消息队列的时候,指定一个BindingKey.当发送者发送消息的时候,指定对应的Key.当Key和消息队列的BindingKey一致的时候,消息将会被发送到该消息队列中.

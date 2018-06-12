@@ -176,6 +176,13 @@ Parallel(n_jobs=2, backend="threading")
 
 python模块之codecs: 自然语言编码转换
 
+邮件处理
+pip3 install flask-mail
+
+from flask_mail import Mail
+mail=Mail(app)
+https://www.toutiao.com/a6564588239519220231/?tt_from=weixin&utm_campaign=client_share&timestamp=1528462040&app=news_article&utm_source=weixin&iid=25816655942&utm_medium=toutiao_android&wxshare_count=1
+
 
 flask 表单校验模块
 pip install flask-wtf
