@@ -1,0 +1,8 @@
+git 地址
+https://github.com/ansible/ansible
+
+安装方式
+yum install ansible -y
+
+python 安装
+pip install ansible

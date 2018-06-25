@@ -1,0 +1,35 @@
+统计模块
+
+使用ngx_http_stub_status_module
+具体的配置写在http模块下
+server{
+        location /basic_status {
+            stub_status;
+        }
+    }
+
+Stream 用法
+    stream{
+    proxy_timeout 30m;
+    server{
+        listen  1521;
+        proxy_pass 192.168.1.30:1521;
+    }
+    server{
+        listen  3306;
+        proxy_pass 192.168.1.30:3306;
+    }
+    server{
+        listen  4022;
+        proxy_pass 192.168.1.40:22;
+    }
+    server{
+        listen  5022;
+        proxy_pass 192.168.1.50:22;
+    }
+}
+
+
+Nginx Push Stream Module 介绍
+pub/sub 功能
+nginx_http_push_module模块使用详解

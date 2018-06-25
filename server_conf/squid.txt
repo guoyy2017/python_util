@@ -1,0 +1,196 @@
+yum -y install squid
+
+https://www.cnblogs.com/mchina/p/3812190.html
+
+官网
+http://www.squid-cache.org/
+下载地址
+http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.14.tar.gz
+配置参数说明地址
+http://www.squid-cache.org/Doc/config/
+
+执行过程
+wget  http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.14.tar.gz
+
+
+安装squid
+yum install squid
+yum install httpd
+
+yum install http-tools的方式安装此工具
+htpasswd  -c /etc/squid/passwd proxy_username
+
+--配置用户名密码
+将下述代码添加到/etc/squid/squid.conf 中即配置实用验证的功能：
+
+auth_param basic program /usr/lib64/squid/basic_ncsa_auth /etc/squid/passwd
+acl auth_user proxy_auth REQUIRED
+http_access allow auth_user
+
+
+访问配置
+https://www.cnblogs.com/mangood/p/6037574.html
+
+
+squid 日志轮转
+0 0 * * * /usr/local/squid/sbin/squid -k rotate
+
+
+
+ACL元素类型
+src：源地址（即客户机IP地址）
+dst：目标地址（即服务器IP地址）
+srcdomain：源名称（即客户机名称）
+dstdomain：目标名称（即服务器名称）
+time：一天中的时刻和一周内的一天
+url_regex：URL规则表达式匹配
+urlpath_regex：URL-path规则表达式匹配，略去协议和主机名
+proxy_auth：通过外部程序进行用户验证
+maxconn：单一IP的最大连接数
+
+
+http_access Action 声明1 AND 声明2 AND 声明 OR.
+http_access Action 声明3
+
+日志备份数
+logfile_rotate 10
+
+
+
+
+
+
+squid日志格式参数详解
+2009年08月07日 15:02:00
+阅读数：6530
+在squid设置有日志格式设置
+
+logformat squid %ts.%03tu %6tr %>a %Ss/%03Hs %<st %rm %ru %un %Sh/%<A %mt
+
+参数解释如下
+
+Field name syntax keys:
+
+     {} modifier or argument. Also used to specify header names
+
+     >  request (client)  客户请求
+
+     <  reply (server)    服务端回应
+
+     a  address           访问用户ip地址
+
+     A  address name  访问用户电脑名称
+
+     h  all headers       浏览器头信息
+
+     i  ident
+
+     p  port                 端口
+
+     r  request line (no query)
+
+     t  time   访问时间
+
+     u  user
+
+     l  local address/port (where request was accepted)
+%>a
+Client source IP address
+%>A
+Client FQDN
+%>p
+Client source port
+%<a
+Server or peer IP address
+%<p
+Server or peer port number
+%<A
+Server IP address or peer name
+%la
+Local IP address where the request was accepted
+%lp
+Local port where the request was accepted
+%lA
+Local port name where the request was accepted
+%ts
+Date of request, seconds since epoch
+%{format}tl
+Date of request, strftime format (localtime)
+%{format}tg
+Date of request, strftime format (gmt)
+%tu
+Date of request, sub-second component
+%tr
+Time to serve the request, in milliseconds
+%{header}>h
+Request header
+%{header:element}>h
+Named request header field element (list headers)
+%{header:separator element}>h
+Named request header field element, using "separator" as field separator (it can be any non-alphanumeric single character)
+%>h
+All request header
+%{header}<h
+Request headers, as for <..h above
+%un
+Authenticated user name or dash
+%ur
+Authenticated user realm or dash
+%us
+Authenticated user scheme or dash
+%ui
+Ident user name
+%Hs
+HTTP status code (200, 404, 407, etc)
+%Ht
+HTTP status text (Not found, etc)
+%Ss
+Squid status code (TCP_HIT, TCP_MISS etc)
+%Se
+Squid error code (ERR_DENIED, ERR_...)
+%Sh
+Squid hierarchy code (FIRST_UP_PARENT, etc)
+%mt
+MIME type of the request
+%rm
+Request method
+%ru
+Request URL, without the query string
+%rq
+Request query string, including ?
+%rp
+Request protocol (i.e. HTTP/1.1)
+%ps
+Peer selection status (DIRECT, PARENT, CD_PARENT_HIT, etc. including the TIMEDOUT_ variant)
+%>sl
+Size of request line
+%>sh
+Size of request headers, including request line
+%>sH
+Size of request headers, excluding request line
+%>sb
+Size of request body, raw received bytes
+%>sB
+Size of request body, excluding transfer encoding
+%>st
+Total size of request
+%<sl
+Size of reply status line
+%<sh
+Size of reply headers, including status line
+%<sH
+Size of reply headers, excluding status line
+%<sb
+Size of reply body, raw transmitted bytes
+%<sB
+Size of reply body, excluding transfer encoding
+%<st
+Total size of reply
+%%
+A literal %
+
+不记图片类访问日志设置
+acl nolog urlpath_regex //.gif //.jpg //.css //.js //.swf
+access_log /data/squid/var/logs/access.log common !nolog
+
+

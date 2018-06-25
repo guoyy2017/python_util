@@ -907,3 +907,79 @@ pip install cached-property
 from cached_property import threaded_cached_property
 
 from cached_property import cached_property_with_ttl
+
+
+
+并行处理包
+concurrent
+concurrent.futures
+
+socketpair知识学习(区别于socket，不需要走网络协议栈)
+
+
+简单身份认证
+pip install sasl==0.2.1
+pip install pure-sasl
+
+压缩
+python-lz4 (pip install lz4)
+
+
+高效异步事件处理
+pip install uvloop
+
+
+爬虫框架
+https://github.com/gaojiuli/gain/
+
+
+微服务框架  nameko
+pip install nameko
+https://blog.csdn.net/ainibc/article/details/78292177?utm_source=5ibc.net&utm_medium=referral
+
+学习文档
+https://github.com/junneyang/nameko-demo
+
+
+Easy Swagger UI for your Flask API
+pip install flasgger==0.8.0
+https://pypi.org/project/flasgger/0.8.0/
+http://localhost:5000/apidocs/
+
+swagger 教程
+https://legacy.gitbook.com/book/huangwenchao/swagger/details
+
+高性能web框架
+
+japronto
+https://github.com/squeaky-pl/japronto
+
+
+python esb 消息总线
+https://zato.io/downloads.html
+
+snownlp情感分析源码解析
+https://github.com/isnowfy/snownlp
+
+
+微服务搭建
+## 安装微服务框架
+pip install nameko==2.5.4.4
+## 安装api框架
+pip install nameko-swagger==1.2.7
+## 创建项目
+nameko-admin createproject demo
+
+https://blog.csdn.net/wind_602/article/details/78863955
+
+
+python3.5 web
+python -m pip install sanic
+
+
+python  缓存
+pip install aiocache
+pip install aiocache[redis]
+pip install aiocache[memcached]
+pip install aiocache[redis,memcached]
+pip install aiocache[msgpack]

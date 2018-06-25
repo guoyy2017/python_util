@@ -1,0 +1,27 @@
+中文文档
+https://www.zybuluo.com/liyuj/note/230739
+
+下载地址
+https://ignite.apache.org/
+2.5.0
+http://mirrors.tuna.tsinghua.edu.cn/apache//ignite/2.5.0/apache-ignite-2.5.0-src.zip
+
+maven 安装
+<dependency>
+    <groupId>org.apache.ignite</groupId>
+    <artifactId>ignite-core</artifactId>
+    <version>${ignite.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.ignite</groupId>
+    <artifactId>ignite-spring</artifactId>
+    <version>${ignite.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.ignite</groupId>
+    <artifactId>ignite-indexing</artifactId>
+    <version>${ignite.version}</version>
+</dependency>
+
+直接安装
+yum install apache-ignite

@@ -126,8 +126,57 @@ http://www.aimazu.com/index.html
 滴滴云
 https://www.didiyun.com/activity.html?channel=3254&gclid=EAIaIQobChMI363Tv9fL2wIVRW29Ch047QKREAEYASAAEgKng_D_BwE
 
+项目管理工具
+https://worktile.com
+
+bug 管理系统
+testin
+https://worktile.com/
+bugclose
+https://www.bugclose.com/
+
+禅道 螳螂
+http://www.zentao.net/download.html
+http://www.zentao.net/book/zentaopmshelp/38.html
+下载地址
+http://www.zentao.net/download/80072.html
+http://dl.cnezsoft.com/zentao/9.8.3/ZenTaoPMS.9.8.3.zbox_64.tar.gz
+一键安装
+http://www.zentao.net/book/zentaopmshelp/90.html
+
+sudo tar -zxvf  ZenTaoPMS.7.3.stable.zbox_32.tar.gz -C /opt
+
+2、Apache和Mysql常用命令
+
+执行/opt/zbox/zbox start 命令开启Apache和Mysql。
+
+执行/opt/zbox/zbox stop 命令停止Apache和Mysql。
+
+执行/opt/zbox/zbox restart 命令重启Apache和Mysql。
+
+注：如果需要开机自动启动，可以把 /opt/zbox/zbox restart 加到操作系统的自启目录。
 
 
 
 
+http 代理
+brew install mitmproxy
+https://mitmproxy.org/#mitmproxy
 
+
+端口复用 协议
+端口复用神器 - sslh
+sslh是一款采用C语言编写的开源端口复用软件
+高性能负载均衡器 - HAProxy
+
+
+压测工具
+wrk  可以结合lua 做复杂测试
+教程
+https://www.cnblogs.com/savorboard/p/wrk.html
+https://github.com/wg/wrk
+
+压测工具
+locust python实现
+pip install locustio
+http://www.moye.me/2017/06/24/locust-load-testing/
