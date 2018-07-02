@@ -180,3 +180,19 @@ https://github.com/wg/wrk
 locust python实现
 pip install locustio
 http://www.moye.me/2017/06/24/locust-load-testing/
+
+
+redis 下载地址
+https://redis.io/download
+modules 下载地址
+https://redislabs.com/community/redis-modules-hub/
+
+
+rabbitmq 安装
+mac
+brew install rabbitmq
+localhost：15672  guest guest
+
+作业部落
+在线macdown 编辑
+https://www.zybuluo.com

@@ -983,3 +983,76 @@ pip install aiocache[redis]
 pip install aiocache[memcached]
 pip install aiocache[redis,memcached]
 pip install aiocache[msgpack]
+
+
+conda
+conda类似于npm或maven的包管理工具，只是conda是针对于python的
+https://blog.csdn.net/koflance/article/details/78582737
+
+anaconda  Miniconda
+
+WebUI是一个Python模块，允许您使用三行代码将Flask应用程序转换为跨平台桌面应用程序。
+pip install WebUI
+https://pypi.org/project/WebUI/
+
+from WebUI import WebUI # Add WebUI to your imports
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+ui = WebUI(app, debug=True) # Create a WebUI instance
+
+# all of your standard flask logic
+
+if __name__ == '__main__':
+  ui.run()
+
+
+
+nanomsg-python
+pip install nanomsg
+from nanomsg import Socket, PAIR, PUB
+
+LevelDB是Google开源的持久化KV单机数据库，具有很高的随机写，顺序读/写性能，但是随机读的性能很一般，也就是说，LevelDB很适合应用在查询较少，而写很多的场景
+leveldb
+pip install  leveldb
+
+pep8 规范
+https://blog.csdn.net/ratsniper/article/details/78954852
+
+
+python 路由
+pip install Routes
+
+
+https://pypi.org/project/MechanicalSoup/
+pip install MechanicalSoup
+python3.0 一个与网站自动化交互的Python库
+
+
+python 学习网址
+https://blog.csdn.net/dev_csdn/article/details/79060720
+
+
+渗透测试框架-Fsociety
+http://www.mamicode.com/info-detail-2162631.html
+
+monkeytype 一个可以自动添加注释的模块！ 3.5以上
+pip install monkeytype
+
+交互式报表
+pip install dash==0.18.3
+https://blog.csdn.net/hu_zhenghui/article/details/78378844
+
+
+flask 微服务
+pip install flask_nameko
+https://github.com/jessepollak/flask-nameko
+微服务用法
+from nameko.standalone.rpc import ClusterRpcProxy
+
+
+Prophet
+Facebook支持python的开源预测工具Prophet
+https://github.com/prestodb/presto
+https://pypi.org/project/prophet/
+pip install prophet

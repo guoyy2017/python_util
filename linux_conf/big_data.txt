@@ -1,0 +1,8 @@
+
+presto 分布式大数据SQL查询引擎
+http://prestodb-china.com/
+http://prestodb-china.com/docs/current/index.html
+
+
+大数据 OceanBase 阿里巴巴
+https://github.com/alibaba/OceanBase-0.5

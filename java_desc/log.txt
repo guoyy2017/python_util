@@ -1,0 +1,9 @@
+tinylog
+简单
+logback
+比log4j快
+SLF4J
+抽象接口使用
+
+关系文章
+https://blog.csdn.net/jiangzhexi/article/details/78323930

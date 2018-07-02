@@ -1,0 +1,5 @@
+Rsyslog日志服务搭建
+https://www.cnblogs.com/Eivll0m/p/6700828.html
+
+日志搜集处理框架------[Logstash]使用详解
+https://www.elastic.co/downloads/logstash
