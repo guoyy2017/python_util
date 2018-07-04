@@ -1056,3 +1056,10 @@ Facebook支持python的开源预测工具Prophet
 https://github.com/prestodb/presto
 https://pypi.org/project/prophet/
 pip install prophet
+
+pipenv是requests作者的一个项目, 整合了virtualenv, pip, pipfile, 用于更方便地为项目建立虚拟环境并管理虚拟环境中的第三方模块
+pip install pipenv
+
+
+pip install graphviz
+数据可视化的时候用到了graphviz库，用于生成决策树、流程图效果

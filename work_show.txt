@@ -103,6 +103,10 @@ https://ignite.apache.org/download.cgi#maven
 类nginx服务器
 web服务器Tengine
 
+nginx openresty 集成 nginx+lua
+OpenResty® 的目标是让你的Web服务直接跑在 Nginx 服务内部
+http://openresty.org/cn/
+
 
 加壳
 https://lm.virbox.com/fangan.html
@@ -192,7 +196,88 @@ rabbitmq 安装
 mac
 brew install rabbitmq
 localhost：15672  guest guest
+http://www.rabbitmq.com/getstarted.html
 
 作业部落
 在线macdown 编辑
 https://www.zybuluo.com
+
+代码画图工具
+Graphviz绘图的安装与使用
+http://www.graphviz.org/
+https://graphviz.gitlab.io/download/
+使用说明地址
+https://www.linuxidc.com/Linux/2016-05/131049.htm
+https://www.cnblogs.com/YiXiaoZhou/p/6375694.html
+https://blog.csdn.net/ac_dao_di/article/details/57427609
+https://www.jianshu.com/p/e44885a777f0
+属性介绍 dot
+https://www.jianshu.com/p/e44885a777f0 形状介绍
+http://www.cnblogs.com/CoolJie/archive/2012/07/17/graphviz.html  各种样式使用
+https://graphviz.gitlab.io/_pages/doc/info/lang.html 语言官网
+https://www.jianshu.com/p/e44885a777f0
+https://blog.csdn.net/u012313689/article/details/53070039
+mac
+brew install graphviz
+------
+命令
+dot
+
+渲染的图具有明确方向性。
+
+neato
+
+渲染的图缺乏方向性。
+
+twopi
+
+渲染的图採用放射性佈局。
+
+circo
+
+渲染的图採用环型佈局。
+
+fdp
+
+渲染的图缺乏方向性。
+
+sfdp
+
+渲染大型的图，图片缺乏方向性。
+------
+
+
+mac brew 安装
+https://brew.sh/
+
+levelDB nosql ssdbs
+mac上直接命令行下brew install leveldb即可安装
+
+SSDB —— 开源NoSQL数据库 Redis之外的选择
+https://segmentfault.com/a/1190000000455545
+
+RedisStorage
+redis结合leveldb
+
+maven mac 安装
+brew install maven
+
+
+InfluxDB是一个开源的没有外部依赖的时间序列数据库。适用于记录度量，事件及执行分析。
+https://github.com/influxdata/influxdb
+https://portal.influxdata.com/downloads
+mac安装
+brew install influxdb
+linux安装
+wget https://dl.influxdata.com/influxdb/releases/influxdb-0.13.0.armhf.rpm
+sudo yum localinstall influxdb-0.13.0.armhf.rpm
+
+influxdb使用的端口如下：
+http://www.361way.com/influxdb-user/5291.html
+8083: Web admin管理服务的端口, http://localhost:8083
+8086: HTTP API的端口
+8088: 集群端口(目前还不是很清楚, 配置在全局的bind-address，默认不配置就是开启的)
+
+
+nginx
+Nginx 处理请求的过程一共划分为 11 个阶段，按照执行顺序依次是 post-read、server-rewrite、find-config、rewrite、post-rewrite、preaccess、access、post-access、try-files、content 以及 log.
