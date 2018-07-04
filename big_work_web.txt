@@ -1,0 +1,71 @@
+各大学习网站
+
+js 时间工具
+http://momentjs.cn/
+
+尼古拉斯.赵四 技术破解
+http://www.wjdiankong.cn/
+吾爱破解
+https://www.52pojie.cn/
+看雪安全论坛
+https://bbs.pediy.com/
+
+菜鸟教程 （各种语言学习）
+http://www.runoob.com/
+w3school
+http://www.w3school.com.cn/
+
+redis 教程
+http://doc.redisfans.com/
+
+vue.js 学习地址
+https://cn.vuejs.org/
+
+maven 项目查找地址
+http://mvnrepository.com/
+
+教程网址 廖雪峰
+https://www.liaoxuefeng.com/
+
+python  中文爱好者
+http://www.pythontab.com/
+
+微小宝 （微信公众号排名）
+https://data.wxb.com/rank
+
+尤果网（图片）
+https://www.ugirls.com/
+http://www.7160.com/
+http://www.umei.cc/
+https://www.zhainanfulishe.com/
+
+模版之家
+http://www.cssmoban.com/
+
+python 资源搜索
+http://nullege.com/
+https://pypi.org/
+
+在线画图 ascii
+http://asciiflow.com/
+画图 流程图
+https://www.processon.com/
+https://www.lucidchart.com/
+
+pc 管理平台工具
+https://ant.design/index-cn
+
+rabbitmq 教程
+http://www.rabbitmq.com/getstarted.html
+
+虚拟币相关
+eth 查询网址
+https://etherscan.io/
+比特币介绍
+http://zhibimo.com/read/wang-miao/mastering-bitcoin/Preface.html
+web3js eth 工具
+
+
+原型工具
+磨刀
+蓝湖
