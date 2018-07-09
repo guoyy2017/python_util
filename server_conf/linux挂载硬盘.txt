@@ -1,0 +1,11 @@
+ fdisk -l
+ 查看连接硬盘信息
+ 分区
+ fdisk /dev/vdb
+
+ 格式化
+ mkfs.ext4 /dev/vdb1
+
+mkdir /data
+挂载
+mount /dev/vdb /data

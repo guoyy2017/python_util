@@ -1,0 +1,50 @@
+安装过程
+https://blog.csdn.net/woshixiaosimao/article/details/54315258
+
+组成部分 supervisord[服务端，所以要通过这个来启动它]
+supervisorctl[客户端，可以来执行stop等命令]
+官方文档地址：http://supervisord.org/
+
+pip install supervisor
+
+echo_supervisord_conf > /etc/supervisord.conf
+
+启动
+supervisord -c /etc/supervisord.conf
+
+子配置文件
+[include]
+files = /etc/supervisor/*.conf
+
+
+supervisorctl 命令
+https://my.oschina.net/crooner/blog/395069
+
+status    # 查看程序状态
+stop update_ip   # 关闭 update_ip 程序
+start update_ip  # 启动 update_ip 程序
+restart update_ip    # 重启 update_ip 程序
+reread    ＃ 读取有更新（增加）的配置文件，不会启动新添加的程序
+update    ＃ 重启配置文件修改过的程序
+
+$ supervisorctl status
+$ supervisorctl stop usercenter
+$ supervisorctl start usercenter
+$ supervisorctl restart usercenter
+$ supervisorctl reread
+$ supervisorctl update
+
+一个 [program:x] 实际上是表示一组相同特征或同类的进程组，
+也就是说一个 [program:x] 可以启动多个进程。这组进程的成员是通过 numprocs 和 process_name 这两个参数来确定的
+若 numprocs 不为1，process_name 的表达式中一定要包含 process_num 来区分不同的进程
+process_name 分别为 foo:foo_01 和 foo:foo_02
+;进程数量
+numprocs=1
+
+;当numprocs为1时,process_name=%(program_name)s
+;当numprocs>=2时,%(program_name)s_%(process_num)02d
+process_name=%(program_name)s
+
+numprocs=2
+process_name=%(program_name)s_%(process_num)02d;
+redirect_stderr=true      ; 重定向输出的日志
