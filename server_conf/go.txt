@@ -1,0 +1,154 @@
+golang 配置安装说明
+mac
+brew install go
+
+安装第三方包
+go get github.com/patrickmn/go-cache
+安装Mysql的包
+在go命令行中 go get github.com/go-sql-driver/mysql
+
+安装goconfig的包
+在go命令行中 go get github.com/Unknwon/goconfig
+
+安装Protocol buffer包
+go get -u github.com/golang/protobuf/protoc-gen-go
+
+安装Redis包
+go get github.com/garyburd/redigo/redis
+
+glog包
+go get github.com/golang/glog
+
+日志包
+go get github.com/ccpaging/
+
+go get github.com/sirupsen/logrus
+初始化,设置相关配置项
+
+func init() {
+
+//设置输出样式，自带的只有两种样式logrus.JSONFormatter{}和logrus.TextFormatter{}
+
+logrus.SetFormatter(&logrus.JSONFormatter{})
+
+//设置output,默认为stderr,可以为任何io.Writer，比如文件*os.File
+
+logrus.SetOutput(os.Stdout)
+
+//设置最低loglevel
+
+logrus.SetLevel(logrus.InfoLevel)
+
+}
+
+go get github.com/jeanphorn/log4go
+
+Faygo一款最适合开发API的Go Web框架
+go get -u -v github.com/henrylee2cn/faygo
+
+Go语言中有个概念叫做goroutine, 这类似我们熟知的线程，但是更轻
+关键字go来定义并启动一个goroutine
+
+
+命令行
+go install
+go build
+go run
+go get 用来动态获取远程代码包的
+-d 只下载不安装
+-f 只有在你包含了-u参数的时候才有效，不让-u去验证import中的每一个都已经获取了，这对于本地fork的包特别有用
+-fix 在获取源码之后先运行fix，然后再去做其他的事情
+-t 同时也下载需要为运行测试所需要的包
+-u 强制使用网络去更新包和它的依赖包
+-v 显示执行的命令
+
+go run 运行当个.go文件
+go install 在编译源代码之后还安装到指定的目录
+go build 加上可编译的go源文件可以得到一个可执行文件
+go get = git clone + go install 从指定源上面下载或者更新指定的代码和依赖，并对他们进行编译和安装
+
+
+go常用库说明
+iris  web框架
+log4go 日志框架 import log "github.com/jeanphorn/log4go"
+高性能goroutine pool
+go get -u github.com/panjf2000/ants
+http request library
+go get github.com/xioxu/goreq
+负载均衡
+go get github.com/panjf2000/goproxy
+日志包
+go get github.com/sirupsen/logrus
+redis
+go get github.com/garyburd/redigo/redis
+数据库操作
+go get github.com/go-sql-driver/mysql
+_ "github.com/go-sql-driver/mysql"
+    "database/sql"
+    //DSN数据源字符串：用户名:密码@协议(地址:端口)/数据库?参数=参数值
+    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test?charset=utf8");
+gorose, 最风骚的go orm, 拥有链式操作, 开箱即用
+go get -u github.com/gohouse/gorose
+
+rabbitmq
+go get "github.com/streadway/amqp"
+conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+
+随机ua
+go get github.com/EDDYCJY/fake-useragent
+
+monkey
+"github.com/bouk/monkey"
+
+nsq：bitly开源的消息队列系统，性能非常高，目前他们每天处理数十亿条的消息
+终极Web应用性能和压力测试工具Gor
+https://github.com/buger/gor
+
+反射是使用库reflect来实现，使用的时候需要将reflect库import进来
+flag库 参数处理库
+
+import 用法
+import "fmt"最常用的一种形式
+import "./test"导入同一目录下test包中的内容
+import f "fmt"导入fmt，并给他启别名ｆ
+import . "fmt"，将fmt启用别名"."，这样就可以直接使用其内容，而不用再添加ｆｍｔ，如fmt.Println可以直接写成Println
+import  _ "fmt" 表示不使用该包，而是只是使用该包的init函数，并不显示的使用该包的其他内容。注意：这种形式的import，当import时就执行了fmt包中的init函数，而不能够使用该包的其他函数。
+
+操作json
+"encoding/json"
+"encoding/xml"
+
+操作yaml
+go get -u github.com/kylelemons/go-gypsy
+"github.com/kylelemons/go-gypsy/yaml"
+go get gopkg.in/yaml.v2
+"gopkg.in/yaml.v2"
+
+动态dns ddns
+https://github.com/TimothyYe/godns
+
+代理服务器
+https://github.com/snail007/goproxy/blob/master/README_ZH.md
+
+Simple Goroutine pool
+go get github.com/yale8848/gorpool
+
+定时任务
+go get -u github.com/koangel/grapeTimer
+
+ip代理爬虫
+go get -u github.com/henson/ProxyPool
+
+web 端口转发工具
+https://github.com/tavenli/port-forward
+
+Go sync包提供了：sync.Mutex，sync.RMutex，sync.Once，sync.Cond，sync.Waitgroup，sync.atomic
+
+websocket
+go get golang.org/x/net/websocket
+
+微服务
+go micro来实现服务发现便利很多，micro中默认支持使用 Consul 来做服务发现
+
+zookeeper 使用
+github.com/samuel/go-zookeeper/zk

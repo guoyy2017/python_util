@@ -1,0 +1,55 @@
+下载地址
+http://kafka.apache.org/downloads
+
+启动kafka
+优先启动zookeeper
+bin/zookeeper-server-start.sh config/zookeeper.properties &
+nohup bin/kafka-server-start.sh config/server.properties > /dev/null 2>&1 &
+bin/zookeeper-server-start.sh –daemon config/zookeeper.properties &
+/bin/kafka-server-start.sh –daemon config/server.properties &
+
+安装Yahoo kafka manager
+下载sbt  https://piccolo.link/sbt-1.1.6.tgz
+下载jdk8 http://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/jdk-8u172-linux-x64.tar.gz?AuthParam=1531225202_10047bb4036f4b7d47436e1da0b93d32
+依赖
+安装sbt0.13.9
+curl https://bintray.com/sbt/rpm/rpm | sudo tee /etc/yum.repos.d/bintray-sbt-rpm.repo
+yum install -y sbt
+
+配置全流程kafka
+https://www.cnblogs.com/likehua/p/3999538.html
+https://www.cnblogs.com/luotianshuai/p/5206662.html
+配置参数
+https://blog.csdn.net/zhangjianjaEE/article/details/78124563
+
+客户端
+https://pypi.org/project/kafka/#description
+pip install kafka
+from kafka import KafkaConsumer
+from kafka import KafkaProducer
+
+
+manager 安装过程
+环境要求
+Kafka 0.8.1.1 or 0.8.2.*
+sbt 0.13.x
+Java 8+
+
+安装sbt
+curl https://bintray.com/sbt/rpm/rpm > bintray-sbt-rpm.repo
+mv bintray-sbt-rpm.repo /etc/yum.repos.d/
+yum install sbt
+
+下载编译
+git clone https://github.com/yahoo/kafka-manager.git
+cd kafka-manager
+sbt clean dist
+
+
+运行需要jdk8
+下载地址 https://github.com/yahoo/kafka-manager
+编译过的包
+http://pan.baidu.com/s/1o6RZzei
+
+启动
+bin/kafka-manager -Dconfig.file=conf/application.conf

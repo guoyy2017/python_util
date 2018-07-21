@@ -1,0 +1,4 @@
+node
+进程管理器：pm2，forever
+python
+supervisor

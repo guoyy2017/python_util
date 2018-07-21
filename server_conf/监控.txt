@@ -1,0 +1,15 @@
+grafana 监控数据可视化
+wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-5.2.1-1.x86_64.rpm
+sudo yum localinstall grafana-5.2.1-1.x86_64.rpm
+启动
+service grafana-server start
+
+安装包信息：
+
+二进制文件： /usr/sbin/grafana-server
+init.d 脚本： /etc/init.d/grafana-server
+环境变量文件： /etc/sysconfig/grafana-server
+配置文件： /etc/grafana/grafana.ini
+启动项： grafana-server.service
+日志文件：/var/log/grafana/grafana.log
+默认配置的sqlite3数据库：/var/lib/grafana/grafana.db

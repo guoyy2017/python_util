@@ -17,5 +17,13 @@ pos = tty_menu(l, "What is your word?")
 
 print("Your word is %s" % (l[pos]))
 
+for a in l:
+    print a
+
+for b in range(1,10):
+    print a
+
+
+
 if __name__ == '__main__':
     pass

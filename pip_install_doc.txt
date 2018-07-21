@@ -1063,3 +1063,27 @@ pip install pipenv
 
 pip install graphviz
 数据可视化的时候用到了graphviz库，用于生成决策树、流程图效果
+
+时序数据库使用
+pip install influxdb
+from influxdb import InfluxDBClient
+
+js解析器
+pip install Js2Py
+import js2py
+
+f = js2py.eval_js( “function $(name) {return name.length}” )
+
+f(“Hello world”)
+
+
+使用 arangoDB
+pip install pyarango --user
+from pyArango.connection import *
+conn = Connection(username="root", password="root_passwd")
+
+
+redis内存分析工具 redis-rdb-tools
+pip install rdbtools
+使用 redis-rdb-tools 生成内存快照
+rdb -c memory dump.rdb > memory.csv

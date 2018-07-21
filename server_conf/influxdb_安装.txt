@@ -1,0 +1,11 @@
+安装
+yum install influxdb
+
+启动服务
+service influxdb start
+
+使用教程
+https://www.jianshu.com/p/a1344ca86e9b
+
+python操作
+http://www.mamicode.com/info-detail-1720352.html

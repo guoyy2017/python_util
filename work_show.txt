@@ -424,3 +424,52 @@ http://www.ywnds.com/?p=9713
 zabbix 监控
 http://www.zabbix.org.cn/ 中文社区
 https://www.zabbix.com/download?zabbix=3.4&os_distribution=centos&os_version=6&db=MySQL
+
+go 消息队列
+Nsq
+
+图数据库
+arangodb neo4j 低延迟图形数据库 Dgraph Cayley是Google开源的图数据库
+linux 安装
+cd /etc/yum.repos.d/
+curl -OL https://download.arangodb.com/arangodb33/CentOS_6/arangodb.repo
+yum -y install arangodb3-3.3.12
+语法学习
+https://blog.csdn.net/yuzongtao/article/details/75968752
+图操作
+https://blog.csdn.net/yuzongtao/article/details/76061897
+
+ArangoDB包有以下程序：
+
+arangod:  ArangoDB数据库守护进程. 此服务器程序旨在作为守护程序进程运行，并通过TCP / HTTP向各种客户端连接到服务器。
+
+arangosh:  ArangoDB shell. 客户端实现read-eval-print-Loop(REPL)并提供函数来访问和管理ArangoDB服务器。
+
+arangoimp: ArangoDB服务器的 批量导入器 。它支持JSON和CSV。
+
+arangodump:以JSON格式创建ArangoDB数据库备份 的工具。
+
+arangorestore: 将备份数据加载回ArangoDB数据库的工具。
+
+arango-dfdb: ArangoDB的数据文件调试器。它主要用于开发ArangoDB。
+
+arangobench: A基准测试工具。 它可以用于性能和服务器功能测试。
+
+
+
+Mesos是Apache下的开源分布式资源管理框架
+
+分布式框架方案
+Kubernetes
+Kubernetes（通常写成“k8s”）是最开始由google设计开发最后贡献给Cloud Native Computing Foundation的开源容器集群管理项目。
+
+
+redis-storage
+https://github.com/qiye/redis-storage
+安装过程
+wget https://github.com/shenzhe/redis-storage/archive/master.zip
+wget https://codeload.github.com/qiye/redis-storage/zip/master
+unzip master.zip
+
+make  init
+make install  PREFIX=/usr/local/redis

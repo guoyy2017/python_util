@@ -1,0 +1,59 @@
+部署说明
+https://www.cnblogs.com/miclesvic/p/6189540.html
+
+rsync+inotify、rsync+serync两种方案来实现数据实时同步
+rsync 客户端安装inotify并配置即可实现实时同步
+
+查看是否安装
+rpm -qa rsync
+
+如果没有安装使用
+yum install rsync -y
+
+添加rsync用户
+useradd -s /sbin/nologin -M rsync
+id rsync
+
+生成rsyncd.conf配置文件
+# cat /etc/rsyncd.conf
+#rsync_config______________________start
+#created by oldboy 15:00 2016-11-15
+##rsyncd.conf start##
+uid = rsync                         # 用户 远端的命令使用rsync访问共享目录
+gid = rsync                         # 用户组
+use chroot = no                     # 安全相关
+max connections = 200               # 最大连接数
+timeout = 300                       # 超时时间
+pid file = /var/run/rsyncd.pid      # 进程对应的进程号文件
+lock file = /var/run/rsyncd.lock    # 锁文件
+log file = /var/log/rsyncd.log      # 日志文件
+ignore errors                       # 忽略错误
+read only = false                   # 可写
+list = false                        # 不能列表
+hosts allow = 172.16.1.0/24         # 允许连接的服务器
+hosts deny = 0.0.0.0/32             # 后勤组连接的服务器
+auth users = rsync_backup           # 虚拟用户
+secrets file = /etc/rsync.password  # 虚拟用户对应的用户和密码文件
+
+[backup]                            # 模块名称
+path = /backup                      # 服务端提供访问的目录
+
+[nfsbackup]
+path = /nfsbackup
+#rsync_config______________________end
+
+
+启动rsync服务并检查
+rsync --daemon
+
+客户端
+手动执行同步
+rsync -avz /backup/ rsync_backup@172.16.1.41::backup/ --password-file=/etc/rsync.password
+
+
+rsync 客户端安装inotify并配置即可实现实时同步
+安装inotify
+yum install inotify-tools –y
+# inotifywa    # 安装完成后会生成以下两个命令
+inotifywait   inotifywatch
+
