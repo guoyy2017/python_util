@@ -1,0 +1,12 @@
+mysql实现读写分离中间件MySQL Proxy
+官网：http://dev.mysql.com/doc/mysql-proxy/en/
+下载：http://downloads.mysql.com/archives/proxy/
+https://downloads.mysql.com/archives/proxy/
+
+Mysql 实现读写分离-Atlas中间件
+源码Github:https://github.com/Qihoo360/Atlas
+
+Mysql主从复制、读写分离+MyCat数据库中间件
+http://www.mycat.io/
+http://dl.mycat.io/1.6-RELEASE/
+

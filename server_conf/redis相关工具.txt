@@ -1,0 +1,2 @@
+redis-sync-manager  数据库同步
+redis-port 数据库同步

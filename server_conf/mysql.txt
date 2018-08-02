@@ -1,0 +1,6 @@
+mac 安装数据库mysql
+brew install mysql
+启动服务
+mysql.server start
+启动客户端
+msyql -uroot

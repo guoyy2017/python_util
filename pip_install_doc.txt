@@ -1087,3 +1087,19 @@ redis内存分析工具 redis-rdb-tools
 pip install rdbtools
 使用 redis-rdb-tools 生成内存快照
 rdb -c memory dump.rdb > memory.csv
+
+$ rdb [options] /path/to/dump.rdb
+-c FILE       #指定rdb文件;
+-f FILE       #指定导出文件;
+-n DBS        #解析指定数据库,如果不指定默认包含所有;
+-k KEYS       #指定需要导出的KEY,可以使用正则表达式;
+-o NOT_KEYS   #指定不需要导出的KEY,可以使用正则表达式;
+-t TYPES      #指定解析的数据类型,可能的值有:string,hash,set,sortedset,list;可以提供多个类型,如果没有指定,所有数据类型都返回;
+-b BYTES      #限制输出KEY大大小;
+-l LARGEST    #根据大小限制的top key;
+-e ESCAPE     #指定输出编码,默认RAW;
+
+pip install lmdb
+
+python 椭圆算法
+pip install ecc

@@ -1,0 +1,53 @@
+redis-storage安装手册
+-- 不需要执行-------------------
+先安装leveldb
+wget https://codeload.github.com/google/leveldb/zip/v1.9 > leveldb.zip
+unzip leveldb.zip
+cd leveldb-v1.9
+make
+然后把so拷贝到可关联目录
+cp libleveldb.so.1.9 /usr/lib
+ln -s /usr/lib/libleveldb.so.1.9 /usr/lib/libleveldb.so.1
+ln -s /usr/lib/libleveldb.so.1.9 /usr/lib/libleveldb.so
+
+使得动态库生效
+ldconfig
+-------------------------------
+
+安装完成leveldb后安装redis-storage
+echo "/usr/local/lib" >> /etc/ld.so.conf
+ldconfig
+wget https://github.com/shenzhe/redis-storage/archive/master.zip > redis-storage.zip
+unzip redis-storage.zip
+cd redis-storage
+然后
+make init
+make MALLOC=tcmalloc_minimal
+需要root
+make install PREFIX=/usr/local/redis
+
+执行过程
+cd /usr/local/redis
+server
+bin/redis-server
+
+client
+bin/redis-cli
+
+
+=======string数据操作======
+rl_get key            (从redis或leveldb取值, 优先顺序：redis > leveldb)
+rl_getset key         (返回同rl_get, 当leveldb有值，redis无值时，会回写到redis)
+rl_mget k1 k2 k3      (取redis和leveldb的并集，优先级：redis>leveldb)
+rl_mgetset k1 k2 k3   (返回同rl_mget, 当leveldb有值，redis无值，会回写到redis)
+rl_set key val        (往redis和leveldb写值, 优先顺序：leveldb > redis, leveldb如果失败，将中断往redis写，返回错误)
+rl_mset k1 v1 k2 v2   (往redis和leveldb批量写值, 优先顺序：leveldb > redis, leveldb如果失败，将中断往redis写，返回错误)
+rl_del k1 k2 k3       (往redis和leveldb删值, 优先顺序：leveldb > redis)
+========hash数据操作========
+rl_hget key hk                (从redis或leveldb取值, 优先顺序：redis > leveldb)
+rl_hgetset  key hk            (返回同rl_hget, 当leveldb有值，redis无值时，会回写到redis)
+rl_hmget key hk1 hk2          (往redis和leveldb批量写值，优先级：redis>leveldb)
+rl_hmgetset k1 k2 k3          (返回同rl_hmget, 当leveldb有值，redis无值，会回写到redis)
+rl_hset key hk hv             (往redis和leveldb写值, 优先顺序：leveldb > redis, leveldb如果失败，将中断往redis写，返回错误)
+rl_hmset key hk1 hv1 hk2 hv2   (取redis和leveldb的并集，优先级：redis>leveldb)
+rl_hdel  key hk1 hk2 hk3      (往redis和leveldb删值, 优先顺序：leveldb > redis)

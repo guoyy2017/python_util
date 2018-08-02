@@ -1,0 +1,60 @@
+https://www.jianshu.com/p/28dbc43d31ca
+
+监控学习
+https://www.elastic.co/downloads/beats
+
+filebeats output配置
+https://www.elastic.co/guide/en/beats/filebeat/current/configuring-output.html
+
+日志监控程序
+创建yum源文件
+vim /etc/yum.repos.d/elk-elasticsearch.repo
+[elastic-5.x]
+name=Elastic repository for 5.x packages
+baseurl=https://artifacts.elastic.co/packages/5.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md
+
+yum install filebeat
+各种配置参数大全
+https://blog.csdn.net/chenxun_2010/article/details/78602729
+地址学习配置
+https://www.ibm.com/developerworks/cn/opensource/os-cn-elk-filebeat/index.html?ca=drs-&utm_source=tuicool&utm_medium=referral
+官网使用
+https://www.elastic.co/guide/en/beats/filebeat/current/index.html
+配置说明
+https://www.cnblogs.com/kerwinC/p/6227768.html
+filebeat的配置，配置文件一般位于/etc/filebeat/
+配置说明
+https://www.linuxidc.com/Linux/2016-10/135850.htm
+
+ service filebeat start
+ service filebeat status
+  service filebeat stop
+
+filebeat 配置过程
+
+
+日志收集
+https://www.elastic.co/cn/products/logstash
+yum install logstash
+nohup bin/logstash -f test.conf --path.data=/var/ &
+
+日志存储
+yum install influxdb
+
+日志展示
+yum install grafana
+service granfan rstart
+
+安装logstash
+yum install logstash
+安装后位置
+/usr/share/logstash
+
+
+
+filebeats 收集日志、发送到redis，logstash收集入库

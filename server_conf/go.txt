@@ -152,3 +152,24 @@ go micro来实现服务发现便利很多，micro中默认支持使用 Consul �
 
 zookeeper 使用
 github.com/samuel/go-zookeeper/zk
+
+pagent是一个多进程模型的golang库
+github.com/adwpc/pagent
+
+go通道的异步任务调度器
+go get github.com/chenhg5/go-task
+
+
+golang 提供了拓展库(golang.org/x/time/rate)提供了限流器组件
+github.com/afex/hystrix-go，提供了 go 熔断器实现
+
+优雅重启http服务 https://github.com/fevin/gracehttp
+go get github.com/fevin/gracehttp
+Github: gracehttp
+
+接口调用限制
+https://godoc.org/go.uber.org/ratelimit
+import "go.uber.org/ratelimit"
+
+go 定时器
+https://github.com/caucy/timeloop

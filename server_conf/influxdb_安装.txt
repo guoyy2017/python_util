@@ -9,3 +9,6 @@ https://www.jianshu.com/p/a1344ca86e9b
 
 python操作
 http://www.mamicode.com/info-detail-1720352.html
+
+集群挂载
+https://www.cnblogs.com/tianqing/p/7153023.html

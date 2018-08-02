@@ -1,0 +1,4 @@
+mac install
+brew install erlang
+
+Rebar提供Erlang依赖(包)管理机制
