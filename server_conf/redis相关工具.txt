@@ -1,2 +1,4 @@
 redis-sync-manager  数据库同步
 redis-port 数据库同步
+redis-dump 导出
+redis-load 导入

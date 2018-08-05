@@ -2,3 +2,12 @@ mac install
 brew install erlang
 
 Rebar提供Erlang依赖(包)管理机制
+
+分布式方式
+erl(或werl)加上命令行参数-name或-sname，就可以以分布式模式启动Erlang节点。
+
+第一种形式：适用于配有DNS的普通网络环境，你需要给出节点的完全域名，如 erl -name simple_cache，
+
+第二种形式：适用于完全限定域名不可用的情况，只要所有节点同处一个子网，你就可以使用短节点名。如 erl -sname simple_cache
+
+注意：采用短节点名和长节点名的节点所处的通信模式是不同的，它们之间无法形成集群。只有采用相同模式的节点才能互联。

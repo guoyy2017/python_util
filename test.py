@@ -30,25 +30,32 @@
 
 import requests
 import hashlib
+#
+# url = 'http://send.supermms.cn/mt.php'
+# appkey = '02940e7646'
+# appid = '10568'
+# mobile = '13451909511'
+# modeid = '211022'
+# md5 = hashlib.md5()
+# md5.update(appkey+appid+mobile)
+# sign = md5.hexdigest()
+# data = {
+#     "appId": appid,
+#     "modeId": modeid,
+#     "mobile": mobile,
+#     "sign": sign,
+# }
+# print data
+# res = requests.post(url, data=data)
+# print res.status_code
+# print res.text
 
-url = 'http://send.supermms.cn/mt.php'
-appkey = '02940e7646'
-appid = '10568'
-mobile = '13451909511'
-modeid = '211022'
-md5 = hashlib.md5()
-md5.update(appkey+appid+mobile)
-sign = md5.hexdigest()
-data = {
-    "appId": appid,
-    "modeId": modeid,
-    "mobile": mobile,
-    "sign": sign,
-}
-print data
-res = requests.post(url, data=data)
-print res.status_code
-print res.text
+for i in range(5):
+    if i == 3:
+        continue
+        print i
+    else:
+        print i
 
 
 

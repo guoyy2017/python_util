@@ -1,0 +1,15 @@
+mac 安装
+https://nodejs.org/en/
+下载pkg
+
+下载地址
+http://nodejs.cn/download/
+wget https://npm.taobao.org/mirrors/node/v10.7.0/node-v10.7.0-linux-x64.tar.xz
+tar -xvf   node-v6.10.0-linux-x64.tar.xz
+mv node-v6.10.0-linux-x64  nodejs
+
+建立软连接，变为全局
+①ln -s /app/software/nodejs/bin/npm /usr/local/bin/
+②ln -s /app/software/nodejs/bin/node /usr/local/bin/
+
+在Linux命令行node -v 命令会显示nodejs版本，如图所示为大功告成
