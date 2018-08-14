@@ -69,3 +69,78 @@ http://www.rabbitmq.com/download.html
 
 集群配置
 https://www.cnblogs.com/xishuai/p/rabbitmq-cluster.html
+
+
+
+
+----------------操作特性--------------------
+延时队列
+特性1、Time To Live(TTL)
+RabbitMQ可以针对Queue设置x-expires 或者 针对Message设置 x-message-ttl，来控制消息的生存时间，如果超时(两者同时设置以最先到期的时间为准)，则消息变为dead letter(死信)
+RabbitMQ针对队列中的消息过期时间有两种方法可以设置。
+
+A: 通过队列属性设置，队列中所有消息都有相同的过期时间。
+B: 对消息进行单独设置，每条消息TTL可以不同。
+如果同时使用，则消息的过期时间以两者之间TTL较小的那个数值为准。消息在队列的生存时间一旦超过设置的TTL值，就成为dead letter
+
+特性2、Dead Letter Exchanges（DLX）
+RabbitMQ的Queue可以配置x-dead-letter-exchange 和x-dead-letter-routing-key（可选）两个参数，如果队列内出现了dead letter，则按照这两个参数重新路由转发到指定的队列。
+
+x-dead-letter-exchange：出现dead letter之后将dead letter重新发送到指定exchange
+x-dead-letter-routing-key：出现dead letter之后将dead letter重新按照指定的routing-key发送
+队列出现dead letter的情况有：
+
+消息或者队列的TTL过期
+
+队列达到最大长度
+
+消息被消费端拒绝（basic.reject or basic.nack）并且requeue=false
+
+queue Arguments 设置
+x-message-ttl 消息超时 x-expires 队列存活时间
+x-max-length 队列长度 x-max-length-bytes 队列内容大小
+x-overflow 内容超过处理方式（drop-head or reject-publish）
+x-dead-letter-exchange 死信交换机
+x-dead-letter-routing-key 死信路由key
+x-max-priority  最大优先级 1-255 建议1-10
+x-queue-mode=lazy 多存disk
+x-queue-master-locator 镜像问题？？
+
+exchange Arguments 设置
+alternate-exchange  告警交换机（找不到路由对应发送给的交换机数据）
+
+exchange Internal 设置成yes 只能来源交换机数据
+
+exchange header 模式
+特殊值”x-match” 有特殊值
+    all: 默认值。一个传送消息的header里的键值对和交换机的header键值对全部匹配，才可以路由到对应交换机
+    any: 一个传送消息的header里的键值对和交换机的header键值对任意一个匹配，就可以路由到对应交换机
+
+消息属性Properties
+content_type ： 消息内容的类型
+content_encoding： 消息内容的编码格式
+priority： 消息的优先级
+correlation_id：关联id  （rpc使用 one-one）
+reply_to: 用于指定回复的队列的名称  （rpc可用）
+expiration： 消息的失效时间
+message_id： 消息id
+timestamp：消息的时间戳
+type： 类型
+user_id: 用户id
+app_id： 应用程序id
+cluster_id: 集群id
+
+流控设置
+rabbitmqctl set_vm_memory_high_watermark 0.03
+
+
+rabbit元数据
+rabbit会保存四种元数据：
+
+1）队列元数据：队列名称、属性、是否是持久化队列等
+
+2）交换器元数据：交换器名称、属性、是否被持久化等
+
+3）绑定元数据：队列与交换器的对应关系
+
+4）vhost元数据：命名空间管理等

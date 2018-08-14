@@ -1,7 +1,26 @@
 mac install
 brew install erlang
 
+简单教程
+https://www.cnblogs.com/xuan52rock/p/4597300.html
+
 Rebar提供Erlang依赖(包)管理机制
+
+三分钟学习
+https://www.jianshu.com/p/5b7e73576dcb
+
+erlang进程数量
+进程个数上限是 262144 ，但可以在启动时使用 erl +P
+
+使用消息发送运算符 ! 发送消息。
+receive ... end 语句使用 pattern matching 来从自己进程的信箱里读取消息，可以使用 after 语句来设置等待超时时间
+ -setcookie 'dist-cookie'
+ cookie 是用来保护分布式系统安全的，只有设置了相同 cookie 的 node 才能建立分布式连接。
+
+ net_kernel:connect_node('node1@127.0.0.1'). 显示加入集群
+ net_adm:ping('node1@127.0.0.1'). 测试连接性
+ rpc:call 远程调用
+ epmd 监听在系统的 4369 端口，并记录了本地所有 erlang node 开放的分布式端口
 
 分布式方式
 erl(或werl)加上命令行参数-name或-sname，就可以以分布式模式启动Erlang节点。
@@ -11,3 +30,109 @@ erl(或werl)加上命令行参数-name或-sname，就可以以分布式模式启
 第二种形式：适用于完全限定域名不可用的情况，只要所有节点同处一个子网，你就可以使用短节点名。如 erl -sname simple_cache
 
 注意：采用短节点名和长节点名的节点所处的通信模式是不同的，它们之间无法形成集群。只有采用相同模式的节点才能互联。
+
+erl -name ... -setcookie ... -kernel inet_dist_listen_min Min inet_dist_listen_max Max
+
+项目管理工具
+Erlang Rebar
+https://blog.csdn.net/ubuntu64fan/article/details/41644773
+编译 rebar
+    $ git clone git://github.com/rebar/rebar.git
+    $ cd rebar
+    $ ./bootstrap
+  查看命令说明：
+    $ ./rebar -c
+    $ ./rebar help clean
+
+关键参数
+-module(module_name) 定义模块
+-export([method/0,...]) 定义公共方法，可以给外部使用
+-record(state, {
+            name,      %% 消息栈的名字
+            length = 0,  %% 消息栈长度
+            buff = []   %% 消息栈的存储列表
+         }) 记录定义
+#state{name = Name, length = Len, buff = Buff} 使用记录
+
+-define(API_TIMEOUT, 3000). 宏定义，简单类型
+?API_TIMEOUT 使用宏
+
+-compile(export_all) 导出模块中所有函数
+-import(lists,[map/2,sum/1]) 导入lists的函数 可以直接使用
+-include(Filename) 包含.hrl的文件
+-behaviour(Module) ??热部署
+-include_lib("") 路径
+-type my_type() :: Type. 自定义类型
+-spec Module:Function(ArgType1, ..., ArgTypeN) -> ReturnType. 规范化函数  | 表示或
+-vsn('0.1').
+
+erlang:register/2 可以给一个 PID 注册一个名字，以后使用这个 PID 就可以使用这个名字代替
+
+erlc 编译erl文件  erlc +debug_info **.erl (可反编译)  erlc +encrypt_debug_info **.erl (加密) erlc **.erl (不可反编译)
+beam_lib:chunk可以反编译
+
+
+erlang 定时器
+timer  timer:send_after和timer:apply_after在指定时间间隔后收到指定消息或执行某个函数
+erlang 原生计时器erlang:send_after和erlang:start_timer，它们把计时器附着在进程自己身上
+timer的进程都是通过一个唯一的timer进程实现的，该进程是一个gen_server。建议使用erlang：:send_after和erlang:start_timer，它们把计时器附着在进程自己身上.
+
+lists 操作
+[2 * X || X <- L]
+
+使用函数引用的办法
+fun LocaFunc/Arity
+fun Mod:RemoteFunc/Arity
+
+++ -- 列表操作
+
+宏
+?FILE 当前文件名
+?MODULE 当前模块
+?LINE 当前行
+
+进程字典
+
+短路符
+orelse andalso
+
+or and 两边都会求值
+
+code:get_path() 加载文件路径值
+
+BIF 管理
+注册进程
+register(AnAtom, PID)
+移除
+unregister(AnAtom)
+判断
+whereis(AnAtom)
+返回注册列表
+registered()
+
+gen_tcp tcp库
+gen_udp udp库
+
+ets 大数据k-v 存内存  ets:new
+dets 大数据k-v 存磁盘 dets:open_file
+
+mnesia 数据库
+
+Edoc erlang 文档生成工具
+
+后台启动
+erl -detached -s hello start
+
+erl -pa 增加启动扫描目录
+ $HOME/.erlang文件中增加一行：code:add_path("/path/to/eunit/ebin")
+
+
+
+
+
+
+
+ ---------------------------使用包-----------------------------
+ redis   https://github.com/wooga/eredis.git  redis操作
+ rebar3  https://github.com/erlang/rebar3.git 包依赖管理
+ erlcron https://github.com/erlware/erlcron.git cron定时器

@@ -494,3 +494,5 @@ yum install memcached
 
 类mysql 数据库 比mysql好在多主同步复制
 MariaDB Galera Cluster是MariaDB的一个双活多主集群
+
+Apache Flink是一个面向分布式数据流处理和批量数据处理的开源计算平台，它能够基于同一个Flink运行时，提供支持流处理和批处理两种类型应用的功能。

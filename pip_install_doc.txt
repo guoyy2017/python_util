@@ -653,6 +653,9 @@ https://github.com/mattupstate/flask-rq
 pip install flask-rq
 pip install rq-dashboard
 
+Flask
+app.run()中可以接受两个参数，分别是threaded和processes，用于开启线程支持和进程支持。
+
 延时执行
 pip install python-delay==0.4
 https://pypi.org/project/python-delay/

@@ -1,0 +1,43 @@
+官网教程
+https://graphviz.gitlab.io/documentation/
+https://graphviz.gitlab.io/_pages/doc/info/lang.html
+安装
+brew install graphviz
+https://www.jianshu.com/p/e44885a777f0
+
+Graphviz支持几种布局引擎：
+
+dot ： 默认布局方式，主要用于有向图
+neato ： 主要用于无向图
+twopi ： 主要用于径向布局
+circo ： 圆环布局
+fdp ： 主要用于无向图
+sfdp ： 主要绘制较大的无向图
+patchwork ： 主要用于树哈希图（tree map）
+Graphviz支持的输出图片格式更是相当的多，常用的有以下几种：
+
+pdf ：
+gif
+png ：
+jpeg ： 一种有损压缩图片格式
+bmp ： 一种位图格式
+svg ： 矢量图，一般用与Web，，可以用浏览器打开
+ps ： 矢量线图，多用于打印
+更多的输出格式可以浏览Graphviz输出格式进行查看。
+
+display sample.png 查看图片
+
+graphviz包含3中元素，图，顶点和边。每个元素都可以具有各自的属性，用来定义字体，样式，颜色，形状等。
+在digraph的花括号内，添加顶点和边的新定义：
+   1: node [shape="record"];
+   2: edge [style="dashed"];
+
+子图的名称必须以cluster开头，否则graphviz无法设别 subgraph cluster_cd
+
+一个hash表的数据结构
+属性设置
+https://blog.csdn.net/zzz_781111/article/details/7641240
+
+label 属性用于展示文字
+属性, 格式为: node[attribute1=value1, attribute2=value2]
+graph代表此图是无向图(就是连线没有箭头),digraph就是有向图
