@@ -1,0 +1,97 @@
+NFS 是Network File System的缩写
+https://www.cnblogs.com/mchina/archive/2013/01/03/2840040.html
+需要安装 nfs-utils portmap 两个软件包
+Centos6 使用rpcbind 代替portmap
+service rpcbind start
+
+NFS系统守护进程
+
+nfsd：它是基本的NFS守护进程，主要功能是管理客户端是否能够登录服务器；
+mountd：它是RPC安装守护进程，主要功能是管理NFS的文件系统。当客户端顺利通过nfsd登录NFS服务器后，在使用NFS服务所提供的文件前，还必须通过文件使用权限的验证。它会读取NFS的配置文件/etc/exports来对比客户端权限。
+portmap：主要功能是进行端口映射工作。当客户端尝试连接并使用RPC服务器提供的服务（如NFS服务）时，portmap会将所管理的与服务对应的端口提供给客户端，从而使客户可以通过该端口向服务器请求服务。
+
+
+vi /etc/exports
+/home/david 192.168.1.0/24(rw)
+
+--
+设置输出目录只读：ro
+设置输出目录读写：rw
+
+--格式
+/etc/exports文件内容格式：
+<输出目录> [客户端1 选项（访问权限,用户映射,其他）] [客户端2 选项（访问权限,用户映射,其他）]
+
+客户端挂载
+mount NFS服务器IP:共享目录 本地挂载点目录
+卸载
+umount /tmp/david/
+
+exportfs [-aruv]
+
+　　-a 全部挂载或卸载 /etc/exports中的内容
+　　-r 重新读取/etc/exports 中的信息 ，并同步更新/etc/exports、/var/lib/nfs/xtab
+　　-u 卸载单一目录（和-a一起使用为卸载所有/etc/exports文件中的目录）
+　　-v 在export的时候，将详细的信息输出到屏幕上。
+
+具体例子：
+　　# exportfs -au 卸载所有共享目录
+　　# exportfs -rv 重新共享所有目录并输出详细信息
+
+
+可以查看出nfs服务开启的端口，其中nfs 开启的是2049，portmap 开启的是111，其余则是rpc开启的
+
+
+
+
+--------------------------------操作过程--------------------------------------
+需要先安装 yum install nfs-utils
+nfs 开启的是2049
+Centos6 用 使用rpcbind Centos5 用 portmap
+
+启动前配置
+vi /etc/exports
+/home/david 192.168.1.0/24(rw)
+
+启动
+service rpcbind start | service portmap start
+service nfs start
+
+修改共享目录的权限
+chmod 777 -R /home/david/
+
+客户端挂载
+先安装 yum install nfs-utils
+mount NFS服务器IP:共享目录 本地挂载点目录
+
+客户端卸载
+umount /tmp/david/
+
+服务端动态添加共享目录命令
+exportfs
+
+关闭服务nfs
+service nfs stop
+service rpcbind stop | service portmap stop
+
+showmount命令查询NFS的共享状态
+showmount -e　　　　//默认查看自己共享的服务，前提是要DNS能解析自己，不然容易报错
+showmount -a　　　　//显示已经与客户端连接上的目录信息
+客户端使用showmount命令查询NFS的共享状态
+showmount -e NFS服务器IP
+
+客户端自动挂载（重启会丢失）
+# vi /etc/fstab
+
+格式：
+<server>:</remote/export> </local/directory> nfs < options> 0 0
+
+服务端添加自动启动服务
+NFS服务器的自动启动状态
+--查看
+# chkconfig --list portmap
+# chkconfig --list nfs
+--设置
+# chkconfig --level 35 portmap on
+# chkconfig --level 35 nfs on
+--------------------------------------------------------------------------

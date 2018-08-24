@@ -58,3 +58,7 @@ yum install logstash
 
 
 filebeats 收集日志、发送到redis，logstash收集入库
+
+
+log4j SocketAppend
+log4j 输出到远程问题

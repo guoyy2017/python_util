@@ -496,3 +496,6 @@ yum install memcached
 MariaDB Galera Cluster是MariaDB的一个双活多主集群
 
 Apache Flink是一个面向分布式数据流处理和批量数据处理的开源计算平台，它能够基于同一个Flink运行时，提供支持流处理和批处理两种类型应用的功能。
+http://doc.flink-china.org/1.2.0/
+Apache Samza是流处理工作负载一个很好的选择
+Samza对Kafka类查询系统的依赖似乎是一种限制

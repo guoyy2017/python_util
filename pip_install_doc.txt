@@ -416,6 +416,8 @@ http://www.skulpt.org/
 python 数值计算库 类numpy
 blaze
 https://github.com/blaze/blaze
+Pandas 是python的一个数据分析包
+pip install pandas
 
 python svg 库
 pip install pygal
@@ -1106,3 +1108,11 @@ pip install lmdb
 
 python 椭圆算法
 pip install ecc
+
+
+忽略告警
+import warnings
+warnings.filterwarnings("ignore")
+
+金融处理
+pip install Quandl

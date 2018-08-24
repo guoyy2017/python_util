@@ -1,0 +1,9 @@
+$vi ~/.vimrc
+
+let &termencoding=&encoding
+
+set fileencodings=utf-8,gbk
+
+$:wq
+
+再次打开vi，显示就正常了。
