@@ -1,0 +1,35 @@
+lsof 显示系统打开的文件
+lsof -i:(端口号) 查看端口被啥进程占用
+
+输出各列信息的意义如下：
+COMMAND：进程的名称
+PID：进程标识符
+USER：进程所有者
+FD：文件描述符，应用程序通过文件描述符识别该文件。如cwd、txt等
+TYPE：文件类型，如DIR、REG等
+DEVICE：指定磁盘的名称
+SIZE：文件的大小
+NODE：索引节点（文件在磁盘上的标识）
+NAME：打开文件的确切名称
+
+lsof语法格式是： lsof ［options］ filename
+
+常用的参数列表：
+
+lsof filename 显示打开指定文件的所有进程
+lsof -a 表示两个参数都必须满足时才显示结果
+lsof -c string 显示COMMAND列中包含指定字符的进程所有打开的文件
+lsof -u username 显示所属user进程打开的文件
+lsof -g gid 显示归属gid的进程情况
+lsof +d /DIR/ 显示目录下被进程打开的文件
+lsof +D /DIR/ 同上，但是会搜索目录下的所有目录，时间相对较长
+lsof -d FD 显示指定文件描述符的进程
+lsof -n 不将IP转换为hostname，缺省是不加上-n参数
+lsof -i 用以显示符合条件的进程情况
+lsof -i[46] [protocol][@hostname|hostaddr][:service|port]
+46 –> IPv4 or IPv6
+protocol –> TCP or UDP
+hostname –> Internet host name
+hostaddr –> IPv4地址
+service –> /etc/service中的 service name (可以不只一个)
+port –> 端口号 (可以不只一个)

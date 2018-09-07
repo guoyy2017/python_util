@@ -1,0 +1,12 @@
+supervisor
+
+supervisorctl
+
+> status    # 查看程序状态
+> stop usercenter   # 关闭 usercenter 程序
+> start usercenter  # 启动 usercenter 程序
+> restart usercenter    # 重启 usercenter 程序
+> reload    ＃ 读取有更新（增加）的配置文件，不会启动新添加的程序
+> update    ＃ 重启配置文件修改过的程序
+
+管理java 要用 exec java -jar

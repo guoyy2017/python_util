@@ -1,0 +1,4 @@
+python -m xxx.py  ------以模块的方式启动
+
+python -u xxx.py  python命令加上-u（unbuffered）参数后会强制其标准输出也同标准错误一样不通过缓存直接打印到屏幕
+python缓存机制，虽然stderr和stdout默认都是指向屏幕的，但是stderr是无缓存的，程序往stderr输出一个字符，就会在屏幕上显示一个；而stdout是有缓存的，只有遇到换行或者积累到一定的大小，才会显示出来

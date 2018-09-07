@@ -1,0 +1,135 @@
+学习地址
+http://airflow.incubator.apache.org/tutorial.html
+
+安装
+-------------
+export AIRFLOW_HOME=~/airflow
+pip install airflow[slack]
+airflow initdb
+-------------
+切换源
+sudo pip install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com 模块名
+
+pip install airflow
+--使用源安装
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple airflow
+
+--初始化数据库
+airflow initdb
+--启动web服务器
+airflow webserver -p 8080
+--启动任务
+airflow scheduler
+
+--直接测试单个DAG，如测试文章末尾的DAG
+airflow test ct1 print_date 2016-05-14
+
+
+Airflow常见命令如下：
+initdb，初始化元数据DB，元数据包括了DAG本身的信息、运行信息等；
+resetdb，清空元数据DB；
+list_dags，列出所有DAG；
+list_tasks，列出某DAG的所有task；
+test，测试某task的运行状况；
+backfill，测试某DAG在设定的日期区间的运行状况；
+webserver，开启webserver服务；
+scheduler，用于监控与触发DAG。
+
+
+
+--修改部分
+修改airflow配置文件支持mysql
+airflow.cfg 文件通常在~/airflow目录下
+修改如下
+sql_alchemy_conn = mysql://ct:152108@localhost/airflow
+对应字段解释如下： dialect+driver://username:password@host:port/database
+
+修改
+作为测试使用，此步可以跳过, 最后的生产环境用的是CeleryExecutor; 若CeleryExecutor配置不方便，也可使用LocalExecutor
+airflow.cfg 文件通常在~/airflow目录下，打开更改executor为 executor = LocalExecutor即完成了配置
+
+配置CeleryExecutor (rabbitmq支持)
+安装airflow的celery和rabbitmq组件
+pip install airflow[celery]
+pip install airflow[rabbitmq]
+
+修改airflow配置文件支持Celery
+airflow.cfg 文件通常在~/airflow目录下
+更改executor为 executor = CeleryExecutor
+更改broker_url
+broker_url = amqp://ct:152108@localhost:5672/ct_airflow
+Format explanation: transport://userid:password@hostname:port/virtual_host
+
+更改celery_result_backend,
+# 可以与broker_url相同
+celery_result_backend = amqp://ct:152108@localhost:5672/ct_airflow
+Format explanation: transport://userid:password@hostname:port/virtual_host
+
+
+
+----运行
+在airflow 目录下生成dags 目录
+
+如果缺省了END_DATE参数, END_DATE等同于START_DATE.
+
+使用 DummyOperator 来汇聚分支
+使用 ShortCircuitOperator/BranchPythonOperator 做分支
+使用 SubDagOperator 嵌入一个子dag
+使用 TriggerDagRunOperator 直接trigger 另一个dag
+
+为on_failure_callback和on_success_callback参数设置两个回调函数
+DAG的schedule_interval参数设置成None, 表明这个DAG始终是由外部触发。
+default_args字典传递给DAG，DAG将会将字典应用于其内部的任何Operator上
+
+Airflow为Operator提供许多常见任务，包括：
+BashOperator - 执行bash命令
+PythonOperator - 调用任意的Python函数
+EmailOperator - 发送邮件
+HTTPOperator - 发送 HTTP 请求
+SqlOperator - 执行 SQL 命令
+Sensor - 等待一定时间，文件，数据库行，S3键等...
+除了这些基本的构建块之外，还有更多的特定Operator:DockerOperator，HiveOperator，S3FileTransferOperator，PrestoToMysqlOperator，SlackOperator
+
+-- supervisor 运行
+[program:airflow_web]
+command=/home/kimi/env/athena/bin/airflow webserver -p 8080
+
+[program:airflow_scheduler]
+command=/home/kimi/env/athena/bin/airflow scheduler
+
+test： 用于测试特定的某个task，不需要依赖满足
+run: 用于执行特定的某个task，需要依赖满足
+backfill: 执行某个DAG，会自动解析依赖关系，按依赖顺序执行
+unpause: 将一个DAG启动为例行任务，默认是关的，所以编写完DAG文件后一定要执行这和要命令，相反命令为pause
+scheduler: 这是整个 airflow 的调度程序，一般是在后台启动
+clear: 清除一些任务的状态，这样会让scheduler来执行重跑
+
+executor
+SequentialExecutor：表示单进程顺序执行，通常只用于测试
+LocalExecutor：表示多进程本地执行，它用python的多进程库从而达到多进程跑任务的效果。
+CeleryExecutor：表示使用celery作为执行器，只要配置了celery，就可以分布式地多机跑任务，一般用于生产环境。
+sql_alchemy_conn ：这个配置让你指定 airflow 的元信息用何种方式存储，默认用sqlite，如果要部署到生产环境，推荐使用 mysql。
+
+smtp ：如果你需要邮件通知或用到 EmailOperator 的话，需要配置发信的 smtp 服务器
+
+all_success: (default) all parents have succeeded
+all_failed: all parents are in a failed or upstream_failed state
+all_done: all parents are done with their execution
+one_failed: fires as soon as at least one parent has failed, it does not wait for all parents to be done
+one_success: fires as soon as at least one parent succeeds, it does not wait for all parents to be done
+dummy: dependencies are just for show, trigger at will
+
+
+
+airflow作为调度工具，由Webserver、Scheduler、Worker三个组件互相配合完成工作。三个组件之间没有强依赖关系，依靠共用数据库和消息队列完成调度任务。因此，在多台机器上部署airflow，配置相同的元数据库和消息队列，以此来实现airflow的集群模式
+1) airflow启动时，会将dag中的相关信息写入数据库。
+2) scheduler会按照指定频次查询数据库，检测是否有需要触发的任务。
+3) 当scheduler检测到需要触发的任务时，会向消息队列发送一条Message。
+4) Celery会定时查询消息队列中，是否有Message。当检测到Message时，会将Message中包含的任务信息下发给Worker，由Worker执行具体任务。
+
+airflow-scheduler-failover-controller安装
+airflow本身没有对scheduler监控的组件，本处采用了GitHub上的第三方组件
+git clone https://github.com/teamclairvoyant/airflow-scheduler-failover-controller
+scheduler_failover_controller init
+
+scheduler_failover_controller start

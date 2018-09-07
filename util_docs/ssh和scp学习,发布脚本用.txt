@@ -1,0 +1,21 @@
+ssh  /etc/ssh/sshd_config文件 配置文件  /etc/init.d/ssh restart 重启服务
+#Banner /some/path 指定连接输出信息
+分本地端口转发和远程端口转发
+N参数 只连接远程主机，不打开远程shell
+T参数 不为这个连接分配TTY
+-NT SSH连接只用来传数据，不执行远程操作
+f参数，表示SSH连接成功后，转入后台运行
+-l name
+-p port
+-L 本地端口转发  可以多个一起用 -L A:B:C  -L A:B:C
+-R 远程端口转发  ssh -CqTfnN -R 0.0.0.0:7233:192.168.6.233:22 root@120.25.68.60 在内网执行  之后可以在120.25.68.60 的7233端口访问192.168.6.233机器
+-t参数 ssh -t remoteserver1 ssh remoteserver2 通过1连到2
+先输入remoteserver1的密码，然后再输入remoteserver2的密码
+-D socket代理端口
+ssh -D 8080 root@47.52.19.237 代理服务 设置代理为 socks5 localhost:8080
+
+ssh -L [客户端IP或省略]:[客户端端口]:[服务器侧能访问的IP]:[服务器侧能访问的IP的端口] [登陆服务器的用户名@服务器IP] -p [服务器ssh服务端口（默认22）]
+ssh -R [服务器IP或省略]:[服务器端口]:[客户端侧能访问的IP]:[客户端侧能访问的IP的端口] [登陆服务器的用户名@服务器IP] -p [服务器ssh服务端口（默认22）]
+ssh -D [本地IP或省略]:[本地端口] [登陆服务器的用户名@服务器IP] -p [服务器ssh服务端口（默认22）]
+防止断线
+sshpass -p "password" ssh -D 7070 user@serverip

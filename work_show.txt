@@ -499,3 +499,7 @@ Apache Flink是一个面向分布式数据流处理和批量数据处理的开�
 http://doc.flink-china.org/1.2.0/
 Apache Samza是流处理工作负载一个很好的选择
 Samza对Kafka类查询系统的依赖似乎是一种限制
+
+
+RedLock算法-使用redis实现分布式锁服务
+https://www.jianshu.com/p/fba7dd6dcef5

@@ -1,0 +1,33 @@
+下载地址 http://archive.apache.org/dist/zookeeper/zookeeper-3.4.13/zookeeper-3.4.13.tar.gz
+解压
+（环境需要java）
+zookeeper有单机、伪集群、集群三种部署方式
+
+tar -xvzf zookeeper-3.4.13.tar.gz
+mv zookeeper-3.4.13 zookeeper
+
+修改配置文件
+tickTime=2000
+dataDir=/usr/myapp/zookeeper-3.4.5/data
+dataLogDir=/usr/myapp/zookeeper-3.4.5/logs
+clientPort=2181
+
+进入bin目录，启动、停止、重启分和查看当前节点状态（包括集群中是何角色）别执行：
+
+./zkServer.sh start
+./zkServer.sh stop
+./zkServer.sh restart
+./zkServer.sh status
+
+集群配置
+tickTime=2000
+dataDir=/usr/myapp/zookeeper1/data
+dataLogDir=/usr/myapp/zookeeper1/logs
+clientPort=2181
+initLimit=5
+syncLimit=2
+server.1=192.168.220.128:2888:3888
+server.2=192.168.220.128:4888:5888
+server.3=192.168.220.128:6888:7888
+需要执行
+echo '1' > data/myid
