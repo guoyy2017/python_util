@@ -1,0 +1,32 @@
+教程
+https://www.cnblogs.com/fyy-hhzzj/p/9044775.html
+
+下载
+wget http://dl.mycat.io/1.6-RELEASE/Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz
+tar -xzvf *.tar.gz
+cd mycat
+-- 目录说明
+bin	mycat命令，启动、重启、停止等
+catlet	catlet为Mycat的一个扩展功能
+conf	Mycat 配置信息,重点关注
+lib	Mycat引用的jar包，Mycat是java开发的
+logs	日志文件，包括Mycat启动的日志和运行的日志。
+
+Mycat的配置文件都在conf目录里面，这里介绍几个常用的文件：
+文件	说明
+server.xml	Mycat的配置文件，设置账号、参数等
+schema.xml	Mycat对应的物理数据库和数据库表的配置
+rule.xml	Mycat分片（分库分表）规则
+
+Mycat的启动也很简单，启动命令在Bin目录：
+##启动
+mycat start
+##停止
+mycat stop
+##重启
+mycat restart
+
+连接执行脚本
+mysql -h192.168.0.1 -P8806 -uroot -p123456
+管理连接
+mysql -h192.168.0.1 -P9906 -uroot -p123456

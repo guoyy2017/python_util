@@ -1116,3 +1116,51 @@ warnings.filterwarnings("ignore")
 
 金融处理
 pip install Quandl
+
+wifi模块
+pip install pywifi
+
+推荐系统
+pip install scikit-surprise==1.0.3
+
+http 自动化交互
+pip install MechanicalSoup
+
+olap 数据分析 联机分析处理
+pip install cubes
+
+颜色输出
+pip install colorama
+Fore: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
+Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
+Style: DIM, NORMAL, BRIGHT, RESET_ALL
+init(autoreset = False):
+
+格式化输出
+pip install PrettyTable
+
+csv操作利器
+https://www.jianshu.com/p/297bb81f259f
+pip install csvkit
+excel -> csv
+in2csv：Excel的杀手
+in2csv ne_1033_data.xlsx > data.csv
+csvlook：数据潜望镜
+csvcut：数据手术刀
+    csvcut -n data.csv 看列数据
+    csvcut -c 2,5,6 data.csv | head -n 5 查看列
+    csvcut -c county,item_name,quantity data.csv | head -n 5
+    csvcut -c county,item_name,quantity data.csv | csvlook | head  美化
+
+csvstat：无代码亦统计
+csvgrep：找到需要的数据
+csvsort：秩序
+csvjoin：关联数据
+csvstack：合并数据
+csvsql, sql2csv：必杀技
+    csvsql -i sqlite joined.csv
+    csvsql --db sqlite:///leso.db --insert joined.csv
+    sql2csv --db sqlite:///leso.db --query "select * from joined where total_population<1000;" | csvcut -c state,county,total_population | csvlook
+    csvsql --query "select county,item_name,quantity from joined where quantity == 5;" joined.csv 2>/dev/null | csvlook
+
+

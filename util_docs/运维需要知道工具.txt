@@ -33,3 +33,12 @@ hostname –> Internet host name
 hostaddr –> IPv4地址
 service –> /etc/service中的 service name (可以不只一个)
 port –> 端口号 (可以不只一个)
+
+
+自己的服务器（映射外网）
+ngrok服务器
+进入ngrok官网（https://ngrok.com/），注册ngrok账号并下载ngrok
+ngrok authtoken 授权码
+ngrok http 8080
+https://ngrok.com/
+7uG3wZjvvSXZYMW36LYe3_4hRc6nbzby7aR42FMZuuU
