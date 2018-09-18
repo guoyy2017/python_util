@@ -42,6 +42,8 @@ pip install JCC
 https://pypi.org/project/JCC/#downloads
 
 FLASK
+全教程
+https://github.com/humiaozuzu/awesome-flask
 数据迁移模块 Alembic
 pip install Flask-Migrate
 
@@ -1164,3 +1166,37 @@ csvsql, sql2csv：必杀技
     csvsql --query "select county,item_name,quantity from joined where quantity == 5;" joined.csv 2>/dev/null | csvlook
 
 
+
+python之绘制图形库turtle
+https://www.cnblogs.com/bravestarrhu/p/8287261.html
+
+js python 运行环境
+git clone https://github.com/skulpt/skulpt.git
+
+python 画图
+pip install pygal
+
+网络操作
+pip install scapy
+
+浏览器浏览网页模式
+Splinter对已有的自动化工具
+
+-- 异步修饰
+pip install tomorrow
+
+from tomorrow import threads
+@threads(5)
+@threads(1, timeout=0.1)
+
+-- ftp 服务器
+pip install pyftpdlib
+python -m pyftpdlib -p 21
+
+-- 统计模型
+pip install statsmodels
+http://www.statsmodels.org/stable/index.html
+
+
+-- 任务调度
+pip install APScheduler

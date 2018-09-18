@@ -148,7 +148,8 @@ http://dl.cnezsoft.com/zentao/9.8.3/ZenTaoPMS.9.8.3.zbox_64.tar.gz
 一键安装
 http://www.zentao.net/book/zentaopmshelp/90.html
 
-sudo tar -zxvf  ZenTaoPMS.7.3.stable.zbox_32.tar.gz -C /opt
+-- sudo tar -zxvf  ZenTaoPMS.7.3.stable.zbox_32.tar.gz -C /opt
+tar -zxvf  ZenTaoPMS.9.8.3.zbox_64.tar.gz -C /opt
 
 2、Apache和Mysql常用命令
 
@@ -503,3 +504,8 @@ Samza对Kafka类查询系统的依赖似乎是一种限制
 
 RedLock算法-使用redis实现分布式锁服务
 https://www.jianshu.com/p/fba7dd6dcef5
+
+
+文档服务器
+需要装redis
+https://github.com/lifei6671/mindoc/wiki/Linux-%E4%B8%8B%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE-MinDoc

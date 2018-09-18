@@ -1,0 +1,304 @@
+新建项目
+https://start.spring.io/
+新建
+web 项目 需要添加Web 依赖
+
+创建非WEB 项目 修改继承CommandLineRunner 即可
+public class Smsv2Console implements CommandLineRunner {
+
+一、注解(annotations)列表
+@SpringBootApplication：包含了@ComponentScan、@Configuration和@EnableAutoConfiguration注解。其中@ComponentScan让spring Boot扫描到Configuration类并把它加入到程序上下文。
+
+@Configuration 等同于spring的XML配置文件；使用Java代码可以检查类型安全。
+
+@EnableAutoConfiguration 自动配置。
+
+@ComponentScan 组件扫描，可自动发现和装配一些Bean。
+
+@Component可配合CommandLineRunner使用，在程序启动后执行一些基础任务。
+
+@RestController注解是@Controller和@ResponseBody的合集,表示这是个控制器bean,并且是将函数的返回值直 接填入HTTP响应体中,是REST风格的控制器。
+
+@Autowired自动导入。
+
+@PathVariable获取参数。
+
+@JsonBackReference解决嵌套外链问题。
+
+@RepositoryRestResourcepublic配合spring-boot-starter-data-rest使用。
+
+二、注解(annotations)详解
+
+@SpringBootApplication：申明让spring boot自动给程序进行必要的配置，这个配置等同于：@Configuration ，@EnableAutoConfiguration 和 @ComponentScan 三个配置。
+
+@ResponseBody：表示该方法的返回结果直接写入HTTP response body中，一般在异步获取数据时使用，用于构建RESTful的api。在使用@RequestMapping后，返回值通常解析为跳转路径，加上@responsebody后返回结果不会被解析为跳转路径，而是直接写入HTTP response body中。比如异步获取json数据，加上@responsebody后，会直接返回json数据。该注解一般会配合@RequestMapping一起使用。示例代码：
+
+@Controller：用于定义控制器类，在spring 项目中由控制器负责将用户发来的URL请求转发到对应的服务接口（service层），一般这个注解在类中，通常方法需要配合注解@RequestMapping。示例代码：
+
+
+@RestController：用于标注控制层组件(如struts中的action)，@ResponseBody和@Controller的合集。示例代码：
+
+@RequestMapping：提供路由信息，负责URL到Controller中的具体函数的映射。
+
+@EnableAutoConfiguration：Spring Boot自动配置（auto-configuration）：尝试根据你添加的jar依赖自动配置你的Spring应用。例如，如果你的classpath下存在HSQLDB，并且你没有手动配置任何数据库连接beans，那么我们将自动配置一个内存型（in-memory）数据库”。你可以将@EnableAutoConfiguration或者@SpringBootApplication注解添加到一个@Configuration类上来选择自动配置。如果发现应用了你不想要的特定自动配置类，你可以使用@EnableAutoConfiguration注解的排除属性来禁用它们。
+
+@ComponentScan：表示将该类自动发现扫描组件。个人理解相当于，如果扫描到有@Component、@Controller、@Service等这些注解的类，并注册为Bean，可以自动收集所有的Spring组件，包括@Configuration类。我们经常使用@ComponentScan注解搜索beans，并结合@Autowired注解导入。可以自动收集所有的Spring组件，包括@Configuration类。我们经常使用@ComponentScan注解搜索beans，并结合@Autowired注解导入。如果没有配置的话，Spring Boot会扫描启动类所在包下以及子包下的使用了@Service,@Repository等注解的类。
+
+@Configuration：相当于传统的xml配置文件，如果有些第三方库需要用到xml文件，建议仍然通过@Configuration类作为项目的配置主类——可以使用@ImportResource注解加载xml配置文件。
+
+@Import：用来导入其他配置类。
+
+@ImportResource：用来加载xml配置文件。
+
+@Autowired：自动导入依赖的bean
+
+@Service：一般用于修饰service层的组件
+
+@Repository：使用@Repository注解可以确保DAO或者repositories提供异常转译，这个注解修饰的DAO或者repositories类会被ComponetScan发现并配置，同时也不需要为它们提供XML配置项。
+
+@Bean：用@Bean标注方法等价于XML中配置的bean。
+
+@Value：注入Spring boot application.properties配置的属性的值。示例代码：
+
+@Inject：等价于默认的@Autowired，只是没有required属性；
+
+@Component：泛指组件，当组件不好归类的时候，我们可以使用这个注解进行标注。
+
+@Bean:相当于XML中的,放在方法的上面，而不是类，意思是产生一个bean,并交给spring管理。
+
+@AutoWired：自动导入依赖的bean。byType方式。把配置好的Bean拿来用，完成属性、方法的组装，它可以对类成员变量、方法及构造函数进行标注，完成自动装配的工作。当加上（required=false）时，就算找不到bean也不报错。
+
+@Qualifier：当有多个同一类型的Bean时，可以用@Qualifier(“name”)来指定。与@Autowired配合使用。@Qualifier限定描述符除了能根据名字进行注入，但能进行更细粒度的控制如何选择候选者，具体使用方式如下：
+
+@Resource(name=”name”,type=”type”)：没有括号内内容的话，默认byName。与@Autowired干类似的事。
+
+三、JPA注解
+
+@Entity：@Table(name=”“)：表明这是一个实体类。一般用于jpa这两个注解一般一块使用，但是如果表名和实体类名相同的话，@Table可以省略
+
+@MappedSuperClass:用在确定是父类的entity上。父类的属性子类可以继承。
+
+@NoRepositoryBean:一般用作父类的repository，有这个注解，spring不会去实例化该repository。
+
+@Column：如果字段名与列名相同，则可以省略。
+
+@Id：表示该属性为主键。
+
+@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = “repair_seq”)：表示主键生成策略是sequence（可以为Auto、IDENTITY、native等，Auto表示可在多个数据库间切换），指定sequence的名字是repair_seq。
+
+@SequenceGeneretor(name = “repair_seq”, sequenceName = “seq_repair”, allocationSize = 1)：name为sequence的名称，以便使用，sequenceName为数据库的sequence名称，两个名称可以一致。
+
+@Transient：表示该属性并非一个到数据库表的字段的映射,ORM框架将忽略该属性。如果一个属性并非数据库表的字段映射,就务必将其标示为@Transient,否则,ORM框架默认其注解为@Basic。@Basic(fetch=FetchType.LAZY)：标记可以指定实体属性的加载方式
+
+@JsonIgnore：作用是json序列化时将Java bean中的一些属性忽略掉,序列化和反序列化都受影响。
+
+@JoinColumn（name=”loginId”）:一对一：本表中指向另一个表的外键。一对多：另一个表指向本表的外键。
+
+@OneToOne、@OneToMany、@ManyToOne：对应hibernate配置文件中的一对一，一对多，多对一。
+
+四、springMVC相关注解
+
+@RequestMapping：@RequestMapping(“/path”)表示该控制器处理所有“/path”的UR L请求。RequestMapping是一个用来处理请求地址映射的注解，可用于类或方法上。
+用于类上，表示类中的所有响应请求的方法都是以该地址作为父路径。该注解有六个属性：
+params:指定request中必须包含某些参数值是，才让该方法处理。
+headers:指定request中必须包含某些指定的header值，才能让该方法处理请求。
+value:指定请求的实际地址，指定的地址可以是URI Template 模式
+method:指定请求的method类型， GET、POST、PUT、DELETE等
+consumes:指定处理请求的提交内容类型（Content-Type），如application/json,text/html;
+produces:指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回
+
+@RequestParam：用在方法的参数前面。
+@RequestParam
+String a =request.getParameter(“a”)。
+
+@PathVariable:路径变量。如
+
+五、全局异常处理
+
+@ControllerAdvice：包含@Component。可以被扫描到。统一处理异常。
+
+@ExceptionHandler（Exception.class）：用在方法上面表示遇到这个异常就执行以下方法。
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+加载自定义属性文件的注解：@PropertySource("classpath:xxx.properties")
+@Configuration的作用 会被自动扫描加载
+@Value("${key}")的方式使用
+属性绑定的JavaBean的类定义顶部加@Component注解和@ConfigurationProperties(prefix="key")注解
+@EnableConfigurationProperties(JavaBean.class)配合使用
+@Configuration注解侧重配置之意，@Component侧重组件之意
+
+定时任务
+org.springframework.scheduling.annotation.Scheduled
+启动类需要加，否则没有启动后台进程
+@EnableScheduling
+定时器
+@Scheduled(fixedRate = 5000)
+fixedDelay
+@Scheduled(cron=". . .")
+
+------------------------------------------------------------------------------------------
+
+
+
+
+Springboot常用注解大全
+https://blog.csdn.net/yitian_66/article/details/80866571
+2018年06月30日 14:42:45 java-小学生 阅读数：16757更多
+个人分类： java
+springboot注解：
+@Service: 注解在类上，表示这是一个业务层bean
+@Controller：注解在类上，表示这是一个控制层bean
+@Repository: 注解在类上，表示这是一个数据访问层bean
+@Component： 注解在类上，表示通用bean ，value不写默认就是类名首字母小写
+@Autowired：按类型注入.默认属性required= true;当不能确定 Spring 容器中一定拥有某个类的Bean 时， 可以在需要自动注入该类 Bean 的地方可以使用 @Autowired(required = false)， 这等于告诉Spring：在找不到匹配Bean时也不抛出BeanCreationException 异常。@Autowired 和 @Qualifier 结合使用时，自动注入的策略就从 byType 转变byName 了。@Autowired可以对成员变量、方法以及构造函数进行注释，而 @Qualifier 的标注对象是成员变量、方法入参、构造函数入参。正是由于注释对象的不同，所以 Spring 不将 @Autowired 和 @Qualifier 统一成一个注释类。
+@Resource： 按名称装配
+
+区别：
+
+@Resource默认按照名称方式进行bean匹配，@Autowired默认按照类型方式进行bean匹配
+
+@Resource(importjavax.annotation.Resource;)是J2EE的注解，@Autowired(importorg.springframework.beans.factory.annotation.Autowired;)是Spring的注解
+@Configuration：注解在类上，表示这是一个IOC容器，相当于spring的配置文件，java配置的方式。 IOC容器的配置类一般与 @Bean 注解配合使用，用 @Configuration 注解类等价与 XML 中配置 beans，用@Bean 注解方法等价于 XML 中配置 bean。
+@Bean： 注解在方法上，声明当前方法返回一个Bean
+
+@Scope：注解在类上，描述spring容器如何创建Bean实例。
+
+（1）singleton： 表示在spring容器中的单例，通过spring容器获得该bean时总是返回唯一的实例
+
+（2）prototype：表示每次获得bean都会生成一个新的对象
+
+（3）request：表示在一次http请求内有效（只适用于web应用）
+
+（4）session：表示在一个用户会话内有效（只适用于web应用）
+
+（5）globalSession：表示在全局会话内有效（只适用于web应用）
+
+在多数情况，我们只会使用singleton和prototype两种scope，如果未指定scope属性，默认为singleton
+@Value：注解在变量上，从配置文件中读取。
+
+例如：@Value(value = “#{message}”)
+
+@ConfigurationProperties   赋值，将注解转换成对象。给对象赋值。车险项目：HttpClientSetting类
+
+@Profile：注解在方法类上在不同情况下选择实例化不同的Bean特定环境下生效！！！！！！！！！！！！！！！！！
+
+@SpringBootApplication：@SpringBootApplication=@ComponentScan+@Configuration+@EnableAutoConfiguration：约定优于配置
+
+@EnableAutoConfiguration启用 Spring 应用程序上下文的自动配置，试图猜测和配置您可能需要的bean。自动配置类通常采用基于你的classpath 和已经定义的 beans 对象进行应用。被 @EnableAutoConfiguration 注解的类所在的包有特定的意义，并且作为默认配置使用。通常推荐将 @EnableAutoConfiguration 配置在 root 包下，这样所有的子包、类都可以被查找到。
+
+@ComponentScan：注解在类上，扫描标注了@Controller等注解的类，注册为bean 。@ComponentScan 为 @Configuration注解的类配置组件扫描指令。@ComponentScan 注解会自动扫描指定包下的全部标有 @Component注解的类，并注册成bean，当然包括 @Component下的子注解@Service、@Repository、@Controller。
+
+@RestController @RestController 是一个结合了 @ResponseBody 和 @Controller 的注解
+
+@Responsebody 注解表示该方法的返回的结果直接写入 HTTP 响应正文（ResponseBody）中，一般在异步获取数据时使用，通常是在使用 @RequestMapping 后，返回值通常解析为跳转路径，加上@Responsebody 后返回结果不会被解析为跳转路径，而是直接写入HTTP 响应正文中。
+
+@RequestBody
+
+@PathVariable
+
+@RequestParam
+
+两者的作用都是将request里的参数的值绑定到contorl里的方法参数里的，区别在于，URL写法不同。
+
+当请求参数username不存在时会有异常发生,可以通过设置属性required=false解决,例如:
+
+@RequestParam(value="username",required=false)
+
+使用@RequestParam时，URL是这样的：http://host:port/path?参数名=参数值
+
+使用@PathVariable时，URL是这样的：http://host:port/path/参数值
+
+不写的时候也可以获取到参数值，但是必须名称对应。参数可以省略不写
+
+@RequestMapping　　和请求报文是做对应的　　　
+　　a：value，指定请求的地址
+　　b：method 请求方法类型 这个不写的话，自适应：get或者post
+　　c：consumes 请求的提交内容类型
+　　d：produces 指定返回的内容类型 仅当request请求头中的(Accept)类型中包含该指定类型才返回
+　　e: params 指定request中必须包含某些参数值
+　　f：headers 指定request中必须包含指定的header值
+
+g: name  指定映射的名称
+
+ @RequestMapping(method = RequestMethod.GET)
+
+ @RequestMapping(method = RequestMethod.POST)
+
+ @RequestMapping(method = RequestMethod.PUT)
+
+ @RequestMapping(method = RequestMethod.DELETE)
+
+ 当然也可以使用
+
+ @GetMapping
+
+ @PostMapping
+
+ @PutMapping
+
+ @DeleteMapping 这与上面的是一样的效果
+
+
+
+@EnablCaching @EnableCaching注解是spring framework中的注解驱动的缓存管理功能。自spring版本3.1起加入了该注解。如果你使用了这个注解，那么你就不需要在XML文件中配置cache manager了。
+
+@suppresswarnings 抑制警告
+
+@Modifying 如果是增，改，删加上此注解
+
+1：方法的返回值应该是int，表示更新语句所影响的行数。
+
+2：在调用的地方必须加事务，没有事务不能正常执行。@Transactional  事务注解
+
+@Query 自定义查询语句 JPQL
+
+JPA注解
+
+@Entity：
+
+@Table(name=“”)：注解在类上表明这是一个实体类。一般用于jpa这两个注解一般一块使用，但是如果表名和实体类名相同的话，@Table可以省略
+
+@Column：通过@Column注解设置，包含的设置如下
+name：数据库表字段名
+unique：是否唯一
+nullable：是否可以为空
+
+Length:长度
+inserttable：是否可以插入
+updateable：是否可以更新
+columnDefinition: 定义建表时创建此列的DDL
+secondaryTable: 从表名。如果此列不建在主表上（默认建在主表），该属性定义该列所在从表的名字。
+@Column(name = "user_code", nullable = false, length=32)//设置属性userCode对应的字段为user_code，长度为32，非空
+private String userCode;
+@Column(name = "user_wages", nullable = true, precision=12,scale=2)//设置属性wages对应的字段为user_wages，12位数字可保留两位小数，可以为空
+private double wages;
+
+@Id：表示该属性为主键。
+
+@Temporal(TemporalType.DATE)//设置为时间类型
+private Date joinDate;
+
+@Transient：表示该属性并非一个到数据库表的字段的映射,ORM框架将忽略该属性。如果一个属性并非数据库表的字段映射,就务必将其标示为@Transient,否则,ORM框架默认其注解为@Basic。@Basic(fetch=FetchType.LAZY)：标记可以指定实体属性的加载方式
+
+@JsonIgnore：作用是json序列化时将Java bean中的一些属性忽略掉,序列化和反序列化都受影响。
+
+@JoinColumn（name=”loginId”）:一对一：本表中指向另一个表的外键。一对多：另一个表指向本表的外键。
+
+@OneToOne、@OneToMany、@ManyToOne：对应hibernate配置文件中的一对一，一对多，多对一。
+
+@GeneratedValue 用于标注主键的生成策略，通过 strategy 属性指定。默认情况下，JPA 自动选择一个最适合底层数据库的主键生成策略：SqlServer 对应 identity，MySQL 对应 auto increment。 在 javax.persistence.GenerationType 中定义了以下几种可供选择的策略：
+
+IDENTITY：采用数据库 ID自增长的方式来自增主键字段，Oracle 不支持这种方式；
+
+AUTO： JPA自动选择合适的策略，是默认选项；
+
+SEQUENCE：通过序列产生主键，通过 @SequenceGenerator 注解指定序列名，MySql 不支持这种方式
+
+TABLE：通过表产生主键，框架借由表模拟序列产生主键，使用该策略可以使应用更易于数据库移植。

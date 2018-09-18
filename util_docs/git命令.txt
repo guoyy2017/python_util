@@ -1,0 +1,188 @@
+linux 安装
+yum install git-core
+
+https://docs.pythontab.com/github/gitbook/Git-Basics/Working-with-Remotes.html
+命令
+用户信息
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+
+ git config –list 命令
+
+初始化项目
+$ git init
+
+克隆仓库的命令格式为
+git clone [url]
+git:// 协议  http(s):// 或者 user@server:/path.git 表示的 SSH 传输协议
+
+git status 命令
+
+git add 开始跟踪一个新文件
+
+.gitignore 的文件，列出要忽略的文件模式
+文件 .gitignore 的格式规范如下：
+所有空行或者以注释符号 ＃ 开头的行都会被 Git 忽略。
+可以使用标准的 glob 模式匹配。
+匹配模式最后跟反斜杠（/）说明要忽略的是目录。
+要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。
+
+# 此为注释 – 将被 Git 忽略
+*.a       # 忽略所有 .a 结尾的文件
+!lib.a    # 但 lib.a 除外
+/TODO     # 仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO
+build/    # 忽略 build/ 目录下的所有文件
+doc/*.txt # 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
+
+git diff 命令 要查看尚未暂存的文件更新
+要查看尚未暂存的文件更新了哪些部分，不加参数直接输入 git diff:
+
+git diff –cached 命令 查看已经暂存起来的变化
+git diff –staged ，效果是相同的
+git diff 不过是显示还没有暂存起来的改动，而不是这次工作和上次提交之间的差异
+
+提交命令 git commit
+-m 提交说明
+git commit -m "Story 182: Fix benchmarks for speed"
+
+git commit 加上 -a 选项 跳过 git add 步骤
+
+Git 中移除某个文件，就必须要从已跟踪文件清单中移除（确切地说，是从暂存区域移除）
+git rm 命令
+强制删除选项 -f
+从 Git 仓库中删除（亦即从暂存区域移除）
+git rm --cached readme.txt
+
+文件改名
+git mv file_from file_to
+
+运行 git mv 就相当于运行了下面三条命令:
+$ mv README.txt README
+$ git rm README.txt
+$ git add README
+
+提交历史 -p 选项展开显示每次提交的内容差异，用 -2 则仅显示最近的两次更新 –stat，仅显示简要的增改行数统计  –pretty 选项
+git log
+git log --pretty=oneline
+oneline 将每个提交放在一行显示 short，full 和 fuller  format
+
+git commit --amend
+ –amend 选项重新提交
+
+git reset HEAD <file>... 的方式取消暂存
+
+抛弃文件修改的命令
+git checkout -- benchmarks.rb
+
+列出每个远程库的简短名字
+git remote 命令
+加上 -v 选项（译注::此为 –verbose 的简写，取首字母），显示对应的克隆地址
+
+添加远程仓库
+git remote add [shortname] [url]
+
+命令从远程仓库抓取数据到本地  不自动合并到当前工作分支
+git fetch [remote-name]
+git fetch origin
+
+git pull 命令 自动合并到本地仓库中当前分支
+
+数据推送到远程仓库
+git push [remote-name] [branch-name]
+
+命令 git remote show [remote-name] 查看某个远程仓库的详细信息
+
+git remote rename 命令修改某个远程仓库在本地的简短名称
+git remote rename pb paul
+git remote rm 命令  移除对应的远端仓库
+git remote rm paul
+
+git tag 即可 列出现有标签
+git tag -l 'v1.4.2.*'  列出感兴趣
+Git 使用的标签有两种类型:轻量级的（lightweight）和含附注的（annotated）
+git tag -a v1.4 -m 'my version 1.4'
+git show 命令查看相应标签的版本信息
+-a 改为 -s
+git tag -s v1.5 -m 'my signed 1.5 tag'
+git tag v1.4-lw  -a，-s 或 -m 选项都不用
+git tag -v [tag-name] （译注::取 verify 的首字母）的方式验证已经签署的标签
+提交标签
+ git push origin [tagname]
+ git push origin --tags  一次推送所有本地新增的标签上去
+
+ Git 命令别名
+ $ git config --global alias.co checkout
+$ git config --global alias.br branch
+$ git config --global alias.ci commit
+$ git config --global alias.st status
+新命令
+git config --global alias.unstage 'reset HEAD --'
+
+创建一个新的分支
+git branch 命令
+
+切换到其他分支
+git checkout 命令
+ git checkout testing
+
+新建并切换到该分支，运行 git checkout 并加上 -b 参数
+git checkout -b iss53
+
+git merge 命令来进行合并
+快进（Fast forward）
+
+删除分支
+git branch -d hotfix
+
+git merge master 把 master 分支合并到 iss53
+
+git mergetool 可视化的合并工具
+
+分支
+git branch -v
+用 –merge 和 –no-merged 选项 筛选出你已经（或尚未）与当前分支合并的分支
+删除选项 -D 强制执行
+
+git fetch origin 来同步远程服务器上的数据到本地
+
+git push origin serverfix:awesomebranch
+git merge origin/serverfix
+git checkout -b serverfix origin/serverfix
+git checkout -b [分支名] [远程名]/[分支名]
+git checkout --track origin/serverfix
+
+--删除远程分支
+git push [远程名] :[分支名]
+git push [远程名] [本地分支]:[远程分支]
+
+把一个分支中的修改整合到另一个分支的办法有两种::merge 和 rebase
+git checkout experiment
+git rebase master
+
+跳过 server 直接放到 master 分支
+git rebase 的 –onto 选项指定新的基底分支 master:
+git rebase --onto master server client
+
+git rebase [主分支] [特性分支]
+
+git push –force 覆盖了服务器上的历史
+
+
+本地协议
+git clone /opt/git/project.git
+git clone file:///opt/git/project.git
+git remote add local_proj /opt/git/project.git
+
+SSH 克隆一个 Git 仓库
+git clone ssh://user@server:project.git
+git clone user@server:project.git
+
+Git 协议 特定端口（9418）
+
+HTTP/S 协议
+git clone http://example.com/gitproject.git
+
+把现有仓库导出为裸仓库 克隆时用 –bare 选项即可。裸仓库的目录名一般以 .git 结尾 其实 clone 操作基本上相当于 git init 加 git fetch
+git clone --bare my_project my_project.git
+
+
