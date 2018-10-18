@@ -509,3 +509,10 @@ https://www.jianshu.com/p/fba7dd6dcef5
 文档服务器
 需要装redis
 https://github.com/lifei6671/mindoc/wiki/Linux-%E4%B8%8B%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE-MinDoc
+
+
+软件部署学习地址 好雨
+https://www.goodrain.com/applist
+
+在线代码流程图
+https://code2flow.com/app

@@ -1,0 +1,264 @@
+
+https://www.cnblogs.com/Security-Darren/p/4604942.html
+
+C.__name__ 对象的名称
+C.__bases__ 元组，包含 类型对象(type, class) C 的全部基类
+x.__class__ 实例或类型 x 所属的类型，其值等于 type(x)
+x.__dict__ 字典，除了一些特殊的属性，实例、类型等对象的所有属性，都放置在其 __dict__ 字典中
+
+特殊函数
+初始化与终止化
+__new__(cls[, args...])
+__new__()是一个静态方法，用于根据类型创建实例。Python在调用__new__()方法获得实例后，会调用这个实例的__init__()方法，然后将最初传给__new__()方法的参数都传给__init__()方法
+
+__init__()
+__init__()是一个实例方法，用来在实例创建完成后进行必要的初始化，该方法必须返回None
+Python不会自动调用父类的__init__()方法，这需要额外的调用：
+super(C, self).__init__()
+
+__del__(self)
+在GC之前，Python会调用这个对象的__del__()方法完成一些终止化工作。如果没有__del__()方法，那么Python不做特殊的处理；
+　　Python无视__del__()方法的返回值；
+　　Python不会自动调用父类的__del__()方法，除非显式调用；
+　　定义了__del__()方法的实例无法参与到循环GC中，所以对于这样的实例应该避免循环引用；
+　　try/finally语句或with语句可能是比__del__()更好的方式
+
+表现形式
+__repr__(self)
+__repr__()方法返回的字符串主要是面向解释器的
+
+__str__(self)
+1. str()函数，2. print(x)语句，都会调用对象的__str__()方法
+
+__unicode__(self)
+Python内置的unicode(x)方法会调用__unicode__()方法；
+　该方法如果定义，优先级高于__str__()方法；
+
+比较、哈希与布尔值
+__lt__(self, other)
+
+　　x<y 运算将会调用实例x的__lt__(self, other)方法；
+
+
+
+ __le__(self, other)
+
+　　x<=y 运算将会调用实例x的__le__(self, other)方法；
+
+
+
+ __gt__(self, other)
+
+　　x>y 运算将会调用实例x的__gt__(self, other)方法；
+
+
+
+ __ge__(self, other)
+
+　　x>=y 运算将会调用实例x的__ge__(self, other)方法；
+
+
+
+ __eq__(self, other)
+
+　　x==y 运算将会调用实例x的__eq__(self, other)方法；
+
+
+
+ __ne__(self, other)
+
+　　x!=y 运算将会调用实例x的__ne__(self, other)方法；
+
+　　*上述用于实例间比较的特殊方法应该返回True或False，或者返回NotImplemented来告诉Python解释器使用其他的方式进行比较。
+
+
+
+ __cmp__(self, other)
+
+　　对于上面提到的比较操作，如果对应的特殊方法没有定义或者返回NotImplemented，则会调用__cmp__(self, other)再进行一次尝试；
+
+　　一些内置的方法：cmp(x, y), max(x, y)或者列表对象的sort()方法也会调用__cmp__()方法；
+
+　　实现x.__cmp__()方法时，如果x小于y，应该返回-1，如果x大于y，应该返回1；如果x等于y，应该返回0.
+
+　　对于序列化比较（<, <=, >=, >），如果最终__cmp__()也没有定义，那么会抛出异常；
+
+　　对于相等与否的比较（==, !=），如果最终__cmp__()也没有定义，将会变成身份检验：判断id(x) == id(y)是否成立。
+
+
+
+ __hash__(self)
+
+　　三种情形会调用__hash__()方法：1. 内置的hash()方法，2.作为字典的键时，3.作为集合的成员时；
+
+　　__hash__()方法应该返回一个32位长的整数，对与同一个对象，__hash__()方法应该总是返回相同的值；对于 x == y ，即使二者不属于相同的类型，只要他们是可哈希的（hashable），都应该确保得到 hash(x) == hash(y) ；
+
+　　没有 __hash__() 方法，也没有 __cmp__() 和 __eq__() 方法，上面提到的三种情形将使用id(x)作为替代；
+
+　　没有 __hash__() 方法，但是有 __cmp__() 和 __eq__() 方法，上面提到的前两种方法会抛出异常；
+
+　　通常只为同时定义了 __cmp__()和/或__eq__() 方法的不可变（immutable）对象定义__hash__()方法，
+
+　　
+
+ __nonzero__(self)
+
+　　判断一个对象是为真还是假时，例如调用bool(x)方法时，Python会调用x.__nonzero__(self)方法，__nonzero__()方法应该返回True或False。
+
+　　如果实例没有__nonzero__()方法，那么Python会调用实例的__len__()方法，当__len__()方法返回0时，Python认为该对象为假。所以如果实例没有__nonzero__()方法与__len__()方法，则Python认为该实例总是真的；
+
+
+
+属性的引用、绑定与解绑定
+__getattribute__(self, name)
+
+　　访问对象的属性 x.y 时，Python会自动调用 x.__getattribute__('y') 方法；
+
+　　__getattribute__() 方法应该返回被访问的属性或者是抛出异常 AttributeError ；
+
+　　重写类型的 __getattribute__() 方法会导致实例的属性访问变慢。
+
+
+
+ __getattr__(self, name)
+
+　　当常规的属性访问（ x.__class__ 或 x.__dict__ 的键访问）无法找到目标属性时，Python会调用 __getattr__() 方法；
+
+　　如果该方法没能找到目标属性，应该抛出 AttributeError 。
+
+
+
+　　*区别 __getattribute__ 和 __getattr__，前者是任何通过 x.y 访问实例的属性时都会调用的特殊方法，而后者则是在正常访问形式下无法找到的情况下才会被调用。
+
+ __setattr__(self, name, value)
+
+　　绑定实例的某个属性（赋值），例如 x.y = value 时，Python会自动调用 x.__setattr__('y', value) 方法；
+
+　　Python无视 __setattr__() 方法的返回值；
+
+　　如果没有定义 __setattr__() 方法，Python将赋值 x.y = value 解释成 x.__dict__['y'] = value 。
+
+
+
+ __delattr__(self, name)
+
+　　当解绑定一个对象的某个属性（例如调用 del x.y ）时，会调用 x.__delattr__('y') 方法；
+
+　　Python无视__delattr__()方法的返回值；
+
+　　如果没有定义__delattr__()方法，那么Python将 del x.y 解释成 del x.__dict__['y'] 。
+
+
+
+
+可调用对象
+__call__(self[, args...])
+ 　　定义了该方法的对象可以像函数那样被调用，因此被称为可调用对象。
+
+容器的特殊方法
+容器可以是 序列（sequence） 或者 映射（mapping）
+
+ __contains__(self, item)
+
+　　布尔测试 y in x 会调用 x.__contains__(y) ；
+
+　　对于序列x而言，如果y等于x中的某一个值，那么__contains__()方法应该返回True；
+
+　　对于映射x而言，如果y等于x的键中的某一个，那么__contains__()方法应该返回True；
+
+__delitem__(self, key)
+
+　　从容器中解绑一个项或者切片（如 del x[key] ）将会调用 x.__delitem__(key) 方法，
+
+　　只有可变对象才应该定义这个方法。
+
+
+
+ __getitem__(self, key)
+
+　　调用 x[key] （索引或切片）时将会调用 x.__getitem__(key) 方法；
+
+
+
+ __iter__(self)
+
+　　对于试图遍历一个容器的全部元素的请求（例如 for i in x ），Python将会调用 x.__iter__() 来获得x上的一个迭代器；
+
+　　Python内置函数 iter(x) 也会调用 x.__iter__() 方法；
+
+　　如果没有定义__iter__()方法，那么iter(x)方法会合成并返回一个包含x的新的迭代器，然后逐个返回x中的元素；
+
+　　最好在每个容器中都实现__iter__()方法。
+
+　　
+
+ __len__(self)
+
+　　Python内置的 len(x) 调用或其他试图得知x中的元素个数的函数都会最终调用 x.__len__() ；
+
+　　__len__()方法应该返回整形的数值；
+
+　　没有定义__nonzero__()时，Python也会调用__len__()方法来判断容器的真假；
+
+　　容器都应该定义__len__()方法，除非实现起来特别昂贵的情形。
+
+　　
+
+ __setitem__(self, key, value)
+
+　　对容器的一个元素或切片进行绑定（如： x[key] = value ）时，Python会调用 x.__setitem__(key, value) ；
+
+　　可变（mutable）容器才应该定义该方法。
+
+
+内置object类型的特殊方法
+
+　　object 类型是所有内置和自定义类型的祖先，它定义了一些基本的特殊方法，这些方法的含义在前文已经介绍过：
+
+__new__
+
+__init__
+
+__delattr__
+
+__getattribute__
+
+__setattr__
+
+__hash__
+
+__repr__
+
+__str__
+
+
+静态方法（Static Method）
+
+　　静态方法是指：
+
+尽管定义和使用上和普通的函数完全相同，但通常要在某个类型中定义，；
+通过 类型 和 实例 都能调用；
+定义静态方法时不用额外指定第一个参数，Python也不会隐式地传递任何内容作为第一个参数；
+使用装饰器 @staticmethod 来定义静态方法；
+
+
+类方法（Class Method）
+
+　　类方法是指：
+
+定义时的第一个参数为一个类型 cls ，调用类方法时Python自动地将调用该方法的类型（或者调用该方法的实例所属的类型）传递给类方法的首个参数；
+通过 类型 和 实例 都能够调用；
+使用装饰器 @classmethod 定义类方法
+
+
+定义一个特殊的__slots__变量，来限制该class能添加的属性
+
+
+concurrent.futures会以子进程的形式，平行的运行多个python解释器
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, Executor
+
+使用imp加载python模块
+fn_, path, desc = imp.find_module('mymodule', ['/data/module/'])
+print fn_,path,desc
+mod = imp.load_module(''mymodule'', fn_, path, desc)
+print dir(mod)

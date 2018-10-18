@@ -1200,3 +1200,387 @@ http://www.statsmodels.org/stable/index.html
 
 -- 任务调度
 pip install APScheduler
+
+-- 异常美化输出
+pip install better_exceptions
+better_exceptions.MAX_LENGTH = 字符数控制字符的个数
+from better_exceptions import format_exception
+formatter.formatException = lambda exc_info: format_exception(*exc_info)
+
+关键字 提取替换 查找速率很快
+pip install flashtext
+https://github.com/vi3k6i5/flashtext
+
+黑客工具
+http://www.freebuf.com/column/159210.html
+git clone https://github.com/Manisso/fsociety.git
+cd fsociety && python fsociety.py
+
+日志模块
+pip install logbook
+
+打包工具，成可执行文件
+pip install pyinstaller
+
+
+redis 监控工具
+pip install redis-monitor
+redis-monitor init
+redis-monitor start
+访问 127.0.0.1:9527
+
+网络数据包处理
+pip install scapy
+
+进度条
+pip install tqdm
+
+一个快速的MessagePack RPC库
+https://pypi.org/project/mprpc/
+pip install mprpc
+
+
+redis web 管理
+https://github.com/JoneXiong/PyRedisAdmin
+unzip *.zip
+配置config.py,加入要管理的redis的主机地址和端口、密码等
+运行: python routes.py
+http://0.0.0.0:8085/ admin admin
+
+
+远程进程管控程序
+https://www.oschina.net/p/remon
+
+python 图片处理ps
+http://www.imagemagick.org/download/python/
+wget http://www.imagemagick.org/download/python/PythonMagick-0.9.19.tar.gz
+
+RESTful JSON APIs
+pip install Flask-Potion
+
+
+命令行工具 fire
+pip install mando
+
+命令菜单工具
+pip install tty_menu
+
+看门狗，查看文件的变更
+pip install watchdog
+https://pypi.org/project/watchdog/
+
+与git交互
+pip install GitPython
+
+
+pip install tox
+
+Pygments是一个用Python编写的语法高亮包
+pip install Pygments
+
+算法库  需要python3.6
+pip install pygorithm
+
+加密算法
+pip install pycryptodome
+
+
+自动微分
+pip install tangent
+
+数据分析库
+pip install agate
+https://agate.readthedocs.io/en/1.6.1/
+
+numtogreek 是一个能够将数字转化成希腊字母的 Python 工具  需要3.0以上
+pip install numtogreek
+from numtogreek.numtogreek import n2g
+n2g(10)
+
+限制http请求大小和时间
+pip install requests-guard
+
+import requests
+from requests_guard import guard
+r = requests.get("https://www.google.com/", stream=True, timeout=30)
+content = guard(r, max_size=3000, timeout=10)
+
+
+python 缓存库
+pip install wrapcache
+https://github.com/hustcc/wrapcache
+import wrapcache
+@wrapcache.wrapcache(timeout = 3)
+@wrapcache.wrapcache(timeout = 3, adapter = RedisAdapter)
+timeout， 过期时间，默认为-1，不缓存数据
+adapter，存储器，默认为MemoryAdapter（存到python的全局字典中），可选RedisAdapter（存储到redis中）
+如果选择adapter = RedisAdapter，则需要在使用前设置redis市里 调用 RedisAdapter.db = redis_instance
+--- 使用
+wrapcache.keyof(func, *args, **kws): get the key of function output cache.
+wrapcache.get(key, adapter = MemoryAdapter): get the value of cache.
+wrapcache.set(key, value, timeout = -1, adapter = MemoryAdapter): set cache use code.
+wrapcache.remove(key, adapter = MemoryAdapter): remove a cache.
+wrapcache.flush(adapter = MemoryAdapter): clear all the cache.
+
+
+python-socketio 是 Socket.IO 服务器的 Python 实现
+https://pypi.org/project/python-socketio/
+pip install python-socketio
+
+设计模式
+https://github.com/faif/python-patterns
+pip install python-patterns
+
+pip install b64img
+b64img file.png -c
+
+python文档
+pip install pydoctor
+
+分布式锁
+https://github.com/vaidik/sherlock
+pip install sherlock
+
+时间解析
+pip install dateparser
+
+webservices soap
+pip install soaplib
+
+开发 webservices
+pip install ladon
+
+开发 webservices
+pip install Flask-Spyne
+
+python 工具包
+pip install toolz
+itertoolz, for operations on iterables. Examples: groupby, unique, interpose,
+functoolz, for higher-order functions. Examples: memoize, curry, compose
+dicttoolz, for operations on dictionaries. Examples: assoc, update-in, merge.
+
+队列任务
+https://github.com/rq/rq-scheduler
+pip install rq-scheduler
+
+分析工具
+pip install pytrace
+
+异步处理器
+pip install pyeventbus
+Install Pyeventbus
+git clone https://github.com/xsank/Pyeventbus.git
+python setup.py install
+https://github.com/xsank/Pyeventbus
+
+ai https://github.com/Zulko/easyAI
+pip install easyAI
+
+数据可视化分析工具
+pip install Pathomx
+
+AutoLine开源平台是一个开源自动化测试解决方案，基于RobotFramework进行二次开发，支持RobotFramework几乎所有的库
+https://gitee.com/lym51/AutoLine
+需要python3
+
+使用手册
+http://www.testtao.cn/?p=1144
+自动化测试工具
+pip install robotframework
+可视化工具需要安装wxPython
+pip install wxPython
+工具可视化编辑器
+pip install robotframework-ride
+安装下面之前需要执行
+pip install pycrypto
+安装测试库
+pip install robotframework-selenium2library
+pip install robotframework-archivelibrary
+pip install robotframework-SSHLibrary
+pip install robotframework-ftplibrary
+
+-- jython 安装下载
+http://www.jython.org/downloads.html
+
+
+运维管理工具
+https://github.com/welliamcao/OpsManage
+
+python 邮件服务器
+smtpd — SMTP Server
+
+邮件服务器
+pip install inbox.py
+pip install inbox
+
+JIT python PYPY
+http://pypy.org/download.html
+
+
+python 库学习
+https://blog.csdn.net/zhouyijun888/article/details/79425235
+https://www.cnblogs.com/tuyile006/p/7324887.html
+https://blog.csdn.net/dev_csdn/article/details/79060720
+
+生成伪数据
+pip install Faker
+https://pypi.org/project/Faker/
+
+随机时间数据
+pip install radar
+https://pypi.org/project/radar/
+
+数据库随机插入方法
+pip install fake2db
+fake2db *****
+--rows argument is pretty clear :) integer
+
+--db argument takes 6 possible options : sqlite, mysql, postgresql, mongodb, redis, couchdb
+
+--name argument is OPTIONAL. When it is absent fake2db will name db's randomly.
+
+--host argument is OPTIONAL. Hostname to use for database connection. Not used for sqlite.
+
+--port argument is OPTIONAL. Port to use for database connection. Not used for sqlite.
+
+--username argument is OPTIONAL. Username for the database user.
+
+--password argument is OPTIONAL. Password for database user. Only supported for mysql & postgresql.
+
+--locale argument is OPTIONAL. The localization of data to be generated ('en_US' as default).
+
+--seed argument is OPTIONAL. Integer for seeding random generator to produce the same data set between runs. Note: uuid4 values still generated randomly.
+
+
+算法库（排序等） 需要python3
+pip install algorithms
+https://pypi.org/project/algorithms/
+
+在线代码流程图
+https://code2flow.com/app
+
+相似检索
+https://github.com/facebookresearch/faiss
+使用
+https://www.jianshu.com/p/4fb45b9070d1
+安装
+https://www.jianshu.com/p/657a0fe8cefb
+
+python 插件系统
+pip install pluginbase
+
+instapaper的简单API
+Instagram机器人，喜欢/评论/Follow 自动化脚本
+pip install instapy
+from instapy.simple import SimpleAPI
+
+量化处理框架
+pip install zipline
+
+工作流
+pip install taskflow
+教程
+https://docs.openstack.org/taskflow/latest/user/index.html
+
+facebook 预言者
+pip install prophet
+
+DAG 任务处理框架
+pip install dagobah
+dagobahd  # start the web interface on localhost:9000
+安装教程
+https://segmentfault.com/a/1190000000622460
+启动报错
+
+python 算法，供学习
+pip install pygorithm
+
+鼠标键盘操作
+pip install pynput
+https://pypi.org/project/pynput/
+
+模拟ua
+pip install fake-useragent
+
+python 执行js
+pip install PyExecJS
+https://pypi.org/project/PyExecJS/
+------
+pip install PyV8
+------
+pip install js2py
+
+操作EXCEL
+pip install openpyxl
+https://pypi.org/project/openpyxl/
+
+发送消息到微信
+pip install wechat-sender
+微信工具
+pip install itchat
+
+视频操作
+https://github.com/Zulko/moviepy
+pip install moviepy
+
+python ip 代理
+https://github.com/jhao104/proxy_pool
+
+爬虫学习地址
+https://github.com/Jack-Cherish/python-spider
+
+安全相关
+pip install --upgrade pwntools
+
+制作二维码 python3
+pip install MyQR
+https://pypi.org/project/MyQR/
+https://github.com/sylnsfar/qrcode/blob/master/README-cn.md
+
+Webkit based webclient
+pip install Ghost.py
+https://github.com/jeanphix/Ghost.py
+
+函数编程，好好学习
+https://github.com/kachayev/fn.py
+pip install fn.py
+
+人可识别时间显示
+https://pypi.org/project/maya/
+pip install maya
+
+
+操作kafka
+https://github.com/dpkp/kafka-python
+pip install kafka-python
+
+简化外部进程调用
+pip install envoy
+
+写xlsx工具
+https://pypi.org/project/XlsxWriter/
+pip install XlsxWriter
+
+函数选择
+https://github.com/Suor/funcy
+https://pypi.org/project/funcy/
+pip install funcy
+
+高维度 动图展示
+https://pypi.org/project/hypertools/
+https://github.com/ContextLab/hypertools
+pip install hypertools
+
+python 模块调用图
+https://github.com/gak/pycallgraph
+pip install pycallgraph
+
+日志框架
+pip install Logbook
+
+json 文件python 使用
+pip install json-sempai
+
+python 模块重试框架
+https://pypi.org/project/tenacity/
+pip install tenacity

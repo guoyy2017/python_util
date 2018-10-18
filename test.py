@@ -32,13 +32,15 @@ import requests
 import hashlib
 #
 url = 'http://112.33.254.240:8091/mt.php'
-appkey = '506cae27da'
-appid = '10532'
-mobile = '13758249074'
-modeid = '210279'
+appkey = 'b63f006879'
+appid = '10610'
+mobile = '15336877018'
+modeid = '1252636'
 md5 = hashlib.md5()
 md5.update(appkey+appid+mobile)
 sign = md5.hexdigest()
+print "%s?appId=%s&modeId=%s&mobile=%s&sign=%s" % (url, appid, modeid, mobile, sign)
+exit(1)
 data = {
      "appId": appid,
     "modeId": modeid,

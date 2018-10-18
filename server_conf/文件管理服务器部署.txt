@@ -1,0 +1,16 @@
+seafile 部署安装
+https://www.seafile.com/download/
+
+wget http://seafile-downloads.oss-cn-shanghai.aliyuncs.com/seafile-server_6.2.5_x86-64.tar.gz
+tar xzvf seafile-server_6.2.5_x86-64.tar.gz
+
+yum install python-imaging
+
+配置
+./setup-seafile.sh
+启动
+./seafile.sh start
+./seahub.sh start # 启动 Seahub 网站 （默认运行在8000端口上）
+
+安装教程
+https://manual-cn.seafile.com/deploy/using_sqlite.html

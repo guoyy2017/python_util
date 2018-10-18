@@ -1,0 +1,49 @@
+adb 安装操作
+需要下载 sdk
+http://dl.google.com/android/android-sdk_r24.4.1-macosx.zip
+
+brew install android-platform-tools
+adb devices
+
+查看adb版本:
+
+adb version
+查看所有设备：
+
+adb devices
+安装指定apk(路径可不用手写，直接把apk文件拖拽过来)：
+
+adb  install <file>
+卸载指定包 ：
+
+adb uninstall <package>
+连接设备 ：
+
+ adb connect [<host>[:<port>]]（默认端口号是：5555）
+断开设备：
+
+ disconnect [<host>[:<port>]]
+执行远程的shell：
+
+ adb shell
+退出远程命令：
+
+ exit
+执行远程shell命令：
+
+ adb shell <command>
+拷贝文件到设备上：
+
+ adb push <local> <remote>
+从设备中拷贝文件：
+
+ adb pull <remote> [<local>]
+查看设备所有信息：
+
+ adb bugreport（包括 bug 报告）
+查看命令帮助：
+
+adb help
+
+结束进程,重启服务，重新来一遍:
+Adb kill-server/start-server
