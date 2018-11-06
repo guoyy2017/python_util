@@ -1,0 +1,80 @@
+下载地址
+https://www.apache.org/dyn/closer.cgi?path=/kafka/2.0.0/kafka_2.12-2.0.0.tgz
+选择下载源 http://kafka.apache.org/downloads
+
+快速入门
+http://kafka.apache.org/quickstart
+
+解压后执行启动脚本
+/bin 操作kafka的可执行脚本
+/config 配置文件所在目录
+
+启动
+先启动zookeeper bin/zookeeper-server-start.sh config/zookeeper.properties
+启动kafka bin/kafka-server-start.sh config/server.properties
+创建topic bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+查看启动的topic bin/kafka-topics.sh --list --zookeeper localhost:2181
+发送消息 bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+消费 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+
+集群部署
+多个配置文件
+cp config/server.properties config/server-1.properties
+cp config/server.properties config/server-2.properties
+
+--内容修改
+config/server-1.properties:
+    broker.id=1
+    listeners=PLAINTEXT://:9093
+    log.dirs=/tmp/kafka-logs-1
+
+config/server-2.properties:
+    broker.id=2
+    listeners=PLAINTEXT://:9094
+    log.dirs=/tmp/kafka-logs-2
+
+启动多个broker
+bin/kafka-server-start.sh config/server-1.properties &
+bin/kafka-server-start.sh config/server-2.properties &
+
+创建主题
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic my-replicated-topic
+查看主题内容
+bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic my-replicated-topic
+
+需要外网访问需要修改server.config
+advertised.host.name 设置为主机名
+-------------------------------------
+
+
+
+
+进入kafka目录，敲入命令 bin/kafka-server-start.sh config/server.properties &
+
+运行producer
+bin/kafka-console-producer.sh --broker-list 192.168.153.118:9092 --topic test
+
+运行consumer
+bin/kafka-console-consumer.sh --zookeeper 192.168.153.118:2181 --topic test --from-beginning
+
+producer，指定的Socket(192.168.1.181+9092),说明生产者的消息要发往kafka，也即是broker
+consumer, 指定的Socket(192.168.1.181+2181),说明消费者的消息来自zookeeper（协调转发）
+
+多broker 配置多份server config
+bin/kafka-server-start.sh config/server0.properties &   #启动broker0
+bin/kafka-server-start.sh config/server1.properties & #启动broker1
+bin/kafka-server-start.sh config/server2.properties & #启动broker2
+
+创建topic
+bin/kafka-topics.sh --create --topic topic_1 --partitions 1 --replication-factor 3  \--zookeeper localhost:2181
+查看
+bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+java使用方法
+-- kafka 客户端
+<!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-clients</artifactId>
+    <version>2.0.0</version>
+</dependency>

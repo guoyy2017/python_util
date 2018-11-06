@@ -1584,3 +1584,12 @@ pip install json-sempai
 python 模块重试框架
 https://pypi.org/project/tenacity/
 pip install tenacity
+
+需要python3 在控制台看图片
+pip install tv
+
+运维工具 对标Fabric Ansible
+pip install chopsticks
+
+聊天机器人
+pip install ChatterBot

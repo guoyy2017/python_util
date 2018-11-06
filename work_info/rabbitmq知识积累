@@ -1,0 +1,22 @@
+学习教程地址
+https://www.jianshu.com/p/a6460b4b155f
+
+队列 创建
+自动删除(auto delete) 有消费连接后，消费者都断开自动删除队列
+队列可以声明为独占队列(只有声明的连接可用)（exclusive）只有代码可以创建
+
+交换机 direct类型 topic类型 fanout类型 header类型
+自动删除(auto delete) 配置了，有绑定后，解除绑定后自动删除
+(Internal) 配置后，只能绑定交换机
+参数配置（alternate-exchange）用来配置如果该交换机不能路由消息后转发到的交换机
+
+topic类型
+routingkey可以有通配符：'*','#'.
+其中'*'表示匹配一个单词， '#'则表示匹配没有或者多个单词
+
+header类型
+需要配置 arguments
+其中的x-match为特殊的header，可以为all则表示要匹配所有的header，如果为any则表示只要匹配其中的一个header即可
+
+发布消息
+指定交换机、指定header信息、指定properties信息、消息体(payload)

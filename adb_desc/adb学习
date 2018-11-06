@@ -1,0 +1,430 @@
+adb命令
+
+-- 启动adb服务
+adb devices
+
+-- 连接手机方式 wifi usb
+-- wifi方式  -- adb tcpip 5555 让设备监听5555端口
+adb connect  设备IP
+断开无线连接 adb disconnect <device-ip-address>
+-- usb
+
+-- shell screencap 截屏
+adb shell screencap -p /sdcard/autojump.png
+-- 拉取到本地 adb pull
+adb pull /sdcard/autojump.png .
+-- 输入 adb shell input swipe
+adb shell input swipe x y x y time(ms)
+
+-- 查看版本
+adb　version
+
+-- 给设备安装软件
+adb -s <serialNumber> install <path-to-apk>
+
+-- 卸载软件
+adb -s <serialNumber> uninstall <pkg_name>
+
+-- 拷贝内容到主机
+adb -s <serialNumber>pull <remote> <local>
+
+-- 获取手机序列号
+adb get-serialno
+
+-- 获取设备连接状态
+adb -s <serialNumber> get-state
+
+-- 等待连接
+adb wait-for-device
+
+-- 起停服务
+adb kill-server
+adb start-server
+
+-- 发送命令
+adb shell <command>
+
+-- 录屏到
+adb shell screenrecord /sdcard/demo.mp4
+
+-- adb 手机命令 adb shell ***
+-- 查看安装列表
+pm list packages
+-- 查看包安装地址
+pm path <Package>
+
+-- 关闭设备请求，开启设备
+adb shell stop
+adb shell start
+
+-- 开启和关闭手机
+adb reboot
+adb shutdown
+
+-- 禁用/恢复
+adb shell su disable com.UCMobile/.main.UCMobile
+adb shell su enable com.UCMobile/.main.UCMobile
+
+
+adb shell 命令
+adb shell 进入手机
+--解释文章
+https://www.cnblogs.com/JianXu/p/5161179.html
+命令
+wm size 获取屏幕大小 (wm 提示使用方法)
+reboot 重启手机
+svc 控制电源、网络、USB
+
+//查询已安装包名列表
+adb shell pm list package
+//对com.tencent.mm包使用monkey命令
+adb shell monkey -p com.tencent.mm --throttle 200 50000
+//查找monkey进程信息
+adb shell ps | find "monkey"
+//杀掉monkey进程，例子中的数字是monkey的PID进程号
+adb shell kill 23770
+//重启手机
+adb shell reboot
+//打开svc帮助界面
+adb shell svc
+//查询wifi操作帮助
+adb shell svc wifi
+//关闭wifi
+adb shell svc wifi disable
+//打开wifi
+adb shell svc wifi enable
+//擦除data，即恢复出厂设置
+adb shell wipe data
+//指定查询"mF"的activity信息
+adb shell dumpsys activity | find "mF"
+//启动指定activity
+adb shell am start -n com.android.browser/.BrowserActivyty
+//查看am命令的帮助信息
+adb shell am
+
+录制屏幕
+screenrecord
+截屏
+screencap
+
+模拟硬件设备的输入
+input
+参数：
+test(Defalt;touchscreen)
+keyevent [--longpress] ...(Default:keyboard)
+tap (Default:touchscreen)
+swipe [duration(ms)] (Default:touchscreen)
+press (Default:trackball)
+roll (Default:trackball)
+press  roll  是轨迹球操作
+
+//进入交互模式
+adb shell
+//输入文本123456
+input text 123456
+//使用keycode num输入，keycode表可百度查询
+input keyevent 7
+//使用keycode name输入1
+input keyevent KEYCODE_1
+//使用keycode name按空格键
+input keyevent KEYCODE_HOME
+//点击坐标367  1277
+input tap 367 1277
+//从（1024，945）滑动到（134，968）200毫秒内
+input swipe 1024 945 134 968 200
+
+
+monkey 学习
+adb shell monkey[option]
+例如：”adb shell monkey 100”表示在设备上乱按100次
+
+获取 获取系统各项服务信息
+-- 微信 com.tencent.mm
+dumpsys activity [processName]
+
+-- 启动应用 命令行可以通过命令来启动Activity,Boradcast,Service
+adb shell am start -n package/launch activity
+
+-- 导出当前页面内容 xml （uiautomator 谷歌出得）抓取当前页面元素布局信息保存到手机自动位置
+adb shell uiautomator dump /data/local/tmp/uidump.xml
+
+
+--
+adb [-d|-e|-s <serialNumber>] <command>
+只有一个设备/模拟器连接时，可以省略掉 [-d|-e|-s <serialNumber>] 这一部分，直接使用 adb <command>
+-d	指定当前唯一通过 USB 连接的 Android 设备为命令目标
+-e	指定当前唯一运行的模拟器为命令目标
+-s <serialNumber>	指定相应 serialNumber 号的设备/模拟器为命令目标
+
+需要 root 权限 可以 adb shell 然后 su 后执行命令
+root权限
+adb root
+如果不行，执行如下
+先安装 adbd Insecure，然后 adb root 试试
+adb unroot
+
+adb -P <port> start-server
+默认端口为 5037
+
+adb shell pm list packages [-f] [-d] [-e] [-s] [-3] [-i] [-u] [--user USER_ID] [FILTER]
+无	所有应用
+-f	显示应用关联的 apk 文件
+-d	只显示 disabled 的应用
+-e	只显示 enabled 的应用
+-s	只显示系统应用
+-3	只显示第三方应用
+-i	显示应用的 installer
+-u	包含已卸载应用
+<FILTER>	包名包含 <FILTER> 字符串
+
+adb install 后面可以跟一些可选参数来控制安装 APK 的行为，可用参数及含义如下
+-l	将应用安装到保护目录 /mnt/asec
+-r	允许覆盖安装
+-t	允许安装 AndroidManifest.xml 里 application 指定 android:testOnly="true" 的应用
+-s	将应用安装到 sdcard
+-d	允许降级覆盖安装
+-g	授予所有运行时权限
+
+adb install 实际是分三步完成：
+
+push apk 文件到 /data/local/tmp。
+
+调用 pm install 安装。
+
+删除 /data/local/tmp 下的对应 apk 文件。
+
+
+-- 查看查看当前正在运行的Activity
+logcat | grep ActivityManager
+
+-- 产看最前Activity
+adb shell dumpsys activity | grep mFocusedActivity
+
+aapt
+aapt即Android Asset Packaging Tool.本文小结了一下该工具的用法
+查看apk包的packageName、versionCode、applicationLabel、launcherActivity、permission等各种详细信息
+aapt dump badging <file_path.apk>
+查看权限
+aapt dump permissions <file_path.apk>
+查看apk配置信息
+aapt dump configurations <file_path.apk>
+
+
+获取手机信息
+#获取手机名称
+NAME = 'adb shell getprop ro.product.model'
+#获取手机版本
+VERSION = 'adb shell getprop ro.build.version.release'
+#获取手机厂商
+PRODUCER = 'adb shell getprop ro.product.brand'
+
+
+
+--------------uiautomator命令的说明
+uiautomator <subcommand> [options]
+
+uiautomator dump dump出当前窗口的UI布局信息
+uiautomator dump --compressed dump出当前窗口的UI布局简化信息
+uiautomator dump file 指定输出文件，默认文件是在/sdcard/window_dump.xml
+
+dump: creates an XML dump of current UI hierarchy
+-----------------节点说明------------------------
+index 在当前的ViewGroup中的序号 从0开始
+text 控件中显示的文本内容
+class 控件的类型
+package 包名
+content-desc 说明
+checkable 是否允许check
+checked check状态
+clickable 是否允许click
+enabled 控件状态
+focusable 是否允许获取焦点
+focused 是否获取到焦点
+scrollable 是否允许滚动
+long-clickable 是否允许长安
+password 是否是密码控件
+selected select状态
+bounds 控件绘制的长宽及位置 四个数据，分成两组，分别是 左上坐标和右下坐标
+-----------------节点说明------------------------
+
+
+---------------------获取屏幕短信---------------------------
+联想手机
+am start -n com.lenovo.ideafriend/.alias.MmsActivity
+启动微信
+am start -n com.tencent.mm/.ui.LauncherUI
+朋友圈
+com.tencent.mm/.plugin.sns.ui.SnsTimeLineUI
+
+
+
+---------------中文输入--------------------
+-- app源码下载
+https://github.com/senzhk/ADBKeyBoard
+https://github.com/senzhk/ADBKeyBoard/raw/master/ADBKeyboard.apk
+-- 设置为默认输入法
+adb shell ime set com.android.adbkeyboard/.AdbIME
+adb shell am broadcast -a ADB_INPUT_TEXT --es msg '上海-悠悠'
+
+---列出输入法
+adb shell ime list -s
+
+
+----am命令发送广播：
+am broadcast -a android.intent.action.BOOT_COMPLETED
+就发送了一条开机广播，其他广播类似，其基本格式为：
+am broadcast -a 你的广播
+
+---- 获取通知栏消息
+获取通知栏的消息adb shell dumpsys notification
+
+
+---- 查看系统服务
+adb shell dumpsys –l
+adb shell serverce list
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------dumpsys命令介绍--------------------------------------------------------
+1.命令说明
+Dumpsys用户系统诊断，它运行在设备上，并提供系统服务状态信息
+
+命令格式： adb shell dumpsys [system serbices]
+
+2.系统服务查询
+如果直接运行adb shell dumpsys，将会获得所有的系统服务信息，那是非常多的，为了更容易管理输出，可以指定你想要检查的服务，例如：
+
+adb shell dumpsys –l
+
+adb shell serverce list
+
+#都是查看有哪些系统服务（需要哪些服务就指定哪些服务）
+
+命令行参数：
+
+不同的服务有不同的选项，一下两个是常见的参数：
+
+-h：对于大多数的服务，可以添加-h看到文本的帮助
+
+-c：对于一些服务，可以添加-c查看数据会更友好
+
+例如：
+
+adb shell dumpsys meminfo –h
+
+image
+
+
+
+二、包信息查询
+子命令格式：
+
+adb shell dumpsys package [-h] [-f] [—checkin] [cmd]…
+
+参数
+
+说明
+
+-h	打印帮助信息
+-f	打印intent filter的信息
+--checkin	打印出已经登记的库、系统功能、安装包
+cmd	子命令（可以在-h帮助文档中查看有哪些子命令）
+
+
+cmd子命令
+
+说明
+
+prov[iders]	获取content providers
+p[ackages]	获取安装包基本信息
+s[hared-user]	获取共享用户ID的应用
+m[essages]	打印运行时收集的信息
+v[erifiers]	打印包校验信息
+version	打印数据库版本信息
+write	写当前位置
+<package.name>	输出给定包的信息
+installs	安装会话的详细信息
+l[ibraries]	列出已知的共享库
+f[ibraries]	列出手机的功能
+k[eysets]	列出各个包的Signing KeySets
+r[esolvers]	获取intent filter
+perm[issions]	获取权限
+pref[erred]	打印包首选项
+preferred-xml [—full]	打印包首选项，xml格式打印
+
+
+三、activity信息查询
+子命令格式：
+
+adb shell dumpsys activity [-a] [-c]…
+
+参数
+
+说明
+
+-a	包括所有可用的服务器状态
+-c	包括客户端状态
+-p	限制输出为给定的包，例如：
+adb shell dumpsys activity -p com.android.browser
+-h	打印帮助信息
+cmd	子命令
+
+
+
+
+cmd子命令
+
+说明
+
+a[ctivities]	activity堆栈状态
+r[recents]	最近activity的状态
+b[rodacasts] [package_name] [histpry [-s]]	广播状态
+i[ntents] [package_name]	挂起的intent状态
+p[rocesses] [package_name]	进程状态
+o[om]	oom管理
+perm[issions]	url权限授权状态
+prov[iders] [comp_spec…]	content provider状态
+provider [comp_spec]	provider客户端状态
+s[ervices] [comp_spec…]	服务状态
+as[sociations]	跟踪应用程序的关联
+service [comp_spec]	服务客户端状态
+package [package_name]	给的包的所有状态
+all	转储所有的activityes
+top	转储栈顶的activity
+write	写入所有挂起状态存储
+track-associations	允许会话跟踪
+untrack-associations	禁用和明确会话跟踪，命令参数可能也是一个comp_spec 转储的activity
+
+
+四、网络信息查询
+子命令
+
+说明
+
+命令格式
+
+connectivity	网络连接	adb shell dumpsys connectivity
+netpolicy	网络策略	adb shell dumpsys netpolicy
+netstats	网络状态	adb shell dumpsys netstats
+network_management	网络管理	adb shell dumpsys network_management
+
+
+五、其他常用服务信息查询
+子命令	说明	命令格式
+meminfo	内存	adn shell dumpsys meminfo
+cpuinfo	CPU	adn shell dumpsys cpuinfo
+gfxinfo	帧率	adn shell dumpsys gfxinfo
+display	显示	adn shell dumpsys display
+power	电源	adn shell dumpsys power
+batterystats	电池状态	adn shell dumpsys batterystats
+battery	电池	adn shell dumpsys battery
+alarm	闹钟	adn shell dumpsys alarm
+location	位置	adn shell dumpsys location
+

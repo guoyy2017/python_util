@@ -31,16 +31,17 @@
 import requests
 import hashlib
 #
-url = 'http://112.33.254.240:8091/mt.php'
-appkey = 'b63f006879'
+# url = 'http://112.33.254.240:8091/mt.php'
+url = 'http://send.supermms.cn/mt.php'
+appkey = 'f4c975e929'
 appid = '10610'
-mobile = '15336877018'
-modeid = '1252636'
+mobile = '13451909511'
+modeid = '1256255'
 md5 = hashlib.md5()
 md5.update(appkey+appid+mobile)
 sign = md5.hexdigest()
 print "%s?appId=%s&modeId=%s&mobile=%s&sign=%s" % (url, appid, modeid, mobile, sign)
-exit(1)
+# exit(1)
 data = {
      "appId": appid,
     "modeId": modeid,

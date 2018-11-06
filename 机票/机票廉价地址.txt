@@ -1,0 +1,10 @@
+南航 _= 毫秒数
+https://b2c.csair.com//portal/minPrice/queryMinPriceInAirLines?jsoncallback=getMinPrice&inter=N&callback=getMinPrice&_=1541474421521
+
+东航 _= 毫秒数
+http://www.ceair.com/otabooking/flight-lowpricesearch!getHomeLowFlight.shtml?deptCityCode=HGH&_=1541475249655
+
+川航
+http://www.sichuanair.com/domestic-sales/autumn/libs/airport.js
+国内
+http://www.sichuanair.com/domestic-sales/autumn/js/index.js
