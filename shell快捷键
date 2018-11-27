@@ -1,0 +1,71 @@
+linux shell常用快捷键
+这篇文章来自chinaunix的lovesaka的<<linux命令行编辑>>
+原文地址:[url]http://bbs.chinaunix.net/thread-846189-1-1.html[/url]
+        很早就看过这里的内容了,之所以会找到这篇文章,是因为我的linux恩师,曾经提到过一些常用的快捷键操作.所以好不容易才在网上找到了这篇文章的.而且到现在一直在实践里面的东西.不但会让你做事的效率提高而且还挺有高手风范的,所以帖出来希望大家都能掌握.
+
+方向          ＜－前               后 -＞
+删除
+ctrl + d      删除光标所在位置上的字符相当于VIM里x或者dl
+ctrl + h      删除光标所在位置前的字符相当于VIM里hx或者dh
+ctrl + k      删除光标后面所有字符相当于VIM里d shift+$
+ctrl + u      删除光标前面所有字符相当于VIM里d shift+^
+ctrl + w      删除光标前一个单词相当于VIM里db
+ctrl + y      恢复ctrl+u上次执行时删除的字符
+ctrl + ?      撤消前一次输入
+alt  + r      撤消前一次动作
+alt  + d     删除光标所在位置的后单词
+
+移动
+ctrl + a      将光标移动到命令行开头相当于VIM里shift+^
+ctrl + e      将光标移动到命令行结尾处相当于VIM里shift+$
+ctrl + f      光标向后移动一个字符相当于VIM里l
+ctrl + b      光标向前移动一个字符相当于VIM里h
+ctrl + 方向键左键    光标移动到前一个单词开头
+ctrl + 方向键右键    光标移动到后一个单词结尾
+ctrl + x       在上次光标所在字符和当前光标所在字符之间跳转
+alt  + f      跳到光标所在位置单词尾部
+
+
+替换
+ctrl + t       将光标当前字符与前面一个字符替换
+alt  + t     交换两个光标当前所处位置单词和光标前一个单词
+alt  + u     把光标当前位置单词变为大写
+alt  + l      把光标当前位置单词变为小写
+alt  + c      把光标当前位置单词头一个字母变为大写
+^oldstr^newstr    替换前一次命令中字符串
+
+历史命令编辑
+ctrl + p   返回上一次输入命令字符
+ctrl + r       输入单词搜索历史命令
+alt  + p     输入字符查找与字符相接近的历史命令
+alt  + >     返回上一次执行命令
+
+其它
+ctrl + s      锁住终端
+ctrl + q      解锁终端
+ctrl + l        清屏相当于命令clear
+ctrl + c       另起一行
+ctrl + i       类似TAB健补全功能
+ctrl + o      重复执行命令
+alt  + 数字键  操作的次数
+实际操作:
+#c+l  清屏先
+minuit@suse:~>str1 str2 str3  #输入三个单词发现第一单词需要大写好按c+a跳到开头按a+c
+minuit@suse:~> Str1 str2 str3  #好现在单词就变成了现在这个样子,又发现第二个单词要全大写(这样的命令真是玩死人:( )好吧如果你当前光标在第二个单词,那直接a+u把这个单词改变,如果不在的话那按住c+a接着c+f跳到第二个单词那再a+u就OK了结果像下面所示
+。
+minuit@suse:~> Str1 STR2 str3   #我想换过来怎么办我的位置已经在最后一个单词这个好办按住a+2+b哈哈跳到了第二个单词再来一下a+l这下第二个单词全小写了,再来一个比较典型的例子
+[url]http://bbs.chinaunix.net/viewthread.php?tid=842595[/url]
+标题:如何将数据文件中的每个词的第一个字母变成大写？
+哈哈这个难不到我们吧因为我们已经会了a+c了
+minuit@suse:~> welcome to chinaunix!   #不就是变个大小写吗按住c+a接着a+3+c看看效果
+minuit@suse:~> Welcome To Chinaunix!  #GOOD很简单
+我们再来试试替换
+minuit@suse:~> Welcome To Chinaunix!  #还是这三单词c+a跳到开头再接着跳到第二个单词那(因为a+t只能跟前一个单词做替换所以不能在第一个单词按a+t)按住a+t
+minuit@suse:~> To Welcome Chinaunix!  #现在成这样子的了如果我用再按a+2+t那又变了一个样
+minuit@suse:~> Chinaunix!  Welcome To   #好了来一点比较常用的
+minuit@suse:~>ls /tmp/               #看看下面有些什么
+file1 file2 file3 ..... ..
+minuit@suse:~>^ls^cd         #现在再又想进入目录很简单的健入替换命令就行了在命令很长时用这个替换可以省掉很多按a+b或a+f的时间
+cd /tmp/
+minuit@suse:/tmp>   #进入了tmp目录了
+跳转的命令就不试了大家自己体会试也看不见^_^

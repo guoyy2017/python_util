@@ -1,0 +1,85 @@
+搭建全过程
+====================================================================================
+
+--公共命令--
+showmount命令查询NFS的共享状态
+showmount -e　　　　//默认查看自己共享的服务，前提是要DNS能解析自己，不然容易报错
+showmount -a　　　　//显示已经与客户端连接上的目录信息
+客户端使用showmount命令查询NFS的共享状态
+showmount -e NFS服务器IP
+
+
+---------------服务端---------------
+centos6  服务端nfs端口是 {2049}
+使用rpcbind 响应RPC服务的请求和与请求的RPC服务建立连接(默认不需要安装)
+安装 yum install nfs-utils
+
+启动前 配置挂载目录信息
+
+先创建共享目录 mkdir /yyg
+修改权限 chmod 777 -R /yyg
+
+配置文件在  /etc/exports  （输出目录配置）
+vi /etc/exports
+#(本机目录 可连接主机配置 ... )  可连接主机配置{*.*.*.*|*.*.*.0/24(rw|ro,no_root_squash)}
+/yyg 192.168.100.0/24(rw,no_root_squash) 192.168.1.213(rw)
+
+--配置文件格式
+/etc/exports文件内容格式：
+<输出目录> [客户端1 选项（访问权限,用户映射,其他）] [客户端2 选项（访问权限,用户映射,其他）]
+
+启动nfs 服务
+service rpcbind start （1）
+service nfs start （2）
+
+停止nfs 服务
+service nfs stop （1）
+service rpcbind stop （2）
+
+
+--特殊命令--
+服务端动态添加共享目录命令
+exportfs
+常用选项
+-a 全部挂载或者全部卸载
+-r 重新挂载
+-u 卸载某一个目录
+-v 显示共享目录
+exportfs -arv //不用重启nfs服务，配置文件就会生效
+
+--自动启动服务--
+chkconfig --level 35 rpcbind on
+chkconfig --level 35 nfs on
+
+---------------客户端---------------
+centos6
+安装 yum install nfs-utils
+
+挂载nas盘
+
+先创建需要挂载的目录文件（本地目录）demo: mkdir /mnt
+
+挂载
+mount nasIP:/yyg /mnt
+
+demo: mount NFS服务器IP:共享目录 本地挂载点目录
+
+卸载
+unmount /mnt
+
+--自动挂载--
+修改文件 /etc/fstab
+vi /etc/fstab
+
+格式：
+<server>:</remote/export> </local/directory> nfs < options> 0 0
+
+demo: nasIp:/yyg /mnt nfs defaults  0  0
+
+
+
+
+
+====================================================================================
+
+

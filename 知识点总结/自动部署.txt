@@ -1,0 +1,6 @@
+java 自动部署
+jekins
+下载地址
+https://jenkins.io/download/
+执行 java -jar jenkins.war  默认8080端口
+java -jar jenkins.war --httpPort=8081

@@ -754,6 +754,10 @@ pip install luigi
 
 Kivy python 写android
 pip install Kivy
+https://kivy.org/#download
+打包
+https://blog.csdn.net/qq_29027865/article/details/79191775
+https://www.cnblogs.com/HacTF/p/8142364.html
 
 主流的比较流行的Python量化开源框架
 https://www.jianshu.com/p/1658f319bfdc
@@ -1593,3 +1597,23 @@ pip install chopsticks
 
 聊天机器人
 pip install ChatterBot
+
+微信登录
+pip install itchat
+https://www.cnblogs.com/jiaoyu121/p/6944398.html
+图表展示
+pip install echarts-python
+
+接来下用jieba分词，然后制作成词云，首先要安装jieba和wordcloud库
+
+pip install jieba
+pip install wordcloud
+
+
+
+高性能http框架 python3.5
+https://github.com/squeaky-pl/japronto/
+pip install japronto
+
+搜索引擎
+pip install searx==0.2.0

@@ -1,0 +1,69 @@
+https://blog.csdn.net/qq_42156420/article/details/80791820
+
+ip反查域名网址 http://www.sameip.org/
+查询域名对应ip ping ／ nslookup ／ https://who.is/
+渗透测试工具nmap
+whatweb 查看服务器类型信息
+https://www.freebuf.com/column/151540.html
+w3af 渗透测试工具
+https://www.freebuf.com/column/145984.html
+https://www.freebuf.com/column/146469.html
+mac 安装
+http://blog.chinaunix.net/uid-10915175-id-5166524.html
+下载http://sourceforge.net/projects/w3af/files/w3af
+安装一下
+cd w3af/extlib/fpconst-0.7.2
+python setup.py install
+cd SOAPpy
+python setup.py install
+cd pyPdf
+python setup.py install
+--
+pip install nltk
+pip install pyOpenSSL
+pip install scapy
+pip install pybloomfiltermmap
+
+
+--在线md5破解
+http://www.onlinehashcrack.com/free-hash-reverse.php
+
+
+上传php webshell到服务器
+
+NC来反弹一个shell,首先在我们的电脑上监听5555端口
+
+weevely是一款使用python编写的webshell工具
+https://www.freebuf.com/sectool/39765.html
+https://github.com/epinna/Weevely
+https://www.i0day.com/749.html
+
+John the ripper是一款大受欢迎的、基于字典的密码破解工具
+
+用户名和密码文件
+/etc/passwd
+/etc/shadow
+unshadow命令基本上会结合/etc/passwd的数据和/etc/shadow的数据，创建1个含有用户名和密码详细信息的文件
+unshadow /etc/passwd /etc/shadow > ~/file_to_crack
+
+John the ripper 密码文件
+/usr/share/john/password.lst
+破解
+john --wordlist=/usr/share/john/password.lst ~/file_to_crack
+使用show选项，列出所有被破解的密码
+john --show ~/file_to_crack
+
+安装
+http://www.openwall.com/john/j/john-1.8.0.tar.xz
+wget http://www.openwall.com/john/j/john-1.8.0.tar.xz
+tar xf john-1.8.0.tar.gz
+cd john-1.8.0/src/
+make
+make clean linux-x86-64
+
+
+Linux加固GRUB
+grub-crypt --md5    #生成md5值
+vim /etc/grub.conf   #修改配置文件，将生成的md5值加入到配置文件中
+
+./john -single /etc/shadow

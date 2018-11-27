@@ -1,0 +1,20 @@
+http://www.runoob.com/docker/docker-architecture.html
+
+mac 安装
+brew cask install docker
+
+docker 安装redis
+docker search  redis
+docker pull  redis:3.2
+docker images redis
+docker run -p 6379:6379 -v $PWD/data:/data  -d redis:3.2 redis-server --appendonly yes
+
+docker run -p 80:80 --name mynginx -v $PWD/www:/www -v $PWD/conf/nginx.conf:/etc/nginx/nginx.conf -v $PWD/logs:/wwwlogs  -d nginx
+
+docker run -p 3306:3306 --name mymysql -v $PWD/conf:/etc/mysql/conf.d -v $PWD/logs:/logs -v $PWD/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.6
+
+docker run  -v $PWD/myapp:/usr/src/myapp  -w /usr/src/myapp python:3.5 python helloworld.py
+
+docker save保存的是镜像（image），docker export保存的是容器（container）；
+docker load用来载入镜像包，docker import用来载入容器包，但两者都会恢复为镜像；
+docker load不能对载入的镜像重命名，而docker import可以为镜像指定新名称。

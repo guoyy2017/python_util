@@ -1,0 +1,21 @@
+图数据库 （Neo4J、ArangoDB、OrientDB、FlockDB、GraphDB、InfiniteGraph、Titan、Cayley）
+Neo4j官方地址：https://neo4j.com/
+中文社区 http://neo4j.com.cn/
+cypher语言使用 （neo4j操作语言）
+
+java 开发需要
+<dependency>
+    <!-- 服务器开发需要的jar包 -->
+      <groupId>org.neo4j.driver</groupId>
+      <artifactId>neo4j-java-driver</artifactId>
+      <version>1.5.0</version>
+    </dependency>
+    <dependency>
+    <!-- 嵌入式开发需要的jar包 -->
+        <groupId>org.neo4j</groupId>
+        <artifactId>neo4j</artifactId>
+        <version>3.3.4</version>
+    </dependency>
+
+redisgraph 图数据库
+http://qunsul.com/graph-redis/index.html

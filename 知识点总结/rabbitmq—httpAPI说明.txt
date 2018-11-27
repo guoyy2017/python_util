@@ -1,0 +1,17 @@
+/api/index.html  API说明页面
+/api/overview  系统信息表述
+/api/cluster-name 集群信息
+/api/nodes  节点信息
+/api/connections 连接数据信息
+/api/vhosts/vhost/connections 特殊空间连接信息
+/api/exchanges  所有交换机信息
+/api/exchanges/%2f/UPPER 具体交换机信息
+/api/exchanges/vhost/name/bindings/source 获取交换机为源的信息
+/api/exchanges/vhost/name/bindings/destination 获取交换机为目的的信息
+/api/exchanges/vhost/name/publish 向交换机写数据
+/api/queues 所有队列信息
+/api/queues/vhost/name/bindings 队列绑定信息
+/api/bindings/vhost/e/exchange/q/queue 绑定队列和交换机信息
+{"routing_key":"my_routing_key", "arguments":{"x-arg": "value"}}
+
+

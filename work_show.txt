@@ -516,3 +516,120 @@ https://www.goodrain.com/applist
 
 在线代码流程图
 https://code2flow.com/app
+
+
+
+python 画图工具，简单好用
+http://blockdiag.com/en/#
+方框图（w / blockdiag）
+序列图（w / seqdiag）
+活动图（w / actdiag）
+逻辑网络图（w / nwdiag）
+blockdiag - simple block-diagram image generator
+seqdiag - simple sequence-diagram image generator
+actdiag - simple activity-diagram image generator
+nwdiag - simple network-diagram image generators
+https://pypi.org/project/blockdiag/
+pip install blockdiag
+https://pypi.org/project/seqdiag/
+pip install seqdiag
+https://pypi.org/project/actdiag/
+pip install actdiag
+https://pypi.org/project/nwdiag/
+pip install nwdiag
+
+
+
+plantuml使用教程【转】
+idea 插件
+https://www.cnblogs.com/Jeson2016/p/6837186.html
+PlantUML是通过Graphviz来渲染的
+语法
+http://plantuml.com/sitemap-language-specification
+-----------------------语法-----------------------
+https://www.cnblogs.com/Jeson2016/p/6837186.html
+====================顺序图（Sequence Diagram）====================
+顺序图（Sequence Diagram）
+顺序图用 -> , -->, <-, <-- 来绘制参与者（Participants）之 间的消息（Message）。
+
+申明参与者
+actor
+boundary
+control
+entity
+database
+
+改变箭头的样式
+使用 \ 或 / 来替换 < 或 > 可以让箭头只显示上半部分或下半 部分。
+重复输入箭头或斜杠（ >> // ），用来绘制空心箭头。
+使用双横线 -- 替代 - 可以用来绘制点线。
+在箭头后面加个 o 可以在箭头前绘制一个圆圈。
+使用 <-> 可用来绘制双向箭头。
+
+改变箭头的颜色
+Bob -[#red]> Alice : hello
+Alice -[#0000FF]->Bob : ok
+
+箭头方向
+-down-> 向下（这个是默认的，等同于 =–>=）
+-right-> 向右
+-left-> 向左
+-up-> 向上
+
+(*) --> "1"
+  -right-> "2"
+  -down-> "3"
+  -left-> "4"
+  -le-> "5"
+  -up-> "6"
+  -l-> "7"
+  -do-> "8"
+  -d-> "9"
+  -> "10"
+  --> (*)
+
+在描述箭头时， up|down|left|right 这几个单词的写法可以简化，
+用单词开头的一个或两个字母来替换就行了，比如 -down-> 也可以写成 -d-> 或者 -do->
+
+使用 if/then/else 关键词来定义分支
+
+同步块可以用“=== code ===”来表示
+
+使用 note 来添加注释文本块
+note commands:
+note left
+note right
+note top
+note bottom
+
+(*) --> "Some Activity" as s
+  note right: This activity has to be defined
+  s --> (*)
+  note left
+    This note is on
+    serveral lines
+  end note
+
+分区关键词 partition 可以定义一个分区
+使用end partition 关闭分区定义
+partition Aduience #LightSkyBlue
+
+标题关键词 title 用来设置一个图形的标题文本，我们可以在 title 和 end title 两个关键词之间放置比较长的标题文本
+
+皮肤命令 skinparam 可以改变图形的颜色和字体
+skinparam backgroundColor #AAFFFF
+  skinparam activityStartColor red
+  skinparam activityBarColor SaddleBrown
+  skinparam activityEndColor Silver
+  skinparam activityBackgroundColor Peru
+  skinparam activityBorderColor Peru
+  skinparam activityFontName Impact
+  skinparam activityShape octagon
+
+条件循环结构的图形可以通过使用 while 和 end while 两个关 键词来实现。如果要给条件分支加上标注，
+可以在 while 条件后加上一 个 is 关键词，然后用小括号括上要标注的内容；在 end while 后可 以直接用小括号括上要标注的内容
+
+并行处理（Parallel Processing）
+fork ， fork again 和 end fork 三个关键词用来表示并行处理结 构
+====================顺序图（Sequence Diagram）====================
+-----------------------语法-----------------------
