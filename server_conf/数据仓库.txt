@@ -1,0 +1,3 @@
+Infobright是开源的MySQL数据仓库解决方 案
+
+Xixibase是一个高性能，跨平台的分布式缓存系统

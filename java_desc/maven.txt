@@ -14,5 +14,1026 @@
     <version>2.1.5</version>
 </dependency>
 
+-- java分布式缓存框架 Java 编写的分布式、多功能的缓存系统
+<dependency>
+  <groupId>org.apache.commons</groupId>
+  <artifactId>commons-jcs</artifactId>
+  <version>2.1</version>
+</dependency>
+
+
+java 版本数据库 derby
+https://github.com/apache/derby
+H2 http://www.h2database.com/html/download.html
+//带注解
+https://github.com/codefollower/H2-Research
+//原项目
+https://github.com/h2database/h2database
+
+学习地址
+https://blog.csdn.net/cakexuexi/article/details/80820170
+presto: https://github.com/prestodb/presto
+分布式 SQL 执行引擎的时候，了解到其中一个组件 presto-parser，可以解析 SQL 语句
+https://github.com/prestodb/presto
+https://prestodb.io/
+Presto使用手册：https://prestodb.io/docs/current/
+
+java Geode是一个提供实时、一致访问大型分布式云平台下数据密集型应用的数据管理平台
+https://github.com/apache/geode
+
+Guava：好用的java类库
+<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
+        </dependency>
+
+java轻量级IOC框架Guice
+<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+<dependency>
+    <groupId>com.google.inject</groupId>
+    <artifactId>guice</artifactId>
+    <version>4.2.2</version>
+</dependency>
+
+
+
+
+JasperReport
+java 报表工具
+<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+<dependency>
+    <groupId>net.sf.jasperreports</groupId>
+    <artifactId>jasperreports</artifactId>
+    <version>6.7.0</version>
+</dependency>
+
+
+
+
+java 内存数据库mapdb
+https://github.com/jankotek/mapdb
+<dependency>
+    <groupId>org.mapdb</groupId>
+    <artifactId>mapdb</artifactId>
+    <version>VERSION</version>
+</dependency>
+
+
+
+
+leveldbjni  leveldb java开发
+https://github.com/fusesource/leveldbjni
+<dependency>
+            <groupId>org.fusesource.leveldbjni</groupId>
+            <artifactId>leveldbjni-all</artifactId>
+            <version>1.8</version>
+        </dependency>
+
+
+java 内存数据库paldb
+https://www.jianshu.com/p/23db015e81a5
+https://github.com/linkedin/PalDB
+<dependency>
+    <groupId>com.linkedin.paldb</groupId>
+    <artifactId>paldb</artifactId>
+    <version>1.2.0</version>
+</dependency>
+
+
+java aio框架
+https://github.com/tywo45/t-io
+<dependency>
+    <groupId>org.t-io</groupId>
+    <artifactId>tio-core</artifactId>
+    <version>3.2.4.v20181218-RELEASE</version>
+</dependency>
+
+java 原子锁
+https://github.com/mindwind/craft-atom
+<dependency>
+    <groupId>io.craftcode</groupId>
+    <artifactId>craft-atom-xxx</artifactId>
+    <version>3.1.0</version>
+    <type>jar</type>
+</dependency>
+
+-- zookeeper java 客户端
+<dependency>
+        <groupId>org.apache.curator</groupId>
+        <artifactId>curator-recipes</artifactId>
+        <version>2.7.0</version>
+    </dependency>
+
 --下载，可以执行页面管理
 https://github.com/elasticjob/elastic-job-lite
+
+
+java推荐系统
+https://www.librec.net/download.html
+git clone https://github.com/guoguibing/librec.git
+<dependency>
+    <groupId>net.librec</groupId>
+    <artifactId>librec-core</artifactId>
+    <version>2.0.0</version>
+</dependency>
+API
+https://www.librec.net/doc/librec-v2.0/
+
+docx4j是另一套基于JAXB的Office文档（docx,pptx,xlsx）处理库。
+<dependency>
+    <groupId>org.docx4j</groupId>
+    <artifactId>docx4j</artifactId>
+    <version>3.3.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.neo4j/neo4j -->
+<dependency>
+    <groupId>org.neo4j</groupId>
+    <artifactId>neo4j</artifactId>
+    <version>3.5.1</version>
+</dependency>
+
+Java调用jama实现矩阵运算
+<!-- https://mvnrepository.com/artifact/gov.nist.math/jama -->
+<dependency>
+    <groupId>gov.nist.math</groupId>
+    <artifactId>jama</artifactId>
+    <version>1.0.3</version>
+</dependency>
+
+
+jdbc 操作框架
+<dependency>
+      <groupId>org.midao</groupId>
+      <artifactId>midao-jdbc-core</artifactId>
+      <version>0.9.5</version>
+    </dependency>
+
+ 用于记录SQL和其他有趣信息的JDBC代理驱动程序。
+ <!-- https://mvnrepository.com/artifact/com.googlecode.log4jdbc/log4jdbc -->
+<dependency>
+    <groupId>com.googlecode.log4jdbc</groupId>
+    <artifactId>log4jdbc</artifactId>
+    <version>1.2</version>
+</dependency>
+
+
+essentials4j -提供给每个Java 8项目的完整库
+<!-- https://mvnrepository.com/artifact/org.essentials4j/essentials4j -->
+<dependency>
+    <groupId>org.essentials4j</groupId>
+    <artifactId>essentials4j</artifactId>
+    <version>1.0.0</version>
+</dependency>
+
+Javolution 提供一个高性的Java集合（collection ）类库和一些实用的工具类
+<dependency>
+          <groupId>org.javolution</groupId>
+          <artifactId>javolution</artifactId>
+          <version>7.0.0</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.javolution/javolution -->
+<dependency>
+    <groupId>org.javolution</groupId>
+    <artifactId>javolution</artifactId>
+    <version>6.0.0</version>
+    <type>pom</type>
+</dependency>
+
+
+java 图网络库
+<!-- https://mvnrepository.com/artifact/jung/jung -->
+<dependency>
+    <groupId>jung</groupId>
+    <artifactId>jung</artifactId>
+    <version>1.7.6</version>
+</dependency>
+
+java 类型转换工具
+<!-- https://mvnrepository.com/artifact/net.sf.transmorph/transmorph -->
+<dependency>
+    <groupId>net.sf.transmorph</groupId>
+    <artifactId>transmorph</artifactId>
+    <version>3.1.3</version>
+</dependency>
+
+java 运行lua
+<!-- https://mvnrepository.com/artifact/org.luaj/luaj-jse -->
+<dependency>
+    <groupId>org.luaj</groupId>
+    <artifactId>luaj-jse</artifactId>
+    <version>3.0.1</version>
+</dependency>
+
+java 反射框架
+<!-- https://mvnrepository.com/artifact/net.vidageek/mirror -->
+<dependency>
+    <groupId>net.vidageek</groupId>
+    <artifactId>mirror</artifactId>
+    <version>1.6.1</version>
+</dependency>
+
+Jetlang提供了一个高性能的java线程库。
+<!-- https://mvnrepository.com/artifact/org.jetlang/jetlang -->
+<dependency>
+    <groupId>org.jetlang</groupId>
+    <artifactId>jetlang</artifactId>
+    <version>0.2.22</version>
+</dependency>
+
+JDRing 是一个轻量级的Java任务调度包。
+<!-- https://mvnrepository.com/artifact/jdring/jdring -->
+<dependency>
+    <groupId>jdring</groupId>
+    <artifactId>jdring</artifactId>
+    <version>1.0</version>
+</dependency>
+
+LambdaJ 的主要目的是简化对集合的操作
+https://www.cnblogs.com/jcli/archive/2013/01/09/2851906.html
+<!-- https://mvnrepository.com/artifact/com.googlecode.lambdaj/lambdaj -->
+<dependency>
+    <groupId>com.googlecode.lambdaj</groupId>
+    <artifactId>lambdaj</artifactId>
+    <version>2.3.3</version>
+</dependency>
+
+匹配
+<!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all -->
+<dependency>
+    <groupId>org.hamcrest</groupId>
+    <artifactId>hamcrest-all</artifactId>
+    <version>1.3</version>
+    <scope>test</scope>
+</dependency>
+
+
+Jetlang远程处理提供高性能远程消息传递。
+<!-- https://mvnrepository.com/artifact/org.jetlang/jetlang.remoting -->
+<dependency>
+    <groupId>org.jetlang</groupId>
+    <artifactId>jetlang.remoting</artifactId>
+    <version>0.6.45</version>
+</dependency>
+
+解析参数
+<!-- https://mvnrepository.com/artifact/jargs/jargs -->
+<dependency>
+    <groupId>jargs</groupId>
+    <artifactId>jargs</artifactId>
+    <version>1.0</version>
+</dependency>
+
+断言开发
+<!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+<dependency>
+    <groupId>org.assertj</groupId>
+    <artifactId>assertj-core</artifactId>
+    <version>3.11.1</version>
+    <scope>test</scope>
+</dependency>
+
+swing树形组件
+<!-- https://mvnrepository.com/artifact/net.sf.jtreemap/jtreemap -->
+<dependency>
+    <groupId>net.sf.jtreemap</groupId>
+    <artifactId>jtreemap</artifactId>
+    <version>1.1.3</version>
+</dependency>
+
+Lamma 日期处理库是一个新的开发包，提供一组简单易用的 API 来做基本的日期处理和复杂任务调度。
+<!-- https://mvnrepository.com/artifact/io.lamma/lamma -->
+<dependency>
+    <groupId>io.lamma</groupId>
+    <artifactId>lamma_2.12</artifactId>
+    <version>2.3.1</version>
+</dependency>
+
+Feather 是个超轻量级的 Java 和 Android 依赖注入器 (JSR-330)
+教程
+http://zsoltherpai.github.io/feather/
+<!-- https://mvnrepository.com/artifact/org.codejargon.feather/feather -->
+<dependency>
+    <groupId>org.codejargon.feather</groupId>
+    <artifactId>feather</artifactId>
+    <version>1.0</version>
+</dependency>
+
+时间处理工具
+<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+<dependency>
+    <groupId>joda-time</groupId>
+    <artifactId>joda-time</artifactId>
+    <version>2.10.1</version>
+</dependency>
+
+微服务开发
+https://github.com/oracle/helidon
+<!-- https://mvnrepository.com/artifact/io.helidon.webserver/helidon-webserver -->
+<dependency>
+    <groupId>io.helidon.webserver</groupId>
+    <artifactId>helidon-webserver</artifactId>
+    <version>0.11.0</version>
+</dependency>
+
+jung 图网络开发
+<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-api -->
+<dependency>
+    <groupId>net.sf.jung</groupId>
+    <artifactId>jung-api</artifactId>
+    <version>2.1.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-graph-impl -->
+<dependency>
+    <groupId>net.sf.jung</groupId>
+    <artifactId>jung-graph-impl</artifactId>
+    <version>2.1.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-algorithms -->
+<dependency>
+    <groupId>net.sf.jung</groupId>
+    <artifactId>jung-algorithms</artifactId>
+    <version>2.1.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-io -->
+<dependency>
+    <groupId>net.sf.jung</groupId>
+    <artifactId>jung-io</artifactId>
+    <version>2.1.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-samples -->
+<dependency>
+    <groupId>net.sf.jung</groupId>
+    <artifactId>jung-samples</artifactId>
+    <version>2.1.1</version>
+</dependency>
+
+
+异步jdbc 调用
+<!-- https://mvnrepository.com/artifact/org.adbcj/mysql-async-driver -->
+<dependency>
+    <groupId>org.adbcj</groupId>
+    <artifactId>mysql-async-driver</artifactId>
+    <version>0.9</version>
+</dependency>
+
+Java的异步数据库连接是用于异步数据库交互的库。
+<!-- https://mvnrepository.com/artifact/org.adbcj/adbcj -->
+<dependency>
+    <groupId>org.adbcj</groupId>
+    <artifactId>adbcj</artifactId>
+    <version>0.8</version>
+    <type>pom</type>
+</dependency>
+
+
+文本数据库
+<!-- https://mvnrepository.com/artifact/org.as220.tinysql/tinysql -->
+<dependency>
+    <groupId>org.as220.tinysql</groupId>
+    <artifactId>tinysql</artifactId>
+    <version>2.26</version>
+</dependency>
+
+-- Automon 追踪方法调用时间、异常次数、存储和展示你所选工具内的数据
+https://github.com/stevensouza/automon
+<dependency>
+          <groupId>org.automon</groupId>
+          <artifactId>automon</artifactId>
+          <version>1.0.2</version>
+      </dependency>
+
+strman-java声称能满足所有的字符串操作 java8
+      <!-- https://mvnrepository.com/artifact/com.shekhargulati/strman -->
+<dependency>
+    <groupId>com.shekhargulati</groupId>
+    <artifactId>strman</artifactId>
+    <version>0.4.0</version>
+</dependency>
+
+科学计算nd4j
+<!-- https://mvnrepository.com/artifact/org.nd4j/nd4j-common -->
+<dependency>
+    <groupId>org.nd4j</groupId>
+    <artifactId>nd4j-common</artifactId>
+    <version>0.9.1</version>
+</dependency>
+
+java key-value
+https://www.programcreek.com/java-api-examples/index.php?api=net.openhft.chronicle.map.ChronicleMap
+<!-- https://mvnrepository.com/artifact/net.openhft/chronicle-map -->
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>chronicle-map</artifactId>
+    <version>3.17.0</version>
+</dependency>
+
+
+https://github.com/OpenHFT/Chronicle-Queue
+<!-- https://mvnrepository.com/artifact/net.openhft/chronicle-queue -->
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>chronicle-queue</artifactId>
+    <version>5.17.4</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/net.openhft/chronicle -->
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>chronicle</artifactId>
+    <version>3.6.4</version>
+</dependency>
+
+
+Hazelcast是一个用Java编写的基于内存的数据网格管理平台
+<!-- https://mvnrepository.com/artifact/com.hazelcast/hazelcast -->
+<dependency>
+    <groupId>com.hazelcast</groupId>
+    <artifactId>hazelcast</artifactId>
+    <version>3.11.1</version>
+</dependency>
+
+大型HashMap评估：JDK、FastUtil、Goldman Sachs、HPPC、Koloboke与Trove
+
+java 动态代理
+cglib-nodep-2.2.jar：使用nodep包不需要关联asm的jar包,jar包内部包含asm的类.
+cglib-2.2.jar：使用此jar包需要关联asm的jar包,否则运行时报错.
+<!-- https://mvnrepository.com/artifact/cglib/cglib -->
+<dependency>
+    <groupId>cglib</groupId>
+    <artifactId>cglib</artifactId>
+    <version>3.2.10</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/cglib/cglib-nodep -->
+<dependency>
+    <groupId>cglib</groupId>
+    <artifactId>cglib-nodep</artifactId>
+    <version>3.2.10</version>
+</dependency>
+
+字节码操作
+<!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
+<dependency>
+    <groupId>org.ow2.asm</groupId>
+    <artifactId>asm</artifactId>
+    <version>7.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.ow2.asm/asm-all -->
+<dependency>
+    <groupId>org.ow2.asm</groupId>
+    <artifactId>asm-all</artifactId>
+    <version>5.2</version>
+</dependency>
+
+Javassist
+<!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
+<dependency>
+    <groupId>org.javassist</groupId>
+    <artifactId>javassist</artifactId>
+    <version>3.24.1-GA</version>
+</dependency>
+
+
+easyORM
+<!-- https://mvnrepository.com/artifact/org.hswebframework/hsweb-easy-orm-rdb -->
+<dependency>
+    <groupId>org.hswebframework</groupId>
+    <artifactId>hsweb-easy-orm-rdb</artifactId>
+    <version>3.0.3</version>
+</dependency>
+
+
+任务调度cron4j
+<!-- https://mvnrepository.com/artifact/it.sauronsoftware.cron4j/cron4j -->
+<dependency>
+    <groupId>it.sauronsoftware.cron4j</groupId>
+    <artifactId>cron4j</artifactId>
+    <version>2.2.5</version>
+</dependency>
+
+
+Jersey 开发RESTful
+https://www.jianshu.com/p/88f97b90963c
+
+
+
+使用Chronicle Map的场景：
+1）存储的entry超过5亿条
+2）在进程之间分布Map
+3）使用堆外内存（Off-Heap Memory），因为键和值占用了太多的内存，JVM遭遇GC的痛苦
+
+当不想在进程间共享数据，且存储的entry在5亿条以内，那么Koloboke是更理想的选择。
+<!-- https://mvnrepository.com/artifact/com.koloboke/koloboke-api-jdk6-7 -->
+<dependency>
+    <groupId>com.koloboke</groupId>
+    <artifactId>koloboke-api-jdk6-7</artifactId>
+    <version>1.0.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.koloboke/koloboke-impl-jdk6-7 -->
+<dependency>
+    <groupId>com.koloboke</groupId>
+    <artifactId>koloboke-impl-jdk6-7</artifactId>
+    <version>1.0.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.koloboke/koloboke-compile -->
+<dependency>
+    <groupId>com.koloboke</groupId>
+    <artifactId>koloboke-compile</artifactId>
+    <version>0.5.1</version>
+</dependency>
+
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>koloboke-api-jdk8</artifactId>
+    <version>0.6.8</version>
+</dependency>
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>koloboke-impl-jdk8</artifactId>
+    <version>0.6.8</version>
+</dependency>
+
+
+Apache Ignite
+内存数据库
+<!-- https://mvnrepository.com/artifact/org.apache.ignite/ignite-core -->
+<dependency>
+    <groupId>org.apache.ignite</groupId>
+    <artifactId>ignite-core</artifactId>
+    <version>2.5.0</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.ignite</groupId>
+    <artifactId>ignite-indexing</artifactId>
+    <version>2.5.0</version>
+</dependency>
+
+influxdb 时序数据库
+<dependency>
+    <groupId>org.influxdb</groupId>
+    <artifactId>influxdb-java</artifactId>
+    <version>2.4</version>
+</dependency>
+
+
+
+https://blog.csdn.net/qq_27727251/article/details/81939904
+https://jtablesaw.github.io/tablesaw/gettingstarted
+<!-- https://mvnrepository.com/artifact/tech.tablesaw/tablesaw-core -->
+<dependency>
+    <groupId>tech.tablesaw</groupId>
+    <artifactId>tablesaw-core</artifactId>
+    <version>0.30.2</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/tech.tablesaw/tablesaw-plot -->
+<dependency>
+    <groupId>tech.tablesaw</groupId>
+    <artifactId>tablesaw-plot</artifactId>
+    <version>0.24.4</version>
+</dependency>
+
+
+动态代理
+<!-- https://mvnrepository.com/artifact/dynaop/dynaop -->
+<dependency>
+    <groupId>dynaop</groupId>
+    <artifactId>dynaop</artifactId>
+    <version>1.0-beta</version>
+</dependency>
+
+
+
+首先在项目中添加 iText 依赖包，公司项目是用 Maven 管理的，可以在网站 mvnrepository 中搜索 iText，查询相关依赖配置，然后在项目 pom.xml 文件中加入相关配置，如下：
+https://www.cnblogs.com/devywb/p/8144555.html
+<dependency>
+  <groupId>com.lowagie</groupId>
+  <artifactId>itext</artifactId>
+  <version>2.1.7</version>
+</dependency>
+
+<dependency>
+　　<groupId>com.lowagie</groupId>
+　　<artifactId>itext-rtf</artifactId>
+　　<version>2.1.7</version>
+</dependency>
+
+Bootique 是一个面向创建无容器、可运行 Java 应用的项目
+https://github.com/bootique/bootique
+<!-- https://mvnrepository.com/artifact/io.bootique/bootique -->
+<dependency>
+    <groupId>io.bootique</groupId>
+    <artifactId>bootique</artifactId>
+    <version>0.25</version>
+</dependency>
+
+jetty
+<!-- https://mvnrepository.com/artifact/io.bootique.jetty/bootique-jetty -->
+<dependency>
+    <groupId>io.bootique.jetty</groupId>
+    <artifactId>bootique-jetty</artifactId>
+    <version>0.25</version>
+</dependency>
+
+ArangoDB的简短教程
+https://www.arangodb.com/tutorials/cn-tutorial-sync-java-driver/
+<dependency>
+    <groupId>com.arangodb</groupId>
+    <artifactId>arangodb-java-driver</artifactId>
+    <version>4.2.2</version>
+</dependency>
+
+zookeeper 操作
+<!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
+<dependency>
+    <groupId>org.apache.zookeeper</groupId>
+    <artifactId>zookeeper</artifactId>
+    <version>3.4.13</version>
+</dependency>
+
+Disruptor它是一个开源的并发框架 无锁的情况下实现网络的Queue并发操作
+http://ifeve.com/disruptor/
+<!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+
+
+机器学习算法 Java 库 smile
+https://github.com/haifengl/smile
+
+
+OptaPlanner解决了规划问题。这种轻量级，可嵌入的规划引擎实现了强大且可扩展的算法，以优化业务资源调度和规划。该模块包含计划引擎本身。
+https://www.optaplanner.org/download/download.html
+<!-- https://mvnrepository.com/artifact/org.optaplanner/optaplanner-core -->
+<dependency>
+    <groupId>org.optaplanner</groupId>
+    <artifactId>optaplanner-core</artifactId>
+    <version>7.16.0.Final</version>
+</dependency>
+
+定时任务
+<!-- https://mvnrepository.com/artifact/com.taobao.pamirs.schedule/tbschedule -->
+<dependency>
+    <groupId>com.taobao.pamirs.schedule</groupId>
+    <artifactId>tbschedule</artifactId>
+    <version>3.3.3.2</version>
+</dependency>
+
+责任链开发
+<!-- https://mvnrepository.com/artifact/commons-chain/commons-chain -->
+<dependency>
+    <groupId>commons-chain</groupId>
+    <artifactId>commons-chain</artifactId>
+    <version>1.2</version>
+</dependency>
+
+
+
+
+
+java 版ffmpeg
+https://github.com/tmxdyf/jjmpeg
+
+itchat4j -- 用Java扩展个人微信号的能力
+https://github.com/yaphone/itchat4j
+
+Apache Mesos
+分布式软件
+http://mesos.apache.org/
+
+
+Byteman使用教程
+在代码中任意的位置插入我们的跟踪代码
+http://tg.51xinjia.com/2018/07/06/Byteman%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/
+http://byteman.jboss.org/downloads.html
+
+
+Quasar 是一个 Java 库，提供了高性能、轻量级的线程，类似 Go 语言的 Channel，Erlang 语言的 Actor 和其他异步编程工具。
+<!-- https://mvnrepository.com/artifact/co.paralleluniverse/quasar-actors -->
+<dependency>
+    <groupId>co.paralleluniverse</groupId>
+    <artifactId>quasar-actors</artifactId>
+    <version>0.8.0</version>
+</dependency>
+
+In Maven:
+
+<dependency>
+    <groupId>co.paralleluniverse</groupId>
+    <artifactId>quasar-core</artifactId>
+    <version>0.4.0</version>
+</dependency>
+To use actors, add
+
+<dependency>
+    <groupId>co.paralleluniverse</groupId>
+    <artifactId>quasar-actors</artifactId>
+    <version>0.4.0</version>
+</dependency>
+For clustering support add:
+
+<dependency>
+    <groupId>co.paralleluniverse</groupId>
+    <artifactId>quasar-galaxy</artifactId>
+    <version>0.4.0</version>
+</dependency>
+
+
+java 运行
+-javaagent:path-to-quasar-jar.jar
+maven 插件
+<plugin>
+    <groupId>com.vlkan</groupId>
+    <artifactId>quasar-maven-plugin</artifactId>
+    <version>0.7.3</version>
+    <configuration>
+        <check>true</check>
+        <debug>true</debug>
+        <verbose>true</verbose>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>compile</phase>
+            <goals>
+                <goal>instrument</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+
+Orekit（ORbits Extrapolation KIT）是一款占用空间少的动态 Java 库。
+它提供基础的 Java 元素（比如日期，属性和框架）和多种算法支持转换，分析和数值传递。
+<!-- https://mvnrepository.com/artifact/org.orekit/orekit -->
+<dependency>
+    <groupId>org.orekit</groupId>
+    <artifactId>orekit</artifactId>
+    <version>9.2</version>
+</dependency>
+
+
+charts4j是一个免费的，轻量级的图表和图形Java API。
+它使开发人员能够通过简单直观的Java API以编程方式创建Google Chart API中可用的图表。
+<!-- https://mvnrepository.com/artifact/com.googlecode.charts4j/charts4j -->
+<dependency>
+    <groupId>com.googlecode.charts4j</groupId>
+    <artifactId>charts4j</artifactId>
+    <version>1.3</version>
+</dependency>
+
+Easy Rules是一个简单但功能强大的Java规则引擎
+https://github.com/j-easy/easy-rules
+<!-- https://mvnrepository.com/artifact/org.jeasy/easy-rules-core -->
+<dependency>
+    <groupId>org.jeasy</groupId>
+    <artifactId>easy-rules-core</artifactId>
+    <version>3.2.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.jeasy</groupId>
+    <artifactId>easy-rules-core</artifactId>
+    <version>3.2.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.jeasy</groupId>
+    <artifactId>easy-rules-support</artifactId>
+    <version>3.2.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.jeasy</groupId>
+    <artifactId>easy-rules-mvel</artifactId>
+    <version>3.2.0</version>
+</dependency>
+
+Java RMI框架
+<!-- https://mvnrepository.com/artifact/com.googlecode.excavator/excavator -->
+<dependency>
+    <groupId>com.googlecode.excavator</groupId>
+    <artifactId>excavator</artifactId>
+    <version>1.1.4</version>
+</dependency>
+
+Excel reporting library for JAVA
+https://github.com/jbaliuka/x4j-analytic
+
+特性开关框架选型之FF4J vs Togglz
+Java的功能标志变得简单 http://ff4j.github.io
+https://github.com/ff4j/ff4j
+<!-- https://mvnrepository.com/artifact/org.ff4j/ff4j-core -->
+<dependency>
+    <groupId>org.ff4j</groupId>
+    <artifactId>ff4j-core</artifactId>
+    <version>1.7.3</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.togglz/togglz-core -->
+<dependency>
+    <groupId>org.togglz</groupId>
+    <artifactId>togglz-core</artifactId>
+    <version>2.6.1.Final</version>
+</dependency>
+
+
+
+
+性能统计信息记录和监视工具包扩展到log4j，logback和java.util.logging框架。
+<!-- https://mvnrepository.com/artifact/org.perf4j/perf4j -->
+<dependency>
+    <groupId>org.perf4j</groupId>
+    <artifactId>perf4j</artifactId>
+    <version>0.9.16</version>
+</dependency>
+
+BeanShell是一个小巧免费的JAVA源码解释器，支持对象式的脚本语言特性，亦可嵌入到JAVA源代码中，
+能动态执行JAVA源代码并为其扩展了脚本语言的一些特性，像JavaScript和perl那样的弱类型、命令式、闭包函数等等特性都不在话下。
+http://www.beanshell.org/download.html
+
+
+Drools 规则引擎的使用总结
+<dependencies>
+    <dependency>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-api</artifactId>
+        <version>6.3.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.drools</groupId>
+        <artifactId>drools-core</artifactId>
+        <version>6.3.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.drools</groupId>
+        <artifactId>drools-compiler</artifactId>
+        <version>6.3.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.drools</groupId>
+        <artifactId>drools-decisiontables</artifactId>
+        <version>6.3.0.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>org.drools</groupId>
+        <artifactId>drools-templates</artifactId>
+        <version>6.3.0.Final</version>
+    </dependency>
+</dependencies>
+
+
+所谓的纤程，或者协程，可以理解为是一种轻量级的线
+https://github.com/puniverse/quasar
+<!-- https://mvnrepository.com/artifact/co.paralleluniverse/quasar-core -->
+<dependency>
+    <groupId>co.paralleluniverse</groupId>
+    <artifactId>quasar-core</artifactId>
+    <version>0.8.0</version>
+</dependency>
+
+
+java 科学计算和神经网络等库
+https://blog.csdn.net/panrenlong/article/details/79246349
+
+Java-ML是一个使用Java编写的一系列机器学习算法的Java API
+http://java-ml.sourceforge.net/
+https://sourceforge.net/projects/java-ml/files/java-ml/0.1.5/
+
+http://mallet.cs.umass.edu/
+https://deeplearning4j.org/docs/latest/deeplearning4j-quickstart
+
+机器学习教程
+https://www.ibm.com/developerworks/cn/java/cc-artificial-neural-networks-neuroph-machine-learning/index.html?ca=drs-&utm_source=tuicool&utm_medium=referral
+
+
+
+web开发框架 Vert.X
+使用demo
+https://github.com/happy-fly/vertx
+https://github.com/happy-fly/vertx-demo
+官网
+https://vertx.io/
+https://github.com/vert-x3/vertx-maven-starter
+https://github.com/vert-x3/vertx-cli-starter
+插件说明
+https://github.com/vert-x3/vertx-awesome
+<!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
+<dependency>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-core</artifactId>
+    <version>3.6.2</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/io.vertx/vertx-unit -->
+<dependency>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-unit</artifactId>
+    <version>3.6.2</version>
+    <scope>test</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/io.vertx/vertx-web -->
+<dependency>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-web</artifactId>
+    <version>3.6.2</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/io.vertx/vertx-codegen -->
+<dependency>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-codegen</artifactId>
+    <version>3.6.2</version>
+</dependency>
+
+<dependency>
+<groupId>io.vertx</groupId>
+<artifactId>vertx-redis-client</artifactId>
+<version>3.5.2.CR3</version>
+</dependency>
+
+<dependency>
+ <groupId>io.vertx</groupId>
+ <artifactId>vertx-mysql-postgresql-client</artifactId>
+ <version>3.6.2</version>
+</dependency>
+
+教程地址
+https://www.jianshu.com/p/ef26dc343012
+
+Java Spatial Index项目旨在维护一个高性能Java版本的RTree空间索引算法
+https://github.com/aled/jsi
+<!-- https://mvnrepository.com/artifact/net.sourceforge.jsi/jsi -->
+<dependency>
+    <groupId>net.sourceforge.jsi</groupId>
+    <artifactId>jsi</artifactId>
+    <version>1.0.0</version>
+</dependency>
+
+leveldb java 操作
+https://github.com/criccomini/ezdb
+<dependency>
+	<groupId>com.github.criccomini</groupId>
+	<artifactId>ezdb-leveldb</artifactId>
+	<version>0.1.12</version>
+</dependency>
+
+trove4j高性能Java集合库
+<!-- https://mvnrepository.com/artifact/net.sf.trove4j/trove4j -->
+<dependency>
+    <groupId>net.sf.trove4j</groupId>
+    <artifactId>trove4j</artifactId>
+    <version>3.0.3</version>
+</dependency>
+
+定时任务
+<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+<dependency>
+    <groupId>org.quartz-scheduler</groupId>
+    <artifactId>quartz</artifactId>
+    <version>2.3.0</version>
+</dependency>
+
+
+===================================================================================================
+机器学习库
+***opencv：
+***TensorFlow： 一个是我们最喜欢的机器学习框架，被称作无与伦比的TensorFlow框架。 TensorFlow是一个使用数据流图进行数值计算的开源软件库，是GitHub上最受欢迎的机器学习项目，也是参与者和贡献者最多的机器学习项目。TensorFlow主要是用Python编写的，但它也支持Java和Go的一些用法。
+***Weka： 地址： http://www.cs.waikato.ac.nz/ml/weka/index.html 毫无疑问，Weka 是目前首选的 Java 机器学习库。完全基于 Java 环境，开源，免费，具有易于使用的图形界面，适合于数据挖掘，数据分析和预测建模等多种应用场景。Weka包括一系列的工具，如数据预处理、分类、回归、聚类、关联规则以及可视化。
+***ML：Java机器学习库ML官网：http://java-ml.sourceforge.net/
+Java-ML是一个使用Java编写的一系列机器学习算法的Java API。它只提供了一个标准的算法接口。对于一个机器学习库来说，最基础就是数据处理能力，ml库给了dataset和instance两个类，dataset是矩阵，instance是行（可以理解是一个list，或一个double数组）。import net.sf.javaml.core.Dataset;
+import net.sf.javaml.core.DefaultDataset;
+import net.sf.javaml.core.DenseInstance;
+import net.sf.javaml.core.Instance;
+import net.sf.javaml.core.SparseInstance;
+import net.sf.javaml.tools.InstanceTools;
+import net.sf.javaml.tools.data.FileHandler;
+**Massive Online Analysis（MOA）是一个面向数据流挖掘的流行开源框架，有着非常活跃的成长社区。它包括一系列的机器学习算法（分类、回归、聚类、异常检测、概念漂移检测和推荐系统）和评估工具。关联了WEKA项目，MOA也是用Java编写的，其扩展性更强。MOA 也是基于 Java 环境，开源，免费，在面对复杂问题时，MOA 还能和 Weka 协同工作。MOA 在运算效率和内存占用方面都做了特殊优化，通过提供易于扩展的底层结构、可复用的数据流分析设置以及一系列内部实现好机器学习算法，MOA 为实时数据流分析提供了一个非常优秀的基准框架，因此 在实时数据流挖掘领域的应用非常广泛 。其内部实现的机器学习算法包括：分类、回归、聚类、孤立点检测、概念漂移检测和推荐系统等。地址： http://moa.cms.waikato.ac.nz/
+***MALLET ：地址： http://mallet.cs.umass.edu/ 主要由来自麻省大学（University of Massachusetts）的Andrew McCallum教授和其学生开发，是一个基于 Java 环境的开源机器学习工具包。主要应用于统计自然语言处理，文档分类，聚类，主题建模，信息提取等 文本类分析场景 。许多功能强大的工具，包括用于文档分类的高级工具，用于序列标记的工具，和用于主题建模的工具等。MALLET 还支持各种类型的算法，包括朴素贝叶斯，决策树和最大熵等。此外，MALLET 还提供了许多例程，包括分词，删除停用词，将文本转换为向量表示等。
+MEKA项目提供了一个面向多标签学习和评价方法的开源实现。在多标签分类中，我们要预测每个输入实例的多个输出变量。这与“普通”情况下只涉及一个单一目标变量的情形不同。此外，MEKA基于WEKA的机器学习工具包。
+Advanced Data mining And Machine learning System（ADAMS）是一种新型的柔性工作流引擎，旨在迅速建立并保持真实世界的复杂知识流，它是基于GPLv3发行的。
+Environment for Developing KDD-Applications Supported by Index-Structure（ELKI）是一款基于Java的开源（AGPLv3）数据挖掘软件。ELKI主要集中于算法研究，重点研究聚类分析中的无监督方法和异常检测。
+Mallet是一个基于Java的面向文本文件的机器学习工具包。Mallet支持分类算法，如最大熵、朴素贝叶斯和决策树分类。
+Encog是一个先进的机器学习框架，集成了支持向量机（SVM）、人工神经网络、遗传算法、贝叶斯网络、隐马尔可夫模型（HMM）、遗传编程和遗传算法。
+Encog是一个先进的机器学习框架，集成了支持向量机（SVM）、人工神经网络、遗传算法、贝叶斯网络、隐马尔可夫模型（HMM）、遗传编程和遗传算法。
+Mahout是一个内置算法的机器学习框架。Mahout-Samsara帮助人们创建他们自己的数学，并提供了一些现成的算法实现。
+Rapid Miner是德国多特蒙特技术大学开发的。它为开发者开发应用程序提供了一个GUI（图形用户界面）和Java API。它还提供了一些机器学习算法，用来做数据处理、可视化以及建模。
+Apache SAMOA是 一个机器学习（ML）框架，内嵌面向分布式流ML算法的编程抽象，并且允许在没有直接处理底层分布式流处理引擎（DSPEe，如 Apache Storm、Apache S4和Apache samza）复杂性的情况下，开发新的ML算法。用户可以开发分布式流ML算法，而且可以 在多个DSPEs上执行。
+Neuroph通过提供支持创建、训练和保存神经网络的Java网络库和GUI工具，简化了神经网络开发。
+Oryx 2是一个建立在Apache Spark和Apache Kafka的Lambda架构实现，但随着实时大规模机器学习而逐渐开始专业化。这是一个用于构建应用程序的框架，但也包括打包，以及面向协同过滤、分类、回归和聚类的端到端的应用程序。
+Stanford Classifier是一个机器学习工具，它可以将数据项归置到一个类别。一个概率分类器，比如这个，它可以对一个数据项给出类分配的概率分布。该软件是最大熵分类器的一个Java实现。
+JSAT是一个快速入门的机器学习库。该库是我在业余时间开发的，基于GPL3发行的。库中的一部分内容可自主学习，例如所有的代码都是独立的。JSAT没有外部依赖，而且是纯Java编写的。
+Java Machine Learning Library（Java机器学习库）是一系列机器学习算法的相关实现。这些算法，无论是源代码还是文档，都编写的很出色。其主要语言是Java。
+MLlib (Spark)是Apache Spark的可扩展机器学习库。虽然是Java，但该库与平台还支持Java，Scala和Python绑定。此库是最新的，并且算法很多。
+H2O是用于智能应用的机器学习API。它在大数据上对统计学、机器学习和数学进行了规模化。H2O可扩展，开发者可以在核心部分使用简单的数学知识。
+ELKI： https://elki-project.github.io/ Environment for Developing KDD-Applications Supported by Index-Structures，即 由索引结构支持的 KDD 应用开发环境 ，Environment for Developing KDD-Applications Supported by Index-Structures，即 由索引结构支持的 KDD 应用开发环境
+Neo4j ：Neo4j是一个世界领先的开源图形数据库。 它是由Neo技术使用Java语言完全开发的。图形数据库是以图形结构的形式存储数据的数据库。 它以节点，关系和属性的形式存储应用程序的数据。 正如RDBMS以表的“行，列”的形式存储数据，GDBMS以“图形”的形式存储数据。https://neo4j.com/ 教程：https://www.w3cschool.cn/neo4j/
+---------------------
+作者：忍耐恒_至拙胜至巧
+来源：CSDN
+原文：https://blog.csdn.net/panrenlong/article/details/79246349
+版权声明：本文为博主原创文章，转载请附上博文链接！

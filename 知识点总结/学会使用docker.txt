@@ -1,7 +1,17 @@
 http://www.runoob.com/docker/docker-architecture.html
 
+知识点理解
+http://dockone.io/article/783
+
 mac 安装
 brew cask install docker
+
+linux centos 安装
+yum install docker-io
+启动
+service docker start
+停止
+service docker stop
 
 docker 安装redis
 docker search  redis

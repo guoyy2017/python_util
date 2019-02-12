@@ -19,3 +19,60 @@ java 开发需要
 
 redisgraph 图数据库
 http://qunsul.com/graph-redis/index.html
+
+
+图数据库：AgensGraph
+
+jdbc 驱动
+<dependency>
+  <groupId>net.bitnine</groupId>
+  <artifactId>agensgraph-jdbc</artifactId>
+  <version>1.2.0</version>
+</dependency>
+
+
+Functional programming in Java
+https://github.com/functionaljava/functionaljava
+<dependency>
+    <groupId>org.functionaljava</groupId>
+    <artifactId>functionaljava</artifactId>
+    <version>4.8</version>
+</dependency>
+<dependency>
+    <groupId>org.functionaljava</groupId>
+    <artifactId>functionaljava-java8</artifactId>
+    <version>4.8</version>
+</dependency>
+<dependency>
+    <groupId>org.functionaljava</groupId>
+    <artifactId>functionaljava-quickcheck</artifactId>
+    <version>4.8</version>
+</dependency>
+<dependency>
+    <groupId>org.functionaljava</groupId>
+    <artifactId>functionaljava-java-core</artifactId>
+    <version>4.8</version>
+</dependency>
+
+
+SQL数据仓库 百度开发使用mysql语法
+Apache Doris
+https://github.com/apache/incubator-doris
+http://doris.incubator.apache.org/
+文档
+http://doris.apache.org/guides/documents.html
+
+Mesa - 谷歌近实时分析型数据仓库
+实时查询引擎 - Cloudera Impala 介绍与应用
+
+Cassandra 是一个来自 Apache 的分布式数据库，具有高度可扩展性，可用于管理大量的结构化数据。它提供了高可用性，没有单点故障
+https://www.w3cschool.cn/cassandra/
+
+Presto 数据仓库
+https://segmentfault.com/a/1190000014833443
+
+http://ssdb.io/zh_cn/
+SSDB - 高性能的支持丰富数据结构的 NoSQL 数据库, 替代 Redis
+https://github.com/ideawu/ssdb
+
+
