@@ -1,0 +1,17 @@
+# 定时任务
+Quartz
+https://www.cnblogs.com/ssslinppp/p/5055524.html
+
+# 分布式作业系统
+Elastic-job
+https://www.jianshu.com/p/bf59c3562dd9?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation
+Elastic-Job-Lite和Elastic-Job-Cloud
+
+
+# 分布式任务调度平台XXL-JOB
+分布式任务调度平台XXL-JOB
+https://www.cnblogs.com/xuxueli/p/5021979.html
+
+
+netty的hashWheel
+HashedWheelTimer 主要用来高效处理大量定时任务,  且任务对时间精度要求相对不高

@@ -74,5 +74,34 @@ https://segmentfault.com/a/1190000014833443
 http://ssdb.io/zh_cn/
 SSDB - 高性能的支持丰富数据结构的 NoSQL 数据库, 替代 Redis
 https://github.com/ideawu/ssdb
+https://blog.csdn.net/nawenqiang/article/details/83183757
+https://www.w3cschool.cn/ssdb/xf4y6udl.html
+
+
+基于leveldb 改造 rocksdb
+https://github.com/facebook/rocksdb
+
+
+CrateDB是开源的SQL数据库，开创性的采用分布式设计理念。 支持分布式查询处理，性能佳
+http://hao.jobbole.com/crate/
+https://crate.io/download/
+下载
+https://cdn.crate.io/downloads/releases/nightly/
+
+分布式数据库教程
+https://www.ctolib.com/article/compares/83784
+
+
+数据仓库
+MYSQL数据仓库infobright安装测试
+Infobright是一个基于MySQL开发的开源数据仓库（Data Warehouse）软件
+https://www.cnblogs.com/511mr/articles/2318789.html
+http://www.infobright.org/downloads/ice/infobright-3.3.1-x86_64-ice.tar.gz
+
+
+ELT 工具 kettle
+下载地址
+https://blog.csdn.net/m0_37618809/article/details/81012371
+https://sourceforge.net/projects/pentaho/files/latest/download
 
 

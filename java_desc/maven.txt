@@ -1125,6 +1125,213 @@ trove4j高性能Java集合库
     <version>2.3.0</version>
 </dependency>
 
+java 知识阅读
+https://crossoverjie.top/JCSprout/#/
+https://github.com/crossoverJie/JCSprout
+
+
+excel jdbc 操作
+XLSJDBC
+http://xlsjdbc.sourceforge.net/
+<!-- https://mvnrepository.com/artifact/net.sourceforge.csvjdbc/csvjdbc -->
+<dependency>
+    <groupId>net.sourceforge.csvjdbc</groupId>
+    <artifactId>csvjdbc</artifactId>
+    <version>1.0.34</version>
+</dependency>
+
+简化正则表达式
+https://github.com/VerbalExpressions/JavaVerbalExpressions
+<!-- https://mvnrepository.com/artifact/ru.lanwen.verbalregex/java-verbal-expressions -->
+<dependency>
+    <groupId>ru.lanwen.verbalregex</groupId>
+    <artifactId>java-verbal-expressions</artifactId>
+    <version>1.6</version>
+</dependency>
+
+互联网 Java 工程师进阶知识完全扫盲
+https://github.com/doocs/advanced-java
+
+Java资源大全中文版
+https://github.com/jobbole/awesome-java-cn
+
+
+Java并发工具核心库
+https://www.jianshu.com/p/14dcfd84704f
+<!-- https://mvnrepository.com/artifact/org.jctools/jctools-core -->
+<dependency>
+    <groupId>org.jctools</groupId>
+    <artifactId>jctools-core</artifactId>
+    <version>2.1.2</version>
+</dependency>
+功能特性
+SPSC/MPSC/SPMC/MPMC 数据变量的并发队列：
+SPSC：单个生产者对单个消费者（无等待、有界和无界都有实现）
+MPSC：多个生产者对单个消费者（无锁、有界和无界都有实现）
+SPMC：单生产者对多个消费者（无锁 有界）
+MPMC：多生产者对多个消费者（无锁、有界）
+SPSC/MPSC 提供了一个在性能，分配和分配规则之间的平衡的关联数组队列
+扩展队列的接口（MessagePassingQueue）:
+relaxedOffer/Peek/Poll: 对于空/满的队列基于某种机制下进行合并来改进队列的使用效率提高性能
+drain/fill: 批量读写方法提高数据处理量并且减少数据冲突
+
+Java与本机C ++之间缺失的桥梁
+<!-- https://mvnrepository.com/artifact/org.bytedeco/javacpp -->
+<dependency>
+    <groupId>org.bytedeco</groupId>
+    <artifactId>javacpp</artifactId>
+    <version>1.4.4</version>
+</dependency>
+
+
+GraphqL Java GraphQL标准的实现
+http://graphql.cn/
+https://blog.csdn.net/taiyangdao/article/details/79978015
+<!-- https://mvnrepository.com/artifact/com.graphql-java/graphql-java -->
+<dependency>
+    <groupId>com.graphql-java</groupId>
+    <artifactId>graphql-java</artifactId>
+    <version>11.0</version>
+</dependency>
+
+java 熔断处理
+https://www.jianshu.com/p/b9af028efebb
+https://www.cnblogs.com/yepei/p/7169127.html
+<!-- https://mvnrepository.com/artifact/com.netflix.hystrix/hystrix-core -->
+<dependency>
+    <groupId>com.netflix.hystrix</groupId>
+    <artifactId>hystrix-core</artifactId>
+    <version>1.5.18</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.netflix.hystrix/hystrix-metrics-event-stream -->
+<dependency>
+    <groupId>com.netflix.hystrix</groupId>
+    <artifactId>hystrix-metrics-event-stream</artifactId>
+    <version>1.5.18</version>
+</dependency>
+
+zeromq java版本
+https://github.com/zeromq/jeromq
+<!-- https://mvnrepository.com/artifact/org.zeromq/jeromq -->
+<dependency>
+    <groupId>org.zeromq</groupId>
+    <artifactId>jeromq</artifactId>
+    <version>0.5.0</version>
+</dependency>
+
+
+json rpc
+https://github.com/briandilley/jsonrpc4j
+<!-- https://mvnrepository.com/artifact/com.github.briandilley.jsonrpc4j/jsonrpc4j -->
+<dependency>
+    <groupId>com.github.briandilley.jsonrpc4j</groupId>
+    <artifactId>jsonrpc4j</artifactId>
+    <version>1.5.3</version>
+</dependency>
+
+java 同步mysql binlog
+<!-- https://mvnrepository.com/artifact/com.github.shyiko/mysql-binlog-connector-java -->
+<dependency>
+    <groupId>com.github.shyiko</groupId>
+    <artifactId>mysql-binlog-connector-java</artifactId>
+    <version>0.19.0</version>
+</dependency>
+
+Java插件框架
+<!-- https://mvnrepository.com/artifact/org.pf4j/pf4j -->
+<dependency>
+    <groupId>org.pf4j</groupId>
+    <artifactId>pf4j</artifactId>
+    <version>2.6.0</version>
+</dependency>
+
+Redis嵌入式服务器，用于Java集成测试
+https://github.com/kstyrc/embedded-redis
+<!-- https://mvnrepository.com/artifact/com.github.kstyrc/embedded-redis -->
+<dependency>
+    <groupId>com.github.kstyrc</groupId>
+    <artifactId>embedded-redis</artifactId>
+    <version>0.6</version>
+    <scope>test</scope>
+</dependency>
+
+
+java 集合
+<!-- https://mvnrepository.com/artifact/org.pcollections/pcollections -->
+<dependency>
+    <groupId>org.pcollections</groupId>
+    <artifactId>pcollections</artifactId>
+    <version>3.0.3</version>
+</dependency>
+
+Java运行时编译器库。
+https://github.com/OpenHFT/Java-Runtime-Compiler
+<!-- https://mvnrepository.com/artifact/net.openhft/compiler -->
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>compiler</artifactId>
+    <version>2.3.4</version>
+</dependency>
+
+
+内嵌数据库
+<!-- https://mvnrepository.com/artifact/axion/axion -->
+<dependency>
+    <groupId>axion</groupId>
+    <artifactId>axion</artifactId>
+    <version>1.0-M1</version>
+</dependency>
+
+java 数据库
+<!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
+<dependency>
+    <groupId>org.hsqldb</groupId>
+    <artifactId>hsqldb</artifactId>
+    <version>2.4.1</version>
+    <scope>test</scope>
+</dependency>
+
+
+
+响应式编程 RxJava
+https://www.jianshu.com/p/0cd258eecf60
+<!-- https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava -->
+<dependency>
+    <groupId>io.reactivex.rxjava2</groupId>
+    <artifactId>rxjava</artifactId>
+    <version>2.2.6</version>
+</dependency>
+
+Seasar2其实就是类似于Spring的一个提供DI功能的开源框架，但比Sping轻量级。
+https://www.jianshu.com/p/bde2004942f3
+
+
+
+Restlet API是REST架构风格的Java框架。
+https://www.cnblogs.com/Scott007/p/3300128.html
+<!-- https://mvnrepository.com/artifact/org.restlet/org.restlet -->
+<dependency>
+    <groupId>org.restlet</groupId>
+    <artifactId>org.restlet</artifactId>
+    <version>1.1.10</version>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/com.typesafe.play/play -->
+<dependency>
+    <groupId>com.typesafe.play</groupId>
+    <artifactId>play_2.12</artifactId>
+    <version>2.7.0</version>
+</dependency>
+
+SSDB java 驱动
+<!-- https://mvnrepository.com/artifact/org.nutz/ssdb4j -->
+<dependency>
+    <groupId>org.nutz</groupId>
+    <artifactId>ssdb4j</artifactId>
+    <version>10.0</version>
+</dependency>
+
 
 ===================================================================================================
 机器学习库
