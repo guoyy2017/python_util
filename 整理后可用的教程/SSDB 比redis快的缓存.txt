@@ -1,0 +1,60 @@
+SSDB 安装教程
+下载地址
+https://github.com/ideawu/ssdb
+安装过程
+=============================================================================
+wget --no-check-certificate https://github.com/ideawu/ssdb/archive/master.zip
+unzip master
+cd ssdb-master
+make
+# 将安装在 /usr/local/ssdb 目录下
+sudo make install
+=============================================================================
+
+存储引擎换rocks
+https://github.com/ideawu/ssdb-rocks
+=============================================================================
+wget --no-check-certificate https://github.com/ideawu/ssdb-rocks/archive/master.zip
+unzip master
+cd ssdb-rocks-master
+make
+# 将安装在 /usr/local/ssdb 目录下
+sudo make install
+=============================================================================
+
+
+启动运行过程
+=============================================================================
+# 启动主库
+./ssdb-server ssdb.conf
+
+# 或者启动为后台进程
+./ssdb-server -d ssdb.conf
+
+# 启动 ssdb 命令行客户端
+./tools/ssdb-cli -p 8888
+
+# 停止 ssdb-server
+./ssdb-server ssdb.conf -s stop
+# 对于旧版本
+kill `cat ./var/ssdb.pid`
+=============================================================================
+
+教程地址
+官方教程 命令
+http://ssdb.io/docs/zh_cn/commands/index.html
+https://www.w3cschool.cn/ssdb/
+配置啥的挺详细
+https://blog.csdn.net/nawenqiang/article/details/83183757
+
+java 使用
+<!-- https://mvnrepository.com/artifact/org.nutz/ssdb4j -->
+<dependency>
+    <groupId>org.nutz</groupId>
+    <artifactId>ssdb4j</artifactId>
+    <version>10.0</version>
+</dependency>
+简单教程
+=============================================================================
+SSDB ssdb = SSDBs.simple("127.0.0.1",8900, 2000);
+=============================================================================

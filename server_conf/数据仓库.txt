@@ -1,3 +1,7 @@
 Infobright是开源的MySQL数据仓库解决方 案
 
 Xixibase是一个高性能，跨平台的分布式缓存系统
+
+druid Druid 是一个分布式的支持实时分析的数据存储系统（Data Store）
+http://druid.io/downloads.html
+https://www.apache.org/dyn/closer.cgi?path=/incubator/druid/0.13.0-incubating/apache-druid-0.13.0-incubating-bin.tar.gz

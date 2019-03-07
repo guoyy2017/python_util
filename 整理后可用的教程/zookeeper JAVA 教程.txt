@@ -1,0 +1,49 @@
+zookeepr java 客户端
+curator 封装解决zookeeper调用复杂问题
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-framework</artifactId>
+    <version>2.12.0</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-recipes</artifactId>
+    <version>2.12.0</version>
+</dependency>
+使用教程地址
+https://www.jianshu.com/p/70151fc0ef5d
+
+zookeeper 操作 基本客户端地址
+<!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
+<dependency>
+    <groupId>org.apache.zookeeper</groupId>
+    <artifactId>zookeeper</artifactId>
+    <version>3.4.13</version>
+</dependency>
+
+
+zookeeper 安装教程
+下载地址
+http://apache.fayea.com/zookeeper/zookeeper-3.4.13/zookeeper-3.4.13.tar.gz
+
+zookeeper要求Java运行环境，并且需要jdk版本1.6以上。
+单机模式
+配置文件 zoo.cfg
+tickTime : 服务器与客户端之间交互的基本时间单元（ms）
+dataDir : 保存zookeeper数据路径
+dataLogDir : 保存zookeeper日志路径，当此配置不存在时默认路径与dataDir一致
+clientPort : 客户端访问zookeeper时经过服务器端时的端口号
+
+集群模式
+配置文件 zoo.cfg
+initLimit : 此配置表示允许follower连接并同步到leader的初始化时间，它以tickTime的倍数来表示。当超过设置倍数的tickTime时间，则连接失败。
+syncLimit : Leader服务器与follower服务器之间信息同步允许的最大时间间隔，如果超过次间隔，默认follower服务器与leader服务器之间断开链接。
+maxClientCnxns : 限制连接到zookeeper服务器客户端的数量
+server.id=host:port:port : 表示了不同的zookeeper服务器的自身标识，作为集群的一部分，每一台服务器应该知道其他服务器的信息。用户可以从“server.id=host:port:port” 中读取到相关信息。在服务器的data(dataDir参数所指定的目录)下创建一个文件名为myid的文件，这个文件的内容只有一行，指定的是自身的id值。比如，服务器“1”应该在myid文件中写入“1”。这个id必须在集群环境中服务器标识中是唯一的，且大小在1～255之间。这一样配置中，zoo1代表第一台服务器的IP地址。第一个端口号（port）是从follower连接到leader机器的端口，第二个端口是用来进行leader选举时所用的端口。所以，在集群配置过程中有三个非常重要的端口：clientPort：2181、port:2888、port:3888。
+
+伪集群模式
+单机部署多个实例
+
+启动模式：
+zkServer.sh start
+查看状态 zkServer.sh status
