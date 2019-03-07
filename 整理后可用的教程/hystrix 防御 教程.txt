@@ -1,0 +1,13 @@
+Hystrix提供了熔断、隔离、Fallback、cache、监控等功能
+
+maven地址
+<!-- https://mvnrepository.com/artifact/com.netflix.hystrix/hystrix-core -->
+<dependency>
+    <groupId>com.netflix.hystrix</groupId>
+    <artifactId>hystrix-core</artifactId>
+    <version>1.5.18</version>
+</dependency>
+
+教程
+==================================================================
+==================================================================

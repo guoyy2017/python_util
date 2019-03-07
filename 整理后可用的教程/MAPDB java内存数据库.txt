@@ -1,0 +1,38 @@
+maven地址
+<!-- https://mvnrepository.com/artifact/org.mapdb/mapdb -->
+<dependency>
+    <groupId>org.mapdb</groupId>
+    <artifactId>mapdb</artifactId>
+    <version>3.0.7</version>
+</dependency>
+
+教程
+mapdb可以提供内存级别和磁盘级别的缓存，采用了fluent api，使用起来还是很方便的，底层实现部分使用了kotlin
+https://www.jianshu.com/p/b6f43302338e
+==================================================================
+实例代码
+数据库存储类型
+-----------------------------------------------------------------
+内存级别数据库，使用jvm堆空间
+DB db = DBMaker.memoryDB().make();
+
+直接内存数据库，使用direct memory
+DB db = DBMaker.memoryDirectDB().make();
+
+random access file数据库，使用磁盘空间
+DB db = DBMaker.fileDB("/Users/cdqiushengsen/Documents/helloTreeMapDb").make()
+
+mmap(memory map file)数据库，同样使用磁盘空间，但是使用了内存映射技术，
+进程读取数据的时候不需要陷入内核态，直接从内存映射地址找到磁盘上对应的地址
+DB db = DBMaker.fileDB("/Users/cdqiushengsen/Documents/helloTreeMapDb")
+                .fileMmapEnableIfSupported().make()
+
+一种是使用filechannel，性能介于以上两者之间
+
+数据类型
+-----------------------------------------------------------------
+map类型
+treemap和hashmap
+
+
+==================================================================

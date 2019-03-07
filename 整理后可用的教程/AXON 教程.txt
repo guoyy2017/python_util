@@ -1,0 +1,73 @@
+Axon Axon控制总线  DDD领域驱动／CQRS读写分离／ES事件溯源
+CQRS（命令查询责任分类，Command Query Responsibility Segregation)架构的基础上来处理命令
+CQRS本身是一个非常简单的模式
+<!-- https://mvnrepository.com/artifact/org.axonframework/axon-core -->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-core</artifactId>
+    <version>3.4.2</version>
+</dependency>
+
+消息模块
+<!-- https://mvnrepository.com/artifact/org.axonframework/axon-messaging -->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-messaging</artifactId>
+    <version>4.0.3</version>
+</dependency>
+配置模块
+<!-- https://mvnrepository.com/artifact/org.axonframework/axon-configuration -->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-configuration</artifactId>
+    <version>4.0.3</version>
+</dependency>
+事件
+<!-- https://mvnrepository.com/artifact/org.axonframework/axon-eventsourcing -->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-eventsourcing</artifactId>
+    <version>4.0.3</version>
+</dependency>
+模型化
+<!-- https://mvnrepository.com/artifact/org.axonframework/axon-modelling -->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-modelling</artifactId>
+    <version>4.0.3</version>
+</dependency>
+消息模块AMQP
+<!-- https://mvnrepository.com/artifact/org.axonframework/axon-amqp -->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-amqp</artifactId>
+    <version>3.4.2</version>
+</dependency>
+mongo模块
+<!-- https://mvnrepository.com/artifact/org.axonframework/axon-mongo -->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-mongo</artifactId>
+    <version>3.4.2</version>
+</dependency>
+总线CommandBus多个节点上分发命令
+<!-- https://mvnrepository.com/artifact/org.axonframework/axon-distributed-commandbus -->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-distributed-commandbus</artifactId>
+    <version>2.4.6</version>
+</dependency>
+disruptor支持模块
+<!-- https://mvnrepository.com/artifact/org.axonframework/axon-disruptor -->
+<dependency>
+    <groupId>org.axonframework</groupId>
+    <artifactId>axon-disruptor</artifactId>
+    <version>4.0.3</version>
+</dependency>
+bus jgroups 通信
+<!-- https://mvnrepository.com/artifact/org.axonframework.extensions.jgroups/axon-distributed-commandbus-jgroups -->
+<dependency>
+    <groupId>org.axonframework.extensions.jgroups</groupId>
+    <artifactId>axon-distributed-commandbus-jgroups</artifactId>
+    <version>4.0-RC1</version>
+</dependency>

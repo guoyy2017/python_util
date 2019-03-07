@@ -1,0 +1,45 @@
+Disruptor java 高性能队列
+disruptor一般用于线程间消息的传递
+学习教程地址
+http://ifeve.com/disruptor/
+使用教程
+http://www.importnew.com/27652.html
+jar包地址
+<!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+<dependency>
+    <groupId>com.lmax</groupId>
+    <artifactId>disruptor</artifactId>
+    <version>3.4.2</version>
+</dependency>
+
+=======================================================================================
+教程
+创建Disruptor 分单发布和多发布 ProducerType.SINGLE  ProducerType.MULTI
+Disruptor<String> disruptor
+消费者 分 单消费者|广播消费者|分组消费者
+//单消费 implements EventHandler
+disruptor.handleEventsWith(new Consumer());
+//广播消费 并行处理 implements EventHandler
+disruptor.handleEventsWith(new Consumer(), new Consumer(), new Consumer());
+//广播消费 顺序处理 implements EventHandler
+disruptor.handleEventsWith(new Consumer(), new Consumer(), new Consumer())
+        .then(new Consumer(), new Consumer());
+//分组消费 implements WorkHandler
+disruptor.handleEventsWithWorkerPool(new Consumer(), new Consumer(), new Consumer());
+//EventProcessor 自定义消费者关系
+启动消费者
+disruptor.start();
+发布消息
+RingBuffer<String> ring = disruptor.getRingBuffer();
+ring.publishEvent(new Publisher(), "");
+=======================================================================================
+
+
+
+
+
+
+
+
+
+
