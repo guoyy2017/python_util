@@ -1,0 +1,37 @@
+规则引擎 纯java
+<!-- https://mvnrepository.com/artifact/org.jeasy/easy-rules-core -->
+<dependency>
+    <groupId>org.jeasy</groupId>
+    <artifactId>easy-rules-core</artifactId>
+    <version>3.2.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.jeasy</groupId>
+    <artifactId>easy-rules-support</artifactId>
+    <version>3.2.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.jeasy</groupId>
+    <artifactId>easy-rules-mvel</artifactId>
+    <version>3.2.0</version>
+</dependency>
+
+规则存放地址 java文件 yml文件
+教程地址
+https://www.jianshu.com/p/39fa0475643a
+https://www.jianshu.com/p/f2bca8fb6a91
+
+================================================================================================
+代码实例
+Facts 规则中流转的参数 类MAP
+规则引擎
+RulesEngine rulesEngine = new DefaultRulesEngine();
+触发规则
+rulesEngine.fire(rules, facts2);
+
+RuleBuilder 创建规则 Rule
+Rules 注册多个规则Rule 用于调用
+rules.register(weatherRule);
+================================================================================================

@@ -1,0 +1,43 @@
+<!-- https://mvnrepository.com/artifact/it.sauronsoftware.cron4j/cron4j -->
+<dependency>
+    <groupId>it.sauronsoftware.cron4j</groupId>
+    <artifactId>cron4j</artifactId>
+    <version>2.2.5</version>
+</dependency>
+
+教程
+表达式：* * * * * *  秒 分 时 天 月 周
+支持 线程调度 进程调度
+线程
+scheduler.schedule("* * * * * ", new Runnable(){});
+进程
+scheduler.schedule("* * * * * ", new ProcessTask(){});
+
+代码实例
+========================================================================================
+Scheduler scheduler = new Scheduler();
+scheduler.schedule("* * * * * ", new Runnable() {
+    @Override
+    public void run() {
+        System.out.println(Thread.currentThread().getName()+" hello");
+    }
+});
+scheduler.schedule("* * * * * ", new Runnable() {
+    @Override
+    public void run() {
+        System.out.println(Thread.currentThread().getName()+" hello2");
+    }
+});
+scheduler.start();
+========================================================================================
+
+
+
+简单定时任务
+
+<!-- https://mvnrepository.com/artifact/jdring/jdring -->
+<dependency>
+    <groupId>jdring</groupId>
+    <artifactId>jdring</artifactId>
+    <version>1.0</version>
+</dependency>

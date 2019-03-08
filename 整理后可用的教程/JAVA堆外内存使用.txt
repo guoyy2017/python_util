@@ -1,0 +1,26 @@
+maven 地址
+<!-- https://mvnrepository.com/artifact/net.openhft/chronicle-map -->
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>chronicle-map</artifactId>
+    <version>3.17.1</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/net.openhft/chronicle-queue -->
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>chronicle-queue</artifactId>
+    <version>5.17.10</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/net.openhft/chronicle -->
+<dependency>
+    <groupId>net.openhft</groupId>
+    <artifactId>chronicle</artifactId>
+    <version>3.6.4</version>
+</dependency>
+
+
+=======================================================================================
+
+=======================================================================================

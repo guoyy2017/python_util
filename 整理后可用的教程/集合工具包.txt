@@ -1,0 +1,12 @@
+lambdJ提供了一个DSL的语法去对集合进行相关操作
+<!-- https://mvnrepository.com/artifact/com.googlecode.lambdaj/lambdaj -->
+<dependency>
+    <groupId>com.googlecode.lambdaj</groupId>
+    <artifactId>lambdaj</artifactId>
+    <version>2.3.3</version>
+</dependency>
+主要操作类
+ch.lambdaj.Lambda
+中的静态方法
+
+==============================================================================

@@ -36,6 +36,19 @@ ring.publishEvent(new Publisher(), "");
 
 
 
+等待策略：
+=======================================================================================
+消费者在缓存中没有可以消费的事件时，采取的等待策略：
+BlockingWaitStrategy：通过线程阻塞的方式，等待生产者唤醒
+BusySpinWaitStrategy：线程一直自旋等待，比较耗CPU。
+LiteBlockingWaitStrategy：通过线程阻塞的方式，等待生产者唤醒，比BlockingWaitStrategy要轻，某些情况下可以减少阻塞的次数。
+PhasedBackoffWaitStrategy：根据指定的时间段参数和指定的等待策略决定采用哪种等待策略。
+SleepingWaitStrategy：可通过参数设置，使线程通过Thread.yield()主动放弃执行，通过线程调度器重新调度；或一直自旋等待。
+TimeoutBlockingWaitStrategy：通过参数设置阻塞时间，如果超时则抛出异常。
+YieldingWaitStrategy： 通过Thread.yield()主动放弃执行，通过线程调度器重新调度。
+=======================================================================================
+
+
 
 
 

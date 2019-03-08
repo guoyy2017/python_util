@@ -1,0 +1,26 @@
+<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>23.0</version>
+</dependency>
+============================================================
+事件总线用法
+用法
+ExecutorService service = Executors.newSingleThreadExecutor();
+EventBus bus = new AsyncEventBus(service);
+注册
+bus.register(new SubTest());
+发送事件
+bus.post("hello");
+
+============================================================
+graph 图 有向图 无向图
+
+
+============================================================
+cache 缓存
+
+
+
+============================================================
