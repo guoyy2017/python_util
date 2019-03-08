@@ -1,0 +1,34 @@
+quasar 协程库
+<!-- https://mvnrepository.com/artifact/co.paralleluniverse/quasar-core -->
+<dependency>
+    <groupId>co.paralleluniverse</groupId>
+    <artifactId>quasar-core</artifactId>
+    <version>0.8.0</version>
+</dependency>
+
+使用前需要maven 打包插件
+<plugin>
+    <groupId>com.vlkan</groupId>
+    <artifactId>quasar-maven-plugin</artifactId>
+    <version>0.7.3</version>
+    <configuration>
+        <check>true</check>
+        <debug>true</debug>
+        <verbose>true</verbose>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>compile</phase>
+            <goals>
+                <goal>instrument</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+
+========================================================================================
+教程代码
+new Fiber().start();
+线程暂停用 Strand.sleep(10000); 代替 Thread.sleep();
+========================================================================================
