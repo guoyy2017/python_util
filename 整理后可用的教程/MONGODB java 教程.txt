@@ -1,0 +1,99 @@
+mongo 安装使用教程  占用内存挺大
+http://www.runoob.com/mongodb/mongodb-tutorial.html
+============================================================
+Mac 安装
+brew install mongodb
+启动
+mongod
+============================================================
+linux 安装
+下载zip包 https://www.mongodb.com/download-center/community
+解压
+mv ** /usr/local/mongodb
+配置path
+启动
+mongod
+
+客户端
+mongo
+============================================================
+命令解析
+show dbs 查看数据库
+use test 切换到test库  不存在则创建
+
+Capped collections 就是固定大小的collection
+很高的性能以及队列过期的特性(过期按照插入的顺序)
+db.createCollection("mycoll", {capped:true, size:100000})
+
+元数据
+dbname.system.*
+
+db 命令查看当前数据库名
+db.dropDatabase() 删除数据库
+创建集合 不存在 插入数据自动创建集合
+db.createCollection(name, options)
+show tables 查看集合 show collections
+db.collection.drop() 删除集合
+insert() 或 save() 方法向集合中插入文档
+update() 和 save() 方法来更新集合中的文档
+remove()函数是用来移除集合中的数据
+find() 方法以非结构化的方式来显示所有文档 pretty() 方法以格式化的方式来显示所有文档
+findOne() 方法，它只返回一个文档
+limit()方法接受一个数字参数，该参数指定从MongoDB中读取的记录条数
+skip()方法来跳过指定数量的数据，skip方法同样接受一个数字参数作为跳过的记录条数
+sort() 方法可以通过参数指定排序的字段，并使用 1 和 -1 来指定排序的方式，其中 1 为升序排列，而 -1 是用于降序排列
+createIndex() 方法来创建索引  多个字段创建索引（关系型数据库中称作复合索引）
+db.collection.createIndex(keys, options)
+聚合(aggregate)主要用于处理数据(诸如统计平均值,求和等) 类似sql语句中的 count(*)
+
+mongostat 和 mongotop 两个命令来监控MongoDB的运行情况
+mongostat是mongodb自带的状态检测工具
+mongotop也是mongodb下的一个内置工具
+
+MongoDB 查询分析常用函数有：explain() 和 hint()
+ hint 来强制 MongoDB 使用一个指定的索引
+db.collection.findAndModify() 方法来判断书籍是否可结算并更新新的结算信息
+Map-Reduce是一种计算模型
+
+全文索引 $text $search
+$regex 操作符来设置匹配字符串的正则表达式
+
+
+
+连接串
+mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
+
+============================================================
+java maven
+<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+<dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongo-java-driver</artifactId>
+    <version>3.10.1</version>
+</dependency>
+============================================================
+java 教程
+//使用 MongoClient 获得一个mongo连接池
+MongoClientOptions options = MongoClientOptions.builder()
+        .connectTimeout(3000)//连接超时
+        .heartbeatConnectTimeout(3000)//心跳超时
+        .connectionsPerHost(50)//连接数
+        .threadsAllowedToBlockForConnectionMultiplier(50)//每个线程允许等待数
+        .build();
+MongoCredential credential = MongoCredential.createCredential("","","".toCharArray());//用户 数据库 密码
+ServerAddress address = new ServerAddress("" , 27017);
+MongoClient client = new MongoClient(address, credential, options);//地址 密码 配置
+MongoDatabase db = client.getDatabase("");//获取连接 直接使用，不用close
+MongoCollection<Document> coll = db.getCollection("");//获取连接
+FindIterable<Document> datas = coll.find();//查询
+Bson bson = new BasicDBObject();
+coll.updateOne(bson, bson);//更新
+coll.updateMany(bson, bson);//更新多个
+Document document = new Document();
+coll.insertOne(document);//插入
+coll.insertMany(new LinkedList(){{
+    add(document);
+}});//插入多个
+coll.deleteOne(bson);//删除
+coll.deleteMany(bson);//删除多个
+============================================================

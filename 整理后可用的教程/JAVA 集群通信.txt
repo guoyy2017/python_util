@@ -1,0 +1,9 @@
+JGROUPS
+JGroups 是一个集群通讯类库
+maven 地址
+<!-- https://mvnrepository.com/artifact/org.jgroups/jgroups -->
+<dependency>
+    <groupId>org.jgroups</groupId>
+    <artifactId>jgroups</artifactId>
+    <version>4.0.18.Final</version>
+</dependency>

@@ -1,0 +1,22 @@
+Tablesaw可以轻松地在Java中进行数据分析
+Tableasaw需要Java 8或更高版本
+https://jtablesaw.github.io/tablesaw/gettingstarted
+
+=============================================================================
+maven 地址
+<!-- https://mvnrepository.com/artifact/tech.tablesaw/tablesaw-core -->
+<dependency>
+    <groupId>tech.tablesaw</groupId>
+    <artifactId>tablesaw-core</artifactId>
+    <version>0.32.0</version>
+</dependency>
+
+=============================================================================
+
+
+=============================================================================
+JAVA 教程
+基于列操作
+
+
+=============================================================================

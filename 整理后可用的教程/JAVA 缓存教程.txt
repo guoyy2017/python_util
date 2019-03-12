@@ -1,0 +1,13 @@
+ehcache
+<!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
+<dependency>
+    <groupId>org.ehcache</groupId>
+    <artifactId>ehcache</artifactId>
+    <version>3.7.0</version>
+</dependency>
+
+
+=============================================================================
+JAVA 教程
+
+=============================================================================
