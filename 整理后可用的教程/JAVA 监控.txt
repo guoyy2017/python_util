@@ -1,0 +1,60 @@
+Metrics 一款监控指标的度量类库
+Metrics提供了Gauge、Counter、Meter、Histogram、Timer等度量工具类以及Health Check功能
+Ganglia和Graphite以提供图形化的监控
+
+==========================================================================================
+metrics-core 核心库
+<!-- https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-core -->
+<dependency>
+    <groupId>io.dropwizard.metrics</groupId>
+    <artifactId>metrics-core</artifactId>
+    <version>4.0.5</version>
+</dependency>
+心跳检测库
+<!-- https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-healthchecks -->
+<dependency>
+    <groupId>io.dropwizard.metrics</groupId>
+    <artifactId>metrics-healthchecks</artifactId>
+    <version>4.0.5</version>
+</dependency>
+页面展示数据
+<!-- https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-servlets -->
+<dependency>
+    <groupId>io.dropwizard.metrics</groupId>
+    <artifactId>metrics-servlets</artifactId>
+    <version>4.0.5</version>
+</dependency>
+集成到ganglia
+<!-- https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-ganglia -->
+<dependency>
+    <groupId>io.dropwizard.metrics</groupId>
+    <artifactId>metrics-ganglia</artifactId>
+    <version>3.2.6</version>
+</dependency>
+集成到graphite
+<!-- https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-graphite -->
+<dependency>
+    <groupId>io.dropwizard.metrics</groupId>
+    <artifactId>metrics-graphite</artifactId>
+    <version>4.0.5</version>
+</dependency>
+
+metrics-json提供了json格式的序列化。
+以及为其它库提供度量的能力
+metrics-ehcache
+metrics-httpclient
+metrics-jdbi
+metrics-jersey
+metrics-jetty
+metrics-log4j
+metrics-logback
+metrics-jvm
+metrics-servlet 注意不是metrics-servlets
+==========================================================================================
+输出
+ConsoleReporter -> stdout
+CsvReporter -> csv
+Slf4jReporter -> slf4j log
+GangliaReporter -> Ganglia
+GraphiteReporter -> Graphite
+==========================================================================================

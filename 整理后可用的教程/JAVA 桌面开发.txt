@@ -1,0 +1,2 @@
+BeautyEye是一款Java Swing跨平台外观（look and feel）实现
+https://github.com/JackJiang2011/beautyeye

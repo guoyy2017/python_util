@@ -1,0 +1,52 @@
+=========================MemSQL================================
+MemSQL 世界上最快的关系数据库
+https://www.oschina.net/p/memsql
+https://www.memsql.com/
+暂时下载地址
+http://download.memsql.com/8ad45ff955fe4a1989b788c98e3c7fb4/memsqlbin_amd64.tar.gz
+
+==========================Apache Ignite===============================
+Apache Ignite的特性看，它就是一个关系型的内存数据库
+
+
+=========================================================
+
+
+=========================JAVA H2================================
+java h2 数据库
+<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <version>1.4.199</version>
+    <scope>test</scope>
+</dependency>
+=========================================================
+
+
+=========================VOLTDB================================
+https://www.ibm.com/developerworks/cn/opensource/os-voltdb/
+https://github.com/VoltDB/voltdb
+-- 服务器
+<!-- https://mvnrepository.com/artifact/org.voltdb/voltdb -->
+<dependency>
+    <groupId>org.voltdb</groupId>
+    <artifactId>voltdb</artifactId>
+    <version>8.4.1</version>
+</dependency>
+-- 内嵌使用
+<!-- https://mvnrepository.com/artifact/com.playtika.testcontainers/embedded-voltdb -->
+<dependency>
+    <groupId>com.playtika.testcontainers</groupId>
+    <artifactId>embedded-voltdb</artifactId>
+    <version>1.19</version>
+</dependency>
+-- 客户端
+<!-- https://mvnrepository.com/artifact/org.voltdb/voltdbclient -->
+<dependency>
+    <groupId>org.voltdb</groupId>
+    <artifactId>voltdbclient</artifactId>
+    <version>8.4.1</version>
+</dependency>
+
+=========================================================

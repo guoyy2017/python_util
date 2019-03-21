@@ -1,0 +1,74 @@
+Apache Camel 轻量级的集成框架
+<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-core -->
+<dependency>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-core</artifactId>
+    <version>2.23.1</version>
+</dependency>
+
+Camel Atom support
+<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-atom -->
+<dependency>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-atom</artifactId>
+    <version>2.23.1</version>
+</dependency>
+
+Camel FTP support
+<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-ftp -->
+<dependency>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-ftp</artifactId>
+    <version>2.23.1</version>
+</dependency>
+
+Camel Quartz support
+<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-quartz -->
+<dependency>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-quartz</artifactId>
+    <version>2.23.1</version>
+</dependency>
+
+Camel RabbitMQ Component
+<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-rabbitmq -->
+<dependency>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-rabbitmq</artifactId>
+    <version>2.23.1</version>
+</dependency>
+
+
+
+========================================================================================
+教程
+camel 组件
+vm 异步并且是跨camelContext
+direct-vm 同步且跨camelContext
+seda 异步不跨camelContext
+direct 同步且不跨camelContext
+
+camel-core模块包含了13个非常有用的组件
+操作文件(File组件和FTP组件)
+异步消息(JMS组件)
+Camel提供了5个组件供访问数据库
+1、JDBC组件---在Camel路由中访问JDBC API；
+2、SQL组件---支持在组件的URI中直接写sql语句，进行简单的查询；
+3、JPA组件---使用JPA框架映射java对象到关系数据库中；
+4、Hibernate组件---使用hibernate组件序列化java对象。由于license的不兼容，这个组件没有随camel项目一起发布。你可以在Camel扩展项目中找到：http://code.google.com/p/camel-extra
+5、ibatis组件---允许您将Java对象映射到关系数据库。
+
+Timer和Quartz组件
+
+========================================================================================
+使用
+一个典型的Camel 应用按照下面几个步骤执行。
+
+1. 创建一个CamelContext对象。
+2. 向CamelContext对象中添加Endpoints或者是Components
+3. 向CamelContext对象中添加路由(routes)规则
+4. 调用CamelContext的start() 方法，这样可以启动Camel内部有关消息发送，接收，处理所使用的线程。
+5. 当调用CamelContext的stop() 方法时，Camel 会将妥善关闭所有endpoint和Camel内部的线程。注意在调用CamelContext.start() 方法时并不一定阻塞， 而是在启动完每个Comonent和Endpoint的内部线程后start() 方法返回。而CamelContext.stop()方法会等待所有Endpoint和Component的内部线程都结束后 stop() 方法才返回。如果你没有在你的Camel 应用程序中调用CamelContext.start() 方法，那么由于内部线程并没有被创建那些消息将不会被处理。 如果你没有在你的Camel应用程序中调用CamelContext.stop()方法，那你你的应用将不会正常退出。如果你在一个JUnit 测试没有调用CamelContext.stop()方法，这可能会造成消息不能被完整地处理，而导致测试运行失败。
+
+
+========================================================================================

@@ -1,0 +1,4 @@
+插件下载地址
+http://maven.apache.org/plugins/index.html
+jar下载地址
+https://mvnrepository.com/

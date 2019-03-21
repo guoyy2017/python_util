@@ -54,3 +54,19 @@ zkServer.sh start
 JAVA 教程
 
 =============================================================================
+
+
+java 客户端 curator
+<!-- https://mvnrepository.com/artifact/org.apache.curator/curator-framework -->
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-framework</artifactId>
+    <version>4.2.0</version>
+</dependency>
+
+
+=============================================================================
+JAVA 教程
+
+=============================================================================
+

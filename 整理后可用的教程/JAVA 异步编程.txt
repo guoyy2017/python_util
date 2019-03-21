@@ -51,6 +51,26 @@ YieldingWaitStrategy： 通过Thread.yield()主动放弃执行，通过线程调
 
 
 
+=======================================================================================
+JAVA8 CompletableFuture 异步编程
+https://my.oschina.net/JackieRiver/blog/2054472
+教程
+https://www.cnblogs.com/tian666/p/7840232.html
+-----------------------
+
+Guava 异步编程
+--------------------
+Futures 绑定任务和回调
+ListenableFuture 任务
+MoreExecutors  线程池
+FutureCallback 回调
+=======================================================================================
+
+
+
+
+
+
 
 
 

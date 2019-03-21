@@ -1,0 +1,22 @@
+JAVA LUA 调用
+<!-- https://mvnrepository.com/artifact/org.luaj/luaj-jse -->
+<dependency>
+    <groupId>org.luaj</groupId>
+    <artifactId>luaj-jse</artifactId>
+    <version>3.0.1</version>
+</dependency>
+
+==========================================================================================
+教程
+
+==========================================================================================
+
+
+exec 执行外部程序
+==========================================================================================
+<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-exec -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-exec</artifactId>
+    <version>1.3</version>
+</dependency>
