@@ -1,0 +1,65 @@
+-- Word文档的一切操作需求
+<!-- https://mvnrepository.com/artifact/com.aspose/aspose-words -->
+<dependency>
+    <groupId>com.aspose</groupId>
+    <artifactId>aspose-words</artifactId>
+    <version>14.7.0</version>
+</dependency>
+
+-- 操作excel.
+<!-- https://mvnrepository.com/artifact/com.aspose/aspose-cells -->
+<dependency>
+    <groupId>com.aspose</groupId>
+    <artifactId>aspose-cells</artifactId>
+    <version>8.2.1</version>
+</dependency>
+
+--
+<!-- https://mvnrepository.com/artifact/com.aspose/aspose-tasks -->
+<dependency>
+    <groupId>com.aspose</groupId>
+    <artifactId>aspose-tasks</artifactId>
+    <version>19.3</version>
+</dependency>
+
+-- Aspose Diagram 玩转Visio图
+<!-- https://mvnrepository.com/artifact/com.aspose/aspose-diagram -->
+<dependency>
+    <groupId>com.aspose</groupId>
+    <artifactId>aspose-diagram</artifactId>
+    <version>19.3</version>
+</dependency>
+
+-- 支持 PSD 层操作、旋转等操作
+<!-- https://mvnrepository.com/artifact/com.aspose/aspose-imaging -->
+<dependency>
+    <groupId>com.aspose</groupId>
+    <artifactId>aspose-imaging</artifactId>
+    <version>2.1.0.0</version>
+</dependency>
+
+-- PDF 组件，用来生成 PDF 文档而无需 Adobe Acrobat 支持
+<!-- https://mvnrepository.com/artifact/com.aspose/aspose-pdf -->
+<dependency>
+    <groupId>com.aspose</groupId>
+    <artifactId>aspose-pdf</artifactId>
+    <version>9.5.0</version>
+</dependency>
+
+-- Java应用程序中创建，读取和操作Outlook MSG，PST，EML和MHT电子邮件文件
+<!-- https://mvnrepository.com/artifact/com.aspose/aspose-email -->
+<dependency>
+    <groupId>com.aspose</groupId>
+    <artifactId>aspose-email</artifactId>
+    <version>19.3</version>
+</dependency>
+
+-- 独特的PowerPoint文档处理API
+<!-- https://mvnrepository.com/artifact/com.aspose/aspose-slides -->
+<dependency>
+    <groupId>com.aspose</groupId>
+    <artifactId>aspose-slides</artifactId>
+    <version>14.7.0</version>
+</dependency>
+
+

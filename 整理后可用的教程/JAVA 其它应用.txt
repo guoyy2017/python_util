@@ -38,6 +38,14 @@ Camel RabbitMQ Component
     <version>2.23.1</version>
 </dependency>
 
+模拟测试
+<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-test -->
+<dependency>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-test</artifactId>
+    <version>2.23.1</version>
+    <scope>test</scope>
+</dependency>
 
 
 ========================================================================================

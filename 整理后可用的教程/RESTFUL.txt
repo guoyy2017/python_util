@@ -1,0 +1,7 @@
+Jersey是JAX-RS（JSR311）开源参考实现用于构建 RESTful Web service，它包含三个部分：
+
+核心服务器（Core Server） ：通过提供JSR 311中标准化的注释和API标准化，可以用直观的方式开发RESTful Web服务。
+
+核心客户端(Core Client) ：Jersey客户端API能够帮助开发者与RESTful服务轻松通信；
+
+集成（Integration) ：Jersey还提供可以轻松继承Spring、Guice、Apache Abdera的库。

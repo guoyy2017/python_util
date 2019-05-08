@@ -64,9 +64,115 @@ java 客户端 curator
     <version>4.2.0</version>
 </dependency>
 
+高级特性
+<!-- https://mvnrepository.com/artifact/org.apache.curator/curator-recipes -->
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-recipes</artifactId>
+    <version>4.2.0</version>
+</dependency>
+
+curator-client组件可以作为zookeeper client来使用
+<!-- https://mvnrepository.com/artifact/org.apache.curator/curator-client -->
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-client</artifactId>
+    <version>4.2.0</version>
+</dependency>
+
+curator-framework：对zookeeper的底层api的一些封装
+curator-client：提供一些客户端的操作，例如重试策略等
+curator-recipes：封装了一些高级特性，如：Cache事件监听、选举、分布式锁、分布式计数器、分布式Barrier等
+
+
 
 =============================================================================
-JAVA 教程
+JAVA 教程 https://blog.csdn.net/u010889616/article/details/80209629
+String connectString = "127.0.0.1:2181";
+//创建连接 配置下重试策略
+RetryPolicy policy = new ExponentialBackoffRetry(1000, 3);
+CuratorFramework curator = CuratorFrameworkFactory.builder()
+        .retryPolicy(policy)
+        .connectString(connectString).build();
+//开启连接
+curator.start();
 
+----------连接参数----------
+连接参数
+参数名
+说明
+connectionString
+服务器列表，格式host1:port1,host2:port2,...
+retryPolicy
+重试策略,内建有四种重试策略,也可以自行实现RetryPolicy接口
+sessionTimeoutMs
+会话超时时间，单位毫秒，默认60000ms
+connectionTimeoutMs
+连接创建超时时间，单位毫秒，默认60000ms
+
+独立命名空间为“/base”  namespace("base")
+---------连接参数-----------
+
+---------------------------
+Zookeeper的节点创建模式：
+PERSISTENT：持久化
+PERSISTENT_SEQUENTIAL：持久化并且带序列号
+EPHEMERAL：临时
+EPHEMERAL_SEQUENTIAL：临时并且带序列号
+---------------------------
+
+//分布式锁
+InterProcessMutex lock = new InterProcessMutex(curator, "/sync/lock");
+//使用
+lock.acquire();
+//释放
+lock.release();
+
+-------------------------------------------------API 说明-----------------------------------------------------
+API 说明
+方法名	描述
+create()		开始创建操作， 可以调用额外的方法(比如方式mode 或者后台执行background) 并在最后调用forPath()指定要操作的ZNode
+delete()	开始删除操作. 可以调用额外的方法(版本或者后台处理version or background)并在最后调用forPath()指定要操作的ZNode
+checkExists()	开始检查ZNode是否存在的操作. 可以调用额外的方法(监控或者后台处理)并在最后调用forPath()指定要操作的ZNode
+getData()
+开始获得ZNode节点数据的操作. 可以调用额外的方法(监控、后台处理或者获取状态watch, background or get stat) 
+
+并在最后调用forPath()指定要操作的ZNode
+
+setData()	开始设置ZNode节点数据的操作. 可以调用额外的方法(版本或者后台处理) 并在最后调用forPath()指定要操作的ZNode
+getChildren()
+开始获得ZNode的子节点列表。 以调用额外的方法(监控、后台处理或者获取状态watch, background or get stat) 
+
+并在最后调用forPath()指定要操作的ZNode
+
+inTransaction()	开始是原子ZooKeeper事务. 可以复合create, setData, check, and/or delete 等操作然后调用commit()作为一个原子操作提交
+-------------------------------------------------API 说明-----------------------------------------------------
+
+特殊操作参数
+https://www.jianshu.com/p/70151fc0ef5d
+creatingParentContainersIfNeeded()接口
+使用creatingParentContainersIfNeeded()之后Curator能够自动递归创建所有所需的父节点
+
+
+重连配置
+RetryPolicy接口: 重连策略,当zookeeper失去链接时使用的"重连策略":
+<> RetryOneTime: 只重连一次.
+<> RetryNTime: 指定重连的次数N.
+<> RetryUtilElapsed: 指定最大重连超时时间和重连时间间隔,间歇性重连直到超时或者链接成功.
+<> ExponentialBackoffRetry: 基于"backoff"方式重连,和RetryUtilElapsed的区别是重连的时间间隔是动态的.
+<> BoundedExponentialBackoffRetry: 同ExponentialBackoffRetry,增加了最大重试次数的控制.
+
+
+-------------------功能---------------------
+选举
+Curator提供两种方式实现选举：LeaderSelector 和 LeaderLatch
+LeaderLatch语法较为简单一点，LeaderSelector控制度更高一些
+
+
+分布式锁
+Curator提供了InterProcessMutex类来帮助我们实现分布式锁
+使用的EPHEMERAL_SEQUENTIAL类型节点
+acquire()方法，会在给定的路径下面创建临时时序节点的时序节点
+release()方法就是释放锁，内部实现就是删除创建的EPHEMERAL_SEQUENTIAL节点
 =============================================================================
 

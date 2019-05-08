@@ -1,0 +1,5 @@
+Apache ServiceMix是小巧的开源集成容器 提供了一个由OSGI技术支持的 全面的企业预备ESB
+
+图计算框架 giraph
+Apache Giraph是一个为高可扩展性而构建的迭代图处理系统
+https://github.com/apache/giraph

@@ -1,0 +1,39 @@
+JanusGraph最大的一个好处就是：可以扩展图数据的处理，能支持实时图遍历和分析查询
+https://github.com/JanusGraph/janusgraph
+因为JanusGraph是分布式的，可以自由的扩展集群节点的，因此，它可以利用很大的集群，
+也就可以存储很大的包含数千亿个节点和边的图。由于它又支持实时、数千用户并发遍历图和分析查询图的功能。
+增加第三方的存储系统：
+Apache Cassandra®
+Apache HBase®
+Google Cloud Bigtable
+Oracle BerkeleyDB
+
+可视化存储在JanusGraph中的图数据：
+Cytoscape
+Gephi plugin for Apache TinkerPop
+Graphexp
+KeyLines by Cambridge Intelligence
+Linkurious
+
+=============================MAVEN=============================
+<!-- https://mvnrepository.com/artifact/org.janusgraph/janusgraph-core -->
+<dependency>
+    <groupId>org.janusgraph</groupId>
+    <artifactId>janusgraph-core</artifactId>
+    <version>0.3.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.janusgraph/janusgraph-cassandra -->
+<dependency>
+    <groupId>org.janusgraph</groupId>
+    <artifactId>janusgraph-cassandra</artifactId>
+    <version>0.3.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.janusgraph/janusgraph-es -->
+<dependency>
+    <groupId>org.janusgraph</groupId>
+    <artifactId>janusgraph-es</artifactId>
+    <version>0.3.1</version>
+</dependency>
+=============================MAVEN=============================
+
+NEO4j

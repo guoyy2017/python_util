@@ -1,0 +1,47 @@
+IP地址库
+<!-- https://mvnrepository.com/artifact/org.lionsoul/ip2region -->
+<dependency>
+    <groupId>org.lionsoul</groupId>
+    <artifactId>ip2region</artifactId>
+    <version>1.7.2</version>
+</dependency>
+https://gitee.com/lionsoul/ip2region
+
+异步 http请求
+<!-- https://mvnrepository.com/artifact/org.asynchttpclient/async-http-client -->
+<dependency>
+    <groupId>org.asynchttpclient</groupId>
+    <artifactId>async-http-client</artifactId>
+    <version>2.8.1</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.ning/async-http-client -->
+<dependency>
+    <groupId>com.ning</groupId>
+    <artifactId>async-http-client</artifactId>
+    <version>1.9.40</version>
+</dependency>
+
+java 注解
+<!-- https://mvnrepository.com/artifact/javax.inject/javax.inject -->
+<dependency>
+    <groupId>javax.inject</groupId>
+    <artifactId>javax.inject</artifactId>
+    <version>1</version>
+</dependency>
+
+TensorFlow机器智能库的纯Java代码。
+<!-- https://mvnrepository.com/artifact/org.tensorflow/libtensorflow -->
+<dependency>
+    <groupId>org.tensorflow</groupId>
+    <artifactId>libtensorflow</artifactId>
+    <version>1.13.1</version>
+</dependency>
+依赖于平台的本机代码，支持TensorFlow Java库的GPU（CUDA）
+<!-- https://mvnrepository.com/artifact/org.tensorflow/libtensorflow_jni_gpu -->
+<dependency>
+    <groupId>org.tensorflow</groupId>
+    <artifactId>libtensorflow_jni_gpu</artifactId>
+    <version>1.13.1</version>
+</dependency>
+
