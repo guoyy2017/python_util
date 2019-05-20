@@ -1,0 +1,28 @@
+安装docker
+安装
+yum -y install yum-utils
+设置阿里云镜像源
+yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+安装docker
+yum install docker-ce
+安装docker-compose
+pip install docker-compose
+启动docker
+service docker start
+
+Portainer是Docker的图形化管理工具
+
+docker search portainer
+docker pull portainer/portainer
+docker run -d -p 9000:9000 \
+    --restart=always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    --name prtainer-test \
+    portainer/portainer
+
+安装本地镜像仓库
+下载地址
+https://github.com/goharbor/harbor/releases
+
+
+

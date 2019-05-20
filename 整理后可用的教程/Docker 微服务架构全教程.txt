@@ -1,0 +1,58 @@
+gitlab 搭建
+================================================================================================
+docker search gitlab
+docker pull gitlab/gitlab-ce
+------运行---------
+docker run -d  -p 443:443 -p 80:80 -p 222:22 --name gitlab --restart always -v /home/gitlab/config:/etc/gitlab -v /home/gitlab/logs:/var/log/gitlab -v /home/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce
+# -d：后台运行
+# -p：将容器内部端口向外映射
+# --name：命名容器名称
+# -v：将容器内数据文件夹或者日志、配置等文件夹挂载到宿主机指定目录
+------运行---------
+
+修改配置
+# gitlab.rb文件内容默认全是注释
+$ vim /home/gitlab/config/gitlab.rb
+----配置-----
+# 配置http协议所使用的访问地址,不加端口号默认为80
+external_url 'http://192.168.199.231'
+# 配置ssh协议所使用的访问地址和端口
+gitlab_rails['gitlab_ssh_host'] = '192.168.199.231'
+gitlab_rails['gitlab_shell_ssh_port'] = 222 # 此端口是run时22端口映射的222端口
+
+----配置-----
+
+docker restart gitlab
+
+访问
+http://127.0.0.1/
+设置密码 ***
+登录用 root／***
+
+配置systemhook(webhook)
+
+================================================================================================
+
+jenkins
+================================================================================================
+docker search jenkins
+docker pull jenkins/jenkins
+----运行----
+docker run -p 8080:8080 -p 50000:50000 -d  -v /home/jenkins-home-docker:/var/jenkins_home  jenkins/jenkins:lts
+
+登录
+http://127.0.0.1:8080
+获取token
+通过 docker logs *** 查看日志获取token
+
+插件检索地址
+https://plugins.jenkins.io/
+================================================================================================
+
+
+搭建maven私服
+nexus3
+================================================================================================
+docker search nexus3
+docker pull sonatype/nexus3
+================================================================================================

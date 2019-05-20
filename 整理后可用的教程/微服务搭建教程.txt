@@ -1,0 +1,519 @@
+微服务搭建需要几个条件
+1、服务部署方式
+    gitlab+Jenkins+Docker+k8s
+    I、先建立gitlab代码库
+        docker search gitlab
+        docker pull gitlab/gitlab-ce
+        ------运行---------
+        docker run -d  -p 443:443 -p 80:80 -p 222:22 --name gitlab --restart always -v /home/gitlab/config:/etc/gitlab -v /home/gitlab/logs:/var/log/gitlab -v /home/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce
+        # -d：后台运行
+        # -p：将容器内部端口向外映射
+        # --name：命名容器名称
+        # -v：将容器内数据文件夹或者日志、配置等文件夹挂载到宿主机指定目录
+        ------运行---------
+        添加webhook Jenkins的回调地址
+    II、部署Jenkins项目(集群)
+        下载
+        https://jenkins.io/download/
+        安装插件
+        git插件
+        SSH plugin
+        Gitlab Hook Plugin 插件
+        Kubernetes Plugin
+
+        启动
+        java -jar jenkins.war --httpPort=8000
+        安装
+        java
+        maven
+
+        执行上传docker私有仓库：sh或者Docker相关的Jekins插件
+
+    III、搭建Docker私有镜像仓库
+        Harbor 企业级docker仓库
+            安装过程
+                安装Harbor需要先安装docker和docker-compose
+                安装Docker yum 出错，修改yum源信息
+                yum install docker-ce
+                ### 下载源安装https://download.docker.com/linux/centos/7/x86_64/stable/Packages/
+                启动Docker
+                systemctl start docker
+                安装docker-compose
+                如果pip 没有 yum install python-pip
+                pip install  docker-compose
+                验证安装
+                docker-compose --version
+                安装Harbor
+                分在线和离线两种
+                在线
+                https://github.com/vmware/harbor/releases/download/v1.2.0/harbor-online-installer-v1.2.0.tgz
+                离线
+                https://github.com/vmware/harbor/releases/download/v1.2.0/harbor-offline-installer-v1.2.0.tgz
+
+                wget -P /usr/local/src/ ***.tgz
+
+                修改配置文件
+                配置文件为：/usr/local/harbor/harbor.cfg
+                ======================================
+                # vim /usr/local/harbor/harbor.cfg
+                hostname = rgs.unixfbi.com
+                #邮箱配置
+                email_server = smtp.qq.com
+                email_server_port = 25
+                email_username = unixfbi@unixfbi.com
+                email_password =12345678
+                email_from = UnixFBI <unixfbi@unixfbi.com>
+                email_ssl = false
+                #禁止用户注册
+                self_registration = off
+                #设置只有管理员可以创建项目
+                project_creation_restriction = adminonly
+                ======================================
+                下载
+                https://github.com/goharbor/harbor/releases
+
+                cd /usr/local/src/
+                tar zxf harbor-online-installer-v1.2.0.tgz  -C /usr/local/
+                cd /usr/local/harbor/
+
+                ************************************************
+                配置文件/usr/local/harbor/harbor.cfg
+                hostname = rgs.unixfbi.com
+                #邮箱配置
+                email_server = smtp.qq.com
+                email_server_port = 25
+                email_username = unixfbi@unixfbi.com
+                email_password =12345678
+                email_from = UnixFBI <unixfbi@unixfbi.com>
+                email_ssl = false
+                #禁止用户注册
+                self_registration = off
+                #设置只有管理员可以创建项目
+                project_creation_restriction = adminonly
+                ************************************************
+
+                执行安装脚本
+                /usr/local/harbor/install.sh
+
+                查看Harbor
+                cd /usr/local/harbor/
+                docker-compose ps
+
+                启动Harbor
+                # docker-compose start
+                停止Harbor
+                # docker-comose stop
+                重启Harbor
+                # docker-compose restart
+
+                访问
+                默认账号密码： admin / Harbor12345
+
+    IV、k8s集群安装
+        master 主机
+            安装 etcd
+            yum install etcd
+            修改配置文件 /etc/etcd/etcd.conf
+            +++++++++++++++++++++++++++++++++
+            ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
+            ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
+            ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"
+            +++++++++++++++++++++++++++++++++
+            启动服务
+            systemctl restart etcd
+
+            运行master 组件
+            mkdir -p /opt/kubernetes/{bin,cfg}
+            chmod +x *
+            mv kube-apiserver kube-controller-manager kube-scheduler kubectl /opt/kubernetes/bin
+            ./apiserver.sh 192.168.1.198 http://192.168.1.198:2379
+            ./scheduler.sh 192.168.1.198
+            ./controller-manager.sh 192.168.1.198
+            echo "export PATH=$PATH:/opt/kubernetes/bin" >> /etc/profile
+            source /etc/profile
+
+        node 主机
+            mkdir -p /opt/kubernetes/{bin,cfg}
+            chmod +x *
+            mv kubelet kube-proxy /opt/kubernetes/bin
+            ./kubelet.sh 192.168.1.198 192.168.1.200 10.10.10.2
+            ./proxy.sh 192.168.1.198 192.168.1.200
+
+        查看集群状态
+            kubectl get node
+            kubectl get componentstatus
+
+2、maven 私有仓库安装
+    下载地址
+    https://www.sonatype.com/download-oss-sonatype
+    下载完，执行
+    **/bin 下执行nexus install
+    启动nexus服务
+    访问
+    http://localhost:8081/nexus
+    本地修改配置 访问私有服务
+
+
+
+========================================================================
+docker 命令
+    run 创建一个新的容器并运行一个命令
+        docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+    start 启动一个或多个已经被停止的容器
+    stop 停止一个运行中的容器
+    restart 重启容器
+        docker start [OPTIONS] CONTAINER [CONTAINER...]
+        docker stop [OPTIONS] CONTAINER [CONTAINER...]
+        docker restart [OPTIONS] CONTAINER [CONTAINER...]
+    exec 在运行的容器中执行命令
+        docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+    kill 杀掉一个运行中的容器
+        docker kill [OPTIONS] CONTAINER [CONTAINER...]
+    rm 删除一个或多少容器
+        docker rm [OPTIONS] CONTAINER [CONTAINER...]
+    pause 暂停容器中所有的进程
+    unpause 恢复容器中所有的进程
+        docker pause [OPTIONS] CONTAINER [CONTAINER...]
+        docker unpause [OPTIONS] CONTAINER [CONTAINER...]
+    create 创建一个新的容器但不启动它
+        docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+    ps 列出容器
+        docker ps [OPTIONS]
+    top 查看容器中运行的进程信息，支持 ps 命令参数
+        docker top [OPTIONS] CONTAINER [ps OPTIONS]
+    inspect 获取容器/镜像的元数据
+        docker inspect [OPTIONS] NAME|ID [NAME|ID...]
+    attach 连接到正在运行中的容器
+        docker attach [OPTIONS] CONTAINER
+    events 从服务器获取实时事件
+        docker events [OPTIONS]
+    logs 获取容器的日志
+        docker logs [OPTIONS] CONTAINER
+    wait 阻塞运行直到容器停止，然后打印出它的退出代码
+        docker wait [OPTIONS] CONTAINER [CONTAINER...]
+    export :将文件系统作为一个tar归档文件导出到STDOUT
+        docker export [OPTIONS] CONTAINER
+    port 列出指定的容器的端口映射，或者查找将PRIVATE_PORT NAT到面向公众的端口
+        docker port [OPTIONS] CONTAINER [PRIVATE_PORT[/PROTO]]
+
+    login 登陆到一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
+    logout 登出一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
+        docker login [OPTIONS] [SERVER]
+        docker logout [OPTIONS] [SERVER]
+    pull 从镜像仓库中拉取或者更新指定镜像
+         docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+    push 将本地的镜像上传到镜像仓库,要先登陆到镜像仓库
+        docker push [OPTIONS] NAME[:TAG]
+    search 从Docker Hub查找镜像
+        docker search [OPTIONS] TERM
+
+    import 从归档文件中创建镜像。
+        docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
+    load 导入使用 docker save 命令导出的镜像
+        docker load [OPTIONS]
+    save 将指定镜像保存成 tar 归档文件
+        docker save [OPTIONS] IMAGE [IMAGE...]
+    history 查看指定镜像的创建历史。
+        docker history [OPTIONS] IMAGE
+    build 命令用于使用 Dockerfile 创建镜像
+        docker build [OPTIONS] PATH | URL | -
+    tag 标记本地镜像，将其归入某一仓库
+        docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
+    rmi 删除本地一个或多少镜像
+        docker rmi [OPTIONS] IMAGE [IMAGE...]
+    images 列出本地镜像
+        docker images [OPTIONS] [REPOSITORY[:TAG]]
+
+    network 网络命令
+        docker network create
+        docker network connect
+        docker network ls
+        docker network rm
+        docker network disconnect
+        docker network inspect
+        bridge 网络驻留在运行Docker Engine实例的单个主机上。
+        overlay 网络可跨越运行Docker Engine的多个主机
+------------------------------------------------------------------
+docker-compose 命令
+    默认执行 docker-compose.yml
+    up 进行创建并启动容器
+    ps 查看启动容器状态
+    config 查看配置文件内容
+    down 停止 删除容器、网络、镜像、数据卷
+    exec 执行容器中命令
+    images 列出命令 -q 列出镜像ID
+    kill 杀死容器
+    logs 日志输出
+    pause 暂停服务service
+    unpause 恢复服务service
+    port 查看端口映射
+    restart 重启service
+    rm 删除已经停止的服务容器，没有停止删除不了
+    run 运行一次性命令
+    scale 扩展容器，为service设置多个容器
+    top 显示运行进程
+------------------------------------------------------------------
+k8s 命令
+    docker本地运行kubernetes
+    命令行 kubectl
+------------------------------------------------------------------
+kompose 命令
+
+------------------------------------------------------------------
+minikube 单机测试使用k8s
+https://github.com/kubernetes/minikube
+阿里云国内地址
+https://github.com/AliyunContainerService/minikube
+启动
+chmod +x minikube
+mv minikube /usr/local/bin
+minikube start --registry-mirror=https://registry.docker-cn.com
+
+--mac 安装过程
+先安装docker VirtualBox
+brew install kubernetes-cli
+brew cask install minikube
+启动
+minikube start
+查看
+kubectl version
+可视化界面
+minikube dashboard
+------------------------------------------------------------------
+配置docker 镜像地址
+创建 /etc/docker/daemon.json 文件
+{
+  "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]
+}
+
+------------------------------------------------------------------
+zookeeper 集群部署 （docker部署）
+https://hub.docker.com/_/zookeeper
+1、docker pull zookeeper
+2、编辑文件 docker-compose.yml
+内容
+*****************************************************************
+version: '3.1'
+
+services:
+  zoo1:
+    image: zookeeper
+    restart: always
+    hostname: zoo1
+    ports:
+      - 2181:2181
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+
+  zoo2:
+    image: zookeeper
+    restart: always
+    hostname: zoo2
+    ports:
+      - 2182:2181
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
+
+  zoo3:
+    image: zookeeper
+    restart: always
+    hostname: zoo3
+    ports:
+      - 2183:2181
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+*****************************************************************
+3、启动 docker-compose up
+
+------------------------------------------------------------------
+DockerFile 配置说明
+******************************************************************
+FROM 功能为指定基础镜像，并且必须是第一条指令
+    FROM <image>
+    FROM <image>:<tag>
+    FROM <image>:<digest>
+RUN 功能为运行指定的命令
+    RUN <command>
+    RUN ["executable", "param1", "param2"]
+CMD 功能为容器启动时要运行的命令
+    CMD ["executable","param1","param2"]
+    CMD ["param1","param2"]
+    CMD command param1 param2
+LABEL 功能是为镜像指定标签
+    LABEL <key>=<value> <key>=<value> <key>=<value> ...
+MAINTAINER 指定作者
+    MAINTAINER <name>
+EXPOSE 功能为暴漏容器运行时的监听端口给外部
+    但是EXPOSE并不会使容器访问主机的端口
+    如果想使得容器与主机的端口有映射关系，必须在容器启动的时候加上 -P参数
+ENV 功能为设置环境变量
+    ENV <key> <value>
+    ENV <key>=<value> ...
+ADD 一个复制命令，把文件复制到镜像中
+    ADD <src>... <dest>
+    ADD ["<src>",... "<dest>"]
+COPY 看这个名字就知道，又是一个复制命令 COPY的<src>只能是本地文件
+    COPY <src>... <dest>
+    COPY ["<src>",... "<dest>"]
+ENTRYPOINT 功能是启动时的默认命令  只能写一条，如果写了多条，那么只有最后一条生效
+    ENTRYPOINT ["executable", "param1", "param2"]
+    ENTRYPOINT command param1 param2
+VOLUME 可实现挂载功能，可以将内地文件夹或者其他容器种得文件夹挂在到这个容器种
+    VOLUME ["/data"]
+USER 设置启动容器的用户，可以是用户名或UID
+    USER daemo
+    USER UID
+WORKDIR 设置工作目录，对RUN,CMD,ENTRYPOINT,COPY,ADD生效。如果不存在则会创建，也可以设置多次
+    WORKDIR /path/to/workdir
+ARG 设置变量命令，ARG命令定义了一个变量，在docker build创建镜像的时候，使用 --build-arg <varname>=<value>来指定参数
+    ARG <name>[=<default value>]
+ONBUILD 这个命令只对当前镜像的子镜像生效。
+    ONBUILD [INSTRUCTION]
+STOPSIGNAL STOPSIGNAL命令是的作用是当容器推出时给系统发送什么样的指令
+    STOPSIGNAL signal
+HEALTHCHECK 容器健康状况检查命令
+    HEALTHCHECK [OPTIONS] CMD command
+    HEALTHCHECK NONE
+        [OPTIONS]的选项支持以下三中选项：
+        --interval=DURATION 两次检查默认的时间间隔为30秒
+        --timeout=DURATION 健康检查命令运行超时时长，默认30秒
+        --retries=N 当连续失败指定次数后，则容器被认为是不健康的，状态为unhealthy，默认次数是3
+        CMD后边的命令的返回值决定了本次健康检查是否成功，具体的返回值如下：
+        0: success - 表示容器是健康的
+        1: unhealthy - 表示容器已经不能工作了
+        2: reserved - 保留值
+******************************************************************
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+html 搭建桌面程序
+https://electronjs.org
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+------------------------------------------------------------------------------------------
+consul 服务注册和配置
+
+*****************docker*************************
+docker-compose.yml
+version: '2.0'
+services:
+    consul-server1:
+        image: consul:latest
+        hostname: "consul-server1"
+        ports:
+            - "8501:8500"
+        volumes:
+            - ./consul/data1:/consul/data
+        command: "agent -server -bootstrap-expect 3 -ui -disable-host-node-id -client 0.0.0.0"
+    consul-server2:
+        image: consul:latest
+        hostname: "consul-server2"
+        ports:
+            - "8502:8500"
+        volumes:
+            - ./consul/data2:/consul/data
+        command: "agent -server -ui -join consul-server1 -disable-host-node-id -client 0.0.0.0"
+        depends_on:
+            - consul-server1
+    consul-server3:
+        image: consul:latest
+        hostname: "consul-server3"
+        ports:
+            - "8503:8500"
+        volumes:
+            - ./consul/data3:/consul/data
+        command: "agent -server -ui -join consul-server1 -disable-host-node-id -client 0.0.0.0"
+        depends_on:
+            - consul-server1
+    consul-node1:
+        image: consul:latest
+        hostname: "consul-node1"
+        command: "agent -join consul-server1 -disable-host-node-id"
+        depends_on:
+            - consul-server1
+    consul-node2:
+        image: consul:latest
+        hostname: "consul-node2"
+        command: "agent -join consul-server1 -disable-host-node-id"
+        depends_on:
+            - consul-server1
+
+*****************docker*************************
+操作
+创建并启动集群：docker-compose up -d
+停止整个集群：docker-compose stop
+启动集群：docker-compose start
+清除整个集群：docker-compose rm（注意：需要先停止）
+
+安装
+下载
+https://www.consul.io/downloads.html
+
+
+启动服务
+启动服务端
+consul agent -server -bind=10.0.xx.55 -client=0.0.0.0 -bootstrap-expect=3 -data-dir=/data/application/consul_data/ -node=server1
+consul agent -server ****
+*** 参数如下
+-server 表示是以服务端身份启动
+-bind 表示绑定到哪个ip（有些服务器会绑定多块网卡，可以通过bind参数强制指定绑定的ip）
+-client 指定客户端访问的ip(consul有丰富的api接口，这里的客户端指浏览器或调用方)，0.0.0.0表示不限客户端ip
+-bootstrap-expect=3 表示server集群最低节点数为3，低于这个值将工作不正常(注：类似zookeeper一样，通常集群数为奇数，方便选举，consul采用的是raft算法)
+-data-dir 表示指定数据的存放目录（该目录必须存在）
+-node 表示节点在web ui中显示的名称
+
+启动客户端
+只是把-server 去掉
+consul agent -client=0.0.0.0 -data-dir=/data/application/consul_data/ -node=client1  -ui
+
+组建cluster
+3个server node + 1 client node
+
+查看成员信息
+consul members
+
+加入集群
+consul join 10.0.xx.55
+
+离开集群
+consul leave
+
+web ui
+启动consul时，加了一个  -ui 的参数 将启动consul自带的web管理界面
+访问 http://10.0.xx.205:8500/ui
+
+注册服务
+通过api 手动注册一个服务
+用postman（或其它rest api工具、curl都行），
+向 http://10.0.xx.55:8500/v1/agent/service/register ，
+发送以下json，http method指定为PUT， Content-Type指定为application/json
+
+通过rest接口，发现服务的详细信息
+http://10.0.21.55:8500/v1/agent/services
+
+服务注销
+curl -X PUT http://10.0.21.55:8500/v1/agent/service/deregister/my-service-id　
+
+dev开发者模式
+consul agent -dev
+自带了web ui，直接http://localhost:8500/
+
+
+------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+

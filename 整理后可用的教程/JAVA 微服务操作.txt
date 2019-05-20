@@ -1,0 +1,45 @@
+ZIPKIN 用法
+========================================================================
+
+wget -O zipkin.jar 'https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec'
+java -jar zipkin.jar
+
+基于Undertow WEB服务器，提供对外端口：9411，可以打开浏览器访问http://ip:9411
+
+zipkin 结合mysql|es实现数据持久化
+采用Kafka作为数据收集器
+Rabbitmq 实现中间存储
+
+========================================================================
+
+
+分布式缓存管理平台XXL-CACHE
+========================================================================
+http://www.xuxueli.com/xxl-cache/#/
+https://github.com/xuxueli/xxl-cache
+========================================================================
+
+分库分表
+========================================================================
+Mycat
+当当自研的数据库中间层 Sharding-JDBC
+https://blog.csdn.net/shf4715/article/details/82961474
+Sharding-JDBC共有3个主要模块，分别为Sharding-JDBC、Sharding-Proxy、Sharding-Sidecar
+
+========================================================================
+
+配置中心
+========================================================================
+disconf运行需要如下软件：mysql、nginx、tomcat、zookeeper、redis
+https://disconf.readthedocs.io/zh_CN/latest/
+<dependency>
+    <groupId>com.baidu.disconf</groupId>
+    <artifactId>disconf-client</artifactId>
+    <version>2.6.31</version>
+</dependency>
+========================================================================
+
+
+========================================================================
+
+========================================================================

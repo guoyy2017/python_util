@@ -1,0 +1,4 @@
+electron
+Electron是由Github开发，用HTML，CSS和JavaScript来构建跨平台桌面应用程序的一个开源库。
+Electron通过将Chromium和Node.js合并到同一个运行时环境中，
+并将其打包为Mac，Windows和Linux系统下的应用来实现这一目的。

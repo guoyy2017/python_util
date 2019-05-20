@@ -1,0 +1,37 @@
+安装
+Mac 安装说明
+=======================================================
+1.确认MAC装有g++、make、vim工具
+2.安装make工具使用brew install make
+3.去https://github.com/google/protobuf/releases下载对应的buf
+    编译：./autogen.sh 
+    在运行 ./configure
+    接着运行make，
+    结束后在运行make install
+    注释：./autogen.sh是获取GoogleMock，
+        并生成对应的configure脚本
+        ./configure是进行环境检测，
+        并生成对应的makefile或Makefile
+        --prefix=/usr/local可以指定安装路径make，
+        按照makefile编译工程make install，
+        执行makefile里面的install部分，
+        进行安装--prefix=/usr/local可以指定安装路径
+    安装完成后版本查看：
+        protoc --version
+=======================================================
+简单版直接在下面下载系统可执行程序
+https://github.com/protocolbuffers/protobuf/releases
+
+mac 执行
+brew install protobuf
+=======================================================
+protoc 教程
+参数
+--cpp_out=OUT_DIR           Generate C++ header and source.
+--csharp_out=OUT_DIR        Generate C# source file.
+--java_out=OUT_DIR          Generate Java source file.
+--javanano_out=OUT_DIR      Generate Java Nano source file.
+--js_out=OUT_DIR            Generate JavaScript source.
+--objc_out=OUT_DIR          Generate Objective C header and source.
+--python_out=OUT_DIR        Generate Python source file.
+--ruby_out=OUT_DIR          Generate Ruby source file.

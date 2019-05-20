@@ -1,0 +1,9 @@
+Doozer 是高可用的，完整一致性的用于小量、极端重要的数据的存储
+Doozer 对于名字服务、主数据库选取和多个设备之间的配置数据同步很适合。
+https://github.com/ha/doozerd/downloads
+
+etcd 是一个高可用的 Key/Value 存储系统，主要用于分享配置和服务发现
+简单：支持 curl 方式的用户 API (HTTP+JSON)
+安全：可选 SSL 客户端证书认证
+快速：单实例可达每秒 10000 次写操作
+可靠：使用 Raft 实现分布式
