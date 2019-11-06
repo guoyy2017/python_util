@@ -46,3 +46,14 @@ jar包
 ==========================================
 
 IDEA actiBPM 插件安装
+
+
+osworkflow
+https://www.cnblogs.com/nucdy/p/7573603.html
+<!-- https://mvnrepository.com/artifact/com.trunkplatform.opensymphony/osworkflow -->
+<dependency>
+    <groupId>com.trunkplatform.opensymphony</groupId>
+    <artifactId>osworkflow</artifactId>
+    <version>3.2.5</version>
+</dependency>
+

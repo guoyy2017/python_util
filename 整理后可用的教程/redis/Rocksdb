@@ -1,0 +1,13 @@
+中文地址
+开源的RocksDB就是FaceBook开放的一种嵌入式、持久化存储、KV型且非常适用于fast storage的存储引擎
+https://rocksdb.org.cn/doc/RocksJava-Basics.html
+<!-- https://mvnrepository.com/artifact/org.rocksdb/rocksdbjni -->
+<dependency>
+    <groupId>org.rocksdb</groupId>
+    <artifactId>rocksdbjni</artifactId>
+    <version>6.2.4</version>
+</dependency>
+
+
+使用说明
+

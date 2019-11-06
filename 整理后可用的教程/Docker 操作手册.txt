@@ -1,0 +1,17 @@
+Docker 命令和操作
+=============
+获取最小的linux
+docker pull alpine
+
+1、dockerfile 编写
+
+2、docker-compose 编写
+先下载安装 pip install docker-compose
+
+3、docker-swarm 管理
+先下载镜像 docker pull swarm
+docker 集群管理 需要每台客户机都下载
+
+4、Rancher
+Rancher是一个开源的企业级容器管理平台
+docker pull rancher/server

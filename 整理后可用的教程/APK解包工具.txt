@@ -1,0 +1,52 @@
+apktool
+https://ibotpeaches.github.io/Apktool/install/
+https://bitbucket.org/iBotPeaches/apktool/downloads/
+解压命令
+apktool d xxxxxx.apk ABC
+
+apk manager 另一个“apk反编译利器”
+
+smali2java
+https://github.com/AlexeySoshin/smali2java
+
+https://github.com/demitsuri/smali2java
+
+apktool使用
+a.准备条件
+1.配置好Java环境
+2.下载最新版的apktool的jar包:
+https://bitbucket.org/iBotPeaches/apktool/downloads
+3.测试用的任意.apk安装包: xxx.apk
+b.步骤
+1.打开cmd命令行，进入apktool.jar和xxx.apk所在的文件夹（置于同一个文件夹，方便操作）
+2.输入java -jar apktool.jar，可以看到相关的使用命令的提示，d是反编译指令
+
+
+
+
+
+
+
+3.再输入java -jar apktool.jar d xxx.apk，即可完成反编译
+
+
+
+
+
+3.png
+
+4.得到的文件有manifest文件和res下的资源文件，还有smali文件（可理解为运行在JVM的语言）
+
+
+
+
+
+4.png
+
+另外，直接修改.apk包后缀为.zip然后解压，也可以获取到app的相关资源文件，但xml文件是经过编译的机器码，而通过apktool可以得到未编译的xml文件。
+扩展阅读：Android APK反编译详解
+dex2jar使用
+a.下载 dex2jar，并解压
+b.下载class反编译工具 jd-gui，并解压
+c.将测试的安装包xxx.apk后缀改为.zip，解压后拷贝classes.dex文件到dex2jar文件目录下，cmd进入改目录，执行dex2jar.bat classes.dex命令，会生成classes-dex2jar.jar文件；
+d.打开jd-gui工具，然后将生成的classes-dex2jar.jar文件拖进去，即可看见反编译的文件

@@ -1,0 +1,17 @@
+下载地址
+https://github.com/JohnSully/KeyDB
+执行
+./keydb-server
+带配置文件
+./keydb-server /path/to/keydb.conf
+带参数
+./keydb-server --port 9999 --replicaof 127.0.0.1 6379
+客户端命令
+./keydb-cli
+安装直接命令使用
+install KeyDB binaries into /usr/local/bin
+make install
+
+便捷方式使用docker 镜像
+Pull the latest image with docker pull eqalpha/keydb:unstable or to get the flash build docker pull eqalpha/keydb:unstable-flash
+docker pull eqalpha/keydb

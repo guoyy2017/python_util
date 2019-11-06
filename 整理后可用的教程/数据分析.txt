@@ -1,0 +1,6 @@
+http://kylin.apache.org/cn/
+OLAP 工具，亚秒查询hadoop
+
+消息存储 append-only
+BookKeeper是一个可靠的日志流记录系统
+https://bookkeeper.apache.org/releases/

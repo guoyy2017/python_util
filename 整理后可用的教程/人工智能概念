@@ -1,0 +1,6 @@
+seq2seq模型
+https://blog.csdn.net/wangyangzhizhou/article/details/77883152
+循环神经网络包括RNN、LSTM和GRU
+RNN http://blog.csdn.net/wangyangzhizhou/article/details/76278375
+LSTM http://blog.csdn.net/wangyangzhizhou/article/details/76651116
+GRU则是LSTM的一个变体. https://blog.csdn.net/wangyangzhizhou/article/details/77332582

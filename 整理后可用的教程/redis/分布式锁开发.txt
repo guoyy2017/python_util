@@ -1,0 +1,37 @@
+使用java redis的分布式锁工具包Redisson
+https://github.com/redisson/redisson
+教程说明
+https://github.com/redisson/redisson/wiki/%E7%9B%AE%E5%BD%95
+maven包地址
+<!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+<dependency>
+    <groupId>org.redisson</groupId>
+    <artifactId>redisson</artifactId>
+    <version>3.11.5</version>
+</dependency>
+
+
+操作说明
+Config config = new Config();
+config.useClusterServers()
+       // use "rediss://" for SSL connection
+      .addNodeAddress("redis://127.0.0.1:7181");
+// Sync and Async API
+RedissonClient redisson = Redisson.create(config);
+// Reactive API
+RedissonReactiveClient redissonReactive = Redisson.createReactive(config);
+// RxJava2 API
+RedissonRxClient redissonRx = Redisson.createRx(config);
+// 3. Get Redis based Map
+RMap<MyKey, MyValue> map = redisson.getMap("myMap");
+RMapReactive<MyKey, MyValue> mapReactive = redissonReactive.getMap("myMap");
+RMapRx<MyKey, MyValue> mapRx = redissonRx.getMap("myMap");
+// 4. Get Redis based Lock
+RLock lock = redisson.getLock("myLock");
+RLockReactive lockReactive = redissonReactive.getLock("myLock");
+RLockRx lockRx = redissonRx.getLock("myLock");
+// 4. Get Redis based ExecutorService
+RExecutorService executor = redisson.getExecutorService("myExecutorService");
+
+使用说明
+https://blog.csdn.net/u014042066/article/details/72778440

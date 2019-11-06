@@ -1,0 +1,209 @@
+https://www.cnblogs.com/hjwublog/p/10332042.html
+
+异步执行注解
+@Async
+需要启动加注解
+@EnableAsync
+
+任务注解
+@Scheduled(cron="0/5 * * * * ?")
+需要启动加注解
+@EnableScheduling
+
+任务使用线程池，需要@Bean 注解 TaskScheduler类
+
+Cloud Task 任务注解 短任务模式
+@EnableTask
+ApplicationRunner或CommandLineRunner接口来创建一个简单的Task
+TaskExecutionListener接口中注册侦听器
+Task的各个事件中触发onTaskEnd，onTaksFailed和onTaskStartup
+
+Cloud Batch 将Spring Batch Job作为Task执行 JobLauncher、Job和step
+Tasklet是一个任务单元 chunk就是数据块
+实现多Job的情况，需要把EnableBatchProcessing注解的modular设置为true
+批处理作业
+@EnableBatchProcessing注解
+Job 监听 JobExecutionListener
+对应于这个interface的annotation为：
+@BeforeJob
+@AfterJob
+
+Job 可继承 监听也继承
+
+Cloud Stream 任务
+@EnableTaskLaucnher注解
+
+@Import注解
+实例加入springIOC容器
+@Import注解只能注解在类
+配置3种类型的值Configuration，ImportSelector，ImportBeanDefinitionRegistrar
+
+
+spring banner 修改
+
+在application.properties进行配置
+### 是否显示banner，可选值[true|false]
+spring.main.show-banner=false
+
+修改banner.txt配置文件
+========
+https://www.degraeve.com/img2txt.php
+http://www.network-science.de/ascii/
+http://patorjk.com/software/taag/
+========
+在src/main/resouces下新建banner.txt，在文件中加入
+
+#这个是MANIFEST.MF文件中的版本号
+${application.version}
+#这个是上面的的版本号前面加v后上括号
+${application.formatted-version}
+#这个是springboot的版本号
+${spring-boot.version}
+#这个是springboot的版本号
+${spring-boot.formatted-version}
+
+进行设置,在Application的main方法中
+SpringApplication application = new SpringApplication(App.class);
+/*
+* Banner.Mode.OFF:关闭;
+* Banner.Mode.CONSOLE:控制台输出，默认方式;
+* Banner.Mode.LOG:日志输出方式;
+/
+application.setBannerMode(Banner.Mode.OFF*);
+application.run(args);
+
+@EnableConfigurationProperties注解的作用是使@ConfigurationProperties注解生效
+
+@EnableAutoConfiguration 这个注解的功能很重要，借助@Import的支持，收集和注册依赖包中相关的bean定义
+@AutoConfigurationPackage的作用就是自动配置的包，@Import导入需要自动配置的组件
+
+
+自定义配置文件
+@PropertySource(value = "classpath:test.properties")
+
+多个环境配置文件
+格式为application-{profile}.properties，其中{profile}对应你的环境标识，比如：
+application-test.properties：测试环境
+application-dev.properties：开发环境
+application-prod.properties：生产环境
+
+在application.yml中加
+spring:
+  profiles:
+    active: dev
+
+gRPC 使用说明
+4.1 参数配置说明
+spring.grpc.enable 是否启用 gRPC 服务端，默认 false
+spring.grpc.port 监听的端口号
+spring.grpc.remote-servers 供客户端调用的服务端列表
+
+GrpcRequest 和 GrpcResponse
+
+@RefreshScope 用来实现配置、实例热加载
+
+@Configuration 中所有带 @Bean 注解的方法都会被动态代理，因此调用该方法返回的都是同一个实例
+
+
+rabbitmq 使用
+@EnableRabbit
+@RabbitListener
+@RabbitHandler
+
+@EnableRabbit和@Configuration一起使用，可以加在类或者方法上，
+这个注解开启了容器对注册的bean的@RabbitListener检查。
+
+自定义配置文件
+@PropertySource(value = "appconfig.properties")
+
+异步执行指定线程池
+@Async("taskExecutor")
+
+
+@PropertySources 多配置文件而准备
+@PropertySource java config的注解
+@Profile("testdb") 指定配置
+
+@Bean
+@Bean是一个方法级别上的注解
+添加的bean的id为方法名
+bean的命名支持别名
+@Bean(name = { "dataSource", "subsystemA-dataSource", "subsystemB-dataSource" })
+bean的描述可以使用 @Description来提供
+
+
+RabbitMQ
+@Payload 与 @Headers
+使用 @Payload 和 @Headers 注解可以消息中的 body 与 headers 信息
+@Header String token 获取单个 Header 属性
+
+
+ComponentScanAnnotationParser 处理@ComponentScans,@ComponentScan注解
+ConfigurationClassParser 分析@Configuration注解的配置类
+由ConfigurationClassPostProcessor使用
+BeanDefinitionRegistryPostProcessor/BeanFactoryPostProcessor
+应用上下文上执行各个BeanFactoryPostProcessor时被执行
+
+
+spring.autoconfigure.exclude 禁用自动配置
+@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
+
+DataSourceAutoConfiguration禁掉，防止自动配置数据源
+@EnableTransactionManagement 并创建两个事务管理器
+@Transactional(value = "testDBaTransactionManager")
+
+mybatis
+@MapperScan("com.didispace.web.jdbc.mapper")
+
+tx-lcn 分布式事物框架
+
+dubbo整合
+spring-boot-starter-dubbo
+
+
+Mybatis 注解配置
+@Mapper 把mapper这个DAO交給Spring管理
+@Select
+
+
+
+spring.profiles.active来分区配置
+spring boot允许你通过命名约定按照一定的格式(application-{profile}.properties)来定义多个配置文件
+application.properties通过spring.profiles.active来具体激活一个或者多个配置文件
+spring boot默认会启动application-default.properties
+
+spring.profiles: testdb
+spring.profiles.include: proddb,prodmq
+
+profile的配置文件可以按照application.properyies的放置位置一样，放于以下四个位置，
+当前目录的 “/config”的子目录下
+当前目录下
+classpath根目录的“/config”包下
+classpath的根目录下
+
+
+
+------------------------------------springBoot启动流程------------------------------------
+1.启动类里面调用SpringApplication.run(xxx.class,args)方法
+2.在SpringApplicaiton的run方法中有两个步骤，首先创建SpringApplicaiton对象，然后再调用run方法。
+3.在SpringApplicaiton构造器中调用initialize(sources)方法。
+4.initialize方法中，
+a.将sources转换成list加到this.sources属性中
+b.判断是否为web环境(在类路径下是否可以加载到Servlet和ConfigurableWebApplicationContext)
+c.加载Initializers(通过META-INF/spring.factories中键为ApplicationContextInitializer的配置进行加载)，dubug发现一共
+加载了6个initializer(spring-boot-1.5.10.RELEASE.jar中4个,spring-boot-autoconfigure-1.5.10.RELEASE.jar中2个)
+d.加载ApplicationListener(也是通过META-INF/spring.factories)，debug发现共加载了10个
+e.通过寻找main方法找到启动主类。
+5.run方法中
+a.StopWatch主要是监控启动过程，统计启动时间，检测应用是否已经启动或者停止。
+b.加载SpringApplicationRunListener(也是通过META-INF/spring.factories),默认加载的是EventPublishingRunListener
+c.调用RunListener.starting()方法。
+d.根据args创建应用参数解析器ApplicationArguments;
+e.准备环境变量：获取环境变量environment，将应用参数放入到环境变量持有对象中，监听器监听环境变量对象的变化(listener.environmentPrepared)
+f.打印Banner信息(SpringBootBanner)
+g.创建SpringBoot的应用上下文(AnnotationConfigEmbeddedWebApplicationContext)
+h.prepareContext上下文之前的准备
+i.refreshContext刷新上下文
+j.afterRefresh(ApplicationRunner,CommandLineRunner接口实现类的启动)
+k.返回上下文对象
+------------------------------------------------------------------------

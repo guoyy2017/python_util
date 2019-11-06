@@ -1,0 +1,68 @@
+redis 客户端 最好用的客户端
+同步和异步操作API
+分布式锁（Lock）和同步器（Synchronizer）
+https://blog.csdn.net/zilong_zilong/article/details/78252037
+<!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+<dependency>
+    <groupId>org.redisson</groupId>
+    <artifactId>redisson</artifactId>
+    <version>3.10.2</version>
+</dependency>
+
+lettuce redis 客户端
+<!-- https://mvnrepository.com/artifact/biz.paluch.redis/lettuce -->
+<dependency>
+    <groupId>biz.paluch.redis</groupId>
+    <artifactId>lettuce</artifactId>
+    <version>4.5.0.Final</version>
+</dependency>
+
+原始客户端
+<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+<dependency>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
+    <version>3.0.1</version>
+</dependency>
+
+
+
+内嵌测试用 redis
+<!-- https://mvnrepository.com/artifact/com.github.kstyrc/embedded-redis -->
+<dependency>
+    <groupId>com.github.kstyrc</groupId>
+    <artifactId>embedded-redis</artifactId>
+    <version>0.6</version>
+    <scope>test</scope>
+</dependency>
+
+
+redis 教程地址
+https://redis.io/commands
+http://doc.redisfans.com/
+
+redis 安装 教程
+https://www.cnblogs.com/it-cen/p/4295984.html
+
+linux 下 yum install redis
+正常安装过程
+下载 https://redis.io/download
+最新 http://download.redis.io/releases/redis-5.0.3.tar.gz
+=============================================================================
+$ wget http://download.redis.io/releases/redis-5.0.3.tar.gz
+$ tar xzf redis-5.0.3.tar.gz
+$ cd redis-5.0.3
+$ make
+
+=============================================================================
+启动服务
+src/redis-server
+启动客户端
+src/redis-cli
+=============================================================================
+
+
+阿里redis 操作源代码
+https://github.com/justified/tedis
+
+

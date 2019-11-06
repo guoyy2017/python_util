@@ -1,0 +1,10 @@
+头条文章分类学习地址
+https://github.com/fate233/toutiao-text-classfication-dataset
+
+主流的深度学习框架有TensorFlow、Caffe、Keras、Theano
+ND4J是神经网络训练进行必要的线性代数和微积分运算的科学计算库
+DataVec是基于ND4J之上的一个工具包，通过它可以方便的对数据摄取、清理、联接、缩放、标准化和转换等处理，快速的将图像、视频、声音、文本和时间序列等原始数据转变为特征向量，输入神经网络
+
+数据挖掘的大部分时间就花在特征工程上面，是机器学习非常基础而又必备的步骤
+
+高速公路网络（highway network）和深度残差学习（deep residual learning）进一步避免了梯度消失

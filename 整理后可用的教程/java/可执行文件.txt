@@ -1,0 +1,2 @@
+launch4j 把jar包变成本地可执行的exe
+http://launch4j.sourceforge.net/

@@ -1,0 +1,65 @@
+Elastic-Job是一个分布式调度解决方案，由两个相互独立的子项目Elastic-Job-Lite和Elastic-Job-Cloud组成
+
+Elastic-Job-Lite定位为轻量级无中心化解决方案
+配置数据库mysql 和 zookeeper中心
+
+操作任务插件
+<!-- https://mvnrepository.com/artifact/com.dangdang/elastic-job-lite-lifecycle -->
+<dependency>
+    <groupId>com.dangdang</groupId>
+    <artifactId>elastic-job-lite-lifecycle</artifactId>
+    <version>2.0.3</version>
+</dependency>
+
+
+Elastic-Job-Cloud
+本机安装mesos
+下载
+http://www.apache.org/dyn/closer.cgi/mesos/1.8.0/mesos-1.8.0.tar.gz
+rpm安装
+https://bintray.com/apache/mesos/mesos/1.8.0#
+rmp –ivh ***.rpm
+
+yum 安装
+rpm -Uvh http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
+yum -y install mesos marathon
+启动 mesos-master 
+mesos-master --work_dir=/var/libs/mesos
+启动 mesos-agent
+mesos-agent --work_dir=/var/tmp/mesos --master=zk://127.0.0.1:2181/mesos 
+
+
+
+Docker环境下安装elastic-job-cloud
+docker pull zookeeper下载zookeeper镜像 
+docker pull mesosphere/mesos-master:1.6.0-rc1下载mesos-master镜像 
+docker pull mesosphere/mesos-agent:1.6.0-rc1下载mesos-agent镜像 
+
+
+
+启动 zk 
+docker run -d -p 2181:2181 -p 2888:2888 -p 3888:3888 zookeeper
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' <container_id> 找出zk容器的IP地址
+
+启动 mesos-master
+docker run -p 5050:5050 -e "MESOS_ZK=zk://172.17.0.2:2181/mesos" -e "MESOS_PORT=5050" -e "MESOS_LOG_DIR=/var/log/mesos" -e "MESOS_QUORUM=1" -e "MESOS_REGISTRY=in_memory" -e "MESOS_WORK_DIR=/var/lib/mesos" -d mesosphere/mesos-master:1.6.0-rc1
+
+启动 mesos-agent 
+docker run -d -e MESOS_PORT=5051 -e MESOS_MASTER=zk://172.17.0.2:2181/mesos -e MESOS_SWITCH_USER=0 -e MESOS_CONTAINERIZERS=docker,mesos -e MESOS_LOG_DIR=/var/log/mesos -e MESOS_WORK_DIR=/var/tmp/mesos -e MESOS_SYSTEMD_ENABLE_SUPPORT=false -v "$(pwd)/log/mesos:/var/log/mesos" -v "$(pwd)/tmp/mesos:/var/tmp/mesos" -v /var/run/docker.sock:/var/run/docker.sock -v /sys:/sys -v /usr/local/bin/docker:/usr/local/bin/docker mesosphere/mesos-agent:1.6.0-rc1
+
+输入http://localhost:5050, 即可查看Mesos Framework的UI操作界面
+
+
+打包elastic-job-cloud-scheduler 到服务端
+执行 bin/start.sh
+访问 http://ip:8899/
+
+提交任务
+app.sh
+curl -l -H "Content-type: application/json" -X POST -d '{"appName":"foo_app","appURL":"http://www.haha174.top:8086/cloud/elastic-job-example-cloud-2.1.5.tar.gz","cpuCount":0.1,"memoryMB":64.0,"bootstrapScript":"bin/start.sh","appCacheEnable":true,"eventTraceSamplingCount":0}' http://192.168.120.223:8899/api/app
+job.sh
+curl -l -H "Content-type: application/json" -X POST -d '{"jobName":"foo_job","appName":"foo_app","jobClass":"com.job.JavaSimpleJob.class","jobType":"SIMPLE","jobExecutionType":"TRANSIENT","cron":"0/5 * * * * ?","shardingTotalCount":5,"cpuCount":0.1,"memoryMB":64.0,"appURL":"http://www.haha174.top:8086/cloud/elastic-job-example-cloud-2.1.5.tar.gz","failover":true,"misfire":true,"bootstrapScript":"bin/start.sh"}' http://192.168.120.223:8899/api/job/register
+
+需要创建下载服务器
+启动nginx 配置下载目录
+

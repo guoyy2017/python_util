@@ -1,0 +1,7 @@
+使用 consul 作为配置中心
+开启配置 启动项目后修改consul上的属性值，项目中的属性值立即发生变化
+通过Value注解取值(项目启动后修改consul上的值，项目中的值不发生变化，只有再次启动项目获取的值才是修改后的值，发送/refresh请求无效)
+@EnabledConfigurationProperties
+
+@ConfigurationProperties()
+开启配置到类绑定

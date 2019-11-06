@@ -30,8 +30,31 @@
         执行上传docker私有仓库：sh或者Docker相关的Jekins插件
 
     III、搭建Docker私有镜像仓库
+        -----------------------------------------------
+        registry镜像来搭建私有镜像仓库
+        docker pull registry
+        docker run -itd -v /data/registry:/var/lib/registry -p 5000:5000 --restart=always --name registry registry:latest
+        查看 http://ip:5000/v2
+            http://ip:5000/v2/_catalog
+            http://ip:5000/v2/busybox/tags/list
+        -----------------------------------------------
+        -----------------------------------------------
+        Harbor 企业级docker仓库
+            镜像网址：http://harbor.orientsoft.cn/
+            tar ***.tgz
+            修改 harbor.yml
+                主要修改 hostname: 对外IP
+            ./install.sh
+            登录地址 http://ip
+            harbor_admin_password = Harbor12345
+        -----------------------------------------------
         Harbor 企业级docker仓库
             安装过程
+                =======
+                下载地址
+                镜像网址：http://harbor.orientsoft.cn/
+                harbor软件网址：https://github.com/vmware/harbor/releases
+                =======
                 安装Harbor需要先安装docker和docker-compose
                 安装Docker yum 出错，修改yum源信息
                 yum install docker-ce
@@ -509,11 +532,149 @@ consul agent -dev
 ------------------------------------------------------------------------------------------
 
 
+nacos
+------------------------------------------------------------------------------------------
+https://nacos.io/zh-cn/docs/deployment.html
+下载
+https://github.com/alibaba/nacos/releases
+sh startup.sh -m standalone
+
+服务注册
+curl -X POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=nacos.naming.serviceName&ip=20.18.7.10&port=8080'
+
+服务发现
+curl -X GET 'http://127.0.0.1:8848/nacos/v1/ns/instances?serviceName=nacos.naming.serviceName'
+
+发布配置
+curl -X POST "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=nacos.cfg.dataId&group=test&content=HelloWorld"
+
+获取配置
+curl -X GET "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=nacos.cfg.dataId&group=test"
+
+关闭服务
+sh shutdown.sh
+
+管理
+http://127.0.0.1:8848/nacos/index.html#/login
+nacos/nacos
+------------------------------------------------------------------------------------------
 
 
+tcc
+------------------------------------------------------------------------------------------
+http://www.txlcn.org/zh-cn/docs/demo/env.html
 
 
+------------------------------------------------------------------------------------------
 
 
+skywalking
+------------------------------------------------------------------------------------------
+http://skywalking.apache.org/downloads/
 
 
+------------------------------------------------------------------------------------------
+
+
+熔断监控
+------------------------------------------------------------------------------------------
+<!-- 我们需要添加的依赖 -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-hystrix</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+入口类上添加@EnableHystrixDashboard注解，表示开启仪表盘功能
+http://127.0.0.1:8080/hystrix
+
+服务消费者工程的入口类上添加@EnableCircuitBreaker注解
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-hystrix</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+Turbine集群监控
+<!-- 我们要添加的依赖 -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-turbine</artifactId>
+    </dependency>
+
+@EnableTurbine注解表示开启Turbine
+配置文件
+turbine.app-config=ribbon-consumer
+turbine.cluster-name-expression="default"
+turbine.combine-host-port=true
+------------------------------------------------------------------------------------------
+
+
+Dubbo使用教程
+------------------------------------------------------------------------------------------
+配置中心
+zookeeper
+<dubbo:config-center address="zookeeper://127.0.0.1:2181"/>
+apollo
+<dubbo:config-center protocol="apollo" address="127.0.0.1:2181"/>
+namespace，用于不同配置的环境隔离。
+config，Dubbo约定的固定节点，不可更改，所有配置和服务治理规则都存储在此节点下。
+dubbo/application，分别用来隔离全局配置、应用级别配置：dubbo是默认group值，application对应应用名
+dubbo.properties，此节点的node value存储具体配置内容
+------------------------------------------------------------------------------------------
+
+docker 命令
+docker build -t
+run 执行命令并创建 新的image layer,这是在build的时候去执行，和下面在run时候运行是不一样的!! （yum 安装一些内容)
+cmd 设置容器启动后默认执行的命令和参数
+ENTRYPOINT :设置容器启动时运行的命令
+
+docker tag busybox:latest  172.18.18.90:5000/busybox:v1
+
+insecure-registries----->开放注册https协议
+registry-mirrors----->仓库源
+
+registry镜像来搭建私有镜像仓库
+
+将容器做成镜像
+docker commit -m  ""   -a  ""   容器ID（可以简写）  镜像名称
+
+容器导出
+docker export 9e567 >centos_v1.tar
+
+容器导入
+docker import - centos_v1 <centos_v1.tar
+
+镜像导出
+docker save -o centos_backup.tar centos:update
+镜像恢复
+docker load -i ~/container-backup.tar
+
+scratch 是一非常特别的镜像，这个镜像很有意思的是他是一个空镜像
+alpine 比较小
+Alpine Linux是一个轻型Linux发行版
+
+
+dubbo 环境搭建
+------------------------------------------------------------------------------------------
+下载dubbo 源码
+https://github.com/apache/dubbo
+https://github.com/apache/dubbo/tree/2.5.x
+使用命令mvn clean install -Dmaven.test.skip=true构建dubbo源码
+dubbo-admin下target文件夹中的war包,将其拷贝到本地的tomcat的webapps下
+http://localhost:8888/dubbo-admin/回车,输入用户名和密码,用户名和密码均为root,
+------------------------------------------------------------------------------------------

@@ -1,0 +1,85 @@
+DISQUE  redis作者开发的一款消息队列
+======================================================================================
+下载地址
+https://github.com/antirez/disque
+安装教程
+下载zip
+执行make
+然后执行make test 测试安装
+--------------------------------------------------------------------------------------
+执行命令
+启动服务 服务默认端口7711
+./src/disque-server
+
+启动客服端
+./src/disque
+
+java 操作
+<!-- https://mvnrepository.com/artifact/com.github.xetorthio/jedisque -->
+<dependency>
+    <groupId>com.github.xetorthio</groupId>
+    <artifactId>jedisque</artifactId>
+    <version>0.0.4</version>
+</dependency>
+
+
+
+
+
+
+Kafka
+======================================================================================
+
+
+
+
+
+
+
+
+RocketMQ
+======================================================================================
+
+
+
+
+
+
+
+RabbitMQ
+======================================================================================
+
+
+
+
+
+
+
+
+ZEROMQ
+======================================================================================
+
+
+
+jeromq  java版本的ZEROMQ
+======================================================================================
+<!-- https://mvnrepository.com/artifact/org.zeromq/jeromq -->
+<dependency>
+    <groupId>org.zeromq</groupId>
+    <artifactId>jeromq</artifactId>
+    <version>0.5.1</version>
+</dependency>
+可以实现多客户端和多服务端的解绑操作
+push-pull模式 pub-sub dealer/router是路由模式
+
+
+
+
+
+
+
+
+
+
+
+

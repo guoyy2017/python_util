@@ -1,0 +1,28 @@
+emoji 操作输出
+https://github.com/vdurmont/emoji-java
+<!-- https://mvnrepository.com/artifact/com.vdurmont/emoji-java -->
+<dependency>
+    <groupId>com.vdurmont</groupId>
+    <artifactId>emoji-java</artifactId>
+    <version>5.1.1</version>
+</dependency>
+
+sql2o orm 简单工具，性能优
+https://www.sql2o.org/ 
+
+并行执行框架
+<!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+<dependency>
+    <groupId>com.lmax</groupId>
+    <artifactId>disruptor</artifactId>
+    <version>3.4.2</version>
+</dependency>
+
+
+LibRec 推荐系统库
+https://www.librec.net/download.html
+<dependency>
+    <groupId>net.librec</groupId>
+    <artifactId>librec-core</artifactId>
+    <version>2.0.0</version>
+</dependency>

@@ -1,0 +1,207 @@
+JSON 解析
+使用 DSL-json 解析，比普通json解析快
+<!-- https://mvnrepository.com/artifact/com.dslplatform/dsl-json -->
+<dependency>
+    <groupId>com.dslplatform</groupId>
+    <artifactId>dsl-json</artifactId>
+    <version>1.9.3</version>
+</dependency>
+
+
+使用 protobuf 做中间数据传递
+下载安装Protobuf Support
+格式
+插件限定修饰符 | 数据类型 | 字段名称 | = | 字段编码值 | [字段默认值]
+限定修饰符
+Required：表示是一个必须字段，必须相对于发送方，在发送消息之前必须设置该字段的值；对于接收方，必须能够识别该字段的意思。发送之前没有设置required字段或者无法识别required字段都会引发编解码异常，导致消息被丢弃。
+Optional：表示是一个可选字段，可选对于发送方，在发送消息时，可以有选择性的设置或者不设置该字段的值；对于接收方，如果能够识别可选字段就进行相应的处理，如果无法识别，则忽略该字段，消息中的其它字段正常处理。很多接口在升级版本中都把后来添加的字段都统一的设置为optional字段，这样老的版本无需升级程序也可以正常的与新的软件进行通信，只不过新的字段无法识别而已，因为并不是每个节点都需要新的功能，因此可以做到按需升级和平滑过渡。
+Repeated：表示该字段可以包含0 ~ N个元素，可以看作是在传递数组。
+
+protobuf建议字段的命名采用以下划线分割的驼峰式，例如 first_name 而不是firstName。
+protobuf 建议把经常要传递的值把其字段编码设置为1-15之间的值。
+字段默认值：
+发送数据时，对于required数据类型，如果用户没有设置值，则使用默认值传递到对端；
+接收数据时，对于optional字段，如果没有接收到optional字段，则设置为默认值。
+
+性能 优于json
+<dependency>
+    <groupId>com.google.protobuf</groupId>
+    <artifactId>protobuf-java</artifactId>
+    <version>3.5.0</version>
+</dependency>
+<dependency>
+    <groupId>com.google.protobuf</groupId>
+    <artifactId>protobuf-java-util</artifactId>
+    <version>3.5.0</version>
+</dependency>
+<dependency>
+    <groupId>io.grpc</groupId>
+    <artifactId>grpc-all</artifactId>
+    <version>1.11.0</version>
+</dependency>
+<build>
+    <extensions>
+        <extension>
+            <groupId>kr.motd.maven</groupId>
+            <artifactId>os-maven-plugin</artifactId>
+            <version>1.5.0.Final</version>
+        </extension>
+    </extensions>
+    <plugins>
+        <plugin>
+            <groupId>org.xolstice.maven.plugins</groupId>
+            <artifactId>protobuf-maven-plugin</artifactId>
+            <version>0.5.0</version>
+            <configuration>
+                <protocArtifact>
+                    com.google.protobuf:protoc:3.1.0:exe:${os.detected.classifier}
+                </protocArtifact>
+                <pluginId>grpc-java</pluginId>
+                <pluginArtifact>
+                    io.grpc:protoc-gen-grpc-java:1.11.0:exe:${os.detected.classifier}
+                </pluginArtifact>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>compile</goal>
+                        <goal>compile-custom</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+
+命令补全
+yum install -y bash-completion
+https://www.cnblogs.com/ooo0/p/9309277.html
+
+mysql json 使用 类型 查询 函数
+
+kryo是一个高性能的序列化/反序列化工具
+只支持java
+<dependency>
+    <groupId>com.esotericsoftware</groupId>
+    <artifactId>kryo</artifactId>
+    <version>4.0.2</version>
+</dependency>
+由于kryo使用了较高版本的asm 改用下面
+<dependency>
+    <groupId>com.esotericsoftware</groupId>
+    <artifactId>kryo-shaded</artifactId>
+    <version>4.0.2</version>
+</dependency>
+
+
+protostuff
+直接对POJO进行序列化和反序列化
+
+<dependency>
+   <groupId>io.protostuff</groupId>
+   <artifactId>protostuff-core</artifactId>
+   <version>${protostuff.version}</version>
+</dependency>
+
+<dependency>
+   <groupId>io.protostuff</groupId>
+   <artifactId>protostuff-runtime</artifactId>
+   <version>${protostuff.version}</version>
+</dependency>
+
+
+
+TCC
+ByteTCC、Himly、TCC-transaction、EasyTransaction
+tx-lcn
+http://www.txlcn.org/zh-cn/docs/preface.html
+Hmily
+http://dromara.org/website/zh-cn/docs/hmily/index.html
+https://github.com/yu199195/hmily
+https://www.cnblogs.com/rinack/p/9951970.html
+在你的Api接口项目引入
+<dependency>
+    <groupId>com.hmily.tcc</groupId>
+    <artifactId>hmily-tcc-annotation</artifactId>
+    <version>{you version}</version>
+</dependency>
+在你的服务提供者项目引入
+<dependency>
+    <groupId>com.hmily.tcc</groupId>
+    <artifactId>hmily-tcc-dubbo</artifactId>
+    <version>{you version}</version>
+</dependency>
+SpringCloud用户
+
+需要引入
+ <dependency>
+       <groupId>com.hmily.tcc</groupId>
+       <artifactId>hmily-tcc-springcloud</artifactId>
+       <version>{you version}</version>
+</dependency>
+配置启动bean 如上。
+3.Motan用户
+
+需要引入
+<dependency>
+    <groupId>com.hmily.tcc</groupId>
+    <artifactId>hmily-tcc-motan</artifactId>
+    <version>{you version}</version>
+ </dependency>
+
+ dubbo用户
+ <dependency>
+     <groupId>com.hmily.tcc</groupId>
+     <artifactId>hmily-tcc-spring-boot-starter-dubbo</artifactId>
+     <version>${your version}</version>
+ </dependency>
+ SpringCloud用户
+ <dependency>
+     <groupId>com.hmily.tcc</groupId>
+     <artifactId>hmily-tcc-spring-boot-starter-springcloud</artifactId>
+     <version>${your version}</version>
+ </dependency>
+Motan用户
+<dependency>
+     <groupId>com.hmily.tcc</groupId>
+     <artifactId>hmily-tcc-spring-boot-starter-motan</artifactId>
+     <version>${your version}</version>
+ </dependency>
+
+ yml里面
+ hmily:
+    tcc :
+        serializer : kryo
+        recoverDelayTime : 128
+        retryMax : 3
+        scheduledDelay : 128
+        scheduledThreadMax :  10
+        repositorySupport : db
+        tccDbConfig :
+                 driverClassName  : com.mysql.jdbc.Driver
+                 url :  jdbc:mysql://192.168.1.98:3306/tcc?useUnicode=true&amp;characterEncoding=utf8
+                 username : root
+                 password : 123456
+
+        #repositorySupport : redis
+        #tccRedisConfig:
+                 #masterName: mymaster
+                 #sentinel : true
+                 #sentinelUrl : 192.168.1.91:26379;192.168.1.92:26379;192.168.1.93:26379
+                 #password  : foobaredbbexONE123
+
+
+       # repositorySupport : zookeeper
+       #         host      : 92.168.1.73:2181
+       #         sessionTimeOut      :  100000
+       #         rootPath  : /tcc
+
+       # repositorySupport : mongodb
+       #       mongoDbUrl  : 192.168.1.68:27017
+       #       mongoDbName  :  happylife
+       #       mongoUserName  : xiaoyu
+       #       mongoUserPwd   : 123456
+
+       # repositorySupport : file
+       #         path      : /account
+       #         prefix    :  account

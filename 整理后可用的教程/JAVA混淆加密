@@ -1,0 +1,62 @@
+混淆使用 proguard
+
+//-------------------------------maven 例子------------------------------
+<build>
+        <plugins>
+            <plugin>
+                <!-- proguard混淆插件-->
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <!-- 打包的时候开始混淆-->
+                        <phase>package</phase>
+                        <goals><goal>proguard</goal></goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <proguardVersion>6.0.3</proguardVersion>
+                    <!-- 是否混淆-->
+                    <obfuscate>true</obfuscate>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}.jar</outjar>
+                    <options>
+                        <option>-target 1.8</option>
+                        <option>-dontshrink</option>
+                        <option>-dontoptimize</option>
+                        <!--<option>-adaptclassstrings</option>-->
+                        <option>-ignorewarnings</option>
+                        <option>-keep class com.yyg.util.Main {*;}</option>
+                    </options>
+                    <libs>
+                        <!-- 添加依赖 java8-->
+                        <lib>${java.home}/lib/rt.jar</lib>
+                        <lib>${java.home}/lib/jce.jar</lib>
+                    </libs>
+                </configuration>
+                <dependencies>
+                    <!-- https://mvnrepository.com/artifact/net.sf.proguard/proguard-base -->
+                    <dependency>
+                        <groupId>net.sf.proguard</groupId>
+                        <artifactId>proguard-base</artifactId>
+                        <version>6.1.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+//-------------------------------maven 例子------------------------------
+
+Jocky 混淆代码
+
+Virbox Protector对Java项目加密有两种方式，一种是对War包加密，一种是对Jar包加密
+
+War包加密流程
+1、打包War包
+2、解压War包
+3、对java.exe加壳
+4、对class文件加密
+
+Jar包加密流程
+1、对java.exe加壳
+2、对Jar文件进行加密

@@ -1,0 +1,20 @@
+------------------------------------------------------------------------------------
+    plugin              	   funcation	               life cycle phase
+maven-clean-plugin	    清理上一次执行创建的目标文件	    clean
+maven-resources-plugin	处理源资源文件和测试资源文件	    resources;testResources
+maven-compiler-plugin	编译源文件和测试源文件	            compile,testCompile
+maven-surefire-plugin	执行测试文件						test
+maven-jar-plugin	    创建jar	     					jar
+maven-install-plugin	安装jar,将创建生成的jar拷贝到		install
+						.m2/repository下面				
+maven-deploy-plugin		发布jar							deploy
+------------------------------------------------------------------------------------
+maven会调用默认的plugin
+maven-clean-plugin:2.5:clean (default-clean)
+maven-resources-plugin:2.6:resources (default-resources)
+maven-compiler-plugin:3.1:compile (default-compile)
+maven-resources-plugin:2.6:testResources (default-testResources)
+maven-compiler-plugin:3.1:testCompile (default-testCompile)
+maven-surefire-plugin:2.12.4:test (default-test)
+maven-jar-plugin:2.4:jar (default-jar)
+maven-install-plugin:2.4:install (default-install)
