@@ -1,0 +1,75 @@
+面试知识点
+https://blog.csdn.net/qq_35151346/article/details/90740508
+
+一致性哈希-哈希环-数据倾斜(虚拟节点，多次hash)-Redis 集群哈希槽(crc16校验算法)
+https://www.jianshu.com/p/735a3d4789fc
+
+
+分布式事务
+
+大事务=小事务（原子事务）+异步（消息通知）
+解决分布式事务的最好办法其实就是不考虑分布式事务
+
+
+Spring Boot + Mybatis + DynamicDataSource配置动态双数据源
+https://mp.weixin.qq.com/s?__biz=MzI3ODcxMzQzMw==&mid=2247486113&idx=2&sn=10febe8f38ef16e4b91328f45c6f4539&chksm=eb538f97dc240681755ef8d41d401cb3577f6695369030fdd464bb6e036b64663e581b895d2f&scene=21#wechat_redirect
+注解加切面，实现动态数据源操作
+
+
+
+STOMP即Simple (or Streaming) Text Orientated Messaging Protocol，简单(流)文本定向消息协议
+
+
+内存缓存jar 基于java8
+caffeine
+https://www.cnblogs.com/liujinhua306/p/9808500.html
+
+
+异步操作框架reactor框架
+Vert.x
+
+
+热部署神器-JRebel
+
+
+抓包工具
+tshark 是 Wireshark 命令行版本
+tcpdump 抓包工具命令行
+ngrep 抓包工具
+pcapsipdump 抓包工具 针对sip抓包工具
+
+java 熔断框架
+https://github.com/alibaba/Sentinel
+
+JMH是 JDK9自带的，如果你是 JDK9 之前的版本也可以通过导入 openjdk
+<dependency>
+    <groupId>org.openjdk.jmh</groupId>
+    <artifactId>jmh-core</artifactId>
+    <version>1.19</version>
+</dependency>
+<dependency>
+    <groupId>org.openjdk.jmh</groupId>
+    <artifactId>jmh-generator-annprocess</artifactId>
+    <version>1.19</version>
+</dependency>
+
+linux 实用命令
+socket 服务 netcat(nc)
+
+
+
+java xmlrpc
+apache XmlRpcClient
+
+<dependency>
+	      <groupId>org.apache.xmlrpc</groupId>
+	      <artifactId>xmlrpc-client</artifactId>
+	      <version>3.1.3</version>
+	    </dependency> 
+
+XML-RPC2 服务端
+<dependency>
+    <groupId>xmlrpc</groupId>
+	<artifactId>xmlrpc</artifactId>
+	<version>2.0.1</version>
+</dependency>

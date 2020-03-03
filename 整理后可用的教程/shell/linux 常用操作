@@ -1,0 +1,20 @@
+ /proc/version
+ 查看linux版本
+
+ uname -a
+ 查看linux版本
+
+ 查看Centos等版本信息
+ 1、/etc/redhat-release
+ 2、lsb_release -a
+
+
+
+ history 命令
+-N: 显示历史记录中最近的N个记录；
+-c：清空当前历史命令；
+-a：将历史命令缓冲区中命令写入历史命令文件中；
+-r：将历史命令文件中的命令读入当前历史命令缓冲区；
+-w：将当前历史命令缓冲区命令写入历史命令文件中;
+-d<offset>：删除历史记录中第offset个命令
+-n<filename>：读取指定文件

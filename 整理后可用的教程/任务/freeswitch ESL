@@ -1,0 +1,20 @@
+freeswitch ESL
+
+<!-- https://mvnrepository.com/artifact/org.freeswitch.esl.client/org.freeswitch.esl.client -->
+<dependency>
+    <groupId>org.freeswitch.esl.client</groupId>
+    <artifactId>org.freeswitch.esl.client</artifactId>
+    <version>0.9.2</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.freeswitch.esl.client/java-esl-client -->
+<dependency>
+    <groupId>org.freeswitch.esl.client</groupId>
+    <artifactId>java-esl-client</artifactId>
+    <version>0.9.2</version>
+    <type>pom</type>
+</dependency>
+
+https://freeswitch.org/confluence/display/FREESWITCH/Java+ESL+Client
+
+https://blog.csdn.net/irizhao/article/details/88638904

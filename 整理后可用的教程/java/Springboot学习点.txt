@@ -1,0 +1,14 @@
+springboot2.0自动注入文件spring.factories如何加载详解
+https://www.jianshu.com/p/5ac61de70ce6
+第一步创建一个SpringBoot 项目，并添加下面两个依赖到pom.xml文件当中
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-configuration-processor</artifactId>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
+</dependencies>

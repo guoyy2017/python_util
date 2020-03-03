@@ -1,0 +1,236 @@
+git cherry-pick的使用
+git cherry-pick可以理解为”挑拣”提交,它会获取某一个分支的单笔提交，并作为一个新的提交引入到你当前分支上
+git stash 
+把当前工作现场“储藏”起来，等以后恢复现场后继续工作
+恢复工作
+git stash list  ----- 查看刚才的工作现场
+git stash pop  -----恢复刚才的工作现场
+git stash save 作用等同于git stash，区别是可以加一些注释
+git stash apply  不会将内容从堆栈中删除，也就说该命令能够将堆栈的内容多次应用到工作目录中，适应于多个分支的情况
+可以使用git stash apply + stash名字（如stash@{1}）指定恢复哪个stash到当前的工作目录
+git stash drop + 名称
+从堆栈中移除某个指定的stash
+git stash clear
+清除堆栈中的所有 内容
+git stash show
+查看堆栈中最新保存的stash和当前目录的差异
+git stash show stash@{1}查看指定的stash和当前目录差异
+git stash show -p 查看详细的不同
+git stash show stash@{1} -p查看指定的stash的差异内容
+git stash branch
+从最新的stash创建分支
+
+版本回退
+//退回到上一个版本
+git reset --hard HEAD^
+//返回任意版本
+git reset --hard 65e19bef8eed336aefedaca636d78e71cea1d4f6
+
+// 已修改，未暂存   ------------没有执行 git add
+$ git checkout .    （或 $ git reset --hard）
+
+// 已暂存，未提交   ------------你已经执行了 git add . ，但还没有执行 git commit -m "comment" 。
+$ git reset
+$ git checkout .     (或 $ git reset --hard)
+
+// 已提交，未推送   ------------既执行了 git add . ，又执行了 git commit 
+$ git reset --hard origin/master
+
+// 已推送          ------------既 git add 了，又 git commit 了，并且还 git push 了
+$ git reset --hard HEAD^
+$ git push -f
+
+git clean  -d  -fx ""
+删除本地修改，使用云端代码
+
+git的tag功能 代码封板
+它其实是一个独立的分支,或者说是一个不可变的分支.指向特定提交对象的引用
+
+创建tag
+git tag -a V1.2 -m 'release 1.2'
+查看tag
+git tag
+要显示附注信息,我们需要用 show 指令来查看
+git show V1.2
+但是目前这个标签仅仅是提交到了本地git仓库.如何同步到远程代码库
+git push origin --tags
+删除
+git tag -d V1.2
+推送远端
+git push origin :refs/tags/V1.2
+获取远程版本
+git fetch origin tag V1.2
+
+
+git rebase能够将分叉的分支重新合并
+使用rebase命令 合并前三个 commit 
+git rebase -i HEAD~3
+进入编辑界面，把要保留的 commit 使用pick，其他的使用squash命令
+
+
+
+# 把指定的文件添加到暂存区中
+$ git add <文件路径>
+# 添加所有修改、已删除的文件到暂存区中
+$ git add -u [<文件路径>]
+$ git add --update [<文件路径>]
+# 添加所有修改、已删除、新增的文件到暂存区中，省略 <文件路径> 即为当前目录
+$ git add -A [<文件路径>]
+$ git add --all [<文件路径>]
+# 查看所有修改、已删除但没有提交的文件，进入一个子命令系统
+$ git add -i [<文件路径>]
+$ git add --interactive [<文件路径>]
+
+
+# 把暂存区中的文件提交到本地仓库，调用文本编辑器输入该次提交的描述信息
+$ git commit
+# 把暂存区中的文件提交到本地仓库中并添加描述信息
+$ git commit -m "<提交的描述信息>"
+# 把所有修改、已删除的文件提交到本地仓库中
+# 不包括未被版本库跟踪的文件，等同于先调用了 "git add -u"
+$ git commit -a -m "<提交的描述信息>"
+# 修改上次提交的描述信息
+$ git commit --amend
+
+
+# 将远程仓库所有分支的最新版本全部取回到本地
+$ git fetch <远程仓库的别名>
+# 将远程仓库指定分支的最新版本取回到本地
+$ git fetch <远程主机名> <分支名>
+
+
+
+# 比较当前文件和暂存区中文件的差异，显示没有暂存起来的更改
+$ git diff
+# 比较暂存区中的文件和上次提交时的差异
+$ git diff --cached
+$ git diff --staged
+# 比较当前文件和上次提交时的差异
+$ git diff HEAD
+# 查看从指定的版本之后改动的内容
+$ git diff <commit ID>
+# 比较两个分支之间的差异
+$ git diff <分支名称> <分支名称>
+# 查看两个分支分开后各自的改动内容
+$ git diff <分支名称>...<分支名称>
+
+
+# 把本地仓库的分支推送到远程仓库的指定分支
+$ git push <远程仓库的别名> <本地分支名>:<远程分支名>
+# 删除指定的远程仓库的分支
+$ git push <远程仓库的别名> :<远程分支名>
+$ git push <远程仓库的别名> --delete <远程分支名>
+
+
+
+# 打印所有的提交记录
+$ git log
+# 打印从第一次提交到指定的提交的记录
+$ git log <commit ID>
+# 打印指定数量的最新提交的记录
+$ git log -<指定的数量>
+
+
+# 重置暂存区，但文件不受影响
+# 相当于将用 "git add" 命令更新到暂存区的内容撤出暂存区，可以指定文件
+# 没有指定 commit ID 则默认为当前 HEAD
+$ git reset [<文件路径>]
+$ git reset --mixed [<文件路径>]
+# 将 HEAD 的指向改变，撤销到指定的提交记录，文件未修改
+$ git reset <commit ID>
+$ git reset --mixed <commit ID>
+# 将 HEAD 的指向改变，撤销到指定的提交记录，文件未修改
+# 相当于调用 "git reset --mixed" 命令后又做了一次 "git add"
+$ git reset --soft <commit ID>
+# 将 HEAD 的指向改变，撤销到指定的提交记录，文件也修改了
+$ git reset --hard <commit ID>
+
+# 生成一个新的提交来撤销某次提交
+$ git revert <commit ID>
+
+# 打印所有的标签
+$ git tag
+# 添加轻量标签，指向提交对象的引用，可以指定之前的提交记录
+$ git tag <标签名称> [<commit ID>]
+# 添加带有描述信息的附注标签，可以指定之前的提交记录
+$ git tag -a <标签名称> -m <标签描述信息> [<commit ID>]
+# 切换到指定的标签
+$ git checkout <标签名称>
+# 查看标签的信息
+$ git show <标签名称>
+# 删除指定的标签
+$ git tag -d <标签名称>
+# 将指定的标签提交到远程仓库
+$ git push <远程仓库的别名> <标签名称>
+# 将本地所有的标签全部提交到远程仓库
+$ git push <远程仓库的别名> –tags
+
+# 重命名指定的文件或者文件夹
+$ git mv <源文件/文件夹> <目标文件/文件夹>
+
+# 移除跟踪指定的文件，并从本地仓库的文件夹中删除
+$ git rm <文件路径>
+# 移除跟踪指定的文件夹，并从本地仓库的文件夹中删除
+$ git rm -r <文件夹路径>
+# 移除跟踪指定的文件，在本地仓库的文件夹中保留该文件
+$ git rm --cached
+
+删除掉本地不存在的远程分支
+# 使用 pull 命令，添加 -p 参数
+$ git pull -p
+# 等同于下面的命令
+$ git fetch -p
+$ git fetch --prune origin
+
+
+Git 一共有3个配置文件：
+1. 仓库级的配置文件：在仓库的 .git/.gitconfig，该配置文件只对所在的仓库有效。
+2. 全局配置文件：Mac 系统在 ~/.gitconfig，Windows 系统在 C:\Users\<用户名>\.gitconfig。
+3. 系统级的配置文件：在 Git 的安装目录下（Mac 系统下安装目录在 /usr/local/git）的 etc 文件夹中的 gitconfig。
+# 查看配置信息
+# --local：仓库级，--global：全局级，--system：系统级
+$ git config <--local | --global | --system> -l
+# 查看当前生效的配置信息
+$ git config -l
+# 编辑配置文件
+# --local：仓库级，--global：全局级，--system：系统级
+$ git config <--local | --global | --system> -e
+# 添加配置项
+# --local：仓库级，--global：全局级，--system：系统级
+$ git config <--local | --global | --system> --add <name> <value>
+# 获取配置项
+$ git config <--local | --global | --system> --get <name>
+# 删除配置项
+$ git config <--local | --global | --system> --unset <name>
+# 配置提交记录中的用户信息
+$ git config --global user.name <用户名>
+$ git config --global user.email <邮箱地址>
+# 更改Git缓存区的大小
+# 如果提交的内容较大，默认缓存较小，提交会失败
+# 缓存大小单位：B，例如：524288000（500MB）
+$ git config --global http.postBuffer <缓存大小>
+# 调用 git status/git diff 命令时以高亮或彩色方式显示改动状态
+$ git config --global color.ui true
+# 配置可以缓存密码，默认缓存时间15分钟
+$ git config --global credential.helper cache
+# 配置密码的缓存时间
+# 缓存时间单位：秒
+$ git config --global credential.helper 'cache --timeout=<缓存时间>'
+# 配置长期存储密码
+$ git config --global credential.helper store
+
+
+# 列出已经存在的远程仓库
+$ git remote
+# 列出远程仓库的详细信息，在别名后面列出URL地址
+$ git remote -v
+$ git remote --verbose
+# 添加远程仓库
+$ git remote add <远程仓库的别名> <远程仓库的URL地址>
+# 修改远程仓库的别名
+$ git remote rename <原远程仓库的别名> <新的别名>
+# 删除指定名称的远程仓库
+$ git remote remove <远程仓库的别名>
+# 修改远程仓库的 URL 地址
+$ git remote set-url <远程仓库的别名> <新的远程仓库URL地址>
+

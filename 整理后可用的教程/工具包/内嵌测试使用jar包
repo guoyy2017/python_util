@@ -1,0 +1,55 @@
+内嵌mongodb
+<!-- https://mvnrepository.com/artifact/de.svenkubiak/embedded-mongodb -->
+<dependency>
+    <groupId>de.svenkubiak</groupId>
+    <artifactId>embedded-mongodb</artifactId>
+    <version>5.0.3</version>
+    <scope>test</scope>
+</dependency>
+=============原理====================
+EmbeddedMongo db = EmbeddedMongo.DB;
+        db.start();
+使用版本需要和java版本符合
+<version>4.4.5</version>
+=============原理====================
+
+内嵌redis
+<!-- https://mvnrepository.com/artifact/com.github.kstyrc/embedded-redis -->
+<dependency>
+    <groupId>com.github.kstyrc</groupId>
+    <artifactId>embedded-redis</artifactId>
+    <version>0.6</version>
+    <scope>test</scope>
+</dependency>
+=============原理====================
+RedisServer server = new RedisServer();
+        server.start();
+启动不同的本地程序，jar包中内嵌不同操作系统的启动包(window|mac|linux)
+=============原理====================
+
+内嵌mysql
+<!-- https://mvnrepository.com/artifact/com.wix/wix-embedded-mysql -->
+<dependency>
+    <groupId>com.wix</groupId>
+    <artifactId>wix-embedded-mysql</artifactId>
+    <version>4.6.1</version>
+</dependency>
+=============原理====================
+EmbeddedMysql mysql = EmbeddedMysql.anEmbeddedMysql(Version.v5_5_40).start();
+启动下载指定系统的单机版本启动
+=============原理====================
+
+内嵌rabbitmq
+<dependency>
+    <groupId>io.arivera.oss</groupId>
+    <artifactId>embedded-rabbitmq</artifactId>
+    <version>1.1.2</version>
+</dependency>
+=============原理====================
+EmbeddedRabbitMqConfig.Builder builder = new EmbeddedRabbitMqConfig.Builder();
+        builder.extractionFolder(new File("/Users/trioly/works/java/test/testhello/run"));
+        EmbeddedRabbitMq mq = new EmbeddedRabbitMq(builder.build());
+        mq.start();
+=============原理====================
+
+

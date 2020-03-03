@@ -1,0 +1,19 @@
+ LuaRocks 是 Lua 模块的安装和部署工具
+ mac
+ brew install luarocks
+linux
+ wget http://luarocks.org/releases/luarocks-2.0.13.tar.gz
+cd
+luarocks-2.0.13
+./configure
+--prefix=/usr/local/luarocks/
+--rocks-tree=/usr/local
+--sysconfdir=/usr/local/etc/luarocks
+make
+make
+install
+
+查找
+luarocks search json
+安装
+luarocks install json4lua

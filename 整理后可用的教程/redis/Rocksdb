@@ -11,3 +11,11 @@ https://rocksdb.org.cn/doc/RocksJava-Basics.html
 
 使用说明
 
+mac 使用说明
+先下载
+https://github.com/facebook/rocksdb.git  
+编译
+make rocksdbjava  
+编译完成后，会在rocksdb源代码目录下的java/target/目录下生成2个jar包：rocksdbjni-4.9.0-osx.jar 和 librocksdbjni-osx.jnilib
+将rocksdbjni-4.9.0-osx.jar放在工程classpath中，librocksdbjni-osx.jnilib需要和rocksdbjni-4.9.0-osx.jar放在同一目录中。
+

@@ -1,0 +1,43 @@
+canal是阿里巴巴旗下的一款开源项目，纯Java开发。基于数据库增量日志解析，提供增量数据订阅&消费
+
+<!-- https://mvnrepository.com/artifact/com.alibaba.otter/canal.client -->
+<dependency>
+    <groupId>com.alibaba.otter</groupId>
+    <artifactId>canal.client</artifactId>
+    <version>1.1.4</version>
+</dependency>
+
+配置MYSQL binlog同步配置
+# 开启mysql的binlog模块
+log-bin=mysql-bin
+binlog-format=ROW
+# server_id需保证唯一，不能和canal的slaveId重复
+server_id=121
+# 需要同步的数据库名称
+binlog-do-db=test_canal
+# 忽略的数据库，建议填写
+binlog-ignore-db=mysql
+# 启动mysql时不启动grant-tables授权表
+skip-grant-tables
+
+创建mysql用户，并配置canal权限 用于同步
+
+建立cancal服务端
+https://github.com/alibaba/canal/releases
+官网地址：[https://github.com/alibaba/canal/releases，下载后解压
+配置canal
+启动canal：双击/bin/startup.bat文件启动
+建立canal客户端，从canal中获取数据，并将数据更新至Redis
+1.连接canal服务
+
+ // 创建链接
+CanalConnector connector = CanalConnectors.newSingleConnector(
+new InetSocketAddress(AddressUtils.getHostIp(), 端口),
+                "canal名称(虚拟数据名)",
+                "数据库账号",
+                "数据库密码");
+2.连接某个数据库
+
+connector.connect();
+connector.subscribe("监控的数据库\\..*");
+connector.rollback()；
