@@ -1,0 +1,36 @@
+redis 4.0以后版本使用
+https://redis.io/modules
+
+RedisEx
+rxkeys - extended keys commands (Module Hub page)
+rxstrings - extended Strings commands (Module Hub page)
+rxhashes - extended Hashes commands (Module Hub page)
+rxlists - extended Lists commands (Module Hub page)
+rxsets - extended Sets commands (Module Hub page)
+rxzsets - extended Sorted Sets commands (Module Hub page)
+rxgeo - extended Geo Sets commands (Module Hub page)
+zpop 和  zrevpop 扩展命令
+msismember的命令扩展，是个sismember的多扩展 .  用来判断多个集合里是否含有某个元素
+
+下载地址
+https://github.com/RedisLabsModules/redex
+
+
+
+RedisBloom
+https://github.com/RedisBloom/RedisBloom
+redis-server --loadmodule /path/to/redisbloom.so
+可以使用
+
+异或修改 redis.conf
+loadmodule
+
+java客户端使用
+ <dependencies>
+    <dependency>
+      <groupId>com.redislabs</groupId>
+      <artifactId>jrebloom</artifactId>
+      <version>1.2.0</version>
+    </dependency>
+  </dependencies>
+

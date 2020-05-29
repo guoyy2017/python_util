@@ -1,0 +1,422 @@
+OQL是用于查询Java堆的类SQL查询语言。
+
+OQL查询的形式
+select <JavaScript expression to select>
+[ from [instanceof] <class name> <identifier>
+[ where <JavaScript boolean expression to filter> ] ]
+
+解释： 
+(1)class name是java类的完全限定名，如：java.lang.String, java.util.ArrayList, [C是char数组, [Ljava.io.File是java.io.File[]，依此类推
+(2)类的完全限定名不足以唯一的辨识一个类，因为不同的ClassLoader载入的相同的类，它们在JVM中是不同类型的
+(3)instanceof表示也查询某一个类的子类，如果不明确instanceof，则只精确查询class name指定的类
+(4)from和where子句都是可选的
+(5)可以使用obj.field_name语法访问Java字段，并且可以使用array [index]语法访问数组元素
+
+
+OQL示例
+查询长度大于等于100的字符串
+select s from java.lang.String s where s.value.length >= 100
+
+查询长度大于等于256的int数组
+select a from [I a where a.length >= 256
+
+        另一种方式：select a from int[] a where a.length >= 256
+
+显示与正则表达式匹配的字符串的内容
+select s.value.toString() from java.lang.String s 
+where /java/.test(s.value.toString())
+
+        /java/ 修改成你的正则表达式，如/^MyClass$/ 就会匹配MyClass这个字符串
+
+显示所有File对象的文件路径
+select file.path.value.toString() from java.io.File file
+ 
+
+显示所有ClassLoader类的名称
+select classof(cl).name from instanceof java.lang.ClassLoader cl
+显示由给定id字符串标识的Class的实例
+select o from instanceof 0x741012748 o
+
+请注意，0x741012748是类的ID（在会话中）。通过查看该类页面中显​​示的id可以找到它
+
+
+OQL内置对象，函数
+堆对象
+该堆内置对象支持下列方法：
+
+heap.forEachClass - 为每个Java类调用一个回调函数
+heap.forEachClass(callback);
+
+heap.forEachObject - 为每个Java对象调用回调函数
+heap.forEachObject(callback, clazz, includeSubtypes);
+
+clazz是选择其实例的类。如果未指定，则默认为java.lang.Object。includeSubtypes是一个布尔标志，指定是否包含子类型实例。该标志的默认值为true。
+heap.findClass - 查找给定名称的Java类
+heap.findClass(className);
+
+where className是要查找的类的名称。生成的Class对象具有以下属性：
+name - 类的名称。
+superclass - 超类的类对象（如果是java.lang.Object，则为null）。
+statics - 类的静态字段的名称，值对。
+fields - 字段对象的数组。field对象具有名称，签名属性。
+loader - 加载此类的ClassLoader对象。
+signers - 签署此类的签名者。
+protectionDomain - 此类所属的保护域。
+类对象具有以下方法：
+isSubclassOf - 测试给定的类是否是此类的直接或间接子类。
+isSuperclassOf - 测试给定的Class是否是此类的直接或间接超类。
+subclasses - 返回直接和间接子类的数组。
+superclasses - 返回直接和间接超类的数组。
+heap.findObject - 从给定的对象id中查找对象
+heap.findObject(stringIdOfObject);
+
+heap.classes - 返回所有Java类的枚举
+heap.objects - 返回Java对象的枚举
+heap.objects(clazz, [includeSubtypes], [filter])
+
+clazz是选择其实例的类。如果未指定，则默认为java.lang.Object。includeSubtypes是一个布尔标志，指定是否包含子类型实例。该标志的默认值为true。此方法接受可选的过滤器表达式以过滤对象的结果集。
+heap.finalizables - 返回待完成的Java对象的枚举。
+heap.livepaths - 返回给定对象存活的路径数组。此方法接受可选的第二个参数，它是一个布尔标志。此标志指示是否包含弱引用的路径。默认情况下，不包括具有弱引用的路径。
+select heap.livepaths(s) from java.lang.String s
+
+该数组本身的每个元素都是另一个数组。后一个数组包含一个位于路径“引用链”中的对象。
+heap.roots - 返回堆的根的枚举。 每个Root对象都具有以下属性：
+id - 此根引用的对象的字符串id
+type - 描述类型的Root（JNI Global，JNI Local，Java Static等）
+description - Root的字符串描述
+referrer - 负责此根或null的Thread Object或Class对象
+例子：
+
+访问类java.lang.System的静态字段'props'
+select heap.findClass("java.lang.System").statics.props
+
+获取java.lang.String类的字段数
+select heap.findClass("java.lang.String").fields.length
+
+找到其对象id被赋予的对象
+select heap.findObject("0xf3800b58")
+
+选择所有匹配java.net.*的类
+ select filter(heap.classes(), "/java.net./.test(it.name)")
+ 
+
+单个对象上的函数
+allocTrace(jobject)
+classof(jobject)
+forEachReferrer(callback, jobject)
+identical(o1, o2)
+objectid(jobject)
+reachables(jobject, excludedFields)
+referrers(jobject)
+referees(jobject)
+refers(jobject)
+root(jobject)
+sizeof(jobject)
+toHtml(obj)
+ 
+
+allocTrace函数
+
+这将返回给定Java对象的分配站点跟踪（如果可用）。allocTrace返回对象的数组。每个对象具有以下属性：
+
+className - 其方法在框架中运行的Java类的名称。
+methodName - 运行的Java方法的名称。
+methodSignature - 框架中运行的Java方法的签名。
+sourceFileName - 框架中运行的Java类的源文件的名称。
+lineNumber - 方法中的源行号。
+
+classof函数
+
+返回给定Java对象的Class对象。结果对象支持以下属性：
+
+name - 类的名称。
+superclass - 超类的类对象（如果是java.lang.Object，则为null）。
+静态 - 类的静态字段的名称，值对。
+fields - 字段对象的数组。字段对象具有名称，签名属性。
+loader - 加载此类的ClassLoader对象。
+签名者 - 签署此类的签名者。
+protectionDomain - 此类所属的保护域。
+类对象具有以下方法：
+
+isSubclassOf - 测试给定的类是否是此类的直接或间接子类。
+isSuperclassOf - 测试给定的Class是否是此类的直接或间接超类。
+subclasses - 返回直接和间接子类的数组。
+superclasses - 返回直接和间接超类的数组。
+例子：
+
+显示每个Reference类型对象的类名
+select classof(o).name from instanceof java.lang.ref.Reference o
+显示java.io.InputStream的所有子类
+select heap.findClass("java.io.InputStream").subclasses()
+显示java.io.BufferedInputStream的所有超类
+select heap.findClass("java.io.BufferedInputStream").superclasses()
+ 
+
+forEachReferrer函数
+
+为给定Java对象的每个引用者调用一个回调函数。
+
+identical函数
+
+返回两个给定的Java对象是否相同。
+
+select identical(heap.findClass("Foo").statics.bar, heap.findClass("AnotherClass").statics.bar)
+objectid函数
+
+返回给定Java对象的String id。此id可以传递给 heap.findObject，也可以用于比较对象以进行标识。
+
+select objectid(o) from java.lang.Object o
+reachables函数
+
+返回从给定Java对象传递引用的Java对象数组。（可选）接受第二个参数，该参数是逗号分隔的字段名称，以从可达性计算中排除。字段以class_name.field_name模式编写。
+
+例子：
+
+从每个Properties实例打印所有可到达的对象。
+select reachables(p) from java.util.Properties p
+
+打印每个java.net.URL中的所有可访问内容，但省略可通过指定字段访问的对象。
+select reachables(u, 'java.net.URL.handler') from java.net.URL u
+
+
+referrers函数
+
+返回引用了给定Java对象的所有对象
+
+例子：
+
+查询每个java.lang.Object实例被引用的次数
+select count(referrers(o)) from java.lang.Object o
+
+查询那些对象引用了java.io.File实例对象
+select referrers(f) from java.io.File f
+
+查询被引用次数超过2的URL对象
+select u from java.net.URL u where count(referrers(u)) > 2
+
+
+referees函数
+
+返回给定Java对象直接引用的Java对象数组。
+
+示例：打印java.io.File类的所有静态引用字段
+
+select referees(heap.findClass("java.io.File"))
+refers函数
+
+返回第一个Java对象是否引用第二个Java对象。
+
+
+root函数
+
+如果给定对象是根对象集的成员，则此函数返回描述其原因的描述性根对象。如果给定的对象不是root，则此函数返回null。
+
+
+sizeof函数
+
+以字节为单位返回给定Java对象的大小示例：
+
+ select sizeof(o) from [I o
+toHtml函数
+
+返回给定Java对象的HTML字符串。请注意，对于select表达式选择的对象，会自动调用此方法。但是，打印更复杂的输出可能很有用。示例：以粗体字体重量打印超链接
+
+select "<b>" + toHtml(o) + "</b>" from java.lang.Object o
+ 
+
+选择多个值
+可以使用JavaScript对象文字或数组选择多个值。
+
+示例：显示每个线程对象的名称和线程
+
+select { name: t.name? t.name.toString() : "null", thread: t } 
+from instanceof java.lang.Thread t
+ 
+
+数组/迭代器/枚举操作函数
+这些函数接受数组/迭代器/枚举和表达式字符串[或回调函数]作为输入。这些函数迭代数组/迭代器/枚举，并在每个元素上应用表达式（或函数）。请注意，JavaScript对象是关联数组。因此，这些函数也可以与任意JavaScript对象一起使用。
+
+concat函数
+
+连接两个数组或枚举（即返回复合枚举）。
+
+
+contains函数
+
+返回给定的数组/枚举是否包含代码中指定的给定布尔表达式的元素。评估的代码可以引用以下内置变量。
+
+it - >目前访问过的元素
+index - >当前元素的索引
+array - >正在迭代的数组/枚举
+示例：选择某些静态字段引用某些类的所有Properties对象。
+
+select p from java.util.Properties p
+where contains(referrers(p), "classof(it).name == 'java.lang.Class'")
+concat(array1/enumeration1, array2/enumeration2)
+contains(array/enumeration, expression)
+count(array/enumeration, expression)
+filter(array/enumeration, expression)
+length(array/enumeration)
+map(array/enumeration, expression)
+max(array/enumeration, [expression])
+min(array/enumeration, [expression])
+sort(array/enumeration, [expression])
+sum(array/enumeration, [expression])
+toArray(array/enumeration)
+unique(array/enumeration, [expression])
+count函数
+
+count函数返回满足给定布尔表达式的输入数组/枚举的元素数。布尔表达式代码可以引用以下内置变量。
+
+it - >目前访问过的元素
+index - >当前元素的索引
+array - >正在迭代的数组/枚举
+示例：查询匹配特定名称模式的类的数量
+
+select count(heap.classes(), "/java.io./.test(it.name)")
+filter函数
+
+filter函数返回一个数组/枚举，其中包含满足给定布尔表达式的输入数组/枚举的元素。布尔表达式代码可以引用以下内置变量。
+
+it - >目前访问过的元素
+index - >当前元素的索引
+array - >正在迭代的数组/枚举
+result - > result array / enumeration
+例子：
+
+显示所有具有匹配java.io. * 的类
+select filter(heap.classes(), "/java.io./.test(it.name)")
+显示引用者不是来自java.net包的URL对象的所有引用
+select filter(referrers(u), "! /java.net./.test(classof(it).name)")
+from java.net.URL u
+ 
+
+length函数
+
+length函数返回数组/枚举的元素数。
+
+
+map函数
+
+通过评估每个元素上的给定代码来转换给定的数组/枚举。评估的代码可以引用以下内置变量。
+
+it - >目前访问过的元素
+index - >当前元素的索引
+array - >正在迭代的数组/枚举
+result - > result array / enumeration
+map函数返回通过在输入数组/枚举的每个元素上重复调用代码而创建的值的数组/枚举。
+
+示例：显示具有名称和值的java.io.File的所有静态字段
+
+select map(heap.findClass("java.io.File").statics, "index + '=' + toHtml(it)")
+max函数
+
+返回给定数组/枚举的最大元素。（可选）接受代码表达式以比较数组的元素。默认情况下使用数字比较。比较表达式可以使用以下内置变量：
+
+lhs - >左侧元素进行比较
+rhs - >右侧元素进行比较
+例子：
+
+找到任何String实例的最大长度
+select max(map(heap.objects('java.lang.String', false), 'it.value.length'))
+
+查找具有最大长度的字符串实例
+select max(heap.objects('java.lang.String'), 'lhs.value.length > rhs.value.length')
+
+
+min函数
+
+返回给定数组/枚举的最小元素。（可选）接受代码表达式以比较数组的元素。默认情况下使用数字比较。比较表达式可以使用以下内置变量：
+
+lhs - >左侧元素进行比较
+rhs - >右侧元素进行比较
+例子：
+
+找到任何Vector实例的最小大小
+select min(map(heap.objects('java.util.Vector', false), 'it.elementData.length'))
+
+找到具有最大长度的Vector实例
+select min(heap.objects('java.util.Vector'), 'lhs.elementData.length < rhs.elementData.length')
+
+sort函数
+
+给出数组/枚举的排序。（可选）接受代码表达式以比较数组的元素。默认情况下使用数字比较。比较表达式可以使用以下内置变量：
+
+lhs - >左侧元素进行比较
+rhs - >右侧元素进行比较
+例子：
+
+按大小顺序打印所有char []对象。
+select sort(heap.objects('[C'), 'sizeof(lhs) - sizeof(rhs)')
+按大小顺序打印所有char []对象，同时也打印大小。
+select map(sort(heap.objects('[C'), 'sizeof(lhs) - sizeof(rhs)'), '{ size: sizeof(it), obj: it }')
+
+sum函数
+
+此函数返回给定输入数组或枚举的所有元素的总和。（可选）接受表达式作为第二个参数。这用于在对输入元素求和之前映射输入元素。
+
+示例：返回每个Properties对象中可到达对象的大小总和
+
+    select sum(map(reachables(p), 'sizeof(it)')) 
+    from java.util.Properties p
+ 
+    // or omit the map as in ...
+    select sum(reachables(p), 'sizeof(it)') 
+    from java.util.Properties p
+
+toArray函数
+
+此函数返回一个包含输入数组/枚举元素的数组。
+
+
+unique函数
+
+此函数返回包含给定输入数组/枚举的唯一元素的数组/枚举
+
+示例：选择从字符串引用的唯一char []实例。请注意，多个String实例可以共享内容的相同char []。
+
+   // number of unique char[] instances referenced from any String
+   select count(unique(map(heap.objects('java.lang.String'), 'it.value')))
+ 
+   // total number of Strings
+   select count(heap.objects('java.lang.String'))
+更复杂的例子
+打印每个类加载器的直方图和由它加载的类的数量
+
+select map(sort(map(heap.objects('java.lang.ClassLoader'), 
+   '{ loader: it, count: it.classes.elementCount }'), 'lhs.count < rhs.count'),
+   'toHtml(it) + "<br>"')
+上面的查询解释：java.lang.ClassLoader有一个名为java.util.Vector类型的类的私有字段，Vector有一个名为elementCount的私有字段，它是Vector中元素的数量。我们使用JavaScript对象文字和地图功能选择多个值（加载器，计数）。我们使用带有比较表达式的sort函数对count（即加载的类数）进行排序。
+
+查询每个类加载器实例的父子链
+
+   select map(heap.objects('java.lang.ClassLoader'),
+      function (it) {
+         var res = '';
+         while (it != null) {
+            res += toHtml(it) + "->";
+            it = it.parent;
+         }
+         res += "null";
+         return res + "<br>";
+      })
+请注意，我们使用java.lang.ClassLoader类的父字段并使用回调函数遍历parent为null以映射调用。
+
+查询所有系统属性的值
+
+  select map(filter(heap.findClass('java.lang.System').statics.props.table, 'it != null'), 
+            function (it) {
+                var res = "";
+                while (it != null) {
+                    res += it.key.value.toString() + '=' +
+                           it.value.value.toString() + '<br>';
+                    it = it.next;
+                }
+                return res;
+            });
+以上查询使用以下事实：
+
+java.lang.System具有类型为java.util.Properties的名称为'props'的静态字段。
+java.util.Properties的字段为'table'，类型为java.util.Hashtable $ Entry（此字段继承自java.util.Hashtable）。这是hashtable桶数组。
+java.util.Hashtable $ Entry包含'key'，'value'和'next'字段。每个条目指向同一哈希表桶中的下一个条目（或null）。
+java.lang.String类具有char []类型的'value'字段。

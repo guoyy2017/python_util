@@ -1,0 +1,106 @@
+下载地址
+https://mirrors.huaweicloud.com/filebeat/
+
+https://mirrors.huaweicloud.com/filebeat/7.7.0/filebeat-7.7.0-linux-x86.tar.gz
+
+=============解决文件切割问题=============
+日志文件经常有按日切割，按量切割问题
+filebeat是通过close_inactive和scan_frequency两个参数
+close_inactive
+该参数指定当被监控的文件多长时间没有变化后就关闭文件句柄(file handle)。官方建议将这个参数设置为一个比文件最大更新间隔大的值。比如文件最长5s更新一次，那就设置成1min。默认值为5min.
+
+scan_frequency
+该参数指定Filebeat搜索新文件的频率(时间间隔)。当发现新的文件被创建时， Filebeat会为它再启动一个 harvester 进行监控。默认为10s。
+
+
+https://blog.csdn.net/xiongzhichao/article/details/51783704
+Filebeat的配置文件是/etc/filebeat/filebeat.yml，遵循YAML语法。具体可以配置如下几个项目：
+Filebeat
+Output
+Shipper
+Logging(可选)
+Run Options（可选）
+
+===================================Filebeat================================
+Filebeat的部分主要定义prospector的列表，定义监控哪里的日志文件，关于如何定义的详细信息可以参考filebeat.yml中的注释，下面主要介绍一些需要注意的地方。
+
+paths：指定要监控的日志，目前按照Go语言的glob函数处理。没有对配置目录做递归处理，比如配置的如果是：
+/var/log/* /*.log
+
+则只会去/var/log目录的所有子目录中寻找以”.log”结尾的文件，而不会寻找/var/log目录下以”.log”结尾的文件。
+
+encoding：指定被监控的文件的编码类型，使用plain和utf-8都是可以处理中文日志的。
+
+input_type：指定文件的输入类型log(默认)或者stdin。
+
+exclude_lines：在输入中排除符合正则表达式列表的那些行。
+
+include_lines：包含输入中符合正则表达式列表的那些行（默认包含所有行），include_lines执行完毕之后会执行exclude_lines。
+
+exclude_files：忽略掉符合正则表达式列表的文件（默认为每一个符合paths定义的文件都创建一个harvester）。
+
+fields：向输出的每一条日志添加额外的信息，比如“level:debug”，方便后续对日志进行分组统计。默认情况下，会在输出信息的fields子目录下以指定的新增fields建立子目录，例如fields.level。
+
+fields_under_root：如果该选项设置为true，则新增fields成为顶级目录，而不是将其放在fields目录下。自定义的field会覆盖filebeat默认的field。例如添加如下配置：
+
+ignore_older：可以指定Filebeat忽略指定时间段以外修改的日志内容，比如2h（两个小时）或者5m(5分钟)。
+
+close_older：如果一个文件在某个时间段内没有发生过更新，则关闭监控的文件handle。默认1h,change只会在下一次scan才会被发现
+
+force_close_files：Filebeat会在没有到达close_older之前一直保持文件的handle，如果在这个时间窗内删除文件会有问题，所以可以把force_close_files设置为true，只要filebeat检测到文件名字发生变化，就会关掉这个handle。
+
+scan_frequency：Filebeat以多快的频率去prospector指定的目录下面检测文件更新（比如是否有新增文件），如果设置为0s，则Filebeat会尽可能快地感知更新（占用的CPU会变高）。默认是10s。
+
+document_type：设定Elasticsearch输出时的document的type字段，也可以用来给日志进行分类。
+
+harvester_buffer_size：每个harvester监控文件时，使用的buffer的大小。
+
+max_bytes：日志文件中增加一行算一个日志事件，max_bytes限制在一次日志事件中最多上传的字节数，多出的字节会被丢弃。
+
+multiline：适用于日志中每一条日志占据多行的情况，比如各种语言的报错信息调用栈。这个配置的下面包含如下配置：
+
+tail_files：如果设置为true，Filebeat从文件尾开始监控文件新增内容，把新增的每一行文件作为一个事件依次发送，而不是从文件开始处重新发送所有内容。
+
+backoff：Filebeat检测到某个文件到了EOF之后，每次等待多久再去检测文件是否有更新，默认为1s。
+
+max_backoff：Filebeat检测到某个文件到了EOF之后，等待检测文件更新的最大时间，默认是10秒。
+
+backoff_factor：定义到达max_backoff的速度，默认因子是2，到达max_backoff后，变成每次等待max_backoff那么长的时间才backoff一次，直到文件有更新才会重置为backoff。比如：
+
+spool_size:spooler的大小，spooler中的事件数量超过这个阈值的时候会清空发送出去（不论是否到达超时时间）。
+
+idle_timeout:spooler的超时时间，如果到了超时时间，spooler也会清空发送出去（不论是否到达容量的阈值）。
+
+registry_file:记录filebeat处理日志文件的位置的文件
+
+config_dir:如果要在本配置文件中引入其他位置的配置文件，可以写在这里（需要写完整路径），但是只处理prospector的部分。
+
+publish_async：是否采用异步发送模式（实验功能）。
+
+===================================Filebeat================================
+
+===================================Filebeat================================
+
+===================================Filebeat================================
+
+===================================Filebeat================================
+
+===================================Filebeat================================
+
+
+
+
+
+Registry文件
+Filebeat会将自己处理日志文件的进度信息写入到registry文件中，以保证filebeat在重启之后能够接着处理未处理过的数据，而无需从头开始
+registry文件内容为一个list，list里的每个元素都是一个字典
+
+每个字段的意义解释：
+source： 记录采集日志的完整路径
+offset： 采集这个日志文件到了哪个位置，总采集字节数
+inode： 日志文件的inode号，关于inode的详细解释看下文
+device： 日志所在的磁盘编号，下文stat命令中Device的值
+timestamp： 日志最后一次发生变化的时间戳
+ttl： 采集失效时间，-1表示永不失效
+Filebeat在每次启动时都会来读取这个文件，如果文件不存在则会创建新文件
+

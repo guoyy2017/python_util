@@ -1,0 +1,42 @@
+jaeger
+分布式追踪系统Jaeger
+https://github.com/jaegertracing/jaeger
+Jaeger组件
+Agent
+Agent是一个网络守护进程，监听通过UDP发送过来的Span，它会将其批量发送给collector。按照设计，Agent要被部署到所有主机上，作为基础设施。Agent将collector和客户端之间的路由与发现机制抽象了出来。
+
+Collector
+Collector从Jaeger Agent接收Trace，并通过一个处理管道对其进行处理。目前的管道会校验Trace、建立索引、执行转换并最终进行存储。存储是一个可插入的组件，现在支持Cassandra和elasticsearch。
+
+Query
+Query服务会从存储中检索Trace并通过UI界面进行展现，该UI界面通过React技术实现，其页面UI如下图所示，展现了一条Trace的详细信息。
+
+存储
+jaeger采集到的数据必须存储到某个存储引擎，目前支持Cassandra和elasticsearch
+
+
+
+布隆过滤器
+Guava中自带的布隆过滤器. 只能单机使用 容量扩展也不容易
+
+redis 在 4.0 的版本中加入了 module 功能，布隆过滤器可以通过 module 的形式添加到 redis 中
+Redis 中的布隆过滤器. https://redis.io/modules。
+RedisBloom  作为 Redis 布隆过滤器的 Module
+https://github.com/RedisBloom/RedisBloom
+redis-lua-scaling-bloom-filter （lua 脚本实现）：https://github.com/erikdubbelboer/redis-lua-scaling-bloom-filter
+pyreBloom（Python中的快速Redis 布隆过滤器） ：https://github.com/seomoz/pyreBloom
+命令一览
+ key:布隆过滤器的名称，item : 添加的元素
+ BF.ADD：将元素添加到布隆过滤器中，如果该过滤器尚不存在，则创建该过滤器。格式：BF.ADD {key} {item}。
+BF.MADD : 将一个或多个元素添加到“布隆过滤器”中，并创建一个尚不存在的过滤器。该命令的操作方式BF.ADD与之相同，只不过它允许多个输入并返回多个值。格式：BF.MADD {key} {item} [item ...] 。
+BF.EXISTS : 确定元素是否在布隆过滤器中存在。格式：BF.EXISTS {key} {item}。
+BF.MEXISTS ：确定一个或者多个元素是否在布隆过滤器中存在格式：BF.MEXISTS {key} {item} [item ...]。
+
+这个命令的格式如下：
+BF.RESERVE {key} {error_rate} {capacity} [EXPANSION expansion]。
+下面简单介绍一下每个参数的具体含义：
+key：布隆过滤器的名称
+error_rate :误报的期望概率。这应该是介于0到1之间的十进制值。例如，对于期望的误报率0.1％（1000中为1），error_rate应该设置为0.001。该数字越接近零，则每个项目的内存消耗越大，并且每个操作的CPU使用率越高。
+capacity:  过滤器的容量。当实际存储的元素个数超过这个值之后，性能将开始下降。实际的降级将取决于超出限制的程度。随着过滤器元素数量呈指数增长，性能将线性下降。
+可选参数：
+expansion：如果创建了一个新的子过滤器，则其大小将是当前过滤器的大小乘以expansion。默认扩展值为2。这意味着每个后续子过滤器将是前一个子过滤器的两倍。

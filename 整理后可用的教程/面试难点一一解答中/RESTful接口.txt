@@ -1,0 +1,10 @@
+RESTful接口定义CRUD操作分别对应相应的HTTP方法，且方法名一律大写。
+服务器在设计接口的时候要遵循这些接口相应的规则方法。
+GET（SELECT）：从服务器获取资源
+POST（CREATE）：在服务器新建一个资源
+PUT（UPDATE）：在服务器更新资源
+PATCH（UPDATE）：在服务器更新资源
+DELETE（DELETE）：从服务器删除资源
+
+JAVA restful 框架
+Jersey RESTful 框架是开源的RESTful框架

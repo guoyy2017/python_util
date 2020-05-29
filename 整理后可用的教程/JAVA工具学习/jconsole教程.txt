@@ -1,0 +1,9 @@
+Jconsole是JDK自带的监控工具，在JDK/bin目录下可以找到。它用于连接正在运行的本地或者远程的JVM，对运行在java应用程序的资源消耗和性能进行监控，并画出大量的图表，提供强大的可视化界面。而且本身占用的服务器内存很小，甚至可以说几乎不消耗。
+
+java 设置启动参数才能做远程监控
+-Dcom.sun.management.jmxremote.port=9999
+-Dcom.sun.management.jmxremote.authenticate=true
+-Dcom.sun.management.jmxremote.ssl=false
+-Djava.rmi.server.hostname=192.168.56.253
+-Dcom.sun.management.jmxremote.acccess.file=/usr/local/tomcat/bin/jconsole/jmxremote.access
+-Dcom.sun.management.jmxremote.password.file=/usr/local/tomcat/bin/jconsole/jmxremote.password

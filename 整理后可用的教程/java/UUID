@@ -1,0 +1,5 @@
+四种不同的基本 UUID 类型
+基于时间的 UUID
+DCE 安全 UUID
+基于名称的 UUID
+随机生成的 UUID

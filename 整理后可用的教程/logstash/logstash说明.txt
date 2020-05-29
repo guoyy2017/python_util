@@ -1,0 +1,124 @@
+Logstash 是一款强大的数据处理工具，它可以实现数据传输，格式处理，格式化输出，还有强大的插件功能，常用于日志处理。
+分三部分
+===============Input===================
+可以从文件中、存储中、数据库中抽取数据，Input有两种选择一个是交给Filter进行过滤、修剪。另一个是直接交给Output
+https://www.elastic.co/guide/en/logstash/current/input-plugins.html
+
+===============Filter===================
+能够动态地转换和解析数据。可以通过自定义的方式对数据信息过滤、修剪
+https://www.elastic.co/guide/en/logstash/6.4/filter-plugins.html
+
+===============Output===================
+提供众多输出选择，您可以将数据发送到您要指定的地方，并且能够灵活地解锁众多下游用例
+https://www.elastic.co/guide/en/logstash/current/output-plugins.html
+
+
+
+logstash配置文件分几部分
+/logstash/config/logstash.yml：主要用于控制logstash运行时的状态
+/logstash/config/startup.options：logstash 运行相关参数
+
+logstash.yml
+参数						用途						默认值
+node.name				节点名称					主机名称
+path.data				/数据存储路径				LOGSTASH_HOME/data/
+pipeline.workers		输出通道的工作workers数据量（提升输出效率）	cpu核数
+pipeline.output.workers	每个输出插件的工作wokers数量	1
+pipeline.batch.size		每次input数量				125
+path.config				过滤配置文件目录	
+config.reload.automatic	自动重新加载被修改配置		false or true
+config.reload.interval	配置文件检查时间	
+path.logs  				日志输出路径	
+http.host  				绑定主机地址，用户指标收集	“127.0.0.1”
+http.port 				绑定端口					5000-9700
+log.level				日志输出级别,如果config.debug开启，这里一定要是debug日志	info
+log.format				日志格式					* plain*
+path.plugins			自定义插件目录	
+
+startup.options
+参数											用途
+JAVACMD=/usr/bin/java						本地jdk
+LS_HOME=/opt/logstash						logstash所在目录
+LS_SETTINGS_DIR="${LS_HOME}/config"			默认logstash配置文件目录
+LS_OPTS="–path.settings ${LS_SETTINGS_DIR}"	logstash启动命令参数 指定配置文件目录
+LS_JAVA_OPTS=""								指定jdk目录
+LS_PIDFILE=/var/run/logstash.pid			logstash.pid所在目录
+LS_USER=logstash							logstash启动用户
+LS_GROUP=logstash							logstash启动组
+LS_GC_LOG_FILE=/var/log/logstash/gc.log		logstash jvm gc日志路径
+LS_OPEN_FILES=65534							logstash最多打开监控文件数量
+
+
+
+
+
+logstash-sample.conf  配置文件  INPUT FILTER OUTPUT
+input 配置说明
+事件源可以是从stdin屏幕输入读取，可以从file指定的文件，也可以从es，filebeat，kafka，redis等读取
+stdin 标准输入
+file   从文件读取数据
+	# path  可以用/var/log/*.log,/var/log/**/*.log，如果是/var/log则是/var/log/*.log
+	# type 通用选项. 用于激活过滤器
+	# start_position 选择logstash开始读取文件的位置，begining或者end。
+syslog  通过网络将系统日志消息读取为事件
+	# port 指定监听端口(同时建立TCP/UDP的514端口的监听)
+	#从syslogs读取需要实现配置rsyslog：
+beats   从Elastic beats接收事件
+	# 还有host等选项
+kafka  将 kafka topic 中的数据读取为事件
+	# bootstrap_servers 用于建立群集初始连接的Kafka实例的URL列表。
+	# topics  要订阅的主题列表，kafka topics
+	# group_id 消费者所属组的标识符，默认为logstash。kafka中一个主题的消息将通过相同的方式分发到Logstash的group_id
+	# codec 通用选项，用于输入数据的编解码器。
+
+
+filter 配置说明
+grok   解析文本并构造 。把非结构化日志数据通过正则解析成结构化和可查询化
+grok 可以有多个match匹配规则，如果前面的匹配失败可以使用后面的继续匹配
+grok 语法：%{SYNTAX:SEMANTIC}   即 %{正则:自定义字段名}
+date   日期解析  解析字段中的日期，然后转存到@timestamp
+mutate  对字段做处理 重命名、删除、替换和修改字段。
+	covert 类型转换。类型包括：integer，float，integer_eu，float_eu，string和boolean
+	split   使用分隔符把字符串分割成数组
+	merge  合并字段  。数组和字符串 ，字符串和字符串
+	rename   对字段重命名
+	remove_field    移除字段
+	join  用分隔符连接数组，如果不是数组则不做处理
+	gsub  用正则或者字符串替换字段值。仅对字符串有效
+	update  更新字段。如果字段不存在，则不做处理
+	replace 更新字段。如果字段不存在，则创建
+geoip  根据来自Maxmind GeoLite2数据库的数据添加有关IP地址的地理位置的信息
+ruby    ruby插件可以执行任意Ruby代码
+urldecode    用于解码被编码的字段,可以解决URL中 中文乱码的问题
+	# field :指定urldecode过滤器要转码的字段,默认值是"message"
+	# charset(缺省): 指定过滤器使用的编码.默认UTF-8
+kv   通过指定分隔符将字符串分割成key/value
+useragent 添加有关用户代理(如系列,操作系统,版本和设备)的信息
+
+output 配置说明
+stdout  标准输出。将事件输出到屏幕上
+file   将事件写入文件
+kafka  将事件发送到kafka
+elasticseach  在es中存储日志
+
+
+补充一个codec plugin 编解码器插件
+　　codec 本质上是流过滤器，可以作为input 或output 插件的一部分运行。例如上面output的stdout插件里有用到。
+	multiline codec plugin  多行合并, 处理堆栈日志或者其他带有换行符日志需要用到
+	codec => multiline {
+      pattern => "pattern, a regexp"    #正则匹配规则，匹配到的内容按照下面两个参数处理
+      negate => "true" or "false"     # 默认为false。处理匹配符合正则规则的行。如果为true，处理不匹配符合正则规则的行。
+      what => "previous" or "next"    #指定上下文。将指定的行是合并到上一行或者下一行。
+    }
+
+
+
+logstash 比较运算符
+　　等于:   ==, !=, <, >, <=, >=
+　　正则:   =~, !~ (checks a pattern on the right against a string value on the left)
+　　包含关系:  in, not in
+　　支持的布尔运算符：and, or, nand, xor
+　　支持的一元运算符: !
+
+
+

@@ -1,0 +1,68 @@
+------------------------Flink--------------------------
+组件
+JobManager
+TaskManager
+
+Client 为提交 Job 的客户端，可以是运行在任何机器上（与 JobManager 环境连通即可）。提交 Job 后，Client 可以结束进程（Streaming的任务），也可以不结束并等待结果返回。
+
+JobManager 主要负责调度 Job 并协调 Task 做 checkpoint，职责上很像 Storm 的 Nimbus。从 Client 处接收到 Job 和 JAR 包等资源后，会生成优化后的执行计划，并以 Task 的单元调度到各个 TaskManager 去执行。
+
+TaskManager 在启动的时候就设置好了槽位数（Slot），每个 slot 能启动一个 Task，Task 为线程。从 JobManager 处接收需要部署的 Task，部署启动后，与自己的上游建立 Netty 连接，接收数据并处理。
+
+
+
+Flink的运行一般分为三种模式，即local、Standalone、On Yarn
+安装使用
+下载地址
+https://flink.apache.org/downloads.html
+解压安装：使用命令 tar -zvxf flink-1.7.2-bin-hadoop28-scala_2.11.tgz对文件进行解压，为了目录整洁，这里使用命令将解压完的文件重命名为flink： mv flink-1.7.2/ flink
+===================local模式===================
+flink安装目录下使用./bin/start-cluster.sh命令，就可以通过master:8081监控集群状态，关闭集群命令：./bin/stop-cluster.sh
+===================Standalone模式模式===================
+Standalone模式顾名思义，是在本地集群上调度执行，不依赖于外部调度机制例如YARN
+master节点当Job manage，master、slave1、slave2三台机器充当Task Manager
+
+===================Standalone HA模式===================
+为了防止jobmanager的单点故障，借助于zookeeper的协调机制，可以实现jobmanager的HA配置—-1主（leader）多从（standby）
+规划Jobmanager:master,slave1(一个active，一个standby)；Taskmanager：slave1，slave2；zookeeper集群
+
+===================Flink on yarn===================
+
+
+
+服务端
+
+客服端
+java 客户端
+<dependency>
+  <groupId>org.apache.flink</groupId>
+  <artifactId>flink-java</artifactId>
+  <version>1.10.0</version>
+</dependency>
+<dependency>
+  <groupId>org.apache.flink</groupId>
+  <artifactId>flink-streaming-java_2.11</artifactId>
+  <version>1.10.0</version>
+</dependency>
+<dependency>
+  <groupId>org.apache.flink</groupId>
+  <artifactId>flink-clients_2.11</artifactId>
+  <version>1.10.0</version>
+</dependency>
+Apache Flink Stateful Functions
+<dependency>
+  <groupId>org.apache.flink</groupId>
+  <artifactId>statefun-sdk</artifactId>
+  <version>2.0.0</version>
+</dependency>
+<dependency>
+  <groupId>org.apache.flink</groupId>
+  <artifactId>statefun-flink-harness</artifactId>
+  <version>2.0.0</version>
+</dependency>
+
+
+------------------------storm--------------------------
+
+
+------------------------Jstorm--------------------------

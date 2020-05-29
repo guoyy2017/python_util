@@ -1,0 +1,124 @@
+下载地址
+https://mirrors.huaweicloud.com/elasticsearch/7.6.2/elasticsearch-7.6.2-linux-x86_64.tar.gz
+
+安装说明
+
+=========================配置文件说明=========================
+/etc/elasticsearch/elasticsearch.yml							# els的配置文件
+/etc/elasticsearch/jvm.options								    # JVM相关的配置，内存大小等等
+/etc/elasticsearch/log4j2.properties							# 日志系统定义
+/var/lib/elasticsearch										    # 数据的默认存放位置
+=========================配置文件说明=========================
+
+=========================单机版本=========================
+wget https://mirrors.huaweicloud.com/elasticsearch/7.6.2/elasticsearch-7.6.2-linux-x86_64.tar.gz
+配置文件
+elasticsearch.yml
+修改ip = 0.0.0.0
+启动
+./elasticsearch
+
+----------------特殊处理----------------------
+启动前操作 elasticsearch 不允许用root启动
+adduser elasticsearch
+passwd elasticsearch
+chown -R elasticsearch elasticsearch
+
+编辑/etc/security/limits.conf，最后加上：
+elasticsearch soft nofile 65536
+elasticsearch hard nofile 65536
+
+vi /etc/security/limits.d/90-nproc.conf
+修改用户最大线程数
+
+sysctl -w vm.max_map_count=262144
+并用以下命令查看是否修改成功
+sysctl -a | grep "vm.max_map_count"
+----------------特殊处理----------------------
+
+----------------特殊处理----------------------
+提示文件描述符数量太少，修改/etc/security/limits.conf文件，添加
+
+原因：
+这是在因为Centos6不支持SecComp，而ES5.2.0默认bootstrap.system_call_filter为true进行检测，所以导致检测失败，失败后直接导致ES不能启动。
+解决：
+在elasticsearch.yml中配置bootstrap.system_call_filter为false，注意要在Memory下面:
+bootstrap.memory_lock: false
+bootstrap.system_call_filter: false
+
+修改
+elasticsearch.yml
+取消注释保留一个节点
+cluster.initial_master_nodes: ["node-1"]
+----------------特殊处理----------------------
+
+su elasticsearch
+后台运行
+./elasticsearch -d
+测试启动
+curl http://ip:9200
+
+
+
+
+=========================多机版本=========================
+集群配置
+集群配置中最重要的两项是node.name与network.host
+discovery.zen.ping.unicast.hosts是集群中的节点信息，可以使用IP地址、可以使用主机名(必须可以解析)
+vim /etc/elasticsearch
+cluster.name: aubin-cluster									# 集群名称
+node.name: els1											    # 节点名称，仅仅是描述名称，用于在日志中区分
+path.data: /var/lib/elasticsearch						    # 数据的默认存放路径
+path.logs: /var/log/elasticsearch							# 日志的默认存放路径
+network.host: 192.168.0.1									# 当前节点的IP地址
+http.port: 9200											    # 对外提供服务的端口，9300为集群服务的端口
+discovery.zen.ping.unicast.hosts: ["172.18.68.11", "172.18.68.12","172.18.68.13"]		
+# 集群个节点IP地址，也可以使用els、els.shuaiguoxia.com等名称，需要各节点能够解析
+discovery.zen.minimum_master_nodes: 2					    # 为了避免脑裂，集群节点数最少为 半数+1
+
+==========三台配置============
+# slave7
+cluster.name: es-qa-system
+node.name: node-7
+node.master: true
+node.data: true
+network.host: 192.168.59.10
+http.host: 192.168.59.10
+http.port: 9200
+discovery.zen.ping.unicast.hosts: ["192.168.59.10:9300", "192.168.59.11:9300", "192.168.59.12:9300"]
+discovery.zen.minimum_master_nodes: 1
+
+bootstrap.memory_lock: false
+bootstrap.system_call_filter: false
+
+# slave8
+cluster.name: es-qa-system
+node.name: node-8
+node.master: true
+node.data: true
+network.host: 192.168.59.11
+http.host: 192.168.59.11
+http.port: 9200
+discovery.zen.ping.unicast.hosts: ["192.168.59.10:9300", "192.168.59.11:9300", "192.168.59.12:9300"]
+discovery.zen.minimum_master_nodes: 1
+
+bootstrap.memory_lock: false
+bootstrap.system_call_filter: false
+
+# slave9
+cluster.name: es-qa-system
+node.name: node-9
+node.master: true
+node.data: true
+network.host: 192.168.59.12
+http.host: 192.168.59.12
+http.port: 9200
+discovery.zen.ping.unicast.hosts: ["192.168.59.10:9300", "192.168.59.11:9300", "192.168.59.12:9300"]
+discovery.zen.minimum_master_nodes: 1
+
+bootstrap.memory_lock: false
+bootstrap.system_call_filter: false
+
+
+
+

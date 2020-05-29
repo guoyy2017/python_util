@@ -1,0 +1,24 @@
+#集群的名称
+cluster.name: es6
+#节点名称,其余两个节点分别为node-2 和node-3
+node.name: node-1
+#指定该节点是否有资格被选举成为master节点，默认是true，es是默认集群中的第一台机器为master，如果这台机挂了就会重新选举master
+node.master: true
+#允许该节点存储数据(默认开启)
+node.data: true
+#索引数据的存储路径
+path.data: /usr/local/elk/elasticsearch/data
+#日志文件的存储路径
+path.logs: /usr/local/elk/elasticsearch/logs
+#设置为true来锁住内存。因为内存交换到磁盘对服务器性能来说是致命的，当jvm开始swapping时es的效率会降低，所以要保证它不swap
+bootstrap.memory_lock: true
+#绑定的ip地址
+network.host: 0.0.0.0
+#设置对外服务的http端口，默认为9200
+http.port: 9200
+# 设置节点间交互的tcp端口,默认是9300
+transport.tcp.port: 9300
+#Elasticsearch将绑定到可用的环回地址，并将扫描端口9300到9305以尝试连接到运行在同一台服务器上的其他节点。#这提供了自动集群体验，而无需进行任何配置。数组设置或逗号分隔的设置。每个值的形式应该是host:port或host#（如果没有设置，port默认设置会transport.profiles.default.port 回落到transport.tcp.port）。#请注意，IPv6主机必须放在括号内。默认为127.0.0.1, [::1]
+discovery.zen.ping.unicast.hosts: ["192.168.8.101:9300","192.168.8.103:9300", "192.168.8.104:9300"]
+#如果没有这种设置,遭受网络故障的集群就有可能将集群分成两个独立的集群 - 分裂的大脑 - 这将导致数据丢失
+discovery.zen.minimum_master_nodes: 3

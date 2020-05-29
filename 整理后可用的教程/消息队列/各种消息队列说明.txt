@@ -76,6 +76,21 @@ push-pull模式 pub-sub dealer/router是路由模式
 
 
 
+分布式消息系统 Jafka
+======================================================================================
+操作教程
+https://www.cnblogs.com/softidea/p/5568898.html
+
+https://github.com/adyliu/jafka
+https://github.com/adyliu/jafka/downloads
+参考Kafka
+Jafka 是一个高性能的跨语言分布式消息系统
+Jafka是由Apache孵化的Kafka(由LinkedIn捐助给Apache）克隆而来
+
+
+Metamorphosis (MetaQ) ： Kafka的java移植和改进版本
+
+
 
 
 

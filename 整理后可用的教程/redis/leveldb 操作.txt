@@ -1,0 +1,14 @@
+//java leveldb 使用
+<dependency>
+    <groupId>org.iq80.leveldb</groupId>
+    <artifactId>leveldb</artifactId>
+    <version>0.12</version>
+</dependency>
+<dependency>
+    <groupId>org.iq80.leveldb</groupId>
+    <artifactId>leveldb-api</artifactId>
+    <version>0.12</version>
+</dependency>
+
+LevelDB
+具有很高的随机写，顺序读/写性能，但是随机读的性能很一般，也就是说，LevelDB很适合应用在查询较少，而写很多的场景。LevelDB应用了LSM (Log Structured Merge) 策略

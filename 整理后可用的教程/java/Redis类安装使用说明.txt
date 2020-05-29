@@ -1,0 +1,227 @@
+----------------------------Redis------------------------------
+Redis 缓存
+
+
+----------------------------CODIS------------------------------
+CODIS （分布式 Redis 解决方案）
+
+
+----------------------------Riak------------------------------
+https://riak.com/riak/
+分布式nosql数据库
+列存储数据库
+下载地址
+https://github.com/basho/riak_kv
+
+============yum 安装============
+https://blog.csdn.net/freewebsys/article/details/12609995
+yum install http://yum.basho.com/gpg/basho-release-6-1.noarch.rpm
+yum install riak
+---亲自测试可行
+安装到了目录：
+/usr/lib64/riak/
+启动
+sevice riak start
+配置文件
+cat /etc/riak/app.config 
+修改下机器IP
+ {pb, [ {"10.0.2.15", 8087 } ]}
+{http, [ {"10.0.2.15", 8098 } ]},
+默认pb端口是8087，默认 http 端口是8098
+
+
+Riak默认有两种端口，一种是protobuf端口，还有一种是HTTP Restful端口。
+Map/Reduce 作业只能使用 Erlang 或 JavaScript 编写
+
+
+java 客户端教程
+https://github.com/basho/riak-java-client
+
+IBM教程说明
+https://www.ibm.com/developerworks/cn/opensource/os-riak1/
+
+
+
+----------------------------Pika------------------------------
+https://www.w3cschool.cn/pika/pika-5xvb2dir.html
+Pika 类redis缓存 SSD存储支持redis协议 使用Rocksdb底层
+Pika是一个可持久化的大容量redis存储服务，兼容string、hash、list、zset、set的绝大部分接口(兼容详情)，解决redis由于存储数据量巨大而导致内存不够用的容量瓶颈，并且可以像redis一样，通过slaveof命令进行主从备份，支持全同步和部分同步，pika还可以用在twemproxy或者codis中来实现静态数据分片
+
+下载地址
+https://github.com/Qihoo360/pika/archive/v2.2.6.tar.gz
+Upgrade your gcc to version at least 4.8 to get C++11 support.
+make
+./output/bin/pika -c ./conf/pika.conf
+
+配置文件
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Pika 端口
+port : 9221
+
+# pika进程数量，不建议超过核心数量，pika是多线程的
+thread-num : 1
+
+# Sync 线程数量
+sync-thread-num : 6
+
+# sync 处理线程的任务队列大小，一般没有必要修改
+sync-buffer-size : 10
+
+# Pika日志目录
+log-path : ./log/
+
+# Pika 的log级别，任何一个级别均记录慢日志
+loglevel : info
+
+# Pika数据目录
+db-path : ./db/
+
+# Pika 底层引擎的write_buffer_size配置，大，会快，但越大刷盘越久，需要权衡，实际上在测试中发现再大意义也不大了
+write-buffer-size : 268435456
+
+# Pika 的连接超时时间，就是连接sleep多久了就把它断开
+timeout : 60
+
+# 密码管理员密码,默认为空
+requirepass : password
+
+# Masterauth
+masterauth :
+
+# 用户密码,默认为空
+userpass : userpass
+ 
+# 指令黑名单,普通用户将不能使用黑名单中的指令。指令之间使用“,”隔开。默认为空
+userblacklist : FLUSHALL,SHUTDOWN
+
+# Pika的dump文件名称前缀
+dump-prefix : pika9001-
+ 
+# 守护进程模式  [yes | no]
+daemonize : yes
+ 
+# slotmigrate  [yes | no]
+#slotmigrate : no
+
+# Pika dump目录
+dump-path : /data1/pika9001/dump/
+
+# pidfile Path pid文件目录
+pidfile : /data1/pika9001/pid/9001.pid
+ 
+# Max Connection 
+maxconnection : 20000
+ 
+# rocks-db的sst文件体积，sst文件是层级的，文件越小，速度越快，合并代价越低，但文件数量就会超多，而文件越大，速度相对变慢，合并代价大，但文件数量会很少，默认是 20M
+target-file-size-base : 20971520
+
+# write2file文件保留时间，7天，最小为1，超过7天的文件会被自动清理
+expire-logs-days : 7
+ 
+# write2file文件最大数量，200个，最小为10，超过200个就开始自动清理，始终保留200个
+expire-logs-nums : 200
+ 
+# root用户连接保证数量：2个，即时Max Connection用完，该参数也能确保本地（127.0.0.1）有10个连接可以同来登陆pika
+root-connection-num : 2
+ 
+# 慢日志记录时间，单位为微秒
+slowlog-log-slower-than : 10000
+
+# slave是否是只读状态(yes/no, 1/0)
+# slave-read-only : 0
+
+# Pika db 同步路径
+db-sync-path : ./dbsync/
+
+# db sync speed(MB) max is set to 125MB, min is set to 0, and if below 0 or above 125, the value will be adjust to 125
+db-sync-speed : -1
+
+# 指定网卡
+# network-interface : eth1
+# replication
+# slaveof : master-ip:master-port
+
+###################
+## Critical Settings
+###################
+# # write2file文件体积，默认为100MB，一旦启动不可修改,  limited in [1K, 2G]
+binlog-file-size : 104857600
+
+# 压缩方式[snappy | none]默认为snappy，一旦启动不可修改
+compression : snappy
+
+# 指定后台flush线程数量，默认为1，范围为[1, 4]
+max-background-flushes : 1
+
+# 指定后台压缩线程数量，默认为1，范围为[1, 4]
+max-background-compactions : 1
+
+# max-cache-files default is 5000
+max-cache-files : 5000
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------cassandra 分布式列数据库------------------------------
+不同数据库对比说明
+https://www.cnblogs.com/wangbaojun/p/9724702.html
+
+cassandra的特点好处
+方便扩展存储
+有弹性的模式定义
+高写入性能。
+
+高可用设计。
+可以全球分布。
+允许应用程序随时随地写入任何节点。
+只需向群集添加更多节点即可进行线性扩展。
+自动负载及数据均衡。
+一种看起来很像SQL的查询语言。
+
+===============理想的cassandra使用场景===============
+写入大幅度超出读。
+数据很少更新，并且在进行更新时它们是幂等的。
+通过主键查询，非二级索引。
+可以通过partitionKey均匀分区。
+不需要Join或聚合。
+我最推荐使用Cassandra的一些好场景是：
+交易日志：购买，测试分数，观看的电影等。
+存储时序数据（需要您自行聚合）。
+跟踪几乎任何事情，包括订单状态，包裹等。
+存储健康追踪数据。
+气象服务历史。
+物联网状态和事件历史。
+汽车的物联网数据。
+电子邮件
+
+NOSQL 说明
+https://www.jianshu.com/p/d6ae27aeaa42
+
+
+----------------------------Druid OLAP数据库------------------------------
+Druid 常见应用的领域：
+
+网页点击流分析
+网络流量分析
+监控系统、APM
+数据运营和营销
+BI分析/OLAP
+
+有赞使用场景
+https://blog.csdn.net/weixin_34297300/article/details/89115273
+
+可以用作
+Druid 为风控、数据产品等C端业务提供了实时 OLAP 服务
+Druid 的架构是 Lambda 架构，分成实时层( Overlord、 MiddleManager )和批处理层( Broker 和 Historical )。主要的节点包括（PS: Druid 的所有功能都在同一个软件包中，通过不同的命令启动）：
+
+Coordinator 节点：负责集群 Segment 的管理和发布，并确保 Segment 在 Historical 集群中的负载均衡
+Overlord 节点：Overlord 负责接受任务、协调任务的分配、创建任务锁以及收集、返回任务运行状态给客户端；在Coordinator 节点配置 asOverlord，让 Coordinator 具备 Overlord 功能，这样减少了一个组件的部署和运维
+MiddleManager 节点：负责接收 Overlord 分配的索引任务，创建新启动Peon实例来执行索引任务，一个MiddleManager可以运行多个 Peon 实例
+Broker 节点：负责从客户端接收查询请求，并将查询请求转发给 Historical 节点和 MiddleManager 节点。Broker 节点需要感知 Segment 信息在集群上的分布
+Historical 节点：负责按照规则加载非实时窗口的Segment
+Router 节点：可选节点，在 Broker 集群之上的API网关，有了 Router 节点 Broker 不在是单点服务了，提高了并发查询的能力
+
+
+
+
+

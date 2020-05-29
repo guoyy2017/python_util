@@ -1,0 +1,10 @@
+OSGi模块化框架是很早就出来的一个插件化框架
+该系统中的 bundle，无需停止系统，即可实现 bundle 的安装、卸载
+
+可以动态加载、更新和卸载模块而不用停止服务
+实现系统的模块化、版本化，允许多版本bundule同时服务
+Service model允许模块/插件相互依赖但松耦合，分享服务更简单
+
+OSGi的用处在于“模块化”和“热插拔”
+bundle是OSGi的部署(和模块)单元。在OSGi运行时，bundle具有如下三种状态：installed，resolved，active。
+4大 Java OSGi 框架比较 (Knopflerfish, Apache Felix, Equinox, Spring DM)

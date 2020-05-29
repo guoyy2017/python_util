@@ -1,0 +1,32 @@
+zookeeper与etcd的对比
+功能					etcd	Zookeeper
+分布式锁				有		有
+watcher				有		有
+一致性算法			raft	zab
+选举					有		有
+元数据(metadata)存储	有		有
+
+
+
+应用场景					etcd	Zookeeper
+发布与订阅（配置中心）		有		有
+软负载均衡				有		有
+命名服务(Naming Service)	有		有
+服务发现					有		有
+分布式通知/协调			有		有
+集群管理与Master选举		有		有
+分布式锁					有		有
+分布式队列				有		有
+
+ZooKeeper
+watch children只能watch子节点，不能递归watch孙节点
+watch children只能watch子节点的创建和删除，不能watch子节点值的变化
+watch node只能对已经存在的node进行watch，对不存在的node需要watch existence
+除了上述的这些不足以外，在其官网文档中自己也提到，在watch被触发和重新设置之间发生的事件将被丢弃，无法被捕捉。
+接下来让我们看看Etcd的watch。
+Etcd
+      Etcd支持单点watch，prefix watch以及ranged watch。
+      和ZooKeeper不同，Etcd不会根据事件的不同而要求调用不同的watch API，三类watch的区别仅在于对key的处理不同：
+单点watch仅对传入的单个key进行watch；
+ranged watch可以对传入的key的范围进行watch，范围内的key的事件都会被捕捉；
+而prefix则可以对所有具有给定prefix的key进行watch。

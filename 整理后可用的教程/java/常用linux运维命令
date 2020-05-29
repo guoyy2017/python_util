@@ -1,0 +1,1425 @@
+获取当前时间
+date +'%Y-%m-%d_%H-%M-%S'
+
+$RANDOM 获取一个随机数
+
+文件重命名
+suffix=`date +'%Y-%m-%d_%H-%M-%S'`
+mv tmp.tar "tmp${suffix}.tar"
+
+上传文件到服务器
+scp -r --复制文件夹
+scp tmp.tar root@ip:/data/tmp
+scp -P 3309 tmp.tar root@ip:/data/tmp
+
+启动服务脚本
+cmd=''
+nohup $cmd >/dev/null 2>&1 &
+
+关闭服务脚本
+pid=''
+kill -15 $pid
+
+重启服务脚本
+--先执行关闭-后启动服务
+
+
+
+
+
+
+
+============================各种命令详细解释=====================================
+--------date----------
+date 可以用来显示或设定系统的日期与时间
+命令参数
+-d<字符串>：显示字符串所指的日期与时间。字符串前后必须加上双引号； 
+-s<字符串>：根据字符串来设置日期与时间。字符串前后必须加上双引号； 
+-u：显示GMT； 
+--help：在线帮助； 
+--version：显示版本信息
+
+日期格式字符串列表
+%H 小时(以00-23来表示)。 
+%I 小时(以01-12来表示)。 
+%K 小时(以0-23来表示)。 
+%l 小时(以0-12来表示)。 
+%M 分钟(以00-59来表示)。 
+%P AM或PM。 
+%r 时间(含时分秒，小时以12小时AM/PM来表示)。 
+%s 总秒数。起算时间为1970-01-01 00:00:00 UTC。 
+%S 秒(以本地的惯用法来表示)。 
+%T 时间(含时分秒，小时以24小时制来表示)。 
+%X 时间(以本地的惯用法来表示)。 
+%Z 市区。 
+%a 星期的缩写。 
+%A 星期的完整名称。 
+%b 月份英文名的缩写。 
+%B 月份的完整英文名称。 
+%c 日期与时间。只输入date指令也会显示同样的结果。 
+%d 日期(以01-31来表示)。 
+%D 日期(含年月日)。 
+%j 该年中的第几天。 
+%m 月份(以01-12来表示)。 
+%U 该年中的周数。 
+%w 该周的天数，0代表周日，1代表周一，异词类推。 
+%x 日期(以本地的惯用法来表示)。 
+%y 年份(以00-99来表示)。 
+%Y 年份(以四位数来表示)。 
+%n 在显示时，插入新的一行。 
+%t 在显示时，插入tab。 
+MM 月份(必要) 
+DD 日期(必要) 
+hh 小时(必要) 
+mm 分钟(必要)
+ss 秒(选择性)
+
+格式化输出
+date +"%Y-%m-%d"
+
+----------md5sum----------
+md5sum 生成md5
+echo 'hello world'|md5sum
+
+----------md5sum----------
+nl命令在linux系统中用来计算文件中行号
+命令格式：
+nl ［选项］。。。 ［文件］。。。
+2．命令参数：
+   -b ：指定行号指定的方式，主要有两种：
+　　-b a ：表示不论是否为空行，也同样列出行号（类似 cat -n）；
+　　-b t ：如果有空行，空的那一行不要列出行号（默认值）；
+　　-n ：列出行号表示的方法，主要有三种：
+　　-n ln ：行号在萤幕的最左方显示；
+　　-n rn ：行号在自己栏位的最右方显示，且不加 0 ；
+　　-n rz ：行号在自己栏位的最右方显示，且加 0 ；
+　　-w ：行号栏位的占用的位数。
+　　-p 在逻辑定界符处不重新开始计算。
+
+grep擅长查找功能，sed擅长取行和替换。awk擅长取列。
+
+----------grep, egrep 命令----------
+文本过滤(模式：pattern)工具
+grep [OPTIONS] PATTERN [FILE...]
+--color=auto 对匹配到的文本着色显示
+-v 显示不被pattern匹配到的行
+-i 忽略字符大小写
+-n 显示匹配的行号
+-c 统计匹配的行数
+-o 仅显示匹配到的字符串
+-q 静默模式，不输出任何信息
+-A # after, 后#行
+-B # before, 前#行
+-C # context, 前后各#行
+-e 实现多个选项间的逻辑or关系
+grep –e 'cat' -e 'dog' file
+-w 匹配整个单词
+-E 使用ERE,相当于egrep
+-F 相当于fgrep，不支持正则表达式
+
+----------sed 命令----------
+sed是一种流编辑器，它一次处理一行内容
+sed [option]... 'script' inputfile
+选项
+-n 不输出模式空间内容到屏幕，即不自动打印
+-e 多点编辑
+-f /PATH/SCRIPT_FILE: 从指定文件中读取编辑脚本
+-r 支持使用扩展正则表达式
+-i 直接编辑文件
+-i.bak 备份文件并原处编辑
+script 地址定界
+不给地址：对全文进行处理
+单地址：
+#: 指定的行，$：最后一行
+/pattern/：被此处模式所能够匹配到的每一行
+地址范围：
+#,#
+#,+#
+/pat1/,/pat2/
+`#,/pat1/
+~：步进
+1~2 奇数行
+2~2 偶数行
+编辑命令：
+d 删除模式空间匹配的行，并立即启用下一轮循环
+p 打印当前模式空间内容，追加到默认输出之后
+a [\]text1 在指定行后面追加文本,支持使用\n实现多行追加
+i [\]text 在行前面插入文本
+c [\]text 替换行为单行或多行文本
+w /path/somefile 保存模式匹配的行至指定文件
+r /path/somefile 读取指定文件的文本至模式空间中匹配到的行后
+= 为模式空间中的行打印行号
+! 模式空间中匹配行取反处理
+s///：查找替换,支持使用其它分隔符，s@@@，s###
+替换标记：
+g 行内全局替换
+p 显示替换成功的行
+w /PATH/TO/SOMEFILE 将替换成功的行保存至文件中
+
+动作说明：
+a ：新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行)～
+c ：取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行！
+d ：删除，因为是删除啊，所以 d 后面通常不接任何咚咚；
+i ：插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；
+p ：打印，亦即将某个选择的数据印出。通常 p 会与参数 sed -n 一起运行～
+s ：取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正规表示法！例如 1,20s/old/new/g 就是啦！
+
+sed [选项]...{脚本指令} [输入文件]
+a,append表示追加指令；i,insert表示插入指令；d,delete表示删除指令；s,substitution表示替换指令
+--version
+显示sed版本
+--help
+显示帮助文档
+-n，--quit，--silent
+静默输出，默认情况下，sed程序在所有的脚本指令执行完毕后，将自动打印模式空间中的内容，该选项可以屏蔽自动打印。
+-e script
+允许多个脚本指令被执行
+-f script-file
+从文件中读取脚本指令，对编写自动脚本程序很实用。
+-i，--in-place
+慎用，该选项将直接修改源文件
+-l，N
+该选项指令l指令可以输出的行长度，l指令为输出非打印字符。
+--posix
+禁用GNU sed扩展功能
+-r
+在脚本指令中使用扩展正则表达式
+-s，--separate
+默认情况下，sed将把输入的多个文件名作为一个长的连续的输入流，而GNU sed则允许把它们当作单独的文件
+-u，--unbuffered
+最低限度的缓存输入和输出
+
+sed [选项] [脚本命令] 文件名
+-e 脚本命令	该选项会将其后跟的脚本命令添加到已有的命令中。
+-f 脚本命令文件	该选项会将其后文件中的脚本命令添加到已有的命令中。
+-n	默认情况下，sed 会在所有的脚本指定执行完毕后，会自动输出处理后的内容，而该选项会屏蔽启动输出，需使用 print 命令来完成输出。
+-i	此选项会直接修改源文件，要慎用。
+
+sed s 替换脚本命令
+[address]s/pattern/replacement/flags
+sed d 替换脚本命令
+[address]d
+sed a 和 i 脚本命令
+[address]a（或 i）\新文本内容
+sed c 替换脚本命令
+[address]c\用于替换的新文本
+sed y 转换脚本命令
+y 转换命令是唯一可以处理单个字符的 sed 脚本命令
+[address]y/inchars/outchars/
+sed p 打印脚本命令
+[address]p
+sed w 脚本命令
+[address]w filename
+sed r 脚本命令
+[address]r filename
+sed q 退出脚本命令
+
+[address]脚本命令
+address {
+    多个脚本命令
+}
+sed 允许指定文本模式来过滤出命令要作用的行
+/pattern/command
+操作地址匹配范例
+-number
+指定输入文件的唯一行号
+-first~step
+指定以first开始，并指定操作步长为step，如1、2指定第一行、第三行、第五行……为操作地址。2~5指定第二行开始，每5行匹配一次操作地址
+$
+匹配文件的最后一行
+/regexp/
+//中间包含的是正则表达式，通过正则表达式匹配操作地址。如果//中正则表达式为空，匹配最近一次正则表达式的匹配地址，后面会有范例
+\cregexpc
+\c和c之间匹配正则表达式，c字符可以使用任意字符代替
+addr1,addr2
+匹配从操作地址1到操作地址2的所有行
+addr1,+N
+匹配地址1以及后面的N行内容
+
+Sed常用指令汇总
+指令   功能
+-s    替换
+-d    删除
+-a    追加
+-i    插入
+-c    更改
+-l    打印(显示非打印字符)
+-y    按字符转换
+-L    打印(不显示非打印字符)
+-p    打印
+-r    读入文件内容
+-w    保存至文件
+-q    退出
+
+高级应用
+多行操作Next
+Next(N)指令通过读取新的输入行，并将它追加至模式空间的现有内容之后，来创建多行模式空间
+多行操作Print
+Print(P)即多行打印P，它与打印p稍有不同，前者仅输出多行模式空间中的第一部分，直到第一个插入的\n换行符为止
+多行删除操作Delete(D)
+Hold(h,H),Get(g,G)
+保持空间(hold space)的缓冲区
+Hold(h|H)    将模式空间的内容复制或追加到保持空间
+Get(g|G)     将保持空间的内容复制或追加到模式空间
+Exchange(x)  交换保持空间与模式空间的内容
+
+----------awk 命令----------
+awk '{pattern + action}' {filenames}
+awk 'BEGIN{ commands } pattern{ commands } END{ commands }'
+第一步：运行BEGIN{ commands }语句块中的语句。
+第二步：从文件或标准输入(stdin)读取一行。然后运行pattern{ commands }语句块，它逐行扫描文件，从第一行到最后一行反复这个过程。直到文件所有被读取完成。
+第三步：当读至输入流末尾时。运行END{ commands }语句块。
+==========变量可用==========
+$0 当前记录（这个变量中存放着整个行的内容）
+$1~$n 当前记录的第n个字段，字段间由FS分隔
+FS 输入字段分隔符 默认是空格或Tab
+NF 当前记录中的字段个数，就是有多少列
+NR 已经读出的记录数，就是行号，从1开始，如果有多个文件话，这个值也是不断累加中。
+FNR 当前记录数，与NR不同的是，这个值会是各个文件自己的行号
+RS 输入的记录分隔符， 默认为换行符
+OFS 输出字段分隔符， 默认也是空格
+ORS 输出的记录分隔符，默认为换行符
+FILENAME 当前输入文件的名字
+
+ARGC               命令行参数个数
+ARGV               命令行参数排列
+ENVIRON            支持队列中系统环境变量的使用
+FILENAME           awk浏览的文件名
+FNR                浏览文件的记录数
+FS                 设置输入域分隔符，等价于命令行 -F选项
+NF                 浏览记录的域的个数
+NR                 已读的记录数
+OFS                输出域分隔符
+ORS                输出记录分隔符
+RS                 控制记录分隔符
+$0变量是指整条记录。$1表示当前行的第一个域,$2表示当前行的第二个域,......以此类推。
+1
+$NF是number finally,表示最后一列的信息，跟变量NF是有区别的，变量NF统计的是每行列的总数
+支持while、do/while、for、break、continue
+
+printf命令
+printf “FORMAT” , item1, item2, ... 不会自动换行，FORMAT中需要分别为后面每个item指定格式符
+格式符
+格式符	item表现形式
+%c	显示字符的ASCII码
+%d, %i	显示十进制整数
+%e, %E	显示科学计数法数值
+%f	显示为浮点数
+%g, %G	以科学计数法或浮点形式显示数值
+%s	显示字符串
+%u	无符号整数
+%%	显示%自身
+
+修饰符
+格式符	item表现形式
+#[.#]	第一个数字控制显示的宽度；第二个#表示小数点后精度，%3.1f
+-	左对齐（默认右对齐） %-15s
++	显示数值的正负符号 %+d
+
+
+
+
+----------nohup----------
+nohup 后台执行命令 不挂断地运行命令
+语法：nohup Command [ Arg … ] [　& ]
+nohup 无疑能通过忽略 HUP 信号来使我们的进程避免中途被中断
+当用户注销（logout）或者网络断开时，终端会收到 HUP（hangup）信号从而关闭其所有子进程
+
+----------获取进程PID----------
+pgrep  获取进程的pid
+-l 同时显示进程名和PID
+-o 当匹配多个进程时，显示进程号最小的那个
+-n 当匹配多个进程时，显示进程号最大的那个
+
+pid=$(ps -ef | grep $process | grep '/bin/java' | grep -v grep | awk '{print $2}')
+
+----------type命令----------
+type命令 用来显示指定命令的类型，判断给出的指令是内部指令还是外部指令
+选项
+-t：输出“file”、“alias”或者“builtin”，分别表示给定的指令为“外部指令”、“命令别名”或者“内部指令”；
+-p：如果给出的指令为外部指令，则显示其绝对路径；
+-a：在环境变量“PATH”指定的路径中，显示给定指令的信息，包括命令别名。
+
+
+----------cut命令----------
+cut命令用于显示每行从开头算起 num1 到 num2 的文字
+
+----------git命令----------
+git init  在现有目录下创建git信息
+git remote add origin git@git.trioly.com:asr/eslflow.git
+git push -u origin master
+
+----------mkdir命令----------
+可以批量创建目录
+mkdir 456{1,2,3,4,5} 会在目录中生成(4561，4562，4563，4564，4565)五个文件夹
+
+----------touch命令----------
+touch 456{1,2,3,4,5} 会在目录中生成(4561，4562，4563，4564，4565)五个目录文件
+
+----------xargs命令----------
+xargs命令的作用，是将标准输入转为命令行参数
+xargs [-options] [command]
+xargs后面的命令默认是echo
+-d 参数与分隔符 默认情况下，xargs将换行符和空格作为分隔符，把标准输入分解成一个个命令行参数
+-p参数打印出要执行的命令，询问用户是否要执行
+-t参数则是打印出最终要执行的命令，然后直接执行，不需要用户确认
+xargs命令的-0参数表示用null当作分隔符
+如果标准输入包含多行，-L参数指定多少行作为一个命令行参数
+-n参数指定每次将多少项，作为命令行参数
+-I指定每一项命令行参数的替代字符串
+--max-procs参数指定同时用多少个进程并行执行命令
+-0 当sdtin含有特殊字元时候，将其当成一般字符，想/'空格等
+-e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止
+-a file 从文件中读入作为sdtin
+-i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给{}，可以用{}代替
+-r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了
+-s num 命令行的最好字符数，指的是xargs后面那个命令的最大命令行字符数
+-L  num Use at most max-lines nonblank input lines per command line.-s是含有空格的
+-l  同-L
+-d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符
+-x exit的意思，主要是配合-s使用
+-P 修改最大的进程数，默认是1，为0时候为as many as it can
+xargs -0表示xargs用NULL来作为分隔符
+
+----------ls命令----------
+
+-a ：全部的档案，连同隐藏档( 开头为 . 的档案) 一起列出来～ 
+-A ：全部的档案，连同隐藏档，但不包括 . 与 .. 这两个目录，一起列出来～ 
+-d ：仅列出目录本身，而不是列出目录内的档案数据 
+-f ：直接列出结果，而不进行排序 (ls 预设会以档名排序！) 
+-F ：根据档案、目录等信息，给予附加数据结构，例如： 
+*：代表可执行档； /：代表目录； =：代表 socket 档案； |：代表 FIFO 档案； 
+-h ：将档案容量以人类较易读的方式(例如 GB, KB 等等)列出来； 
+-i ：列出 inode 位置，而非列出档案属性； 
+-l ：长数据串行出，包含档案的属性等等数据； 
+-n ：列出 UID 与 GID 而非使用者与群组的名称 (UID与GID会在账号管理提到！) 
+-r ：将排序结果反向输出，例如：原本档名由小到大，反向则为由大到小； 
+-R ：连同子目录内容一起列出来； 
+-S ：以档案容量大小排序！ 
+-t ：依时间排序 
+--color=never ：不要依据档案特性给予颜色显示； 
+--color=always ：显示颜色 
+--color=auto ：让系统自行依据设定来判断是否给予颜色 
+--full-time ：以完整时间模式 (包含年、月、日、时、分) 输出 
+--time={atime,ctime} ：输出 access 时间或 改变权限属性时间 (ctime) 
+而非内容变更时间 (modification time)  
+
+
+----------tree命令----------
+树形展示目录文件 需要安装
+tree
+
+----------cp命令----------
+-a ：将文件的特性一起复制
+-p ：连同文件的属性一起复制，而非使用默认方式，与-a相似，常用于备份
+-i ：若目标文件已经存在时，在覆盖时会先询问操作的进行
+-r ：递归持续复制，用于目录的复制行为
+-u ：目标文件与源文件有差异时才会复制
+
+----------rm命令----------
+-f ：就是force的意思，忽略不存在的文件，不会出现警告消息
+-i ：互动模式，在删除前会询问用户是否操作
+-r ：递归删除，最常用于目录删除，它是一个非常危险的参数
+
+----------tar命令----------
+tar [-cxtzjvfpPN] 文件与目录 ....
+-c ：新建打包文件
+-t ：查看打包文件的内容含有哪些文件名
+-x ：解打包或解压缩的功能，可以搭配-C（大写）指定解压的目录，注意-c,-t,-x不能同时出现在同一条命令中
+-j ：通过bzip2的支持进行压缩/解压缩
+-z ：通过gzip的支持进行压缩/解压缩
+-J    xz xz压缩率高但是压缩速度偏慢
+-v ：在压缩/解压缩过程中，将正在处理的文件名显示出来
+-f filename ：filename为要处理的文件 在 f 之后要立即接档名喔！不要再加参数！
+-C dir ：指定压缩/解压缩的目录dir
+--exclude    排除 如:--exclude dir --exclude '*.png' --exclude '*.jpg'
+-p ：使用原文件的原来属性（属性不会依据使用者而变）
+-P ：可以使用绝对路径来压缩！
+-N ：比后面接的日期(yyyy/mm/dd)还要新的才会被打包进新建的文件中！
+进阶：
+#只查看第一层文件目录
+tar 
+#只打包隐藏文件(文件名第一个是.第二个是非.)
+tar -cvf /tmp/aaa.tar .[!.]*
+#打包全部（包含隐藏文件）
+#ls -A不会列出. ..两个目录
+tar -cvf /tmp/bbb.tar `ls -A`
+
+=======
+-c: 建立压缩档案
+-x：解压
+-t：查看内容
+-r：向压缩归档文件末尾追加文件
+-u：更新原压缩包中的文件
+
+-z：有gzip属性的
+-j：有bz2属性的
+-Z：有compress属性的
+-v：显示所有过程
+-O：将文件解开到标准输出
+=======
+*.tar 用 tar -xvf 解压
+*.gz 用 gzip -d或者gunzip 解压
+.tar.gz和.tgz 用 tar -xzf 解压
+*.bz2 用 bzip2 -d或者用bunzip2 解压
+*.tar.bz2用tar -xjf 解压
+*.Z 用 uncompress 解压
+*.tar.Z 用tar -xZf 解压
+*.rar 用 unrar e解压
+*.zip 用 unzip 解压
+
+
+----------top命令----------
+top 命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况
+top [参数]
+-b 批处理
+-c 显示完整的治命令
+-I 忽略失效过程
+-s 保密模式
+-S 累积模式
+-i<时间> 设置间隔时间
+-u<用户名> 指定用户名
+-p<进程号> 指定进程
+-n<次数> 循环显示的次数
+
+----------sudo命令----------
+sudo 用来以其他身份来执行命令，预设的身份为root:
+sudo(选项)(参数)
+-b：在后台执行指令；
+-h：显示帮助；
+-H：将HOME环境变量设为新身份的HOME环境变量；
+-k：结束密码的有效期限，也就是下次再执行sudo时便需要输入密码；。
+-l：列出目前用户可执行与无法执行的指令；
+-p：改变询问密码的提示符号；
+-s：执行指定的shell；
+-u<用户>：以指定的用户作为新的身份。若不加上此参数，则预设以root作为新的身份；
+-v：延长密码有效期限5分钟；
+-V ：显示版本信息。
+
+----------cat命令----------
+cat [选项] [文件]...
+-A, --show-all           等价于 -vET
+-b, --number-nonblank    对非空输出行编号
+-e                       等价于 -vE
+-E, --show-ends          在每行结束处显示 $
+-n, --number     对输出的所有行编号,由1开始对所有输出的行数编号
+-s, --squeeze-blank  有连续两行以上的空白行，就代换为一行的空白行 
+-t                       与 -vT 等价
+-T, --show-tabs          将跳格字符显示为 ^I
+-u                       (被忽略)
+-v, --show-nonprinting   使用 ^ 和 M- 引用，除了 LFD 和 TAB 之外
+
+----------more命令----------
+more可以按页来查看文件的内容，还支持直接跳转行等功能
+more [-dlfpcsu ] [-num ] [+/ pattern] [+ linenum] [file ... ] 
+命令参数：
++n 从笫n行开始显示
+-n 定义屏幕大小为n行
++/pattern 在每个档案显示前搜寻该字串（pattern），然后从该字串前两行之后开始显示 
+-c 从顶部清屏，然后显示
+-d 提示“Press space to continue，’q’ to quit（按空格键继续，按q键退出）”，禁用响铃功能
+-l 忽略Ctrl+l（换页）字符
+-p 通过清除窗口而不是滚屏来对文件进行换页，与-c选项相似
+-s 把连续的多个空行显示为一行
+-u 把文件内容中的下画线去掉
+常用操作命令：
+Enter 向下n行，需要定义。默认为1行
+Ctrl+F 向下滚动一屏
+空格键 向下滚动一屏
+Ctrl+B 返回上一屏
+= 输出当前行的行号
+：f 输出文件名和当前行的行号
+V 调用vi编辑器
+!命令 调用Shell，并执行命令 
+q 退出more
+
+
+----------less命令----------
+less　命令用法比起 more 更加的有弹性。在 more 的时候，我们并没有办法向前面翻， 只能往后面看，但若使用了 less 时，就可以使用 [pageup] [pagedown] 等按键的功能来往前往后翻看文件，更容易用来查看一个文件的内容！除此之外，在 less 里头可以拥有更多的搜索功能，不止可以向下搜，也可以向上搜
+less [参数]  文件 
+-b <缓冲区大小> 设置缓冲区的大小
+-e 当文件显示结束后，自动离开
+-f 强迫打开特殊文件，例如外围设备代号、目录和二进制文件
+-g 只标志最后搜索的关键词
+-i 忽略搜索时的大小写
+-m 显示类似more命令的百分比
+-N 显示每行的行号
+-o <文件名> 将less 输出的内容在指定文件中保存起来
+-Q 不使用警告音
+-s 显示连续空行为一行
+-S 行过长时间将超出部分舍弃
+-x <数字> 将“tab”键显示为规定的数字空格
+/字符串：向下搜索“字符串”的功能
+?字符串：向上搜索“字符串”的功能
+n：重复前一个搜索（与 / 或 ? 有关）
+N：反向重复前一个搜索（与 / 或 ? 有关）
+b 向后翻一页
+d 向后翻半页
+h 显示帮助界面
+Q 退出less 命令
+u 向前滚动半页
+y 向前滚动一行
+空格键 滚动一行
+回车键 滚动一页
+[pagedown]： 向下翻动一页
+[pageup]： 向上翻动一页
+
+
+----------tail命令----------
+tail 命令
+#从指定点开始将文件写到标准输出.使用tail命令的-f选项可以方便的查阅正在改变的日志文件,tail -f filename会把filename里最尾部的内容显示在屏幕上,并且不但刷新,使你看到最新的文件内容. 
+tail[必要参数][选择参数][文件]   
+-f 循环读取
+-q 不显示处理信息
+-v 显示详细的处理信息
+-c<数目> 显示的字节数
+-n<行数> 显示行数
+--pid=PID 与-f合用,表示在进程ID,PID死掉之后结束. 
+-q, --quiet, --silent 从不输出给出文件名的首部 
+-s, --sleep-interval=S 与-f合用,表示在每次反复的间隔休眠S秒 
+
+----------diff命令----------
+diff 命令用于比较两个文件或目录的不同
+diff[参数][文件1或目录1][文件2或目录2]
+
+# diff命令能比较单个文件或者目录内容。如果指定比较的是文件，则只有当输入为文本文件时才有效。以逐行的方式，比较文本文件的异同处。如果指定比较的是目录的的时候，diff 命令会比较两个目录下名字相同的
+# 文本文件。列出不同的二进制文件、公共子目录和只在一个目录出现的文件。
+
+-a or --text 　#diff预设只会逐行比较文本文件。
+-b or --ignore-space-change 　#不检查空格字符的不同。
+-B or --ignore-blank-lines 　#不检查空白行。
+-c 　#显示全部内文，并标出不同之处。
+-C or --context 　#与执行"-c-"指令相同。
+-d or --minimal 　#使用不同的演算法，以较小的单位来做比较。
+-D or ifdef 　#此参数的输出格式可用于前置处理器巨集。
+-e or --ed 　#此参数的输出格式可用于ed的script文件。
+-f or -forward-ed 　#输出的格式类似ed的script文件，但按照原来文件的顺序来显示不同处。
+-H or --speed-large-files 　#比较大文件时，可加快速度。
+-l or --ignore-matching-lines 　#若两个文件在某几行有所不同，而这几行同时都包含了选项中指定的字符 or 字符串，则不显示这两个文件的差异。
+-i or --ignore-case 　#不检查大小写的不同。
+-l or --paginate 　#将结果交由pr程序来分页。
+-n or --rcs 　#将比较结果以RCS的格式来显示。
+-N or --new-file 　#在比较目录时，若文件A仅出现在某个目录中，预设会显示：Only in目录：文件A若使用-N参数，则diff会将文件A与一个空白的文件比较。
+-p 　#若比较的文件为C语言的程序码文件时，显示差异所在的函数名称。
+-P or --unidirectional-new-file 　#与-N类似，但只有当第二个目录包含了一个第一个目录所没有的文件时，才会将这个文件与空白的文件做比较。
+-q or --brief 　#仅显示有无差异，不显示详细的信息。
+-r or --recursive 　#比较子目录中的文件。
+-s or --report-identical-files 　#若没有发现任何差异，仍然显示信息。
+-S or --starting-file 　#在比较目录时，从指定的文件开始比较。
+-t or --expand-tabs 　#在输出时，将tab字符展开。
+-T or --initial-tab 　#在每行前面加上tab字符以便对齐。
+-u,-U or --unified= 　#以合并的方式来显示文件内容的不同。
+-v or --version 　#显示版本信息。
+-w or --ignore-all-space 　#忽略全部的空格字符。
+-W or --width 　#在使用-y参数时，指定栏宽。
+-x or --exclude 　#不比较选项中所指定的文件 or 目录。
+-X or --exclude-from 　#您可以将文件 or 目录类型存成文本文件，然后在=中指定此文本文件。
+-y or --side-by-side 　#以并列的方式显示文件的异同之处。
+
+----------ping命令----------
+ping [参数] [主机名或IP地址]
+-d 使用Socket的SO_DEBUG功能。
+-f  极限检测。大量且快速地送网络封包给一台机器，看它的回应。
+-n 只输出数值。
+-q 不显示任何传送封包的信息，只显示最后的结果。
+-r 忽略普通的Routing Table，直接将数据包送到远端主机上。通常是查看本机的网络接口是否有问题。
+-R 记录路由过程。
+-v 详细显示指令的执行过程。
+<p>-c 数目：在发送指定数目的包后停止。
+-i 秒数：设定间隔几秒送一个网络封包给一台机器，预设值是一秒送一次。
+-I 网络界面：使用指定的网络界面送出数据包。
+-l 前置载入：设置在送出要求信息之前，先行发出的数据包。
+-p 范本样式：设置填满数据包的范本样式。
+-s 字节数：指定发送的数据字节数，预设值是56，加上8字节的ICMP头，一共是64ICMP数据字节。
+-t 存活数值：设置存活数值TTL的大小。
+
+----------ssh命令----------
+ssh服务端的进程名为sshd
+SSH服务器端主要包含2个服务功能SSH连接和SFTP服务器
+ssh服务端由2部分组成： openssh(提供ssh服务)    openssl(提供加密的程序)
+ssh 命令用于远程登录上Linux主机
+ssh [-l login_name] [-p port] [user@]hostname
+usage: ssh [-1246AaCfgKkMNnqsTtVvXxYy] [-b bind_address] [-c cipher_spec]
+           [-D [bind_address:]port] [-e escape_char] [-F configfile]
+           [-i identity_file] [-L [bind_address:]port:host:hostport]
+           [-l login_name] [-m mac_spec] [-O ctl_cmd] [-o option] [-p port]
+           [-R [bind_address:]port:host:hostport] [-S ctl_path]
+           [-W host:port] [-w local_tun[:remote_tun]]
+           [user@]hostname [command]
+# ssh的配置文件
+    cat /etc/ssh/sshd_config   
+# ssh服务的关闭
+    service sshd stop
+# ssh服务的开启：
+    service sshd start
+# ssh服务的重启
+    service sshd reload    [停止进程后重启] ==> 推荐
+    service sshd restart   [干掉进程后重启] ==> 不推荐
+
+
+----------rsync命令----------
+
+----------sftp命令----------
+
+----------scp命令----------
+scp 命令是secure copy的简写
+scp [参数] [原路径] [目标路径]
+
+-1 强制scp命令使用协议ssh1 
+-2 强制scp命令使用协议ssh2 
+-4 强制scp命令只使用IPv4寻址 
+-6 强制scp命令只使用IPv6寻址 
+-B 使用批处理模式（传输过程中不询问传输口令或短语） 
+-C 允许压缩。（将-C标志传递给ssh，从而打开压缩功能） 
+-p 保留原文件的修改时间，访问时间和访问权限。 
+-q 不显示传输进度条。 
+-r 递归复制整个目录。 
+-v 详细方式显示输出。scp和ssh(1)会显示出整个过程的调试信息。这些信息用于调试连接，验证和配置问题。 
+-c cipher 以cipher将数据传输进行加密，这个选项将直接传递给ssh。 
+-F ssh_config 指定一个替代的ssh配置文件，此参数直接传递给ssh。 
+-i identity_file 从指定文件中读取传输时使用的密钥文件，此参数直接传递给ssh。 
+-l limit 限定用户所能使用的带宽，以Kbit/s为单位。 
+-o ssh_option 如果习惯于使用ssh_config(5)中的参数传递方式， 
+-P port 注意是大写的P, port是指定数据传输用到的端口号 
+-S program 指定加密传输时所使用的程序。此程序必须能够理解ssh(1)的选项。
+
+----------ln命令----------
+ln 命令是为某一个文件在另外一个位置建立一个同步的链接
+链接又可分为两种 : 硬链接(hard link)与软链接(symbolic link)，硬链接的意思是一个档案可以有多个名称，而软链接的方式则是产生一个特殊的档案，该档案的内容是指向另一个档案的位置。硬链接是存在同一个文件系统中，而软链接却可以跨越不同的文件系统
+软链接：
+1.软链接，以路径的形式存在。类似于Windows操作系统中的快捷方式
+2.软链接可以 跨文件系统 ，硬链接不可以
+3.软链接可以对一个不存在的文件名进行链接
+4.软链接可以对目录进行链接
+
+硬链接:
+1.硬链接，以文件副本的形式存在。但不占用实际空间。
+2.不允许给目录创建硬链接
+3.硬链接只有在同一个文件系统中才能创建
+
+ln [参数][源文件或目录][目标文件或目录]
+
+必要参数:
+-b 删除，覆盖以前建立的链接
+-d 允许超级用户制作目录的硬链接
+-f 强制执行
+-i 交互模式，文件存在则提示用户是否覆盖
+-n 把符号链接视为一般目录
+-s 软链接(符号链接)
+-v 显示详细的处理过程
+
+选择参数:
+-S “-S<字尾备份字符串> ”或 “--suffix=<字尾备份字符串>”
+-V “-V<备份方式>”或“--version-control=<备份方式>”
+
+----------crontab命令----------
+crontab命令是启动linux定时任务的服务
+service cron start # 启动cronjob
+service cron stop # 停止cronjob
+service cron restart #  重启cronjob
+crontab -e # 编辑cronjob任务
+
+最好在脚本里面设置环境变量，crontab环境变量不好 %在crontab里是换行，要用需要\%
+crontab [ -u user ] { -l | -r | -e }
+crontab [ -u user ] file
+不使用 -u user 的话，就是表示设定自己的时程表
+-e : 执行文字编辑器来设定时程表
+-r : 删除目前的时程表
+-l : 列出目前的时程表
+f1   f2   f3   f4   f5 program
+*    *    *    *    *
+-    -    -    -    -
+|    |    |    |    |
+|    |    |    |    +----- 星期中星期几 (0 - 7) (星期天 为0)
+|    |    |    +---------- 月份 (1 - 12) 
+|    |    +--------------- 一个月中的第几天 (1 - 31)
+|    +-------------------- 小时 (0 - 23)
++------------------------- 分钟 (0 - 59)
+
+查看运行日志
+tail -f /var/log/cron
+定时任务目录
+/var/spool/cron/
+/etc/crontab文件，这个就是系统任务调度的配置文件
+可以定时备份定时任务配置，防止误删除
+
+
+----------find命令----------
+用法: find [-H] [-L] [-P] [-Olevel] [-D help|tree|search|stat|rates|opt|exec] [path…] [expression]
+默认路径为当前目录；默认表达式为 –print
+find [-H] [-L] [-P] [-D debugopts] [-Olevel] [path…] [expression]
+-exec  参数后面跟的是command命令，它的终止是以;为结束标志的，所以这句命令后面的分号是不可缺少的，考虑到各个系统中分号会有不同的意义，所以前面加反斜杠
+{}   花括号代表前面find查找出来的文件名
+find . -type f -exec ls -l {} \;
+find   path   -option   [   -print ]   [ -exec   -ok   command ]   {} \;
+find -print0表示在find的每一个结果之后加一个NULL字符，而不是默认加一个换行符
+================================================
+find [PATH] [option] [action]
+# 与时间有关的参数：
+-mtime n : n为数字，意思为在n天之前的“一天内”被更改过的文件；
+-mtime +n : 列出在n天之前（不含n天本身）被更改过的文件名；
+-mtime -n : 列出在n天之内（含n天本身）被更改过的文件名；
+-newer file : 列出比file还要新的文件名
+# 与用户或用户组名有关的参数：
+-user name : 列出文件所有者为name的文件
+-group name : 列出文件所属用户组为name的文件
+-uid n : 列出文件所有者为用户ID为n的文件
+-gid n : 列出文件所属用户组为用户组ID为n的文件
+# 与文件权限及名称有关的参数：
+-name filename ：找出文件名为filename的文件
+-size [+-]SIZE ：找出比SIZE还要大（+）或小（-）的文件
+-tpye TYPE ：查找文件的类型为TYPE的文件，TYPE的值主要有：一般文件（f)、设备文件（b、c）、
+             目录（d）、连接文件（l）、socket（s）、FIFO管道文件（p）；
+-perm mode ：查找文件权限刚好等于mode的文件，mode用数字表示，如0755；
+-perm -mode ：查找文件权限必须要全部包括mode权限的文件，mode用数字表示
+-perm +mode ：查找文件权限包含任一mode的权限的文件，mode用数字表示
+================================================
+
+
+----------wc命令----------
+wc命令用于计算字数
+wc [-clw] [-help] [-version] [文件...]
+-c或--bytes或--chars只显示Bytes数。
+-l或-行只显示行数。
+-w或--words只显示字数。
+--help在线帮助。
+--version显示版本信息。
+
+----------seq命令----------
+seq命令用于以指定增量从首数开始打印数字到尾数，即产生从某个数到另外一个数之间的所有整数，并且可以对整数的格式、宽度、分割符号进行控制
+[1] seq [选项]    尾数
+[2] seq [选项]    首数  尾数
+[3] seq [选项]    首数  增量 尾数
+-f, --format=格式
+-s, --separator=字符串，使用指定的字符串分割数字（默认使用个"\n"分割）
+-w, --sequal-width  在列前添加0 使得宽度相同
+输出其他分割符实现法
+seq -s "`echo -e '\t'`" 2 5
+
+
+----------printf命令----------
+printf [format] [文本1] [文本2] ..
+=======================================
+常用格式替换符
+%s
+字符串
+%f
+浮点格式
+%c
+ASCII字符，即显示对应参数的第一个字符
+%d,%i
+十进制整数
+%o
+八进制值
+%u
+不带正负号的十进制值
+%x
+十六进制值（a-f）
+%X
+十六进制值（A-F）
+%%
+表示%本身
+=======================================
+常用转义字符
+\a
+警告字符，通常为ASCII的BEL字符
+\b
+后退
+\f
+换页
+\n
+换行
+\r
+回车
+\t
+水平制表符
+\v
+垂直制表符
+\\
+表示\本身
+=======================================
+
+
+----------wait命令----------
+wait命令用来等待指令的指令，直到其执行完毕后返回终端
+wait [参数]
+22 或%1	进程号 或 作业号
+
+
+----------builtin命令----------
+builtin命令用于执行指定的bash内建命令， builtin命令调用的bash内建命令优先于同名的外部命令及同名的shell函数
+builtin [参数]
+常用参数：
+shell-builtin	要调用的bash内建命令
+arg	传递给bash内建命令的一到多个参数
+同名情况下的优先级顺序：builtin 内建命令 > 函数 > 内建命令 > 外部命令：
+
+----------setsid命令----------
+语法格式：setsid [参数]
+常用参数：
+-c	将控制终端设置为当前控制终端
+-f	总是 fork
+-w	等待程序退出，并使用相同的返回
+setsid [options] program [arguments]
+
+----------pv命令----------
+使用pv监控进度
+语法格式: pv [参数] [文件]
+常用参数:
+-p	显示进度条
+-t	显示任务已经进行的时长
+-e	显示剩余多长时间完成
+-r	显示当前传输速率
+-a	显示平均传输速率
+-b	显示传输的字节数
+-F	设置输出格式为format
+-n	显示进度百分比
+-q	不输出任何信息
+-W	在传输第一个字节之前不显示任何内容
+
+----------whatis命令----------
+ whatis [参数]
+ 参数：
+其他命令	显示该命令的执行功能
+
+----------ps命令----------
+-A ：所有的进程均显示出来
+-a ：不与terminal有关的所有进程
+-u ：有效用户的相关进程
+-x ：一般与a参数一起使用，可列出较完整的信息
+-l ：较长，较详细地将PID的信息列出
+
+----------pstack命令----------
+显示每个进程的栈跟踪
+命令只有一个参数，那就是pid
+
+----------jstack命令----------
+jstack [-l] pid
+jstack输出的线程信息主要包括：jvm自身线程、用户线程等
+jstack [-l] <pid>
+    (to connect to running process)
+jstack -F [-m] [-l] <pid>
+    (to connect to a hung process)
+jstack [-m] [-l] <executable> <core>
+    (to connect to a core file)
+jstack [-m] [-l] [server_id@]<remote server IP or hostname>
+    (to connect to a remote debug server)
+-F 当进程挂起，执行jstack <pid> 命令没有任何输出后，将强制转储堆内的线程信息
+-m 在混合模式下，打印 java 和 native c/c++ 框架的所有栈信息
+-l 长列表。打印关于锁的附加信息，例如属于 java.util.concurrent 的 ownable synchronizers 列表
+-h | -help 打印帮助信息
+
+----------Jmap命令----------
+Jmap是一个可以输出所有内存中对象的工具
+jmap -histo pid
+jmap [ option ] pid
+jmap [ option ] executable core
+jmap [ option ] [server-id@]remote-hostname-or-IP
+executable :产生core dump的java可执行程序;
+core 将被打印信息的core dump文件;
+remote-hostname-or-IP 远程debug服务的主机名或ip;
+server-id 唯一id,假如一台主机上多个远程debug服务;
+-histo[:live] 打印每个class的实例数目,内存占用,类全名信息
+
+
+----------strace命令----------
+strace是一个可用于诊断、调试和教学的Linux用户空间跟踪器
+-tt 在每行输出的前面，显示毫秒级别的时间
+-T 显示每次系统调用所花费的时间
+-v 对于某些相关调用，把完整的环境变量，文件stat结构等打出来。
+-f 跟踪目标进程，以及目标进程创建的所有子进程
+-e 控制要跟踪的事件和跟踪行为,比如指定要跟踪的系统调用名称
+-o 把strace的输出单独写到指定的文件
+-s 当系统调用的某个参数是字符串时，最多输出指定长度的内容，默认是32个字节
+-p 指定要跟踪的进程pid, 要同时跟踪多个pid, 重复多次-p选项即可。
+
+
+----------shift命令----------
+shift [参数]
+参数：
+n	整数
+
+----------shuf命令----------
+shuf 命令是 coreutils 包中的命令
+yum install coreutils
+shuf随机排列命令，可以读取一个文件，也可以读取标准输入，之后将其写到标准输出
+shuf:把输入行按随机顺序输出到标准输出。
+用法： shuf [选项]... [文件]
+　或者:  shuf -e [选项]... [参数]...
+　或者:  shuf -i LO-HI [选项]...
+参数:
+  -e, --echo			将每个参数视为输入行
+  -i, --input-range=LO-HI	将LO 到HI 的每个数字视为输入行
+  -n, --head-count=行数		最多输出指定的行数
+  -o, --output=文件		将结果输出到指定文件而非标准输出
+      --random-source=文件	从指定文件获得随机比特
+  -z, --zero-terminated	以0 结束行而非新行
+      --help		显示此帮助信息并退出
+      --version		显示版本信息并退出
+
+----------sort命令----------
+sort可针对文本文件的内容，以行为单位来排序
+sort [-bcdfimMnr][-o<输出文件>][-t<分隔字符>][+<起始栏位>-<结束栏位>][--help][--verison][文件]
+-b 忽略每行前面开始出的空格字符。
+-c 检查文件是否已经按照顺序排序。
+-d 排序时，处理英文字母、数字及空格字符外，忽略其他的字符。
+-f 排序时，将小写字母视为大写字母。
+-i 排序时，除了040至176之间的ASCII字符外，忽略其他的字符。
+-m 将几个排序好的文件进行合并。
+-M 将前面3个字母依照月份的缩写进行排序。
+-n 依照数值的大小排序。
+-u 意味着是唯一的(unique)，输出的结果是去完重了的。
+-o<输出文件> 将排序后的结果存入指定的文件。
+-r 以相反的顺序来排序。
+-t<分隔字符> 指定排序时所用的栏位分隔字符。
++<起始栏位>-<结束栏位> 以指定的栏位来排序，范围由起始栏位到结束栏位的前一栏位。
+--help 显示帮助。
+--version 显示版本信息
+-k 按第一个域排序  1.2 表示地一个域第二个字符排序  1.2nr n表示数值比较 r降序
+
+----------uniq命令----------
+uniq 对排序好的内容进行去重
+uniq [-cdu][-f<栏位>][-s<字符位置>][-w<字符位置>][--help][--version][输入文件][输出文件]
+-c或--count 在每列旁边显示该行重复出现的次数
+-d或--repeated 仅显示重复出现的行
+-f<栏位>或--skip-fields=<栏位> 比较时跳过前n列，从n+1列开始比较
+-s<字符位置>或--skip-chars=<字符位置>比较时跳过前n个字符，从n+1个字符开始比较
+-u或--unique 仅显示出现一次的行
+-w<字符位置>或--check-chars=<字符位置>对每行第n个字符以后的内容不作对照
+
+----------mv命令----------
+mv [options] source dest
+mv [options] source... directory
+参数说明：
+-i: 若指定目录已有同名文件，则先询问是否覆盖旧文件;
+-f: 在 mv 操作要覆盖某已有的目标文件时不给任何指示;
+-u ：若目标文件已经存在，且比目标文件新，才会更新
+mv 文件名 文件名	将源文件名改为目标文件名
+mv 文件名 目录名	将文件移动到目标目录
+mv 目录名 目录名	目标目录已存在，将源目录移动到目标目录；目标目录不存在则改名
+mv 目录名 文件名	出错
+
+----------pwd命令----------
+pwd命令
+pwd -P # 显示出实际路径，而非使用连接（link）路径；pwd显示的是连接路径
+
+----------time命令----------
+time — 执行命令并计时
+time [-p] command [arguments...]
+
+
+----------特殊说明----------
+nohup命令、setsid命令、Daemon(守护进程)简要梳理
+nohup 的用途就是让提交的命令忽略 hangup 信号。
+setsid的用途就是让进程运行在新的会话里从而成为不属于此终端的子进程（fork）
+1. command & ： 后台运行，关掉终端会停止运行
+2. nohup command & ： 后台运行，关掉终端也会继续运行
+作业在后台运行一样会将结果输出到屏幕上
+
+
+----------linux 用户密码---------
+添加用户
+useradd
+添加组
+设置密码
+passwd [-k] [-l] [-u [-f]] [-d] [-S] [username]
+-d 删除密码
+-f 强制执行
+-k 更新只能发送在过期之后
+-l 停止账号使用
+-S 显示密码信息
+-u 启用已被停止的账户
+-x 设置密码的有效期
+-g 修改群组密码
+-i 过期后停止用户账号
+
+-d：删除指定用户密码
+-l:锁定指定用户
+-u:解锁指定用户
+-e:强制用户下次登录修改密码(密码马上过期:chage -d0 username)
+-f：强制执行(配合其他选项使用)
+-n mindays: 指定最短使用期限
+-x maxdays：最大使用期限
+-w warndays：提前多少天开始警告
+-i inactivedays：非活动期限
+--stdin：从标准输入接收用户密码
+
+设置权限
+
+----------su sudo命令---------
+su 命令临时切换用户身份
+SU：( Switch user切换用户)，可让一个普通用户切换为超级用户或其他用户，并可临时拥有所切换用户的权限，切换时需输入欲切换用户的密码；也可以让超级用户切换为普通用户，临时以低权限身份处理事务，切换时无需输入欲切换用户的密码。
+su [OPTION选项参数] [用户]
+-, -l, –login
+切换用户时，使环境变量(home，shell，user，logname，path等）和欲切换的用户相同、不使用则取得用户的临时权限，不加载环境变量。用su命令切换用户后，可以用 exit 命令或快捷键[Ctrl+D]可返回原登录用户；
+-c, –command=COMMAND
+使用 -c 传递单个命令到 shell 中，执行命令后，就恢复原来的用户身份，退出所切换到的用户环境；
+-s, –shell=SHELL
+指定执行命令的shell；
+su -
+su - root
+su - root -c "ls -l /root"
+su - oracle -c "ulimit -aHS"
+su -s /bin/sh -c "/usr/local/nginx/sbin/nginx"
+sudo 是需要授权许可的
+配置文件/etc/sudoers来进行授权
+/etc/sudoers 的规则可分为两类：一类是别名定义，另一类是授权规则；别名定义并不是必须的，但授权规则是必须的。
+执行visudo之后，可以看见缺省只有一条配置：
+root    ALL=(ALL) ALL
+那么你就在下边再加一条配置：
+admin ALL=(ALL) ALL
+
+
+----------tcpdump 网络抓包命令---------
+yum install tcpdump -y
+
+tcpdump [ -DenNqvX ] [ -c count ] [ -F file ] [ -i interface ] [ -r file ]
+        [ -s snaplen ] [ -w file ] [ expression ]
+https://upload-images.jianshu.io/upload_images/10797253-0ac0eb9ebc75adb4.png?imageMogr2/auto-orient/strip|imageView2/2/w/1134/format/webp
+抓包选项：
+-c：指定要抓取的包数量。
+-i interface：指定tcpdump需要监听的接口。默认会抓取第一个网络接口
+-n：对地址以数字方式显式，否则显式为主机名，也就是说-n选项不做主机名解析。
+-nn：除了-n的作用外，还把端口显示为数值，否则显示端口服务名。
+-P：指定要抓取的包是流入还是流出的包。可以给定的值为"in"、"out"和"inout"，默认为"inout"。
+-s len：设置tcpdump的数据包抓取长度为len，如果不设置默认将会是65535字节。对于要抓取的数据包较大时，长度设置不够可能会产生包截断，若出现包截断，
+：输出行中会出现"[|proto]"的标志(proto实际会显示为协议名)。但是抓取len越长，包的处理时间越长，并且会减少tcpdump可缓存的数据包的数量，
+：从而会导致数据包的丢失，所以在能抓取我们想要的包的前提下，抓取长度越小越好。
+
+输出选项：
+-e：输出的每行中都将包括数据链路层头部信息，例如源MAC和目标MAC。
+-q：快速打印输出。即打印很少的协议相关信息，从而输出行都比较简短。
+-X：输出包的头部数据，会以16进制和ASCII两种方式同时输出。
+-XX：输出包的头部数据，会以16进制和ASCII两种方式同时输出，更详细。
+-v：当分析和打印的时候，产生详细的输出。
+-vv：产生比-v更详细的输出。
+-vvv：产生比-vv更详细的输出。
+
+其他功能性选项：
+-D：列出可用于抓包的接口。将会列出接口的数值编号和接口名，它们都可以用于"-i"后。
+-F：从文件中读取抓包的表达式。若使用该选项，则命令行中给定的其他表达式都将失效。
+-w：将抓包数据输出到文件中而不是标准输出。可以同时配合"-G
+time"选项使得输出文件每time秒就自动切换到另一个文件。可通过"-r"选项载入这些文件以进行分析和打印。
+-r：从给定的数据包文件中读取数据。使用"-"表示从标准输入中读取。
+
+expression 表达式
+==一个基本的表达式单元格式为"proto dir type ID"==
+类型 type
+host, net, port, portrange
+例如：host 192.168.201.128 , net 128.3, port 20, portrange 6000-6008'
+目标 dir
+src, dst, src or dst, src and dst
+协议 proto
+tcp， udp ， icmp，若未给定协议类型，则匹配所有可能的类型
+==表达式单元之间可以使用操作符" and / && / or / || / not / ! "进行连接，从而组成复杂的条件表达式==
+使用括号"()"可以改变表达式的优先级，但需要注意的是括号会被shell解释，所以应该使用反斜线""转义为"()"，在需要的时候，还需要包围在引号中
+
+
+引用
+-A 以ASCII格式打印出所有分组，并将链路层的头最小化。
+-c 在收到指定的数量的分组后，tcpdump就会停止。
+-C 在将一个原始分组写入文件之前，检查文件当前的大小是否超过了参数file_size 中指定的大小。如果超过了指定大小，则关闭当前文件，然后在打开一个新的文件。参数 file_size 的单位是兆字节（是1,000,000字节，而不是1,048,576字节）。
+-d 将匹配信息包的代码以人们能够理解的汇编格式给出。
+-dd 将匹配信息包的代码以c语言程序段的格式给出。
+-ddd 将匹配信息包的代码以十进制的形式给出。
+-D 打印出系统中所有可以用tcpdump截包的网络接口。
+-e 在输出行打印出数据链路层的头部信息。
+-E 用spi@ipaddr algo:secret解密那些以addr作为地址，并且包含了安全参数索引值spi的IPsec ESP分组。
+-f 将外部的Internet地址以数字的形式打印出来。
+-F 从指定的文件中读取表达式，忽略命令行中给出的表达式。
+-i 指定监听的网络接口。
+-l 使标准输出变为缓冲行形式，可以把数据导出到文件。
+-L 列出网络接口的已知数据链路。
+-m 从文件module中导入SMI MIB模块定义。该参数可以被使用多次，以导入多个MIB模块。
+-M 如果tcp报文中存在TCP-MD5选项，则需要用secret作为共享的验证码用于验证TCP-MD5选选项摘要（详情可参考RFC 2385）。
+-b 在数据-链路层上选择协议，包括ip、arp、rarp、ipx都是这一层的。
+-n 不把网络地址转换成名字。
+-nn 不进行端口名称的转换。
+-N 不输出主机名中的域名部分。例如，‘nic.ddn.mil‘只输出’nic‘。
+-t 在输出的每一行不打印时间戳。
+-O 不运行分组分组匹配（packet-matching）代码优化程序。
+-P 不将网络接口设置成混杂模式。
+-q 快速输出。只输出较少的协议信息。
+-r 从指定的文件中读取包(这些包一般通过-w选项产生)。
+-S 将tcp的序列号以绝对值形式输出，而不是相对值。
+-s 从每个分组中读取最开始的snaplen个字节，而不是默认的68个字节。
+-T 将监听到的包直接解释为指定的类型的报文，常见的类型有rpc远程过程调用）和snmp（简单网络管理协议；）。
+-t 不在每一行中输出时间戳。
+-tt 在每一行中输出非格式化的时间戳。
+-ttt 输出本行和前面一行之间的时间差。
+-tttt 在每一行中输出由date处理的默认格式的时间戳。
+-u 输出未解码的NFS句柄。
+-v 输出一个稍微详细的信息，例如在ip包中可以包括ttl和服务类型的信息。
+-vv 输出详细的报文信息。
+-w 直接将分组写入文件中，而不是不分析并打印出来。
+
+参数：
+-nn，直接以 IP 及 Port Number 显示，而非主机名与服务名称。
+-i，后面接要「监听」的网络接口，例如 eth0, lo, ppp0 等等的接口。
+-w，如果你要将监听所得的数据包数据储存下来，用这个参数就对了。后面接文件名。
+-c，监听的数据包数，如果没有这个参数， tcpdump 会持续不断的监听，
+     直到用户输入 [ctrl]-c 为止。
+-A，数据包的内容以 ASCII 显示，通常用来捉取 WWW 的网页数据包资料。
+-e，使用资料连接层 (OSI 第二层) 的 MAC 数据包数据来显示。
+-q，仅列出较为简短的数据包信息，每一行的内容比较精简。
+-X，可以列出十六进制 (hex) 以及 ASCII 的数据包内容，对于监听数据包内容很有用。
+-r，从后面接的文件将数据包数据读出来。那个「文件」是已经存在的文件，
+     并且这个「文件」是由 -w 所制作出来的。
+所欲捕获的数据内容：我们可以专门针对某些通信协议或者是 IP 来源进行数据包捕获。
+     那就可以简化输出的结果，并取得最有用的信息。常见的表示方法有。
+    'host foo', 'host 127.0.0.1' ：针对单台主机来进行数据包捕获。
+     'net 192.168' ：针对某个网段来进行数据包的捕获。
+     'src host 127.0.0.1' 'dst net 192.168'：同时加上来源(src)或目标(dst)限制。
+     'tcp port 21'：还可以针对通信协议检测，如tcp、udp、arp、ether 等。
+     除了这三种类型的关键字之外，其他重要的关键字如下：gateway, broadcast,less,
+greater,还有三种逻辑运算，取非运算是 'not ' '! ', 与运算是'and','&&';或运算 是'o
+r' ,'||'；
+
+
+
+
+tcpdump version 4.1-PRE-CVS_2015_07_23
+libpcap version 1.4.0
+Usage: tcpdump [-aAdDefhIJKlLnNOpqRStuUvxX] [ -B size ] [ -c count ]
+                [ -C file_size ] [ -E algo:secret ] [ -F file ] [ -G seconds ]
+                [ -i interface ] [ -j tstamptype ] [ -M secret ]
+                [ -P in|out|inout ]
+                [ -r file ] [ -s snaplen ] [ -T type ] [ -w file ]
+                [ -W filecount ] [ -y datalinktype ] [ -z command ]
+                [ -Z user ] [ expression ]
+
+
+
+----------pm2 node 任务管理命令---------
+PM2是一个带有负载均衡功能的Node应用的进程管理器。PM2可以利用服务器上的所有CPU，并保证进程永远都活着，0秒的重载，部署管理多个Node项目。PM2是Node线上部署完美的管理工具
+
+npm install pm2 -g ： 全局安装。
+pm2 start app.js ： 启动服务，入口文件是app.js。
+pm2 start app.js -i [n] --name [name] ： 启动n个进程，名字命名为name。
+npm restart  [name or id] ： 重启服务。
+npm reload  [name or id] ： 和rastart功能相同，但是可以实现0s的无缝衔接；如果有nginx的使用经验，可以
+对比nginx reload指令。
+pm2 start app.js --max_memory_restart 1024M ： 当内存超过1024M时自动重启。 如果工程中有比较棘手的内
+存泄露问题，这个算是一个折中方案。
+pm2 monit ： 对服务进行监控。
+
+至于要启动几个进程，可以通过服务器的内核数进行确定，几个内核就启动几个服务
+# 查看物理CPU个数
+cat /proc/cpuinfo| grep "physical id" | sort| uniq | wc -l
+# 查看每个物理CPU中core的个数(即核数)
+cat /proc/cpuinfo| grep "cpu cores"| uniq
+# 查看逻辑CPU的个数
+cat /proc/cpuinfo| grep "processor"| wc -l
+
+fork与cluster启动模式
+开发环境中多以fork的方式启动，生产环境中多用cluster方式启动
+
+pm2 start app.js --name m --watch
+这个适合在开发时用，可以省不少时间，生产环境下最好不要用
+
+cluster是fork的派生，cluster支持所有cluster拥有的特性；
+fork不支持socket地址端口复用，cluster支持地址端口复用。因为只有node的cluster模块支持socket选项SO_REUSEADDR；
+
+fork模式可以应用于其他语言，如php，python，perl，ruby，bash，coffee， 而cluster只能应用于node;
+fork不支持定时重启，cluster支持定时重启。定时重启也就是配置中的cron_restart配置项。
+
+pm2 monit是专门用来监控的命令，监控项包括cpu与内存
+pm2 list展示当前所有pm2的管理项目
+pm2的相关文件默认存放于$HOME/.pm2/目录下，其日志主要有两类：
+pm2自身的日志，存放于$HOME/.pm2/pm2.log；
+pm2所管理的应用的日志，存放于HOME/.pm2/logs/目录下，标准谁出日志存放于{APP_NAME}_out.log，标准错误日志存放于${APP_NAME}_error.log；
+
+pm2支持配置文件启动：
+pm2 ecosystem： 生成配置文件ecosystem.json
+pm2 startOrRestart /file/path/ecosystem.json : 通过配置文件启动服务
+配置项
+name  应用进程名称；
+script  启动脚本路径；
+cwd  应用启动的路径，关于script与cwd的区别举例说明：在/home/polo/目录下运行/data/release/node/
+index.js，此处script为/data/release/node/index.js，cwd为/home/polo/；
+args  传递给脚本的参数；
+interpreter  指定的脚本解释器；
+interpreter_args  传递给解释器的参数；
+instances  应用启动实例个数，仅在cluster模式有效，默认为fork；
+exec_mode  应用启动模式，支持fork和cluster模式；
+watch  监听重启，启用情况下，文件夹或子文件夹下变化应用自动重启；
+ignore_watch  忽略监听的文件夹，支持正则表达式；
+max_memory_restart  最大内存限制数，超出自动重启；
+env  环境变量，object类型，如{"NODE_ENV":"production", "ID": "42"}；
+log_date_format  指定日志日期格式，如YYYY-MM-DD HH:mm:ss；
+error_file  记录标准错误流，$HOME/.pm2/logs/XXXerr.log)，代码错误可在此文件查找；
+out_file  记录标准输出流，$HOME/.pm2/logs/XXXout.log)，如应用打印大量的标准输出，会导致pm2日志过大；
+min_uptime  应用运行少于时间被认为是异常启动；
+max_restarts  最大异常重启次数，即小于min_uptime运行时间重启次数；
+autorestart  默认为true, 发生异常的情况下自动重启；
+cron_restart  crontab时间格式重启应用，目前只支持cluster模式；
+force  默认false，如果true，可以重复启动一个脚本。pm2不建议这么做；
+restart_delay  异常重启情况下，延时重启时间；
+
+
+----------Supervisor python 任务管理命令---------
+Supervisor 官方版目前只能运行在 Python 2.4 以上版本
+Supervisor 有两个主要的组成部分
+supervisord，运行 Supervisor 时会启动一个进程 supervisord，它负责启动所管理的进程，并将所管理的进程作为自己的子进程来启动，而且可以在所管理的进程出现崩溃时自动重启
+supervisorctl，是命令行管理工具，可以用来执行 stop、start、restart 等命令，来对这些子进程进行管理
+
+sudo pip install supervisor
+创建配置文件
+echo_supervisord_conf > /etc/supervisord.conf
+
+启动 supervisord
+# 使用默认的配置文件 /etc/supervisord.conf
+supervisord
+# 明确指定配置文件
+supervisord -c /etc/supervisord.conf
+# 使用 user 用户启动 supervisord
+supervisord -u user
+
+supervisorctl 命令介绍
+# 停止某一个进程，program_name 为 [program:x] 里的 x
+supervisorctl stop program_name
+# 启动某个进程
+supervisorctl start program_name
+# 重启某个进程
+supervisorctl restart program_name
+# 结束所有属于名为 groupworker 这个分组的进程 (start，restart 同理)
+supervisorctl stop groupworker:
+# 结束 groupworker:name1 这个进程 (start，restart 同理)
+supervisorctl stop groupworker:name1
+# 停止全部进程，注：start、restart、stop 都不会载入最新的配置文件
+supervisorctl stop all
+# 载入最新的配置文件，停止原有进程并按新的配置启动、管理所有进程
+supervisorctl reload
+# 根据最新的配置文件，启动新配置或有改动的进程，配置没有改动的进程不会受影响而重启
+supervisorctl update
+
+
+
+
+
+----------shell 常用命令---------
+文件比较符
+比较符号	功能描述
+-e	判断对象是否存在
+-d	判断对象是否存在，并且为目录
+-f	判断对象是否存在，并且为常规文件
+-L	判断对象是否存在，并且为符号链接
+-h	判断对象是否存在，并且为软链接
+-s	判断对象是否存在，并且长度不为0
+-r	判断对象是否存在，并且可读
+-w	判断对象是否存在，并且可写
+-x	判断对象是否存在，并且可执行
+-O	判断对象是否存在，并且属于当前用户
+-G	判断对象是否存在，并且属于当前用户组
+-nt	判断file1是否比file2新 [ “/data/file1” -nt “/data/file2” ]
+-ot	判断file1是否比file2旧 [ “/data/file1” -ot “/data/file2” ]
+
+技巧
+查看进程
+ps -ef|grep ''
+查看进程启动目录和关联的文件
+cd /proc/'pid' | ls
+
+linux 括号使用(),(()),[],[[]]
+()，在括号中的命令列表, 将会作为一个子shell来运行
+$(command)一起使用，效果如`command`
+(())，用来计算并测试算术表达式的结果 所有的变量(加不加$无所谓)都是数值
+[]，条件测试表达式放在[ ]中
+[[]]，就是条件表达式
+[]中 < >需要转义;对于数值比较.用 -lt -le -eq -ge -gt 来比较，与[[]]中表达不太一样，[[]]中表达式不需要转义
+在[[ ]] 中用 && || 来组合，而[] 中是用 -a -o 来组合
+
+$#	传递到脚本的参数个数
+$*	以一个单字符串显示所有向脚本传递的参数。
+如"$*"用「"」括起来的情况、以"$1 $2 … $n"的形式输出所有参数。
+$$	脚本运行的当前进程ID号
+$!	后台运行的最后一个进程的ID号
+$@	与$*相同，但是使用时加引号，并在引号中返回每个参数。
+如"$@"用「"」括起来的情况、以"$1" "$2" … "$n" 的形式输出所有参数。
+$-	显示Shell使用的当前选项，与set命令功能相同。
+$?	显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误。
+$* 与 $@ 区别
+ " * " 等价于 "1 2 3"（传递了一个参数），而 "@" 等价于 "1" "2" "3"（传递了三个参数）
+
+
+
+------------markdown 工具-----------------
+https://www.typora.io/
+
+------------本机启动简单的http服务-----------------
+Http-server是一个轻量级的基于nodejs的http服务器，它最大好处就是
+npm i -g http-server
+http-server
+若要禁用缓存，请使用如下命令运行
+http-server -c-1
+
+python2
+python  -m    SimpleHTTPServer   9999(自定义端口)
+python3
+python -m http.server
+
+------------青花瓷 工具-----------------
+https://www.charlesproxy.com/download/
+配置https 根证书，破解https报文
+下载根证书地址http://www.charlesproxy.com/getssl/
+
+
+------------记录用户所有操作--------------
+在/etc/profile加入如下脚本
+
+PS1="`whoami`@`hostname`:"'[$PWD]'
+history
+USER_IP=`who -u am i 2>/dev/null| awk '{print $NF}'|sed -e 's/[()]//g'`
+if [ "$USER_IP" = "" ]
+then
+USER_IP=`hostname`
+fi
+if [ ! -d /tmp/history ]
+then
+mkdir /tmp/history
+chmod 777 /tmp/history
+fi
+if [ ! -d /tmp/history/${LOGNAME} ]
+then
+mkdir /tmp/history/${LOGNAME}
+chmod 300 /tmp/history/${LOGNAME}
+fi
+export HISTSIZE=4096
+DT=`date "+%Y-%m-%d_%H:%M:%S"`
+export HISTFILE="/tmp/history/${LOGNAME}/${USER_IP}_history.$DT"
+chmod 600 /tmp/history/${LOGNAME}/*history* 2>/dev/null
+
+source /etc/profile使生效
+
+#修改展示时间
+HISTTIMEFORMAT="%Y%m%d-%H%M%S: "     
+export HISTTIMEFORMAT
+
+使用 HISTTIMEFORMAT 显示时间戳在 /etc/bashrc 中编辑：
+export HISTTIMEFORMAT='%F %T '
+export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S  `whoami`  " # 这将显示执行命令的用户
+
+使用 HISTSIZE 控制历史命令记录的总行数
+export HISTSIZE=100 # history 命令的记录数量。The number of commands to remember in the command history. The default value is 500.
+export HISTFILESIZE=100 # 记录文件的行数。The maximum number of lines contained in the history file. When this variable is assigned a value, the his-tory file is truncated, if necessary, by removing the oldest entries, to contain no more than that number of lines. The default value is 500. The history file  is also truncated to this size after writing it when an interactive shell exits.
+
+使用 HISTFILE 更改历史文件名称
+默认情况下，命令历史存储在 ~/.bash_history 文件中
+export HISTFILE=/var/log/command_history
+
+使用 HISTCONTROL 从命令历史中剔除连续重复的条目
+export HISTCONTROL=ignoredups # ignoredups 只能剔除连续的重复条目。要清除整个命令历史中的重复条目，可以将 HISTCONTROL 设置成 erasedups
+export HISTCONTROL=erasedups
+
+使用 HISTCONTROL 强制 history 不记住特定的命令
+export HISTIGNORE='ls' # A colon-separated list of patterns used to decide which command lines should be saved on the history list.Each pattern is anchored at the beginning  of the line and must match the complete line 
+
+
+
+
+内网地址
+10.0.0.0 - 10.255.255.255 (10/8比特前缀)
+172.16.0.0 - 172.31.255.255 (172.16/12比特前缀)
+192.168.0.0 - 192.168.255.255 (192.168/16比特前缀)
+
+

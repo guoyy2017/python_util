@@ -1,0 +1,35 @@
+下载地址
+wget https://mirrors.huaweicloud.com/kibana/7.6.2/kibana-7.6.2-linux-x86_64.tar.gz
+
+=======启动========
+./kibana --allow-root
+# 之后配置一个kibana用户，用来启动服务
+
+访问
+http://ip:5601
+
+
+
+=======配置========
+配置文件 kibana.yml
+配置es地址
+elasticsearch.hosts: ["http://ip:9200"]
+配置启动ip
+server.host: "0.0.0.0"
+配置启动端口
+server.port: 5601
+修改显示中文
+i18n.locale: "zh-CN"  
+
+
+=======生产 安全========
+使用 X-Pack 安全模块 控制用户通过 Kibana 可以访问哪些 Elasticsearch 数据
+
+
+=======展示配置=======
+1.加载案例数据到你安装的Elasticsearch中
+2. 定义至少一个索引匹配模式
+3.使用Discover功能探索你的数据
+4.建立一个visualization图形化地展示你的数据
+5.把许多visualization汇编组装成一个Dashboard
+

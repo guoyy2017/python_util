@@ -1,5 +1,7 @@
 安装单机版服务
-## 解压源码
+下载
+https://github.com/alibaba/nacos/releases
+## 解压文件
 unzip nacos-master.zip
 cd nacos-master
 ## 编译可执行文件
@@ -9,3 +11,6 @@ cd distribution/target/nacos-server-0.8.0/nacos/bin
 sh startup.sh -m standalone
 
 用户名，密码都是：nacos
+
+单机启动模式
+sh startup.sh -m standalone

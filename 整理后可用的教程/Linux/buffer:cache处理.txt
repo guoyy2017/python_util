@@ -1,0 +1,35 @@
+cache 清理操作
+人工触发缓存清除的操作
+------------------------
+$sudo su 先切换到root用户
+#
+$echo 1 > /proc/sys/vm/drop_caches:表示清除pagecache。
+$echo 2 > /proc/sys/vm/drop_caches:表示清除回收slab分配器中的对象（包括目录项缓存和inode缓存）。slab分配器是内核中管理内存的一种机制，其中很多缓存数据实现都是用的pagecache。
+$echo 3 > /proc/sys/vm/drop_caches:表示清除pagecache和slab分配器中的缓存对象。
+------------------------
+
+buffer  即写如磁盘时，先保存到磁盘缓冲区(buffer)，然后再写入到磁盘
+cache   即读磁盘时，数据从磁盘读出后，暂留在缓冲区(cache)，为后续程序的使用做准备
+
+buffer/cache（已使用 or 空闲）
+操作系统的角度：这块内存确实被操作系统使用了。
+用户角度：如果用户要使用，这块内存是可以很快被回收而被用户空间程序使用，因此从用户角度而言这块内存应被划为空闲状态
+
+
+
+=================================Swap和Buffer Cache机制==================================
+Swap和Buffer Cache机制
+Linux支持虚拟内存（virtual memory），虚拟内存是指使用磁盘当作RAM的扩展，这样可用的内存的大小就相应地增大了
+用作虚拟内存的硬盘部分被称为交换空间（Swap Space）
+
+
+
+清理Swap
+swapoff -a && swapon -a
+    操作说明：如果已经使用了Swap，且当前清空下+buffers/cache还有空间，在执行swapoff -a操作时，会触发把Swap中的内容交换到内存中，数据不会丢失
+
+操作说明：
+    sync-->将缓存的内从写回到硬盘中；
+    echo 3 >/proc/sys/vm/drop_caches-->修改drop_caches的值为3，默认为0，改为3系统会清理缓存的内容；
+    sleep 2 --> 等一下，防止上一步没执行完；
+    echo 0 >/proc/sys/vm/drop_caches --> 改回默认值

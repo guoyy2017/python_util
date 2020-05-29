@@ -1,0 +1,306 @@
+rocketmq 是消息处理系统
+=============安装===============
+http://rocketmq.apache.org/dowloading/releases/
+下载安装包
+wget http://archive.apache.org/dist/rocketmq/4.3.0/rocketmq-all-4.3.0-bin-release.zip 
+修改内存地址
+runserver.sh 中有java启动内存地址
+
+=============管控台===============
+https://github.com/apache/rocketmq-externals
+编译项目rocketmq-console
+执行 java -jar *.jar
+#如果配置文件没有填写Name Server
+java -jar target/rocketmq-console-ng-1.0.0.jar --rocketmq.config.namesrvAddr='10.0.74.198:9876;10.0.74.199:9876'
+
+
+=============启动 停止===============
+启动 内容服务
+sh bin/mqnamesrv
+启动 中间人
+sh bin/mqbroker -n 127.0.0.1:9876
+--
+sh bin/mqbroker -c conf/broker.conf
+停止 服务
+sh bin/mqshutdown broker
+sh bin/mqshutdown namesrv
+
+
+
+
+=============部署 节点===============
+生产组
+消费组
+Name Server组.   默认端口9876
+Broker组(Master Slave)  默认端口10911
+10909端口 消息VIP端口
+
+
+=============创建主题topic===============
+Topic是Producer生产消息，Consumer消费消息的依据
+创建Topic的方式
+1、Producer发送一个没有创建的Topic的消息，且Broker设置为允许创建
+2、通过rocketmq-console控制面板创建
+3、通过mqadmin创建
+
+updateTopic命令主要是三个参数
+-b broker_id:broker_port  ,ip都知道就是启动broker机器的ip 默认是10911
+-n 就是nameserver的地址和端口，这个一般启动broker时要指定
+-t 就是名字
+
+Topic配置中perm Topic 的读写模式
+6：同时支持读写
+4：禁写
+2：禁读
+
+
+
+=============生产===============
+生产组
+NormalProduct 普通。DefaultMQProducer
+OrderProduct  顺序
+TransactionProduct 事务。TransactionMQProducer 事务生产者
+
+//为避免程序启动的时候报错，添加此代码，可以让rocketMq自动创建topickey
+producer.setCreateTopicKey("AUTO_CREATE_TOPIC_KEY");
+
+MessageQueueSelector 发送队列选择器
+生产端决定消息到哪个队列
+send 默认发送
+sendOneway 单向（Oneway）发送特点为只负责发送消息 即只发送请求不等待应答
+		适用于某些耗时非常短，但对可靠性要求并不高的场景，例如日志收集。
+
+当发送的消息不重要时，采用one-way方式，以提高吞吐量；
+当发送的消息很重要是，且对响应时间不敏感的时候采用sync方式;
+当发送的消息很重要，且对响应时间非常敏感的时候采用async方式；
+
+
+=============消费===============
+MQPullConsumer 拉模式
+MQPushConsumer 推模式
+
+消费线程数
+consumeThreadMin
+consumeThreadMax
+
+保证消费顺序
+MessageListenerOrderly
+
+subscribe 订阅 TOPIC, TAG(*/tag1||tag2) tag 多订阅使用||  tag过滤这种属于本地过滤消息会到消费端
+subscribe 可以多订阅TOPIC
+
+消息过滤
+tag
+tag服务端只是验证了TAG的hashcode，客户端再次对消息进行tag值对比过滤
+sql(SQL92表达式)
+（官方示例有bug）表达式没有想象的好用，建议大家接收到消息自己判断筛选
+类过滤：定制过滤消息
+消息过滤服务器（不讲解）
+consumer->filterserver->broker
+
+//设置消息模式 为 广播模式
+consumer.setMessageModel(MessageModel.BROADCASTING);
+
+集群模式：默认模式，主题下的同一条消息只允许被其中一个消费者消费
+		消费进度存储在服务端
+广播模式：主题下的同一条消息将被集群内的所有消费者消费一次
+		消费进度存储在消费者本地
+
+消费组
+消费分 推拉PULL-PUSH两种模式
+RocketMQ有两种消费模式：BROADCASTING广播模式，CLUSTERING集群模式，默认的是 集群消费模式。
+广播消费指的是：一条消息被多个consumer消费，即使这些consumer属于同一个ConsumerGroup,消息也会被ConsumerGroup中的每个Consumer都消费一次，广播消费中ConsumerGroup概念可以认为在消息划分方面无意义。
+集群消费模式：一个ConsumerGroup中的Consumer实例平均分摊消费消息。
+
+
+=============消息===============
+消息有优先级
+消息过滤
+Broker端过滤。增加了Broker端负担
+Consumer端过滤 无用消息发送到Consumer端
+
+
+Message
+topic：主题名称
+tag：消息TAG，用于消息过滤对消息的整体分类，比如 topic为物流跟踪轨迹 ，轨迹包含 揽收 出库 入库 派送 签收，可以分别给这些相同topic不同类型的数据打标签分类解析处理
+keys：Message索引键，多个用空格隔开，RocketMQ可以根据这些key快速检索到消息对消息关键字的提取方便查询，比如一条消息某个关键字是 运单号，之后我们可以使用这个运单号作为关键字进行查询
+waitStoreMsgOK：消息发送时是否等消息存储完成后再返
+delayTimeLevel：消息延迟级别，用于定时消息或消息重
+User property：自定义消息属性
+
+
+Topic 一种消息的逻辑分类
+Message 消息的载体。一个 Message 必须指定 topic
+Tag 对 Topic 进一步细化
+
+消息持久化
+到mysql
+到leveldb
+到文件
+
+
+=============TOPIC===============
+普通 重试 死信 系统
+
+重试TOPIC的名字是
+%RETRY%+consumergroup的名字
+
+重复消费都持续失败到一定次数（默认16次），就会投递到DLQ死信队列，此时需要人工干预了
+死信名为
+%DLQ%+consumergroup
+
+=============消息消费位置===============
+ConsumeFromWhere
+CONSUME_FROM_FIRST_OFFSET：从头开始消费
+ONSUME_FROM_TIMESTAMP：从消费者启动的时间戳对应的消费进度开始消费
+CONSUME_FROM_LAST_OFFSET：从队列最新偏移量开始消费
+CONSUME_SUCCESS：消费成功
+RECONSUME_LATER：延迟消费，放弃本批次消息消费 类似于continue，如果有重试次数没有达到最大上限会再次消费
+
+=============延时消息===============
+消息发送之后并不立即被消费者消费，而是要等到特定的时间之后才能被消费
+不支持任意时间精度定时发送，只支持配置级别的时间默认为"1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h"，delayLevel=1表示延迟1s，delayLevel=2表示延迟5s，依次类推。
+SCHEDULE_TOPIC_XXXX定时消息主题
+
+// This message will be delivered to consumer 10 seconds later.
+message.setDelayTimeLevel(3);
+
+=============PULL PUSH===============
+consumer被分为2类：MQPullConsumer和MQPushConsumer
+本质都是拉模式
+区别：
+push方式里，consumer把轮询过程封装了，并注册MessageListener监听器
+唤醒MessageListener的consumeMessage()来消费，对用户而言，感觉消息是被推送过来的
+pull方式里，取消息的过程需要用户自己写
+
+
+
+
+=============启动命令=================
+name-server-0 : ./bin/mqnamesrv.cmd -c ./prop/nameserver_0.properties
+name-server-1 : ./bin/mqnamesrv.cmd -c ./prop/nameserver_1.properties
+broker-a-master : ./bin/mqbroker.cmd -c ./prop/broker_a_master.properties -n "127.0.0.1:9788;127.0.0.1:9877"
+broker-a-slave : ./bin/mqbroker.cmd -c ./prop/broker_a_slave.properties -n "127.0.0.1:9788;127.0.0.1:9877"
+
+nameserver_0.properties
+listenPort=9877
+
+nameserver_1.properties
+listenPort=9788
+
+broker_a_master.properties
+listenPort=10912
+brokerName=Fernandes_broker_A
+brokerClusterName=Fernandes_broker_cluster
+brokerId=0
+deleteWhen=04
+fileReservedTime=48
+brokerRole=ASYNC_MASTER
+flushDiskType=ASYNC_FLUSH
+storePathRootDir=C:/Users/xxx/Desktop/rocketmq-all-4.4.0-bin-release/broker_a_master_info
+
+broker_a_slave.properties
+listenPort=10919
+brokerName=Fernandes_broker_A
+brokerClusterName=Fernandes_broker_cluster
+brokerId=1
+deleteWhen=04
+fileReservedTime=48
+brokerRole=SLAVE
+flushDiskType=ASYNC_FLUSH
+storePathRootDir=C:/Users/80021380/Desktop/rocketmq-all-4.4.0-bin-release/broker_a_slave_info
+
+
+
+
+=============RocketMQ集群部署方式===============
+1、单Mater模式
+  优点：配置简单，方便部署
+  缺点：风险较大，一旦Broker重启或者宕机，会导致整个服务不可用
+
+2、多Master模式
+  一个集群无 Slave，全是 Master，例如 2 个 Master 或者 3 个 Master
+  优点：配置简单，单个Master宕机重启对应用没有影响。消息不会丢失
+  缺点：单台机器宕机期间，这台机器上没有被消费的消息在恢复之前不可订阅，消息实时性会受到影响。
+
+3、多Master多Slave模式（异步）
+  每个Master配置一个Slave，采用异步复制方式，主备有短暂消息延迟
+  优点：因为Master 宕机后，消费者仍然可以从 Slave消费，此过程对应用透明。不需要人工干预。性能同多 Master 模式几乎一样。
+  缺点：Master宕机后，会丢失少量信息
+
+4、多Master多Slave模式（同步）
+  每个Master配置一个Slave，采用同步双写方式，只有主和备都写成功，才返回成功
+  优点：数据与服务都无单点， Master宕机情况下，消息无延迟，服务可用性与数据可用性都非常高
+  缺点：性能比异步复制模式略低，大约低 10%左右，发送单个消息的 RT会略高。目前主宕机后，备机不能自动切换为主机，后续会支持自动切换功能
+
+
+
+
+==============基础知识===================
+https://my.oschina.net/u/4407134/blog/3242801
+
+
+
+
+
+==============broker 配置文件===================
+# nameServer地址，这里nameserver是单台，如果nameserver是多台集群的话，就用分号分割（即namesrvAddr=ip1:port1;ip2:port2;ip3:port3）
+namesrvAddr=10.1.219.75:9876;10.1.219.76:9876
+# 所属集群名字
+brokerClusterName=rocketmq-cluster
+# broker名字，注意此处不同的配置文件填写的不一样  例如：在a.properties 文件中写 broker-a  在b.properties 文件中写 broker-b
+brokerName=broker-a
+# 0 表示 Master，>0 表示 Slave
+brokerId=0
+# 删除文件时间点，默认凌晨 4点
+deleteWhen=04
+# 文件保留时间，默认 48 小时
+fileReservedTime=48
+# Broker 的角色: ASYNC_MASTER 异步复制Master ; SYNC_MASTER 同步双写Master; SLAVE
+brokerRole=SYNC_MASTER
+# 刷盘方式 ASYNC_FLUSH 异步刷盘; SYNC_FLUSH 同步刷盘
+flushDiskType=ASYNC_FLUSH
+# Broker 对外服务的监听端口
+listenPort=10911
+# 存储路径
+storePathRootDir=/app/custom/data/rocketmq/store-a
+
+
+# 在发送消息时，自动创建服务器不存在的topic，默认创建的队列数。由于是4个broker节点，所以设置为4
+# defaultTopicQueueNums=4
+# 是否允许 Broker 自动创建Topic，建议线下开启，线上关闭
+autoCreateTopicEnable=true
+# 是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭
+autoCreateSubscriptionGroup=true
+# commitLog每个文件的大小默认1G
+mapedFileSizeCommitLog=1073741824
+# ConsumeQueue每个文件默认存30W条，根据业务情况调整
+mapedFileSizeConsumeQueue=300000
+# destroyMapedFileIntervalForcibly=120000
+# redeleteHangedFileInterval=120000
+# 检测物理文件磁盘空间
+diskMaxUsedSpaceRatio=88
+# commitLog 存储路径
+#storePathCommitLog=/data/rocketmq/store/commitlog
+# 消费队列存储路径存储路径
+#storePathConsumeQueue=/data/rocketmq/store/consumequeue
+# 消息索引存储路径
+#storePathIndex=/data/rocketmq/store/index
+# checkpoint 文件存储路径
+#storeCheckpoint=/data/rocketmq/store/checkpoint
+# abort 文件存储路径
+#abortFile=/data/rocketmq/store/abort
+# 限制的消息大小
+maxMessageSize=65536
+#flushCommitLogLeastPages=4
+#flushConsumeQueueLeastPages=2
+#flushCommitLogThoroughInterval=10000
+#flushConsumeQueueThoroughInterval=60000
+
+# 发消息线程池数量
+#sendMessageThreadPoolNums=128
+# 拉消息线程池数量
+#pullMessageThreadPoolNums=128
+
+
+

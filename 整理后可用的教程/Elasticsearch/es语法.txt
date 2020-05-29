@@ -1,0 +1,276 @@
+es 操作说明
+http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html
+
+
+创建库
+http://{ip}:{port}/{库名称} put
+
+查询库
+http://{ip}:{port}/_cat/indices?v get
+返回字段说明
+health:健康度
+status：状态
+index：索引库
+uuid：唯一id
+pri:主分片
+docs.count：文档数量
+docs.deleted：删除文档
+
+插入数据
+http://{ip}:{port}/test/testlog/1/ put
+{
+"computer":"secisland",
+"message":"success"
+}
+
+修改文档
+http://{ip}:{port}/test/testlog/1/_update/   post
+{
+"doc": {
+"computer": "secisland",
+"message": "this is success"
+}
+}
+
+查询文档
+http://{ip}:{port}/test/testlog/1/ get
+
+删除文档
+http://{ip}:{port}/test/testlog/1/  DELETE 
+
+删除库
+http://{ip}:{port}/test/ DELETE 
+
+创建分片和副分片
+http://{ip}:{port}/test_190720/ put
+{"settings": {"index": {"number_of_shards": 4,"number_of_replicas": 3}}
+或者
+{"settings": {"number_of_shards": 4,"number_of_replicas": 3}
+
+
+修改副本数量
+http://{ip}:{port}/test_190720/ _settings/ put
+{
+"number_of_replicas": 1
+}
+
+删除索引
+http://{ip}:{port}//test_190720/ delete
+
+创建字段
+http://{ip}:{port}/test_190720/ put
+{
+"mappings": {
+"properties": {
+"logs": {
+"properties": {
+"message": {
+"type": "text"
+},
+"date": {
+"type": "date"
+}
+}
+}
+}
+}
+}
+注意：Elasticsearch从5.X就引入了text和keyword，其中keyword适用于不分词字段，搜索时只能完全匹配，这时string还保留着。 
+到了6.X就彻底移除string了。 
+另外，"index"的值只能是boolean变量了。
+
+获取索引
+http://{ip}:{port}/test_190720/ get
+查询某个集合
+http://192.168.1.10:9200/test_190720/_settings/ get
+
+打开或关闭某个索引
+打开 http://192.168.1.10:9200/test_190720/_open/ post
+关闭 http://192.168.1.10:9200/test_190720/_close/ post
+
+
+映射字段数据类型 
+字符类型：text
+数字类型：long，integer，short，byte，double，float
+日期类型：date
+布尔型：boolean
+二进制：binary
+复杂数据类型包括：
+数组类型：不需要专门的类型来定义数组
+对象数据类型：object，单独的json对象
+嵌套数据类型：nested，关于json对象的数组
+地理数据类型：
+地理点数据类型：geo_point,经纬点
+地理形状数据类型：geo_shape，多边形的复杂地理形状
+专门数据类型：
+ipv4数据类型：ip协议为ipv4的地址
+完成数据类型：completion，提供自动补全的建议
+单词计树数据类型：token_count，统计字符串中的单词数量
+不被分词：keyword
+
+
+字符串数据类型
+
+http://localhost:9200/test_190720/ put
+
+{
+"mappings": {
+"properties": {
+"logs": {
+"properties": {
+"message": {
+"type": "text"
+},
+"status": {
+"type": "keyword"
+}
+}
+}
+}
+}
+}
+
+参数	说明
+analyzer	分词器可以用于可讽刺的字符串类型字段，默认为默认的索引分词器或者标准分词器
+boost	字段级索引加权。接受浮点型数字，默认值是1.0
+doc_values	定义字段是否应该以列跨度的方式存储在磁盘上，以便用于排序、聚合或者脚本。接受true或false参数，默认值是true。可分词字段不支持这个参数
+fielddate	决定字段是否可以使用内存字段值进行排序，聚合或者在脚本中使用。接受disable或者paged_bytes（默认）参数。没有分析过的字段会优先使用文档值
+ignore_above	不要索引或执行任何长于这个值的字符串。默认为0（禁用）
+include_in_all	决定字段是否应该包含在_all字段中。接受true或者false参数。如果索引被设置为No或者父对象设置Include_in_all为false，参数默认值为False，其他情况下为True
+index	决定字段是否被用户搜索。接受参数analyzed(默认，视为全文字段)，not_analyzed(作为关键字段)以及no
+index_options	定义存储在索引中，用于搜索和突出用途信息
+norms	计算查询得分的时候是否应该考虑字段长度。默认依赖于索引设置：analyzed字段默认为{"enable":true,"loading":"lazy"}。not_analyzed字段默认为{"enable":false}
+null_value	接受一个字符串值替换所有null值。默认为Null，意味着字段作为缺失字段。如果字段是可分词（analyzed）的，null_value也会被分词
+posiition_increment_gap	定义字符串数组中应该插入的虚拟索引词的数量。默认值为100，以一个较合理的值来阻止短语查询在跨字段匹配索引分词的时候溢出
+store	决定字段值是否应该被存储以及以_source字段分别获取。接受参数true或false(默认)
+search_analyzer	指定搜索时用在可分词字段上的分词器
+search_quote_analyzer	指定搜索短语时使用的分词器
+similarity	指定使用的相似度评分算法，默认为TF/IDF
+term_vector	定义一个可分词字段是否应该存储索引词向量。默认为no
+
+
+数字类型
+http://localhost:9200/test_190720/ get
+{
+"mappings": {
+"properties": {
+"logs": {
+"properties": {
+"message": {
+"type": "text"
+},
+"status": {
+"type": "keyword"
+},
+"id": {
+"type": "integer"
+}
+}
+}
+}
+}
+}
+参数	说明
+coerce	试着将字符串型数据转换为整数型数字数据
+boost	字段级索引加权，接受浮点型数字参数，默认为1.0
+doc_values	定义字段是否应该以列跨度的方式存储在磁盘上，以便用于排序、聚合或者脚本。接受true(默认)或false参数
+ignore_malformed	如果是true，畸形的数字会被忽略。如果是false（默认），畸形数字会抛出异常并丢弃整个文档
+include_in_all	决定字段是否应该包含在_all字段中。接受true或false参数。如果索引被设置为No或者父对象字段设置include_in_all为false,参数默认值为false；其他情况下，默认值为true
+index	决定字段是否可以被用户搜索。接受参数Not_analyzed（默认）以及no
+null_value	接受与字段同类型的数字型值来代替null值。默认是null。意味着字段作为缺失字段
+precision_step	控制索引的额外索引词的数量来使范围查询更快速。默认值取决于数字类型
+store	决定字段值是否应该存储以及从_source字段分别获取。接受参数true或false(默认)
+
+
+
+
+===================ES 全面查询语法===================
+---------Filter DSL---------------
+term 过滤
+term主要用于精确匹配哪些值，比如数字，日期，布尔值或 not_analyzed 的字符串(未经分析的文本数据类型)：
+{ “term”: { “age”: 26 }}
+{ “term”: { “date”: “2014-09-01” }}
+{ “term”: { “public”: true }}
+{ “term”: { “tag”: “full_text” }}
+
+terms 过滤
+terms 跟 term 有点类似，但 terms 允许指定多个匹配条件。 如果某个字段指定了多个值，那么文档需要一起去做匹配：
+
+range 过滤
+range过滤允许我们按照指定范围查找一批数据：
+范围操作符包含：
+gt :: 大于
+gte:: 大于等于
+lt :: 小于
+lte:: 小于等于
+
+exists 和 missing 过滤
+exists 和 missing 过滤可以用于查找文档中是否包含指定字段或没有某个字段，类似于SQL语句中的IS_NULL条件.
+
+bool 过滤
+bool 过滤可以用来合并多个过滤条件查询结果的布尔逻辑，它包含一下操作符：
+must :: 多个查询条件的完全匹配,相当于 and。
+must_not :: 多个查询条件的相反匹配，相当于 not。
+should :: 至少有一个查询条件匹配, 相当于 or。
+这些参数可以分别继承一个过滤条件或者一个过滤条件的数组
+
+---------Query DSL---------------
+match_all 查询
+可以查询到所有文档，是没有查询条件下的默认语句。
+{
+“match_all”: {}
+}
+此查询常用于合并过滤条件。 比如说你需要检索所有的邮箱,所有的文档相关性都是相同的，所以得到的_score为1.
+
+match 查询
+match查询是一个标准查询，不管你需要全文本查询还是精确查询基本上都要用到它。
+如果你使用 match 查询一个全文本字段，它会在真正查询之前用分析器先分析match一下查询字符：
+如果用match下指定了一个确切值，在遇到数字，日期，布尔值或者not_analyzed 的字符串时，它将为你搜索你给定的值：
+提示： 做精确匹配搜索时，你最好用过滤语句，因为过滤语句可以缓存数据。
+match查询只能就指定某个确切字段某个确切的值进行搜索，而你要做的就是为它指定正确的字段名以避免语法错误。
+
+multi_match 查询
+multi_match查询允许你做match查询的基础上同时搜索多个字段，在多个字段中同时查一个：
+
+bool 查询
+bool 查询与 bool 过滤相似，用于合并多个查询子句。不同的是，bool 过滤可以直接给出是否匹配成功， 而bool 查询要计算每一个查询子句的 _score （相关性分值）。
+must:: 查询指定文档一定要被包含。
+must_not:: 查询指定文档一定不要被包含。
+should:: 查询指定文档，有则可以为文档相关性加分。
+以下查询将会找到 title 字段中包含 “how to make millions”，并且 “tag” 字段没有被标为 spam。 如果有标识为 “starred” 或者发布日期为2014年之前，那么这些匹配的文档将比同类网站等级高：
+提示： 如果bool 查询下没有must子句，那至少应该有一个should子句。但是 如果有must子句，那么没有should子句也可以进行查询。
+
+wildcards 查询
+使用标准的shell通配符查询
+
+regexp 查询
+假设您只想匹配以W开头，紧跟着数字的邮政编码。使用regexp查询能够让你写下更复杂的模式：
+
+prefix 查询
+以什么字符开头的，可以更简单地用 prefix，如下面的例子：
+
+短语匹配(Phrase Matching)
+当你需要寻找邻近的几个单词时，你会使用match_phrase查询：
+和match查询类似，match_phrase查询首先解析查询字符串来产生一个词条列表。然后会搜索所有的词条，
+但只保留含有了所有搜索词条的文档，并且词条的位置要邻接。一个针对短语quick fox的查询不会匹配
+我们的任何文档，因为没有文档含有邻接在一起的quick和box词条。
+match_phrase查询也可以写成类型为phrase的match查询：
+
+
+
+===================ES 语法=====================
+https://www.cnblogs.com/jxfy/p/12430284.html
+ES 语法
+1.索引
+#mapping   定义索引类型 
+
+#聚合查询 查询叫yuanpeng的年龄总和
+#sum
+#max  名字叫做yuanpeng的最大的年龄
+#min  address下面的最小的年龄
+#求平均 avg
+#分组，根据年龄 10-20  20-30  30-40  分组
+#按照年龄分组，并每组求和
+
+
+

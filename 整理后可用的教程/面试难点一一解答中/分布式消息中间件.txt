@@ -1,0 +1,21 @@
+降低系统耦合度
+
+跨系统数据传递
+高并发流量削峰
+数据异步处理
+
+五大设计核心包括协议，持久化设计，消息分发设计，高可用设计，高可靠设计
+
+
+
+rabbitmq消息处理方式及备份交换机
+mandatory为true时， 交换机无法根据自身的类型和路由键等条件依据规则找到一个符合条件队列， 那么rabbitmq会调用basic.return 命令将消息返回给生产者。 如果为false， 则将消息直接丢弃
+
+备份交换机（alternate exchange） 简称AE
+建立channel后， 声明注册exchange交换机的时候， 添加 alternate-exchange参数进行实现， 也可以使用策略policy进行实现， 两个同时使用，则alternate-exchange参数优先级更高
+备份交换机的几种特殊情形：
+
+备份交换机没有匹配的队列， 客户端和rabbitmq服务端不会有异常， 消息丢失
+备份交换机没有绑定的队列，客户端和rabbitmq也不会有异常， 消息丢失
+设置的交换机不存在，则也不会有异常，消息丢失
+如果与消息处理的机制，mandatory一起使用，那么mandatory无效

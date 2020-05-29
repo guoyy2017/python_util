@@ -1,0 +1,207 @@
+Filebeat7 原理和配置说明
+https://blog.csdn.net/linwenhai2018/article/details/103611289
+
+一介神符师 2019-12-19 11:20:51  287  收藏
+展开
+1 原理
+Filebeat包含两个主要组件：inputs和harvesters。这些组件一起工作以尾部文件并将事件数据发送到您指定的输出。
+
+1】Harvester
+
+harvester负责读取单个文件的内容。harvester逐行读取每个文件，然后将内容发送到输出。每个文件启动一个harvester。harvester负责打开和关闭文件，这意味着在harvester运行时文件描述符保持打开状态。如果在收集文件时将其删除或重命名，Filebeat将继续读取该文件。这样做的副作用是磁盘上的空间将保留，直到harvester关闭为止。默认情况下，Filebeat保持文件打开直到close_inactive到达。
+
+关闭harvester有以下后果：
+
+    关闭文件处理程序，如果在harvester仍在读取文件时删除了文件，则释放了基础资源。
+    只有在scan_frequency经过之后，才会再次开始文件的收集。
+    如果在harvester关闭时移动或删除文件，则文件的收割将不会继续。
+2】Input
+
+input负责管理harvester并查找所有可读取的资源。
+
+如果输入类型为log，则输入将在驱动器上找到与定义的全局路径匹配的所有文件，并为每个文件启动收集器。每个输入都在其自己的Go例程中运行。
+
+3】Filebeat如何保持文件状态
+
+Filebeat保留每个文件的状态，并经常将状态刷新到注册表文件中的磁盘。该状态用于记住harvester正在读取的最后一个偏移量，并确保发送所有日志行。如果无法到达输出（例如Elasticsearch或Logstash），则Filebeat会跟踪发送的最后几行，并在输出再次变为可用时继续读取文件。在Filebeat运行时，状态信息也保存在内存中，用于每个输入。重新启动Filebeat时，将使用注册表文件中的数据来重建状态，并且Filebeat会在最后一个已知位置继续每个harvester。
+
+对于每个输入，Filebeat会保留找到的每个文件的状态。由于可以重命名或移动文件，因此文件名和路径不足以标识文件。对于每个文件，Filebeat都存储唯一的标识符以检测文件是否以前被收获过。
+
+4】Filebeat如何确保至少一次交付
+
+Filebeat保证事件将至少一次传递到配置的输出，并且不会丢失数据。Filebeat之所以能够实现此行为，是因为它在注册表文件中存储了每个事件的传递状态。
+
+在定义的输出被阻止并且尚未确认所有事件的情况下，Filebeat将继续尝试发送事件，直到输出确认已接收到事件为止。
+
+如果Filebeat在发送事件的过程中关闭，则它不会在关闭之前等待输出确认所有事件。重新启动Filebeat时，将再次发送发送到输出但在Filebeat关闭之前未确认的所有事件。这样可以确保每个事件至少发送一次，但是最终可能会将重复的事件发送到输出。
+
+ 
+
+2 Inputs
+每个输入都以破折号"-"开头，可以指定多个输入，并且可以多次指定相同的输入类型。
+
+2.1 Log input
+1】enabled
+
+启用和禁用输入。默认为true。
+
+2】paths
+
+日志文件绝对路径
+
+filebeat.inputs:
+- type: log
+  paths:
+    - /var/log/system.log
+    - /var/log/wifi.log
+    - /var/log/*/*.log    # 从/var/log的子文件夹中提取所有.log文件
+3】tags
+
+filebeat.inputs:
+- type: log
+  . . .
+  tags: ["json"]
+4】fields
+
+指定可选字段以将其他信息添加到输出中。
+
+fields_under_root选项设置为true，则自定义字段将作为顶级字段存储在输出文档中，而不是分组在fields子词典下。
+
+filebeat.inputs:
+- type: log 
+  ...
+  fields:
+    apache: true
+  fields_under_root: true
+5】exclude_lines
+
+匹配Filebeat排除的行
+
+filebeat.inputs:
+- type: log
+  ...
+  exclude_lines: ['^DBG']
+6】include_lines
+
+匹配Filebeat包括的行
+
+filebeat.inputs:
+- type: log
+  ...
+  include_lines: ['^ERR', '^WARN']
+如果同时定义了include_lines和exclude_lines，则Filebeat首先执行include_lines，然后执行exclude_lines。
+
+filebeat.inputs:
+- type: log
+  ...
+  include_lines: ['sometext']
+  exclude_lines: ['^DBG']
+7】harvester_buffer_size
+
+每个harvester在获取文件时使用的缓冲区大小（以字节为单位），默认值为16384。
+
+8】max_bytes
+
+一条日志消息可以具有的最大字节数。默认值为10MB（10485760）。
+
+9】multiline
+
+控制Filebeat如何处理跨多行的日志消息的选项。
+
+非[开头的行与上一行合并。
+
+filebeat.inputs:
+- type: log
+  ...
+  multiline.pattern: '^\['
+  multiline.negate: true
+  multiline.match: after
+非“[2015-08-24”格式开头的行，合并到上一行。
+
+filebeat.inputs:
+- type: log
+  ...
+  multiline.pattern: '^\[[0-9]{4}-[0-9]{2}-[0-9]{2}'
+  multiline.negate: true
+  multiline.match: after
+
+
+ 
+
+ 
+
+ 
+
+3 Output
+3.1 Logstash
+编辑Filebeat配置文件以通过注释掉它来禁用Elasticsearch输出，并通过取消注释logstash部分来启用Logstash输出。
+
+output.logstash:
+  hosts: ["localhost:5044", "localhost:5045"]
+  loadbalance: true
+1】worker
+
+每个配置的主机向Logstash发布事件的工作程序数。
+
+ 
+
+3.2 Elasticsearch
+output.elasticsearch:
+  hosts: ["http://192.160.1.31:9200","http://192.160.1.32:9200"]
+  index: "elk-es-%{+yyyy.MM.dd}"
+setup.template.name: "elk-es"
+setup.template.pattern: "elk-es-*"
+setup.template.settings:
+  index.number_of_shards: 1
+  index.number_of_replicas: 1
+setup.ilm.enabled: false
+1】setup.template.enabled
+
+设置为false可禁用模板加载。
+
+2】setup.template.name
+
+模板的名称，默认值为filebeat。
+
+3】setup.template.pattern
+
+适用于默认索引设置的模板模式。
+
+4】setup.template.fields
+
+描述字段的YAML文件的路径，默认值为fields.yml
+
+5】setup.template.overwrite
+
+是否覆盖现有模板，默认为false。
+
+6】setup.template.settings
+
+要放入elasticsearch模板字典中的设置字典。
+
+7】setup.ilm.enabled
+
+ 
+
+3.3 Kafka
+output.kafka:
+  hosts: ["kafka1:9092", "kafka2:9092", "kafka3:9092"]
+  topic: '%{[fields.log_topic]}'
+  partition.round_robin:
+    reachable_only: false
+ 
+  required_acks: 1
+  compression: gzip
+  max_message_bytes: 1000000
+ 
+
+output.kafka:
+  hosts: ["localhost:9092"]
+  topic: "logs-%{[beat.version]}"
+  topics:
+    - topic: "critical-%{[beat.version]}"
+      when.contains:
+        message: "CRITICAL"
+    - topic: "error-%{[beat.version]}"
+      when.contains:
+        message: "ERR"

@@ -1,0 +1,163 @@
+------------------zookeeper 搭建------------------
+===========单机搭建===========
+mkdir -p /opt/zookeeper    #zookeeper目录里面到时存放各个zookeeper节点
+下载解压zookeeper
+ cd /opt/zookeeper
+ wget https://mirrors.aliyun.com/apache/zookeeper/zookeeper-3.4.12/zookeeper-3.4.12.tar.gz
+
+编辑每个server下的配置文件conf
+ vim zoo.cfg
+
+ tickTime=2000   #Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个 tickTime 时间就会发送一个心跳。tickTime以毫       秒为单位。tickTime=2000
+
+ initLimit=10    #集群中的follower服务器(F)与leader服务器(L)之间初始连接时能容忍的最多心跳数（tickTime的数量）。
+
+ syncLimit=5     #集群中的follower服务器与leader服务器之间请求和应答之间能容忍的最多心跳数（tickTime的数量）。
+
+ dataDir=/opt/zookeeper/zookeeper-3.4.12/data   #Zookeeper保存数据的目录
+
+ dataLogDir=/opt/zookeeper/zookeeper-3.4.12/logs #Zookeeper将写数据的日志文件保存在这个目录里。
+
+ clientPort=2181  #客户端连接 Zookeeper 服务器的端口，Zookeeper 会监听这个端口，接受客户端的访问请求。
+
+ server.1=127.0.0.1:2888:3888 #服务器名称与地址：集群信息（服务器编号，服务器地址，LF通信端口，选举端口）
+
+启动服务
+ /opt/zookeeper/zookeeper-3.4.12/bin/zkServer.sh start  
+
+进入bin目录，启动，重启，停止，查看状态命令如下
+./zkServer.sh start
+./zkServer.sh stop
+./zkServer.sh restart
+./zkServer.sh status
+
+===========伪分布式搭建===========
+mkdir -p /opt/zookeeper    #zookeeper目录里面到时存放各个zookeeper节点
+mkdir -p /opt/zookeeper/server1     #定义zookeeper节点1
+mkdir -p /opt/zookeeper/server2     #定义zookeeper节点2
+mkdir -p /opt/zookeeper/server3     #定义zookeeper节点3
+
+下载解压zookeeper
+ cd /opt/zookeeper
+ wget https://mirrors.aliyun.com/apache/zookeeper/zookeeper-3.4.12/zookeeper-3.4.12.tar.gz
+ tar zxvf zookeeper-3.4.12/zookeeper-3.4.12.tar.gz -C /opt/zookeeper/server1
+ tar zxvf zookeeper-3.4.12/zookeeper-3.4.12.tar.gz -C /opt/zookeeper/server2
+ tar zxvf zookeeper-3.4.12/zookeeper-3.4.12.tar.gz -C /opt/zookeeper/server3
+
+在每个目录下创建目录
+mkdir -p data  #Zookeeper保存数据的目录
+mkdir -p logs  #Zookeeper将写数据的日志文件保存在这个目录里。
+
+在data下创建
+ vim myid    #创建myid文件
+ 写入编号 1 2 3
+
+编辑每个server下的配置文件conf
+ vim zoo.cfg
+
+ tickTime=2000   #Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个 tickTime 时间就会发送一个心跳。tickTime以毫       秒为单位。tickTime=2000
+
+ initLimit=10    #集群中的follower服务器(F)与leader服务器(L)之间初始连接时能容忍的最多心跳数（tickTime的数量）。
+
+ syncLimit=5     #集群中的follower服务器与leader服务器之间请求和应答之间能容忍的最多心跳数（tickTime的数量）。
+
+ dataDir=/opt/zookeeper/server1/zookeeper-3.4.12/data   #Zookeeper保存数据的目录
+
+ dataLogDir=/opt/zookeeper/server1/zookeeper-3.4.12/logs #Zookeeper将写数据的日志文件保存在这个目录里。
+
+ clientPort=2181  #客户端连接 Zookeeper 服务器的端口，Zookeeper 会监听这个端口，接受客户端的访问请求。
+
+ server.1=127.0.0.1:2888:3888 #服务器名称与地址：集群信息（服务器编号，服务器地址，LF通信端口，选举端口）
+
+ server.2=127.0.0.1:2889:3889
+
+ server.3=127.0.0.1:2890:2890
+
+
+启动服务
+ /opt/zookeeper/server1/zookeeper-3.4.12/bin/zkServer.sh start  
+ /opt/zookeeper/server2/zookeeper-3.4.12/bin/zkServer.sh start
+ /opt/zookeeper/server3/zookeeper-3.4.12/bin/zkServer.sh start
+
+
+===========分布式搭建===========
+
+------------------kafka 搭建------------------
+mkdir -p /opt/kafka     #kafka路径
+wget http://archive.apache.org/dist/kafka/2.5.0/kafka_2.13-2.5.0.tgz
+-- wget https://mirrors.aliyun.com/apache/kafka/1.1.0/kafka_2.12-1.1.0.tgz
+tar zxvf kafka_2.12-1.1.0.tgz -C /opt/kafka
+
+===========伪分布式搭建===========
+
+Kafka伪分布式安装
+cd /opt/kafka/kafka_2.12-1.1.0/config #进入kafka配置目录
+cp server.properties  server.properties.bak  #备份kafka默认配置文件
+cp server.properties server-1.properties     #创建kafka-1的broker
+cp server.properties server-2.properties     #创建kafka-2的broker
+
+修改配置文件
+vim server.properties      #
+broker.id=0       #broker的id
+host.name=192.168.1.5   #本机名或者ip
+port=9092               #每个id内Kakfa服务器监听的端口
+log.dirs=/opt/kafka/kafka_2.12-1.1.0/logs/log-0   #日志存放路径
+zookeeper.connect=192.168.1.5:2181                #zookeeper连接端口
+
+启动服务
+/opt/kafka/kafka_2.12-1.1.0/bin/kafka-server-start.sh -daemon /opt/kafka/kafka_2.12-1.1.0/config/server.properties
+
+/opt/kafka/kafka_2.12-1.1.0/bin/kafka-server-start.sh -daemon /opt/kafka/kafka_2.12-1.1.0/config/server-1.properties
+
+/opt/kafka/kafka_2.12-1.1.0/bin/kafka-server-start.sh -daemon /opt/kafka/kafka_2.12-1.1.0/config/server-2.properties
+
+创建kafka主题：
+bin/kafka-topics.sh --create --zookeeper 10.45.xx.xx:2191 --replication-factor 1 --partitions 1 --topic test
+显示kafka所有主题：
+bin/kafka-topics.sh -list -zookeeper 10.45.xx.xx:2191
+创建kafka生产者：
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+创建kafka消费者：
+bin/kafka-console-consumer.sh --zookeeper 10.45.xx.xx:2191 --topic test --from-beginning
+解释：
+--zookeeper：后面接的是你配置的zookeeper地址
+--broker-list:默认端口为9092.可自行更改
+
+
+
+
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-clients</artifactId>
+    <version>0.10.2.0</version>
+</dependency>
+------------------kafka 生产------------------
+Properties p = new Properties();
+        p.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.23.76:9092,192.168.23.77:9092");//kafka地址，多个地址用逗号分割
+        p.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        p.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(p);
+ProducerRecord<String, String> record = new ProducerRecord<String, String>(topic, msg);
+kafkaProducer.send(record);
+kafkaProducer.close();
+
+
+
+------------------kafka 消费------------------
+Properties p = new Properties();
+        p.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.23.76:9092");
+        p.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        p.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        p.put(ConsumerConfig.GROUP_ID_CONFIG, "duanjt_test");
+
+KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<String, String>(p);
+kafkaConsumer.subscribe(Collections.singletonList(Producer.topic));// 订阅消息
+ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
+for (ConsumerRecord<String, String> record : records) {
+    System.out.println(String.format("topic:%s,offset:%d,消息:%s", //
+            record.topic(), record.offset(), record.value()));
+}
+
+
+
+

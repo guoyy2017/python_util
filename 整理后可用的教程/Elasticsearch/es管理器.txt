@@ -1,0 +1,10 @@
+elasticsearch-head
+elasticsearch-head 是用于监控 Elasticsearch 状态的客户端插件，包括数据可视化、执行增删改查操作等。
+需要安装 nodejs 
+下载地址https://github.com/mobz/elasticsearch-head
+git clone git://github.com/mobz/elasticsearch-head.git
+cd elasticsearch-head
+npm install
+npm run start
+open http://localhost:9100/
+

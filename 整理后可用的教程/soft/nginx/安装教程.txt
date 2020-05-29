@@ -1,0 +1,25 @@
+安装步骤
+==========================
+下载
+http://nginx.org/en/download.html
+安装
+wget http://nginx.org/download/nginx-1.19.0.tar.gz
+解压
+tar xzvf *.tar.gz
+编译安装
+./configure
+make && make install
+
+---------
+若安装时找不到上述依赖模块，使用--with-openssl=<openssl_dir>、--with-pcre=<pcre_dir>、--with-zlib=<zlib_dir>指定依赖的模块目录
+==========================
+
+
+
+==========================
+依赖
+gzip模块需要 zlib 库
+rewrite模块需要 pcre 库
+ssl 功能需要openssl库
+
+==========================

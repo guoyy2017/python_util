@@ -1,0 +1,75 @@
+jmap命令可以获得运行中的jvm的堆的快照
+
+java memory = direct memory（直接内存） + jvm memory(MaxPermSize +Xmx)
+
+直接内存跟堆
+直接内存则是一块由程序本身管理的一块内存空间，它的效率要比标准内存池要高，主要用于存放网络通信时数据缓冲和磁盘数据交换时的数据缓冲。 
+DirectMemory容量可以通过 -XX:MaxDirectMemorySize指定，如果不指定，则默认为与Java堆的最大值（-Xmx指定）一样。但是，在OSX上的最新版本的 JVM，对直接内存的默认大小进行修订，改为“在不指定直接内存大小的时默认分配的直接内存大小为64MB”，可以通过 -XX:MaxMemorySize来显示指定直接内存的大小。 
+
+堆(Heap)和非堆(Non-heap)内存
+按照官方的说法：“Java 虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在 Java 虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heap memory)”。
+可以看出JVM主要管理两种类型的内存：堆和非堆。简单来说堆就是Java代码可及的内存，是留给开发人员使用的；非堆就是JVM留给自己用的，
+所以方法区、JVM内部处理或优化所需的内存(如JIT编译后的代码缓存)、每个类结构(如运行时常数池、字段和方法数据)以及方法和构造方法的代码都在非堆内存中。
+
+栈与堆
+栈解决程序的运行问题，即程序如何执行，或者说如何处理数据；堆解决的是数据存储的问题，即数据怎么放、放在哪儿。
+
+在Java中一个线程就会相应有一个线程栈与之对应，这点很容易理解，因为不同的线程执行逻辑有所不同，因此需要一个独立的线程栈。而堆则是所有线程共享的。栈因为是运行单位，因此里面存储的信息都是跟当前线程（或程序）相关信息的。包括局部变量、程序运行状态、方法返回值等等；而堆只负责存储对象信息。
+
+Java的堆是一个运行时数据区,类的(对象从中分配空间。这些对象通过new、newarray、anewarray和multianewarray等 指令建立，它们不需要程序代码来显式的释放。堆是由垃圾回收来负责的，堆的优势是可以动态地分配内存大小，生存期也不必事先告诉编译器，因为它是在运行时 动态分配内存的，Java的垃圾收集器会自动收走这些不再使用的数据。但缺点是，由于要在运行时动态分配内存，存取速度较慢。 栈的优势是，存取速度比堆要快，仅次于寄存器，栈数据可以共享。但缺点是，存在栈中的数据大小与生存期必须是确定的，缺乏灵活性。栈中主要存放一些基本类 型的变量（,int, short, long, byte, float, double, boolean, char）和对象句柄。
+
+
+outOfMemoryError 年老代内存不足。
+outOfMemoryError:PermGen Space 永久代内存不足。
+outOfMemoryError:GC overhead limit exceed 垃圾回收时间占用系统运行时间的98%或以上。
+
+打印出某个java进程（使用pid）内存内的，所有‘对象’的情况（如：产生那些对象，及其数量）。它的用途是为了展示java进程的内存映射信息，或者堆内存详情。 
+
+
+jmap [option] <pid>
+    (to connect to running process) 连接到正在运行的进程
+jmap [option] <executable <core>
+    (to connect to a core file)     连接到核心文件
+jmap [option] [server_id@]<remote server IP or hostname>
+    (to connect to remote debug server) 连接到远程调试服务
+基本参数： [就是替换[option]位置的参数]
+-dump:[live,]format=b,file=<filename> 使用hprof二进制形式,输出jvm的heap内容到文件=.  live子选项是可选的，假如指定live选项,那么只输出活的对象到文件
+-finalizerinfo 打印正等候回收的对象的信息
+-heap 打印heap的概要信息，GC使用的算法，heap（堆）的配置及JVM堆内存的使用情况.
+-histo[:live] 打印每个class的实例数目,内存占用,类全名信息. VM的内部类名字开头会加上前缀”*”. 如果live子参数加上后,只统计活的对象数量.
+-permstat 打印classload和jvm heap长久层的信息. 包含每个classloader的名字,活泼性,地址,父classloader和加载的class数量. 另外,内部String的数量和占用内存数也会打印出来
+-F 强迫.在pid没有相应的时候使用-dump或者-histo参数. 在这个模式下,live子参数无效
+-h | -help 打印辅助信息 
+-J 传递参数给jmap启动的jvm.
+
+
+命令
+jmap -heap:format=b pid   bin格式  javaversion 1.5
+jmap -dump:format=b,file=filename pid javaversion >1.6
+
+64位机上使用需要使用如下方式：
+jmap -J-d64 -heap pid
+
+jmap -heap pid 展示pid的整体堆信息
+jmap -histo pid 展示class的内存情况
+说明：instances（实例数）、bytes（大小）、classs name（类名）。它基本是按照使用使用大小逆序排列的。 
+#instance 是对象的实例个数 
+#bytes 是总占用的字节数 
+class name 对应的就是 Class 文件里的 class 的标识 
+B 代表 byte
+C 代表 char
+D 代表 double
+F 代表 float
+I 代表 int
+J 代表 long
+Z 代表 boolean
+前边有 [ 代表数组， [I 就相当于 int[]
+对象用 [L+ 类名表示
+
+jmap -histo:live pid>a.log
+可以观察heap中所有对象的情况（heap中所有生存的对象的情况）。包括对象数量和所占空间大小。 可以将其保存到文本中去，在一段时间后，使用文本对比工具，可以对比出GC回收了哪些对象。
+jmap -histo:live 这个命令执行，JVM会先触发gc，然后再统计信息
+
+jmap -dump:live,format=b,file=a.log pid
+说明：内存信息dump到a.log文件中。
+ 这个命令执行，JVM会将整个heap的信息dump写入到一个文件，heap如果比较大的话，就会导致这个过程比较耗时，并且执行的过程中为了保证dump的信息是可靠的，所以会暂停应用。

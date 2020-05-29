@@ -1,0 +1,56 @@
+Kibana 是为 Elasticsearch设计的开源分析和可视化平台
+Kibana 的使用场景
+实时监控
+通过 histogram 面板，配合不同条件的多个 queries 可以对一个事件走很多个维度组合出不同的时间序列走势。时间序列数据是最常见的监控报警了。
+
+
+==================安装===================
+###本地安装：跨平台，无依赖
+5601端口
+默认情况下，Kibana 会连接运行在 localhost 的 Elasticsearch。要连接其他 Elasticsearch 实例，修改 kibana.yml 里的 Elasticsearch URL，然后重启 Kibana
+
+###索引：
+默认情况下，Kibana 认为你要访问的是通过 Logstash 导入 Elasticsearch 的数据。这时候你可以用默认的 logstash-* 作为你的 index pattern。
+选择一个包含了时间戳的索引字段，可以用来做基于时间的处理。Kibana 会读取索引的映射，然后列出所有包含了时间戳的字段(译者注：实际是字段类型为 date 的字段，而不是“看起来像时间戳”的字段)。如果你的索引没有基于时间的数据，关闭 Index contains time-based events 参数。
+默认的时间过滤器设置为最近 15 分钟
+发挥：意味着这是一个real-time展示
+
+###discover
+你可以直接输入简单的请求字符串，也就是用 Lucene query syntax，也可以用完整的基于 JSON 的 Elasticsearch Query DSL。
+当你提交搜索的时候，直方图，文档表格，字段列表，都会自动反映成搜索的结果。hits(匹配的文档)总数会在直方图的右上角显示。文档表格显示前 500 个匹配文档。
+默认的，文档倒序排列，最新的文档最先显示
+发挥：要搜素课程太容易了，探索课程和学生staff
+使用 Lucene query syntax就可以做简易搜索
+你可以在 Discover 页加载已保存的搜索，也可以用作 visualizations 的基础。保存一个搜索，意味着同时保存下了搜索请求字符串和当前选择的索引模式。
+
+###Visualize
+你可以保存可视化，以后再用，或者合并到 dashboard 里。一个可视化可以基于以下几种数据源类型：
+一个新的交互式搜索
+一个已保存的搜索
+一个已保存的可视化
+可视化是基于 Elasticsearch 1 引入的聚合(aggregation) 特性。
+可以通过Settings > Edit Saved Objects 来管理已存的可视化。
+用页面左侧的聚合构建器配置你的可视化要用的 metric 和 bucket 聚合。桶(Buckets) 的效果类似于 SQL GROUP BY 语句。
+
+###dashboard
+要用仪表板，你需要至少有一个已保存的 visualization。
+分享仪表板
+你可以分享仪表板给其他用户。可以直接分享 Kibana 的仪表板链接，也可以嵌入到你的网页里。
+用户必须有 Kibana 的访问权限才能看到嵌入的仪表板。
+
+
+
+
+Kibana可视化管理页面详细使用说明
+使用浏览器访问例如：localhost:5601 默认端口，进入首页
+Discover：日志管理视图 主要进行搜索和查询
+Visualize：统计视图 构建可视化的图表
+Dashboard：仪表视图 将构建的图表组合形成图表盘
+Timelion：时间轴视图 随着时间流逝的数据
+APM：性能管理视图 应用程序的性能管理系统
+Canvas：大屏展示图
+Dev Tools： 开发者命令视图 开发工具
+Monitoring：健康视图 请求访问性能预警
+Management：管理视图 管理工具
+
+

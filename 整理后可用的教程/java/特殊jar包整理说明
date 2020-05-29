@@ -36,3 +36,85 @@ https://www.cnblogs.com/liujinhua306/p/9808500.html
     <artifactId>caffeine</artifactId>
     <version>2.8.0</version>
 </dependency>
+
+java 中文转拼音
+pinyin4j/JPinyin
+pinyin4j对多音字语句的处理不太理想
+JPinyin自动识别常用多音字,还支持简体转换为繁体，检查是否为简体，是否为繁体，是否为中文字符等功能
+<dependency>
+   <groupId>com.github.stuxuhai</groupId>
+   <artifactId>jpinyin</artifactId>
+   <version>1.0</version>
+</dependency>
+
+
+
+java 时间库
+<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+<dependency>
+    <groupId>joda-time</groupId>
+    <artifactId>joda-time</artifactId>
+    <version>2.10.5</version>
+</dependency>
+
+Quarkus跟Helidon非常像，定位是轻量级的微服务框架
+Quarkus的定位是一个超越Java体系的更NB的整个技术栈
+
+java 查询库
+https://github.com/querydsl/querydsl
+maven 查询querydsl
+
+java 版本mqtt
+moquette
+<!-- https://mvnrepository.com/artifact/io.moquette/moquette-broker -->
+<dependency>
+    <groupId>io.moquette</groupId>
+    <artifactId>moquette-broker</artifactId>
+    <version>0.11</version>
+    <scope>test</scope>
+</dependency>
+
+
+Schedulerx2.0 分布式计算引擎
+map模型作业还提供了并行计算、内存网格、网格计算三种执行方式：
+并行计算：子任务300以下，有子任务列表。
+内存网格：子任务5W以下，无子任务列表，速度快。
+网格计算：子任务100W以下，无子任务列表。
+
+
+java 压缩库Snappy 压缩速度快
+<!-- https://mvnrepository.com/artifact/org.xerial.snappy/snappy-java -->
+<dependency>
+    <groupId>org.xerial.snappy</groupId>
+    <artifactId>snappy-java</artifactId>
+    <version>1.1.7.5</version>
+</dependency>
+
+
+
+PIKA 类redis 磁盘存储缓存软件 基于Rocksdb
+Pika是一个可持久化的大容量redis存储服务，兼容string、hash、list、zset、set的绝大部分接口(兼容详情)，解决redis由于存储数据量巨大而导致内存不够用的容量瓶颈，并且可以像redis一样，通过slaveof命令进行主从备份，支持全同步和部分同步，pika还可以用在twemproxy或者codis中来实现静态数据分片
+下载地址
+https://github.com/Qihoo360/pika/archive/v2.2.6.tar.gz
+
+
+Riak 客户端
+<!-- https://mvnrepository.com/artifact/com.basho.riak/riak-client -->
+<dependency>
+    <groupId>com.basho.riak</groupId>
+    <artifactId>riak-client</artifactId>
+    <version>2.1.1</version>
+</dependency>
+PB使用
+<!-- https://mvnrepository.com/artifact/com.basho.riak.protobuf/riak-pb -->
+<dependency>
+    <groupId>com.basho.riak.protobuf</groupId>
+    <artifactId>riak-pb</artifactId>
+    <version>2.0.0.16</version>
+</dependency>
+
+
+
+
+
+

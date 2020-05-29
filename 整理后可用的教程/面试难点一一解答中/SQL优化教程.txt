@@ -1,0 +1,110 @@
+优化成本： 硬件>系统配置>数据库表结构>SQL及索引
+优化效果： 硬件<系统配置<数据库表结构<SQL及索引
+
+检查问题常用工具
+1）MySQL
+2）msyqladmin：MySQL客户端，可进行管理操作
+3）mysqlshow：功能强大的查看shell命令
+4）show [SESSION | GLOBAL] variables：查看数据库参数信息
+5）SHOW [SESSION | GLOBAL] STATUS：查看数据库的状态信息
+6）information_schema：获取元数据的方法
+7）SHOW ENGINE INNODB STATUS：Innodb引擎的所有状态
+8）SHOW PROCESSLIST：查看当前所有连接session状态
+9）explain：获取查询语句的执行计划
+10）show index：查看表的索引信息
+11）slow-log：记录慢查询语句
+12）mysqldumpslow：分析slowlog文件的
+
+不常用但好用的工具：
+1）Zabbix：监控主机、系统、数据库（部署zabbix监控平台）
+2）pt-query-digest：分析慢日志
+3）MySQL slap：分析慢日志
+4）sysbench：压力测试工具
+5）MySQL profiling：统计数据库整体状态工具
+6）Performance Schema：MySQL性能状态统计的数据
+7）workbench：管理、备份、监控、分析、优化工具（比较费资源）
+
+
+解决思路：
+可用使用 optimizer trace 优化查询语句
+应急调优思路：
+show processlist;//查看所有进程
+explain sql;//分析慢sql
+show status like '%lock%';//查询锁状态
+kill SESSION_ID;//杀掉会话
+
+常规调优思路：
+查看showlog 分析慢查询语句
+分析top sql， explain分析
+调整索引和语句
+
+系统优化：
+内存／IO：
+vmstat 命令：
+
+iostat 命令：
+
+
+
+
+====================================================================
+80%的数据库性能问题都是由于糟糕的SQL语句造成的。
+##  SQL语句优化的过程:
+l  定位有问题的语句
+l  检查执行计划
+l  检查执行过程中优化器的统计信息
+l  分析相关表的记录数、索引情况
+l  改写SQL语句、使用HINT、调整索引、表分析
+l  有些SQL语句不具备优化的可能，需要优化处理方式
+l  达到最佳执行计划
+
+
+
+=================================mysql优化===================================
+冷热数据分离
+
+>>>> 一张表存储最近3个月的数据 
+	历史表存储除了最新2个月的数据 
+	这样3月的数据查数据表，3个月以前的数据查历史表(跨月后删除最老月份的数据) 
+	运行当月中拷贝上个月的数据到历史表
+
+
+
+=================================mysql 分析数据库===================================
+Infobright
+号称平均能够达到 10:1 以上的数据压缩率。甚至可以达到40:1，极大地节省了数据存储空间。
+3) 列式存储,无需创建索引和分区，再也不用关心索引失效了！
+缺点：
+1）不支持数据更新：社区版Infobright只能使用“LOAD DATA INFILE”的方式导入数据，不支持INSERT、UPDATE、DELETE（这可能是放弃它的主要原因）
+2）不支持高并发：只能支持10-18多个并发查询
+3）不支持主备
+
+Infobright是一个与MySQL集成的开源数据仓库（Data Warehouse）软件，可作为MySQL的一个存储引擎来使用，SELECT查询与普通MySQL无区别。
+一、Infobright的基本特征：
+优点：
+查询性能高：百万、千万、亿级记录数条件下，同等的SELECT查询语句，速度比MyISAM、InnoDB等普通的MySQL存储引擎快5～60倍。
+存储数据量大：TB级数据大小，几十亿条记录。
+高压缩比：在我们的项目中为18:1，极大地节省了数据存储空间。
+基于列存储：无需建索引，无需分区。
+适合复杂的分析性SQL查询：SUM, COUNT, AVG, GROUP BY。
+
+限制：
+不支持数据更新：社区版Infobright只能使用“LOAD DATA INFILE”的方式导入数据，不支持INSERT、UPDATE、DELETE。
+不支持高并发：只能支持10多个并发查询。
+
+
+下载
+http://www.infobright.org/Download/ICE/
+
+启动和停止
+启动命令：
+/etc/init.d/mysqld-ib start
+停止命令：
+/etc/init.d/mysqld-ib stop
+
+默认端口5029
+
+
+
+
+

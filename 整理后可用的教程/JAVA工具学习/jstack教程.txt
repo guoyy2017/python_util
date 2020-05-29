@@ -1,0 +1,62 @@
+jstack能得到运行java程序的java stack和native stack的信息
+
+jstack [ option ] pid
+jstack [ option ] executable core
+jstack [ option ] [server-id@]remote-hostname-or-IP
+参数说明:
+pid: java应用程序的进程号,一般可以通过jps来获得;
+executable:产生core dump的java可执行程序;
+core:打印出的core文件;
+remote-hostname-or-ip:远程debug服务器的名称或IP;
+server-id: 唯一id,假如一台主机上多个远程debug服务;
+
+基本参数：
+-F当’jstack [-l] pid’没有相应的时候强制打印栈信息,如果直接jstack无响应时，用于强制jstack），一般情况不需要使用
+-l长列表. 打印关于锁的附加信息,例如属于java.util.concurrent的ownable synchronizers列表，会使得JVM停顿得长久得多（可能会差很多倍，比如普通的jstack可能几毫秒和一次GC没区别，加了-l 就是近一秒的时间），-l 建议不要用。一般情况不需要使用
+-m打印java和native c/c++框架的所有栈信息.可以打印JVM的堆栈,显示上Native的栈帧，一般应用排查不需要使用
+-h | -help打印帮助信息
+pid 需要被打印配置信息的java进程id,可以用jps查询.
+
+
+线程的几种状态
+NEW：未启动的。不会出现在Dump中。
+RUNNABLE：在虚拟机内执行的。运行中状态，可能里面还能看到locked字样，表明它获得了某把锁。
+BLOCKED：受阻塞并等待监视器锁。被某个锁(synchronizers)給block住了。
+WATING：无限期等待另一个线程执行特定操作。等待某个condition或monitor发生，一般停留在park(), wait(), sleep(),join() 等语句里。
+TIMED_WATING：有时限的等待另一个线程的特定操作。和WAITING的区别是wait() 等语句加上了时间限制 wait(timeout)。
+TERMINATED：已退出的。
+
+
+locked <地址> 目标：使用synchronized申请对象锁成功,监视器的拥有者。
+waiting to lock <地址> 目标：使用synchronized申请对象锁未成功,在迚入区等待。
+waiting on <地址> 目标：使用synchronized申请对象锁成功后,释放锁幵在等待区等待。
+parking to wait for <地址> 目标 ：需与堆栈中的"parking to wait for (atjava.util.concurrent.SynchronousQueue$TransferStack)"结合来看。first–>此线程是在等待某个条件的发生，来把自己唤醒，second–>SynchronousQueue不是一个队列，其是线程之间移交信息的机制，当我们把一个元素放入到 SynchronousQueue 中时必须有另一个线程正在等待接受移交的任务，因此这就是本线程在等待的条件。
+
+runnable：状态一般为RUNNABLE。
+in Object.wait()：等待区等待,状态为WAITING或TIMED_WAITING。
+waiting for monitor entry：进入区等待,状态为BLOCKED。
+waiting on condition：等待区等待、被park。
+sleeping：休眠的线程,调用了Thread.sleep()。
+
+
+
+
+
+==========================================================
+jstack -help
+Usage:
+    jstack [-l] <pid>
+        (to connect to running process)
+    jstack -F [-m] [-l] <pid>
+        (to connect to a hung process)
+    jstack [-m] [-l] <executable> <core>
+        (to connect to a core file)
+    jstack [-m] [-l] [server_id@]<remote server IP or hostname>
+        (to connect to a remote debug server)
+
+Options:
+    -F  to force a thread dump. Use when jstack <pid> does not respond (process is hung)
+    -m  to print both java and native frames (mixed mode)
+    -l  long listing. Prints additional information about locks
+    -h or -help to print this help message
+

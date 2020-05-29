@@ -1,0 +1,18 @@
+JVM
+分代			参数			描述
+
+堆大小	    -Xms 		初始堆大小，默认为物理内存的1/64(<1GB)
+            -Xmx       最大堆大小，默认(MaxHeapFreeRatio参数可以调整)空余堆内存大于70%时，JVM会减少堆直到 -Xms的最小限制
+
+新生代      -XX:NewSize    新生代空间大小初始值
+           -XX:MaxNewSize 新生代空间大小最大值
+           -Xmn           新生代空间大小，此处的大小是(eden+2 survivor space)
+
+永久代.     -XX:PermSize   永久代空间的初始值&最小值
+           -XX：MaxPermSize 永久代空间的最大值
+
+老年代
+老年代的空间大小会根据新生代的大小隐式设定
+初始值=-Xmx减去-XX:NewSize的值
+最小值=-Xmx值减去-XX:MaxNewSize的值
+

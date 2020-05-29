@@ -38,6 +38,23 @@ SystemRuleManager.loadRules(List<SystemRule> rules); // 修改系统规则
 
 
 集群服务
+服务端
+独立方式启动的 ClusterTokenServer
+客服端
+集群客户端指定服务端的 ip 和 port
+客户端和服务端之间的通讯中断，那么集群限流将退化成本地限流
+每个应用上都加上 -Dcsp.sentinel.log.use.pid=true 的参数
+
+========================================================
+先启动好 nacos 服务，并将集群限流规则发布到 nacos 中
+启动好 dashboard，版本选择 1.4.1
+启动独立模式运行的 token server，并配置与 dashboard 的连接，token server 会自动连接上 dashboard
+启动两个 token client，配置与 token server / dashboard 的连接，需模拟一次流量请求，client 才会初始化并连接上 dashboard
+通过 jmeter 模拟请求 token client 观察 dashboard 上的实时监控
+========================================================
+
+服务端在启动后可以连接上 sentinel-dashboard
+-Dproject.name=xxx -Dcsp.sentinel.dashboard.server=consoleIp:port
 
 首先我们引入集群流控服务端所需的相关依赖：
 <dependencies>
@@ -62,4 +79,12 @@ SystemRuleManager.loadRules(List<SystemRule> rules); // 修改系统规则
         <version>2.9.1</version>
     </dependency>
 </dependencies>
+
+
+热点限流是在 sentinel-extension 模块中定义的
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-parameter-flow-control</artifactId>
+    <version>x.y.z</version>
+</dependency>
 

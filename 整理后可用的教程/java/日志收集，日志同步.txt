@@ -1,0 +1,51 @@
+-----------------Linux Rsyslog日志集中管理-----------------
+rsyslog 是一个快速处理收集系统日志的程序，提供了高性能、安全功能和模块化设计
+
+Rsyslog的传输方式有三种:
+UDP 传输协议
+基于传统UDP协议进行远程日志传输，也是传统syslog使用的传输协议；
+可靠性比较低，但性能损耗最少
+在网络情况比较差，或者接收服务器压力比较高情况下，可能存在丢日志情况。
+TCP 传输协议
+基于传统TCP协议明文传输，需要回传进行确认，可靠性比较高；
+但在接收服务器宕机或者两者之间网络出问题的情况下，会出现丢日志情况。
+RELP 传输协议
+RELP（Reliable Event Logging Protocol）是基于TCP封装的可靠日志消息传输协议；
+是为了解决TCP 与 UDP 协议的缺点而在应用层实现的传输协议，也是三者之中最可靠的。
+对于线上服务器，为了日志安全起见，建议使用还是使用 RELP 协议进行传输。
+
+安装
+yum install rsyslog  -y
+如果启用RELP传输方式（yum install rsyslog-relp  -y）
+查看服务状态service rsyslog status
+启动服务service rsyslog start
+版本查看rsyslogd -version
+
+Rsyslog 服务器   Rsyslog 客户端
+Vim /etc/rsyslog.conf
+Vim /etc/sysconfig/rsyslog
+-r指定监听端口
+-c2 使用兼容模式
+
+重启服务 service rsyslog restart
+Vim /etc/rsyslog.conf
+
+
+下载网址
+https://www.elastic.co/cn/downloads/
+-----------------filebeat日志收集-----------------
+下载
+wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.2-linux-x86_64.tar.gz
+启动
+./filebeat -e -c filebeat.yml
+-c：配置文件位置
+-path.logs：日志位置
+-path.data：数据位置
+-path.home：家位置
+-e：关闭日志输出
+-d 选择器：启用对指定选择器的调试。 对于选择器，可以指定逗号分隔的组件列表，也可以使用-d“*”为所有组件启用调试.例如，-d“publish”显示所有“publish”相关的消息。
+
+
+-----------------携程 hangout日志收集-----------------
+
+

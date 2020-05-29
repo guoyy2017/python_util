@@ -1,0 +1,38 @@
+# 配置文件 #注释行，使用yaml格式配置文件
+# Inputs 每个输入都以破折号"-"开头，可以指定多个输入，并且可以多次指定相同的输入类型
+# paths 日志文件绝对路径 enabled 启用和禁用输入。默认为true
+filebeat.inputs:
+- type: log
+  paths:
+   - /data/log/*.log
+   - /data/his/a.log
+  tags: ["json"]
+# fields 指定可选字段以将其他信息添加到输出中 
+# fields_under_root选项设置为true，则自定义字段将作为顶级字段存储在输出文档中，而不是分组在fields子词典下
+  fields:
+    apache: true
+  fields_under_root: true
+# exclude_lines 匹配Filebeat排除的行
+# include_lines 匹配Filebeat包括的行
+# 同时定义了include_lines和exclude_lines，则Filebeat首先执行include_lines，然后执行exclude_lines
+  exclude_lines: ['^DBG']
+  include_lines: ['^ERR', '^WARN']
+
+# 输出地址 可以#注销输出到 logstash
+outputs.logstash:
+  hosts: ["localhost:5044", "localhost:5045"]
+  loadbalance: true
+# worker 每个配置的主机向Logstash发布事件的工作程序数
+
+# 输出地址 可以#注销输出到 elasticsearch
+output.elasticsearch:
+  hosts: ["http://192.160.1.31:9200","http://192.160.1.32:9200"]
+  index: "elk-es-%{+yyyy.MM.dd}"
+  
+setup.template.name: "elk-es"
+setup.template.pattern: "elk-es-*"
+setup.template.settings:
+  index.number_of_shards: 1
+  index.number_of_replicas: 1
+setup.ilm.enabled: false
+

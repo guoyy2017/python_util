@@ -1,0 +1,11 @@
+#!/bin/bash
+# 把最新的jar包查找出来
+jars=(`ls -t`)
+if [ ! $jars ]; then
+# 没有找到jar包，输出必要信息
+    echo "no find jar to run,please check"
+else
+# 运行jar包中最新的一个jar包
+	jar=$(jars[1])
+	java -jar $jar
+fi

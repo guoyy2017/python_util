@@ -1,0 +1,34 @@
+jinfo(JVM Configuration info)，用于实时查看和调整虚拟机运行参数。
+之前的 jps -v 口令只能查看到显示指定的参数，如果想要查看未被显示指定的参数的值就要使用 jinfo 口令
+
+命令格式：
+jinfo [option] [args] LVMID
+
+option 参数：
+-flag : 输出指定 args 参数的值
+-flags : 不需要 args 参数，输出所有 JVM 参数的值
+-sysprops : 输出系统属性，等同于 System.getProperties()
+
+
+几种用法
+-flags pid ：打印当前VM的参数
+-flag <name> pid：打印指定JVM的参数值 
+-flag [+|-]<name> pid：设置指定JVM参数的布尔值
+-flag <name>=<value> pid：设置指定JVM参数的值
+-sysprops  pid : 获取当前系统参数包括-D设置的参数
+
+
+查看JVM参数
+用法：jinfo -flag <name> PID
+调整JVM参数
+布尔类型的JVM参数: jinfo -flag [+|-]<name> PID，enable or disable the named VM flag
+数字/字符串类型的JVM参数 jinfo -flag <name>=<value> PID，to set the named VM flag to the given value
+
+查看所有支持动态修改的JVM参数
+标记为manageable的参数或者通过com.sun.management.HotSpotDiagnosticMXBean这个类的接口得到
+
+方法一 -- 标记为manageable的Flags
+Linux环境：java -XX:+PrintFlagsInitial | grep manageable
+Window环境：java -XX:+PrintFlagsInitial | findstr manageable
+
+方法二 -- 通过HotSpotDiagnosticMXBean API

@@ -1,0 +1,15 @@
+LSM-tree The Log-Structured Merge-Tree (LSM-Tree)
+LSM-tree 是专门为 key-value 存储系统设计的
+LSM-tree 在 NoSQL 系统里非常常见，基本已经成为必选方案了
+LSM-tree 主要针对的场景是写密集、少量查询的场景
+LSM-tree 被用在各种键值数据库中，如 LevelDB，RocksDB，还有分布式行式存储数据库 Cassandra 也用了 LSM-tree 的存储架构
+
+B树
+数据库存数据
+B+树
+数据库存索引
+
+红黑树  插入和查找时间O(logN)
+HashMap 结构中，减少插入和查找时间的结构
+
+字典树 最短自字符串

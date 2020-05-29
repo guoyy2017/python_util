@@ -1,0 +1,167 @@
+https://blog.csdn.net/SirLZF/article/details/104196947
+configure inputs
+参数	参数示例	参数说明
+type	log	从日志文件中读取行作为输入
+Stdin	从标准输入中读取事件作为输入
+Kafka	以kafka集群中的topics作为输入
+Redis	以Redis slowlogs读取entries作为输入
+paths	
+- /var/log/*.log
+
+- c:\elasticsearch\logs\*
+
+1.配置采集路径，全局路径；
+
+2.可使用通配符,目录不递归；
+
+3.但要确保一个文件在所有输入中没有定义多次；
+
+4.配置多个文件，每行以dash (-)开头。
+
+encoding	plain/utf-8 ......	
+用于读取包含国际字符的数据的文件编码
+
+exclude_lines	['^DBG'] 	
+在输入中排除符合正则表达式列表的那些行，
+
+左侧取值表示排除以DBG字符开头的行。
+正则表达式说明：https://www.elastic.co/guide/en/beats/filebeat/current/regexp-support.html
+
+include_lines	['^ERR', '^WARN']	1.一组正则表达式，用于匹配你想要包含的行。Filebeat只会导出那些匹配这组正则表达式的行。默认情况下，所有的行都会被导出。空行被忽略。
+2.如果指定了multipline设置，每个多行消息先被合并成单行以后再执行include_lines过滤。
+3.左侧取值表示Filebeat导出以ERR或者WARN开头的行
+harvester_buffer_size	20048	
+当抓取一个文件时每个harvester使用的buffer的字节数。默认是16384
+
+exclude_files	[".gz$"]	
+一组正则表达式，用于匹配你想要忽略的文件。默认没有文件被排除。
+
+左侧取值例子表示忽略.gz的文件
+
+fields	level: debug	
+1.向输出的每一条日志添加额外的信息。例如，您可以添加可用于过滤日志数据的字段。字段可以是标量值，数组，字典或这些的任何嵌套组合
+
+2.左侧取值表示会在es中多添加一个字段，格式为 "filelds":{"level":"debug"}，方便后续对日志进行分组统计。
+
+
+
+fields_under_root	true	
+要将自定义字段存储为顶级字段，请将该fields_under_root选项设置为true。如果在常规配置中声明了重复字段，则其值将被此处声明的值覆盖
+
+
+
+tags	["service-X", "web-tier"]	
+1.标签列表包含在每个发布事务的tags字段。标签可用很容易的按照不同的逻辑分组服务器
+
+2.左侧取值示例表示一个web集群服务器可以对beat添加上webservers标签然后在kibana的visualisation界面以该标签过滤和查询整组服务器
+
+json	json.keys_under_root: true
+json.add_error_key: true
+json.message_key: log	这些选项使Filebeat能够解码构造为JSON消息的日志。Filebeat逐行处理日志，因此只有当每行有一个JSON对象时，JSON解码才起作用
+tail_files	true	如果设置为true，Filebeat从文件尾开始监控文件新增内容，把新增的每一行文件作为一个事件依次发送，而不是从文件开始处重新发送所有内容。
+【如果此选项设置为true，则Filebeat将开始在每个文件的末尾而不是开头读取新文件。 当此选项与日志轮换结合使用时，可能会跳过新文件中的第一个日志条目。 默认设置为false。
+此选项适用于Filebeat尚未处理的文件。 如果您之前运行过Filebeat并且文件的状态已经保留，则tail_files将不会应用。要将tail_files应用于所有文件，必须停止Filebeat并删除注册表文件。 请注意，这样做会删除以前的所有状态。】
+ 
+
+configure output
+支持输出	参数	取值示例	取值说明
+logstash	hosts	["127.0.0.1:5044"]	指定Logstash服务器
+@metadata	"@metadata": { 
+      "beat": "filebeat", 
+      "version": "7.5.2" 
+    }	
+Filebeat使用@metadata字段将元数据发送到Logstash;
+
+左侧示例在logstash中获取使用如下：
+
+output {
+  elasticsearch {
+    hosts => ["http://localhost:9200"]
+    index => "%{[@metadata][beat]}-%{[@metadata][version]}" 
+  }
+}
+
+元数据默认在控制台上不显示，设置metadata => true显示，示例：
+stdout { codec => rubydebug { metadata => true } }
+
+loadbalance	true	如果设置为true并且配置了多个Logstash主机，则输出插件将在所有Logstash主机上平衡已发布的事件。如果设置为false，则输出插件仅将所有事件发送到一个主机（随机确定），如果选定的主机变得无响应，则输出插件将切换到另一个主机。默认值为false
+index	filebeat	指定索引名称"filebeat"
+简单示例：
+
+output.logstash:
+  hosts: ["localhost:5044", "localhost:5045"]
+  loadbalance: true
+  index: filebeat
+
+ 	 
+kafka	hosts	["kafka1:9092", "kafka2:9092", "kafka3:9092"]	kafka集群服务器
+topic	'%{[fields.log_topic]}'	指定主题
+required_acks	1	broker要求的ACK可靠性级别。0=无响应，1=等待本地提交，-1=等待所有副本提交。默认值为1
+compression	gzip	压缩格式
+max_message_bytes	1000000	JSON编码消息的最大允许大小。较大的消息将被丢弃。要避免此问题，请确保Filebeat不会生成大于max_message_bytes的事件
+简单示例：
+
+output.kafka:
+  # initial brokers for reading cluster metadata
+  hosts: ["kafka1:9092", "kafka2:9092", "kafka3:9092"]
+
+  # message topic selection + partitioning
+  topic: '%{[fields.log_topic]}'
+  partition.round_robin:
+    reachable_only: false
+
+  required_acks: 1
+  compression: gzip
+  max_message_bytes: 1000000
+
+ 	 
+redis	官方说明：https://www.elastic.co/guide/en/beats/filebeat/current/redis-output.html
+简单示例
+
+output.redis:
+  hosts: ["localhost"]
+  password: "my_password"
+  key: "filebeat"
+  db: 0
+  timeout: 5
+
+output.file:
+  path: "/tmp/filebeat"
+  filename: filebeat
+  #rotate_every_kb: 10000
+  #number_of_files: 7
+  #permissions: 0600
+
+
+
+
+-----------------------filebeat 配置说明-----------------------------
+https://www.elastic.co/guide/en/beats/filebeat/current/configuring-howto-filebeat.html
+
+Input types
+=====================
+Log
+Stdin
+Container
+Kafka
+Redis
+UDP
+Docker
+TCP
+Syslog
+s3
+NetFlow
+Google Pub/Sub
+Azure eventhub
+
+
+
+Configure the output
+=====================
+Elasticsearch
+Logstash
+Kafka
+Redis
+File
+Console
+Elastic Cloud

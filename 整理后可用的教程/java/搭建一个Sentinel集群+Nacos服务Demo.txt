@@ -1,0 +1,20 @@
+第一步，搭建Nacos
+//////////////////搭建Nacos////////////////////////////////////////////////////////////////////////////////////
+Nacos搭建请参考Nacos搭建文档
+单机搭建方案如下：
+下载
+https://github.com/alibaba/nacos/releases
+下载master.zip
+## 解压源码
+unzip nacos-master.zip
+
+cd nacos-master
+## 编译可执行文件
+mvn -Prelease-nacos clean install -U
+## 进入编译好的可执行文件中启动服务
+cd distribution/target/nacos-server-0.8.0/nacos/bin
+sh startup.sh -m standalone
+
+用户名，密码都是：nacos
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////搭建Nacos////////////////////////////////////////////////////////////////////////////////////

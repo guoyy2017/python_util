@@ -1,0 +1,39 @@
+----------------------kafka---------------------
+下载地址
+wget http://archive.apache.org/dist/kafka/2.5.0/kafka_2.13-2.5.0.tgz
+
+安装分单机模式和分布式模式(集群模式)
+
+单机模式简单说明
+=====================单机模式====================
+解压kafka包
+bin 下面是运行命令
+config 下是配置文件
+最简单模式
+zookeeper 启动(kafka 内嵌，可以使用自己搭建的zookeeper集群)
+===========start zookeeper===============
+./bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
+===========start kafka===============
+./bin/kafka-server-start.sh -daemon config/server.properties
+
+
+============查看topic=================
+./bin/kafka-topics.sh --zookeeper 127.0.0.1:2181 --list
+具体的查看./bin/kafka-topics.sh 使用
+
+
+============生产者topic=================
+
+
+============消费者topic=================
+./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic logsinfo --from-beginning
+具体的查看./bin/kafka-console-consumer.sh 使用
+
+
+
+============管理平台=================
+-- Kafka Web Console是kafka的开源web监控程序
+下载地址
+https://github.com/yahoo/CMAK.git
+kafka-manager
+

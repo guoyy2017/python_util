@@ -1,0 +1,27 @@
+JOONE
+https://www.cnblogs.com/bob-wzb/p/6054884.html
+
+
+https://zhuanlan.zhihu.com/p/32085405
+RNN）是一种用于处理序列数据的神经网络
+h',y = f(h,x)
+h' = σ(w * h+ w * x)
+y = σ(w * h')
+结果用softmax分类
+x 为当前状态下数据的输入， h 表示接收到的上一个节点的输入。
+y 为当前节点状态下的输出，而 h' 为传递到下一个节点的输出。
+
+长短期记忆（Long short-term memory, LSTM）是一种特殊的RNN，主要是为了解决长序列训练过程中的梯度消失和梯度爆炸问题
+增加一个传递值 一个变化快一个变化慢
+
+https://zhuanlan.zhihu.com/p/32481747
+GRU（Gate Recurrent Unit）是循环神经网络（Recurrent Neural Network, RNN）的一种
+相比LSTM，使用GRU能够达到相当的效果，并且相比之下更容易进行训练，能够很大程度上提高训练效率，因此很多时候会更倾向于使用GRU
+
+Java线性代数库jblas
+
+情感分析学术上可以分为ASC和TSC问题
+机器学习提取的是如tf-idf的具体(concrete)特征
+深度学习提取的是如词向量的抽象(abstract)特征
+分类器，传统的朴素贝叶斯分类、SVM、XGB、LGB算法
+Word2Vec和GloVe近几年在文本表示中几乎处于垄断地位
