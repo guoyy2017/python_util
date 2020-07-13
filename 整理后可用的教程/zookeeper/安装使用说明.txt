@@ -1,0 +1,49 @@
+下载地址
+http://mirrors.hust.edu.cn/apache/zookeeper/
+
+解压后目录结构：
+bin目录
+zk的可执行脚本目录，包括zk服务进程，zk客户端，等脚本。其中，.sh是Linux环境下的脚本，.cmd是Windows环境下的脚本。
+conf目录
+配置文件目录。zoo_sample.cfg为样例配置文件，需要修改为自己的名称，一般为zoo.cfg。log4j.properties为日志配置文件。
+lib
+zk依赖的包。
+contrib目录
+一些用于操作zk的工具包。
+recipes目录
+zk某些用法的代码示例
+
+
+zookeeper ACL配置
+Zookeeper的ACL，分为三个维度：scheme、id、permission，
+通常表示为：scheme:id:permission，schema代表授权策略，id代表用户，permission代表权限。
+
+scheme即采取的授权策略
+digest
+语法：digest:username:BASE64(SHA1(password)):cdrwa 
+digest：是授权方式 
+username:BASE64(SHA1(password))：是id部分 
+cdrwa：权限部份 
+
+密码加密需要用到zk的一个工具类来生成
+java -Djava.ext.dirs=/usr/local/zookeeper/lib -cp /usr/local/zookeeper/zookeeper-3.4.9.jar org.apache.zookeeper.server.auth.DigestAuthenticationProvider yangxin:123456
+
+设置权限
+setAcl /node_05 digest:yangxin:ACFm5rWnnKn9K9RN/Oc8qEYGYDs=:cdrwa
+获取节点刚刚设置的权限
+getAcl /node_05
+添加授权信息
+addauth digest yangxin:123456
+
+基于客户端IP地址校验，限制只允许指定的客户端能操作znode
+setAcl /node_08 ip:192.168.1.100:rw
+
+world:anyone:cdrwa 
+创建节点默认的scheme，所有人都可以访问。
+
+cdrwa即是permission。 
+1> CREATE(r)：创建子节点的权限 
+2> DELETE(d)：删除节点的权限 
+3> READ(r)：读取节点数据的权限 
+4> WRITE(w)：修改节点数据的权限 
+5> ADMIN(a)：设置子节点权限的权限

@@ -138,6 +138,8 @@ git merge master 把 master 分支合并到 iss53
 
 git mergetool 可视化的合并工具
 
+合并多个提交为一条(git merge --squash branchname)
+
 分支
 git branch -v
 用 –merge 和 –no-merged 选项 筛选出你已经（或尚未）与当前分支合并的分支
@@ -184,5 +186,11 @@ git clone http://example.com/gitproject.git
 
 把现有仓库导出为裸仓库 克隆时用 –bare 选项即可。裸仓库的目录名一般以 .git 结尾 其实 clone 操作基本上相当于 git init 加 git fetch
 git clone --bare my_project my_project.git
+
+git cherry-pick  能够把另一个分支的一个或多个提交复制到当前分支，具体使用如下：
+首先git checkout 到另一个分支,然后使用git log找到想要复制的commit 的id,记录下来
+切换到自己分支，使用git cherry-pick  [上面记录的commit id]  回车即可!
+如果想要复制多个, 使用git cherry-pick (commitid1..commitid100]，commitid1为想复制的最老提交(不包括),commitid100为想复制的最新提交(包括)
+如果想要包括commitid1,那么在commitid1后加^即可，即 git cherry-pick [commitid1^..commitid100]!
 
 

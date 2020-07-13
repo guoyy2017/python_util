@@ -1,0 +1,83 @@
+安装seata
+===== ===== ===== ===== ===== ===== ===== =====
+地址 https://github.com/seata/seata
+下载地址 https://github.com/seata/seata/releases
+启动服务
+sh seata-server.sh -p 8091 -h 127.0.0.1 -m file
+
+demo 代码地址
+https://github.com/seata/seata-samples
+
+
+===== ===== ===== ===== ===== ===== ===== =====
+
+
+
+
+使用教程
+===== ===== ===== ===== ===== ===== ===== =====
+教程地址
+http://seata.io/zh-cn/docs/user/quickstart.html
+
+MAVEN
+<seata.version>1.2.0</seata.version>
+<dependency>
+    <groupId>io.seata</groupId>
+    <artifactId>seata-all</artifactId>
+    <version>${seata.version}</version>
+</dependency>
+
+
+===== ===== ===== ===== ===== ===== ===== =====
+
+sh seata-server.sh -p 8091 -h 127.0.0.1 -m file
+
+引入seata依赖
+dubbo
+<dependency>
+	<groupId>io.seata</groupId>
+	<artifactId>seata-spring-boot-starter</artifactId>
+	<version>1.2.0</version>
+</dependency>
+springcloud
+<dependency>
+	<groupId>com.alibaba.cloud</groupId>
+	<artifactId>spring-cloud-alibaba-seata</artifactId>
+	<version>2.2.0.RELEASE</version>
+	<exclusions>
+		<exclusion>
+			<groupId>io.seata</groupId>
+			<artifactId>seata-spring-boot-starter</artifactId>
+		</exclusion>
+	</exclusions>
+</dependency>
+<dependency>
+	<groupId>io.seata</groupId>
+	<artifactId>seata-spring-boot-starter</artifactId>
+	<version>1.2.0</version>
+</dependency>
+
+application.yml
+seata:
+enabled: true
+application-id: applicationName
+tx-service-group: my_test_tx_group
+enable-auto-data-source-proxy: true
+config:
+  type: nacos
+  nacos:
+    namespace:
+    serverAddr: 127.0.0.1:8848
+    group: SEATA_GROUP
+    userName: "nacos"
+    password: "nacos"
+registry:
+  type: nacos
+  nacos:
+    application: seata-server
+    server-addr: 127.0.0.1:8848
+    namespace:
+    userName: "nacos"
+    password: "nacos"
+
+

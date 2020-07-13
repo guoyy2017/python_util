@@ -18,3 +18,11 @@ maven-compiler-plugin:3.1:testCompile (default-testCompile)
 maven-surefire-plugin:2.12.4:test (default-test)
 maven-jar-plugin:2.4:jar (default-jar)
 maven-install-plugin:2.4:install (default-install)
+
+
+
+
+在Maven中，主要有3个插件可以用来打包：
+maven-jar-plugin，默认的打包插件，用来打普通的project JAR包；
+maven-shade-plugin，用来打可执行JAR包，也就是所谓的fat JAR包；
+maven-assembly-plugin，支持自定义的打包结构，也可以定制依赖项等。

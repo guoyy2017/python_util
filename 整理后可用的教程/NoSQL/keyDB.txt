@@ -1,0 +1,12 @@
+下载地址
+https://github.com/JohnSully/KeyDB
+https://github.com/JohnSully/KeyDB/releases
+https://github.com/JohnSully/KeyDB/archive/v5.3.3.tar.gz
+
+
+KeyDB是Redis的高性能分支，专注于多线程、内存效率和高吞吐量
+KeyDB与Redis协议、模块和脚本完全兼容，包括对事务的完全支持和脚本的原子执行
+
+KeyDB项目是从redis fork出来的分支。
+众所周知redis是一个单线程的kv内存存储系统，而KeyDB在100%兼容redis API的情况下将redis改造成多线程。
+

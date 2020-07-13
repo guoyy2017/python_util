@@ -1,0 +1,50 @@
+Java Class文件格式详解
+
+magic[4字节] 魔数，用来判断是否可以被虚拟机使用。固定值为0xCAFEBABE（咖啡宝贝）
+minor_version[2字节] 次版本号
+major_version[2字节] 主版本号，低版本的jdk无法执行高版本的class文件。
+constant_pool_count[2字节] 常量池里的项目个数
+constant_pool 常量池里每一个项目类型都用一个tag标示。从1开始取值，比如取值为1时，表示info里存放的是utf8的字符串
+　　tag[1字节] 不同的取值，决定了其下info的结构不同
+　　info
+access_flags[2字节] 类的访问标识位，用来标识类是否具有pulbic/abstract/interface/final等修饰符。用其中的bit位标识是否存在。例如，如果是public的class，其值为0x0001
+this_class[2字节] 两个字节的数值，指向常量池里的某一个项目。这里指向的是当前类的全名称
+super_class[2字节] 指向常量池里的当前类的父类全名称
+interfaces_count[2字节] 当前类实现的接口个数
+interfaces 每一个指向常量池里的接口的全名称
+
+fields_count[2字节] 当前类的成员变量个数
+fields 成员变量信息
+　　access_flags[2字节] 成员变量的访问标识，与上边access_flags相似
+　　name_index[2字节] 指向常量池里当前字段的名字
+　　desc_index[2字节] 指向常量池里当前字段的描述。例如字符串类型对应的描述是'Ljava.lang.String;'
+　　attribute_count[4字节] 字段的属性表个数，跟类的属性表类似。在下面介绍
+　　attributes 存放字段的属性信息
+
+methods_count[2字节] 当前类的成员方法个数
+mehtods 成员方法信息
+　　access_flags[2字节] 成员方法的访问标识，与上边access_flags相似
+　　name_index[2字节] 指向常量池里当前方法的名字
+　　desc_index[2字节] 指向常量池里当前方法的签名。比如 public String test(Object o) 方法对应描述是(Ljava.lang.Object;)Ljava.lang.String;
+　　attributes_count[4字节] 方法的属性表个数，跟类的属性表类似。在下面介绍
+　　attributes 存放方法的属性信息，最重要的属性就是Code,存放了方法的字节码指令
+
+attributes_count[2字节] 类的属性表个数
+attributes 类的属性信息
+　　attribute_name_index[2字节] 指向常量池里属性的名称
+　　attribute_length[4字节] 下边info内容的长度
+　　info 属性的内容。不同的属性，内容结构不同
+
+ 
+
+以Code属性表为例，其结构如下
+attribute_name_index[2字节] 指向常量池里的Code字符串
+attribute_length[4字节] 该属性的长度
+max_stack[2字节] 当前方法操作数栈的最大深度
+max_locals[2字节] 存放局部变量所需要的空间个数
+code_length[4字节] 源码编译后字节码指令的长度
+code 字节码指令
+exception_table_length 异常表个数
+exception_table 异常表
+attributes_count 当前属性下的属性个数
+attributes

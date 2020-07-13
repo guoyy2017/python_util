@@ -115,6 +115,15 @@ PB使用
 
 
 
+Java敏捷数据库迁移框架——Flyway
+<dependency>
+    <groupId>com.googlecode.flyway</groupId>
+    <artifactId>flyway-core</artifactId>
+    <version>3.2.1</version>
+</dependency>
+
+
+
 
 
 

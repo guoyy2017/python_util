@@ -1,0 +1,43 @@
+Spring Boot 主要有如下优点：
+容易上手，提升开发效率，为 Spring 开发提供一个更快、更广泛的入门体验。
+开箱即用，远离繁琐的配置。
+提供了一系列大型项目通用的非业务性功能，例如：内嵌服务器、安全管理、运行数据监控、运行状况检查和外部化配置等。
+没有代码生成，也不需要XML配置。
+避免大量的 Maven 导入和各种版本冲突。
+
+启动类上面的注解是@SpringBootApplication
+主要组合包含了以下 3 个注解：
+@SpringBootConfiguration：组合了 @Configuration 注解，实现配置文件的功能。
+@EnableAutoConfiguration：打开自动配置的功能，也可以关闭某个自动配置的选项，如关闭数据源自动配置功能： @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })。
+@ComponentScan：Spring组件扫描。
+
+注解 @EnableAutoConfiguration, @Configuration, @ConditionalOnClass 就是自动配置的核心，
+@EnableAutoConfiguration 给容器导入META-INF/spring.factories 里定义的自动配置类。
+筛选有效的自动配置类。
+每一个自动配置类结合对应的 xxxProperties.java 读取配置文件进行自动配置功能
+
+Spring Boot 推荐使用 Java 配置而非 XML 配置，但是 Spring Boot 中也可以使用 XML 配置，通过 @ImportResource 注解可以引入一个 XML 配置。
+
+Spring Profiles 允许用户根据配置文件（dev，test，prod 等）来注册 bean
+
+SpringData 项目支持 NoSQL 存储：
+MongoDB （文档数据库）
+Neo4j（图形数据库）
+Redis（键/值存储）
+Hbase（列族数据库）
+
+SpringData 项目所支持的关系数据存储技术：
+JDBC
+JPA
+
+Spring Boot 有一个开发工具（DevTools）模块，
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+</dependency>
+
+Starter 提供了一个自动化配置类，一般命名为 XXXAutoConfiguration
+将 Spring Boot 项目打包成两个 jar ，一个可执行，一个可引用。
+
+Spring 提供了一种使用 ControllerAdvice 处理异常的非常有用的方法。 我们通过实现一个 ControlerAdvice 类，来处理控制器类抛出的所有异常。
+

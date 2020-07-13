@@ -1,0 +1,87 @@
+名称				缩写				说明
+虚拟IP			VIP		VIP为Director用于向客户端计算机提供服务的IP地址。比如：www.yunjisuan.com域名就要解析到vip上提供服务
+真实IP地址		RIP		在集群下面节点上使用的IP地址，物理IP地址
+Dirctor的IP地址	DIP		Director用于连接内外网络的IP地址，物理网卡上的IP地址。是负载均衡器上的IP
+客户端主机IP地址	CIP		客户端用户计算机请求集群服务器的IP地址，该地址用作发送给集群的请求的源IP地址
+
+
+开始安装LVS
+下载相关软件包
+wget http://www.linuxvirtualserver.org/software/kernel-2.6/ipvsadm-1.24.tar.gz # <===适合5.x系统
+wget http://www.linuxvirtualserver.org/software/kernel-2.6/ipvsadm-1.26.tar.gz # <===适合6.x系统
+
+lsmod | grep ip_vs #查看linux内核是否有ipvs服务
+uname -r #查看内核版本
+cat /etc/redhat-release #查看系统版本
+
+
+安装lvs命令：
+[root@lvs01 ~]# yum -y install libnl* popt* #需要通过公网源安装
+[root@lvs01 ~]# cd /usr/src/ipvsadm-1.26/
+[root@lvs01 ipvsadm-1.26]# make #直接编译不需要./configure
+[root@lvs01 ipvsadm-1.26]# make install
+[root@lvs01 ~]# which ipvsadm
+/sbin/ipvsadm
+[root@lvs01 ~]# ipvsadm
+IP Virtual Server version 1.2.1 (size=4096)
+Prot LocalAddress:Port Scheduler Flags
+-> RemoteAddress:Port Forward Weight ActiveConn InActConn
+[root@lvs01 ~]# lsmod | grep ip_vs #执行完/sbin/ipvsadm就会有信息
+ip_vs 125220 0
+libcrc32c 1246 1 ip_vs
+ipv6 317340 270 ip_vs,ip6t_REJECT,nf_conntrack_ipv6,nf_defrag_ipv6
+#==>出现这个内容就表示LVS已经安装好，并加载到了内核
+
+LVS安装小结：
+1，CentOS5.X安装lvs，使用1.24版本。
+2，CentOS6.X安装lvs，使用1.26版本。
+3，安装lvs后，要执行ipvsadm把ip_vs模块加载到内核。
+
+ipvsadm 命令学习
+ipvsadm是linux下的LVS虚拟服务器的管理工具，LVS工作于内核空间，而ipvsadm则提供了用户空间的接口；
+ipvsadm    选项    服务器地址    -s    算法
+ipvsadm    选项    服务器地址    -r    真实服务器地址    [工作模式][权重]...
+-A        添加一个虚拟服务，使用ip地址、端口号、协议来唯一定义一个虚拟服务
+-E        编辑一个虚拟服务
+-D        删除一个虚拟服务
+-C        清空虚拟服务列表
+-R        从标准输入中还原虚拟服务列表
+-S        保存虚拟服务规则至标准输出，输出规则可使用-R选项还原
+-L        显示虚拟服务列表
+-Z        虚拟服务器列表计数器清零（清空当前连接数）
+-a        添加一台真实服务器
+-e        编辑一台真实服务器
+-d        减少一台真实服务器
+-t        使用TCP服务，该参数后需加主机与端口信息
+-u        使用UDP服务，该参数后需加主机与端口信息
+-s        指定lvs的调度算法
+-r        设置真实服务器IP与端口
+-g        设置lvs工作模式为DR直连路由
+-i        设置lvs工作模式为TUN隧道
+-m        设置lvs工作模式为NAT地址转换模式
+-w        指定真实服务器权重
+-c        连接状态，配和-L使用
+-n        数字格式显示
+--stats   显示统计信息
+--rate    显示速率信息
+--sort    对虚拟服务器和真实服务器排序输出
+--set tcp tcpfin udp
+          设置ipvs连接超时值，三个参数分别代表tcp会话超时时间、收到FIN包后tcp会话超时时间、udp超时时间
+--timeout
+          显示tcp tcpfin udp的timeout值
+--start-daemon
+          启动同步守护进程
+--stop-daemon
+          停止同步守护进程
+
+
+
+企业LVS负载均衡高可用最优方案（LVS+Keepalived）
+LVS负载均衡器主和备安装Keepalived软件
+yum -y install keepalived #光盘安装即可
+
+启动keeplived
+/etc/init.d/keepalived start
+
+通过Keepalived对LVS进行管理的功能实现
+/etc/init.d/keepalived stop #关闭主LVS的keepalived服务

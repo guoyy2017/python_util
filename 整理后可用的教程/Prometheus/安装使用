@@ -1,0 +1,36 @@
+下载地址
+https://prometheus.io/download/
+
+客户端依赖
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-registry-prometheus</artifactId>
+</dependency>
+
+
+
+
+PromQL
+============ ================== ================== ======
+
+============ ================== ================== ======
+
+
+
+Grafana可视化
+Mac下安装启动示例
+// 安装
+brew install grafana
+// 启动
+brew services start grafana
+localhost:3000
+初始用户名和密码都是admin
+添加Prometheus数据源
+新增Dashboard
+
+监控报警
+

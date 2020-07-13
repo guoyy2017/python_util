@@ -1,0 +1,26 @@
+Druid有以下几个进程，简单介绍一下：
+
+Coordinator 管理集群上的数据可用性
+Overlord 控制数据摄取工作负载的分配。
+Broker 处理来自外部客户端的查询请求。
+Router 可选进程，可以将请求路由到Brokers, Coordinators, and Overlords.
+Historical 存储历史查询到的数据
+MiddleManager 负责摄取数据。
+
+三种服务器类型:主服务器（Master）、查询服务器（Query）和数据服务器（Data）。
+Master：运行Coordinator和Overlord流程，管理数据可用性和摄取。
+Query：运行Broker和可选的Router进程，处理来自外部客户端的查询。
+Data：运行Historical和MiddleManager进程，运行数据的采集以及存储所有历史查询数据负载。
+
+
+
+Metadata Storage、Zookeeper和Deep Storage实际上都不属于Druid系统，而是需要依赖的外部组件。
+Broker：是整个集群查询的入口，作为查询路由角色。负责接受Client的查询请求，并将查询转发到正确的Historical和MiddleManager中；Broker会接受所有的子查询的结果，并将数据进行合并然后返回给Client
+Historical：职责单一，就是负责加载Druid中非实时窗口内且满足加载规则的所有历史数据的segment；用于处理存储和查询历史数据的进程，它会从Deep Storage中下载查询区间数据，然后响应该段数据的查询
+Real-time Node：这个组件其实是和Historical对应的，用于存储和响应实时数据的。当Real-time Node达到存储或时长的某些特定条件的时候，就会将实时数据写为一个segment，然后转交给Historical
+Coordinators：负责监控Historical进程，包括加载新segment、丢弃不符合规则的segment、管理segment副本以及segment负载均衡等；
+Overload：和Middle Manager一起，实际构成了整个集群中的索引服务；负责监控MiddleManager进程，它负责将摄取任务分配给MiddleManager并协调segment的发布；它就是数据摄入到Dirid的控制器
+Middle Manager：负责接收Overlord分配的索引任务，同时创建新的进程用于启动Peon来执行索引任务，每一个MiddleManager可以运行多个Peon实例；即通过引入索引将新的数据摄入到集群中，将外部数据源数据转换为Druid所识别的segment
+MetadataStorage：存储元数据，往往使用MySQL或者PostgreSQL。
+Deep Storage： Druid目前支持使用本地磁盘(单机模式)、NFS挂载磁盘、HDFS、Amazon S3等存储方式保存segments以及索引任务日志。Deep Stroage存储的数据只是永久化的备份，是不直接响应Client的查询请求的。
+Zookeeper： Druid使用Zookeeper作为分布式集群内部的通信组件，各类节点通过Curator Framework将实例与服务注册到Zookeeper上，同时将集群内需要共享的信息也存储在Zookeeper目录下，从而简化集群内部自动连接管理、leader选举、分布式锁、path缓存以及分布式队列等复杂逻辑。

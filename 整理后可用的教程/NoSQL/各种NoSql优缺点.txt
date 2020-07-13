@@ -1,0 +1,3 @@
+Tair是由淘宝网自主开发的Key/Value结构数据存储系统
+Tair有四种引擎：mdb, rdb, kdb和ldb。分别基于四种开源的key/value数据库：memcached, Redis, Kyoto Cabinet和leveldb。
+https://github.com/alibaba/tair

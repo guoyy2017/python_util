@@ -1,0 +1,59 @@
+mac 安装 kubectl
+brew install kubectl
+
+安装阿里云版的minikube
+https://github.com/AliyunContainerService/minikube
+执行命令
+curl -Lo minikube http://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/releases/v1.1.1/minikube-darwin-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+
+创建minikube集群
+minikube start --registry-mirror=https://registry.docker-cn.com
+
+查看集群信息： 
+kubectl cluster-info
+kubectl get nodes -o wide
+
+minikube dashboard
+
+删除服务
+kubectl delete services hello-minikube
+删除应用
+kubectl delete deployment hello-minikube
+停止minikube
+minikube stop
+
+创建应用
+kubectl create deployment nginx --image=nginx
+创建服务
+kubectl create service nodeport nginx --tcp 80:80
+查看服务
+kubectl get svc
+
+
+
+
+
+k8s组成部分
+Master
+1、   kube-apiserver
+封装了核心对象的增删改查操作，以REST API接口方式提供给外部和内部组件调用。它维护的REST对象将持久化到Etcd中
+2、   kube-controller
+负责执行各种控制器，目前已经实现很多控制器来保证Kubernetes的正常运行，部分控制器如下：
+Replication Controller（简称RC）：
+关联RC和Pod，保证RC定义的副本数量与实际pod的数量是一致的。<br>
+Deployment Controller:
+      关联RC和Deployment，保证运行指定数量的的pod，当Deployment更新时，控制实现RC和pod的更新。
+3、   kube-scheduler
+负责集群的资源调度，为新建的Pod分配机器。这部分工作分出来变成一个组件，意味着可以很方便地替换成其他的调度器
+
+Etcd
+k8s重要数据都是持久化在Etcd中的
+
+Node
+1、kubelet
+负责管控容器，Kubelet会从Kubernetes API Server接收Pod的创建请求，启动和停止容器，监控容器运行状态并汇报给Kubernetes API Server。
+2、kube-proxy
+负责为Pod创建代理服务，Kubernetes Proxy会从Kubernetes API Server获取所有的Service，并根据iptables转发Service信息到对应的pod。
+NOTE: 
+　　　　kube-proxy 要求 NODE 节点操作系统中要具备 /sys/module/br_netfilter 文件，而且还要设置 bridge-nf-call-iptables=1，如果不满足要求，那么 kube-proxy 只是将检查信息记录到日志中，
+kube-proxy 仍然会正常运行，但是这样通过 Kube-proxy 设置的某些 iptables 规则就不会工作

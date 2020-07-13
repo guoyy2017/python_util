@@ -1,0 +1,14 @@
+部署
+下载jenkins
+地址：https://jenkins.io/index.html
+
+下载
+http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+运行命令 java -jar jenkins.war --httpPort=8080
+打开浏览器进入链接 http://localhost:8080
+
+依赖环境
+jdk环境，Jenkins是java语言开发的，因需要jdk环境
+git/svn客户端，因一般代码是放在git/svn服务器上的，我们需要拉取代码
+maven客户端，因一般java程序是由maven工程，需要maven打包
+

@@ -1,0 +1,49 @@
+BERT 模型在 11 个 NLP 任务上的表现刷新了记录
+
+安装条件 python3.7+tensorflow==1.15.0+tensorflow-gpu==1.15.0+cuda10.0+cudnn7.6.5
+
+
+GLUE ：General Language Understanding Evaluation
+MNLI ：Multi-Genre Natural Language Inference
+SQuAD v1.1 ：The Standford Question Answering Dataset
+QQP ： Quora Question Pairs 
+QNLI ： Question Natural Language Inference
+SST-2 ：The Stanford Sentiment Treebank
+CoLA ：The Corpus of Linguistic Acceptability 
+STS-B ：The Semantic Textual Similarity Benchmark
+MRPC ：Microsoft Research Paraphrase Corpus
+RTE ：Recognizing Textual Entailment 
+WNLI ：Winograd NLI
+SWAG ：The Situations With Adversarial Generations
+
+BERT 可以用于问答系统，情感分析，垃圾邮件过滤，命名实体识别，文档聚类等任务中，作为这些任务的基础设施即语言模型，
+BERT 的代码也已经开源：
+https://github.com/google-research/bert
+
+
+
+安装
+pip install --ignore-installed --upgrade tensorflow -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+
+pip install bert-serving-server # server
+pip install bert-serving-client # client, independent of 'bert-serving-server'
+
+
+BERT本质上是一个两段式的NLP模型。第一个阶段叫做：Pre-training，跟WordEmbedding类似，利用现有无标记的语料训练一个语言模型。第二个阶段叫做：Fine-tuning，利用预训练好的语言模型，完成具体的NLP下游任务
+
+
+安装完bert-as-service以后，就可以利用bert模型将句子映射到固定长度的向量上。在终端中用一下命令启动服务：
+bert-serving-start -model_dir /media/ganjinzero/Code/bert/chinese_L-12_H-768_A-12 -num_worker=4
+
+from bert_serving.client import BertClient
+bc = BertClient()
+bc.encode(['一二三四五六七八', '今天您吃了吗？'])
+
+
+训练集：用于训练模型，找出最佳的w和b。
+验证集：用以确定模型超参数，选出最优模型。
+测试集：仅用于对训练好的最优函数进行性能评估。
+
+交叉验证（Cross Validation）法，其基本思路如下：将训练集划分为K份，每次采用其中K-1份作为训练集，另外一份作为验证集，验证集上K次误差的平均作为该模型的误差。
+

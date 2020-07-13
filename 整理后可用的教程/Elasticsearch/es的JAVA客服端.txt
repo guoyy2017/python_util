@@ -1,0 +1,37 @@
+
+Elasticsearch两大客户端 TransportClient与RestHighLevelClient
+TransportClient
+==== ==== ==== ==== ==== ==== ==== ====
+<dependency>
+    <groupId>org.elasticsearch.client</groupId>
+    <artifactId>transport</artifactId>
+    <version>6.4.1</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.11.1</version>
+</dependency>
+
+RestHighLevelClient
+==== ==== ==== ==== ==== ==== ==== ====
+<dependency>
+    	<groupId>org.elasticsearch.client</groupId>
+    	<artifactId>elasticsearch-rest-client</artifactId>
+    	<version>6.4.0</version>
+</dependency>
+ <dependency>
+    	<groupId>org.elasticsearch.client</groupId>
+    	<artifactId>elasticsearch-rest-high-level-client</artifactId>
+   	 <version>6.4.0</version>
+         <type>pom</type>
+</dependency>
+---- ---- ---- ---- ---- ---- ---- ----
+RestHighLevelClient client = new RestHighLevelClient(
+        RestClient.builder(
+                new HttpHost("localhost", 9200, "http"),
+                new HttpHost("localhost", 9201, "http")));
+
+// close
+client.close();
+---- ---- ---- ---- ---- ---- ---- ----

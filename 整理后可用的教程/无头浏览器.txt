@@ -1,0 +1,12 @@
+Puppeteer
+       Puppeteer(中文翻译”木偶”) 是 Google Chrome 团队官方的无界面（Headless）Chrome 工具，它是一个 Node 库，提供了一个高级的 API 来控制 DevTools协议上的无头版 Chrome 。也可以配置为使用完整的 Chrome。
+
+github地址： https://github.com/GoogleChrome/puppeteer
+
+
+phantomJS服务
+     phantomjs 是 一个基于 webkit 内核的无头浏览器，没有 UI 界面。它就是一个浏览器，只是内部的点击、翻页等人为相关操作需要程序设计实现。提供了 javascript API 接口，可以通过 js 直接与 webkit 内核交互，提供了 windows、linux、mac 等不同 OS 的安装使用包。
+
+phantomjs官网：http://phantomjs.org/
+
+GitHub地址：https://github.com/ariya/phantomjs

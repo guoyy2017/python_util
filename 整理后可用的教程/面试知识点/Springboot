@@ -1,0 +1,109 @@
+spring-boot-starter-xxx是官方提供的starter，
+xxx-spring-boot-starter是第三方提供的starter。
+
+@ConfigurationProperties注解的作用是把yml或者properties配置文件转化为bean。
+@EnableConfigurationProperties注解的作用是使@ConfigurationProperties注解生效。
+如果只配置@ConfigurationProperties注解，在spring容器中是获取不到yml或者properties配置文件转化的bean的。
+
+@Configuration的作用上面我们已经知道了，被注解的类将成为一个bean配置类。
+@ComponentScan的作用就是自动扫描并加载符合条件的组件，比如@Component和@Repository等，最终将这些bean定义加载到spring容器中。
+@EnableAutoConfiguration 这个注解的功能很重要，借助@Import的支持，收集和注册依赖包中相关的bean定义。
+
+@EnableAutoConfiguration注解引入了@AutoConfigurationPackage和@Import这两个注解。
+@AutoConfigurationPackage的作用就是自动配置的包，
+@Import导入需要自动配置的组件。
+
+SpringFactoriesLoader.loadFactoryNames方法调用loadSpringFactories方法从所有的jar包中读取META-INF/spring.factories文件信息。
+
+让一个普通类交给Spring容器管理，通常有以下方法：
+1、使用 @Configuration与@Bean 注解
+2、使用@Controller @Service @Repository @Component 注解标注该类，然后启用@ComponentScan自动扫描
+3、使用@Import 方法
+springboot中使用了@Import 方法
+@EnableAutoConfiguration注解中使用了@Import({AutoConfigurationImportSelector.class})注解，AutoConfigurationImportSelector实现了DeferredImportSelector接口，
+DeferredImportSelector接口继承了ImportSelector接口，ImportSelector接口只有一个selectImports方法。
+
+@Import(),就是导入其他配置的注解
+@EnableXXX，SpringBoot里有很多@EnableXXX的注解
+……………………………………………………(^_^)……………………………………………………
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Import(RedisConfig.class)
+public @interface EnableMyRedis {
+}
+……………………………………………………(^_^)……………………………………………………
+Spring就是通过spring.factories这个文件里配置的地址，扫描加载IOC的操作。扫描的过程是采用SpringFactoriesLoder也就是SPI机制进行扫描的，然后进行装配
+SpringFactoriesLoader加载的，而且也能看出是找的spring.factories文件
+@PropertySource("classpath:dc.properties") 指定配置文件地址
+
+
+@EnableTransactionManagement 开启事务支持
+
+
+@ComponentScan：
+ComponentScan 默认会扫描当前 package 下的的所有加
+了@Component 、@Repository、@Service、@Controller的类到 IoC 容器中；
+
+
+
+
+springboot自动装配的实现原理
+（1）SpringApplication.run(AppConfig.class,args);执行流程中有refreshContext(context);这句话.
+（2）refreshContext(context);内部会解析我们的配置类上的标签.实现自动装配功能的注解@EnableAutoConfiguration
+（3）会解析@EnableAutoConfiguration这个注解里面的@Import引入的配置类.AutoConfigurationImportSelector
+（4）AutoConfigurationImportSelector这个类中有这个方法.SpringFactoriesLoader.loadFactoryNames(getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());
+（5）SpringFactoriesLoader.loadFactoryNames的作用就是读取jar包中的/项目中的META-INF/spring.factories文件.
+（6）spring.factories配置了要自动装配的Configuration类
+
+
+SPI的全名为Service Provider Interface，为某个接口寻找服务实现的机制。
+当服务的提供者，提供了服务接口的一种实现之后，在jar包的META-INF/services/目录里同时创建一个以服务接口命名的文件。该文件里就是实现该服务接口的具体实现类。而当外部程序装配这个模块的时候，就能通过该jar包META-INF/services/里的配置文件找到具体的实现类名，并装载实例化，完成模块的注入。通过这个约定，就不需要把服务放在代码中了，通过模块被装配的时候就可以发现服务类了。
+
+
+
+
+
+
+@EnableEurekaServer 来说明项目是一个 Eureka
+@EnableEurekaClient 注解
+Spring Cloud 两种调用服务的方式，ribbon + restTemplate，和 feign
+ribbon 在客户端实现了负载均衡
+@LoadBalanced 注解，表明这个 restTemplate 开启负载均衡功能
+Feign 整合了 Ribbon，具有负载均衡的能力，整合了Hystrix，具有熔断的能力
+@EnableEurekaClient 和 @EnableFeignClients 注解
+@FeignClient（“服务名”），来指定调用哪个服务
+断路器 - Hystrix
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
+@EnableHystrix 注解开启Hystrix
+添加熔断方法，改造 HelloService 类，在 hiService 方法上面添加 @HystrixCommand 注解，fallbackMethod 是熔断方法，当服务不可用时会执行，该方法，即 hiError 方法
+@HystrixCommand(fallbackMethod = "hiError")
+
+@FeignClient(value ="service-hi",fallback = SchedualServiceHiHystric.class)
+
+添加 @EnableZuulProxy 注解，开启路由
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+</dependency>
+新建自定义过滤器，继承 ZuulFilter
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-config-server</artifactId>
+</dependency>
+@EnableConfigServer 注解
+
+@EnableDiscoveryClient注解
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+SVG  画图
+
+
+maven 打包 docker
+<groupId>com.spotify</groupId>
+<artifactId>dockerfile-maven-plugin</artifactId>
+<version>${version}</version>
+
+
+设计模式叫做Anti-Corruption Layer（防腐层或ACL）
+
+
+API网关
+API Gateway（APIGW / API 网关），顾名思义，是出现在系统边界上的一个面向API的、串行集中式的强管控服务，这里的边界是企业IT系统的边界，可以理解为企业级应用防火墙，主要起到隔离外部访问与内部系统的作用。
+网关该具备的最基本的四大功能:统一接入，流量管控，协议适配转发，安全防护。
+ Spring Cloud Zuul
+Zuul 是Netflix公司开源的一个API网关组件，Spring Cloud对其进行二次基于Spring Boot的注解式封装做到开箱即用
+Spring Cloud Zuul需要做一些灰度，降级，标签路由，限流，WAF封禁，需要自定义Filter去或者做一些定制化实现。
+Spring Cloud推出自己的Spring Cloud Gateway
+Spring Cloud Gateway支持Netty和Http2
+spring cloud Zuul动态路由
+
+服务网关 = 路由转发 + 过滤器
+
+轻量级的服务网关，技术选型如下：
+开发语言：java + groovy，groovy的好处是网关服务不需要重启就可以动态的添加filter来实现一些功能；
+微服务基础框架：springboot；
+网关基础组件：netflix zuul；
+服务注册中心：consul；
+权限校验：jwt；
+API监控：prometheus + grafana；
+API统一日志收集：logback + ELK；
+压力测试：Jmeter；
+
+Prometheus是由SoundCloud开发的开源监控报警系统和时序列数据库(TSDB)。
+Prometheus使用Go语言开发，是Google BorgMon监控系统的开源版本。
+Prometheus通过PromQL和其他API可视化地展示收集的数据。
+Prometheus 时序数据分为 Counter, Gauge, Histogram, Summary 四种类型。
+
+
+dubbo知识点
+调用链结合zipkin 配合fliter开发
+网关用Flurry
+flurry集Dubbo网关、异步、流式、高性能于一身,其目标就是替代一些以tomcat作为dubbo消费者的接入层，以更少的节点获得更多的性能提升，节约硬件资源和软件资源。
+

@@ -1,0 +1,55 @@
+安装下载
+官方Github地址：https://github.com/alibaba/cobar
+Cobar下载地址：https://github.com/alibaba/cobar/releases
+
+wget https://github.com/alibaba/cobar/releases/download/v1.2.7/cobar-server-1.2.7.tar.gz
+
+管理平台
+https://github.com/alibaba/cobar/releases/download/v1.2.7/cobar-manager-1.0.5.war
+
+
+连接驱动
+https://github.com/alibaba/cobar/releases/download/v1.2.7/cobar-driver-1.0.0.jar
+
+tar xzvf cobar-server-1.2.7.tar.gz -C cobar
+tar --strip-components = NUMBER
+–strip-components = NUMBER
+在提取时从文件名中删除NUMBER个前导组件
+
+解压后，进入cobar-server-1.2.7目录
+bin     #包含Cobar的启动、重启、停止等脚本文件
+conf    #包含Cobar所有配置文件
+lib     #包含Cobar及其依赖的jar文件
+logs    #包含Cobar所有日志文件（该目录需手动添加）
+
+startup.sh    #Linux环境启动脚本
+startup.bat   #Windows环境启动脚本
+restart.sh    #Linux环境重启脚本
+shutdown.sh   #Linux环境停止脚本
+
+server.xml    #Cobar系统、用户、集群等相关配置
+schema.xml    #schema, dataNode, dataSource相关配置
+rule.xml      #分布式规则定义
+log4j.xml     #日志相关配置
+
+
+启动和关闭脚本是startup.sh和shutdown.sh
+
+
+
+功能约束
+
+不支持跨库情况下的 join、分页、排序、子查询操作
+SET 语句执行会被忽略，事务和字符集设置除外
+分库情况下，insert 语句必须包含拆分字段列名
+分库情况下，update 语句不能更新拆分字段的值
+不支持 SAVEPOINT 操作
+暂时只支持 MySQL 数据节点
+使用 JDBC 时，不支持 rewriteBatchedStatements=true 参数设置(默认为 false)
+使用 JDBC 时，不支持 useServerPrepStmts=true 参数设置(默认为 false)
+使用 JDBC 时，BLOB, BINARY, VARBINARY 字段不能使用 setBlob() 或 setBinaryStream() 方法设置参数
+Cobar 组件
+
+Driver：MySQL JDBC 驱动的封装，实现对 Cobar Server 的负载均衡与高可用支持
+Server：请求处理（SQL 解析、路由、结果集合并）、集群
+Manager：Server 监控的 Web 应用

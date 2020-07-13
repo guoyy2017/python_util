@@ -1,0 +1,18 @@
+Spring如何解决循环依赖
+无法解决通过构造器注入构成的循环依赖，只能抛出BeanCurrentylyInCreationException异常表示循环依赖
+
+Spring容器将每一个正在创建的bean标识符放在一个“当前创建bean池”中，bean表示符在创建过程中将一直保持在这个池中，因此，如果在创建bean过程中发现自己已经在“当前创建bean池”中，将抛出BeanCurrentylyInCreationException异常，表示循环依赖；对于创建完毕的bean，将从“当前创建bean池”中清除掉。
+
+只能解决单例作用域的bean循环依赖。
+
+setter循环依赖
+ 通过Spring容器提前暴露刚完成构造器注入但未完成其他步骤（如setter注入）的bean来完成的。通过提前暴露一个单例工厂方法，从而使其他bean能够引用到该bean。
+ 注：只能解决单例作用域的bean循环依赖。
+ 具体步骤：
+ （1）Spring容器创建单例 a bean，首先根据无参构造器创建bean，并暴露一个“ObjectFactory”，用于返回一个提前暴露一个创建中的bean，并将 “a”标识符放到“当前创建bean池”，然后进行setter注入b;
+ （2）Spring容器创建单例 b bean，首先根据无参构造器创建bean，并暴露一个“ObjectFactory”，用于返回一个提前暴露一个创建中的bean，并将 “b”标识符放到“当前创建bean池”，然后进行setter注入c;
+ （3）Spring容器创建单例 c bean，首先根据无参构造器创建bean，并暴露一个“ObjectFactory”，用于返回一个提前暴露一个创建中的bean，并将 “c”标识符放到“当前创建bean池”，然后进行setter注入a;进行注入"a"时，由于提前暴露了“ObjectFactory”工厂，从而使用它返回提前暴露一个创建中的bean。
+ （4）最后在依赖注入“b”和“a”，完成setter注入。
+
+
+Spring是使用ApplicationContext的属性SetsingletonsCurrentlyInCreation来保存的，而半成品的A对象则是通过MapsingletonFactories来保存的

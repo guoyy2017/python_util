@@ -1,0 +1,16 @@
+延时队列
+Java.util.concurrent包下DelayQueue
+
+Redis的key过期回调事件，也能达到延迟队列的效果，简单来说我们开启监听key是否过期的事件，一旦key过期会触发一个callback事件。
+修改redis.conf文件开启notify-keyspace-events Ex。
+
+RabbitMQ 延时队列
+通过 RabbitMQ 消息队列的 TTL和 DXL这两个属性间接实现的
+
+Kafka、Netty都有基于时间轮算法实现延时队列
+
+Netty构建延时队列主要用HashedWheelTimer，HashedWheelTimer底层数据结构依然是使用DelayedQueue，只是采用时间轮的算法来实现。
+ThreadFactory ：表示用于生成工作线程，一般采用线程池；
+tickDuration和unit：每格的时间间隔，默认100ms；
+ticksPerWheel：一圈下来有几格，默认512，而如果传入数值的不是2的N次方，则会调整为大于等于该参数的一个2的N次方数值，有利于优化hash值的计算。
+

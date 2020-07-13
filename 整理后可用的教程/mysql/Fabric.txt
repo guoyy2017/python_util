@@ -1,0 +1,1 @@
+Fabric能提供MySQL的HA和Sharding方案

@@ -1,0 +1,9 @@
+DataX
+DataX是阿里出品的数据同步工具，定位多种数据库之间离线数据同步
+
+NiFi
+基于Java语言开发，插件机制，支持自定义开发产品架构设计优秀，Processor 核心模块概念，功能强大，支持复杂的脚本功能，包括java，javascript，python，ruby等支持DB到Elastic数据同步，可采用SQL表达式方式，也可以采用CDC机制即可实时同步，也可离线同步
+
+Flink
+基于Java语言编写，平台型产品分布式架构设计，机制功能丰富，支持检查点机制，程序容灾、状态持久等丰富的编程模型，层次分为 Streaming->Dataset->Table->SQL支持流式计算与离线计算，其中支持泛JDBC数据源离线同步到Elastic集群化运行模式，需要自主编写数据处理代码
+

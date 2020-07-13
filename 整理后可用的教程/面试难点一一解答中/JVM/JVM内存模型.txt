@@ -233,3 +233,13 @@ JVM内存参数设定
 -XX:MaxPermSize 方法区最大大小(JDK1.7及以前)
 -XX:MetaspaceSize 元数据区初始值(JDK1.8)
 -XX:MaxMetaspaceSize 元数据区最大值(JDK1.8)
+
+
+-XX:+UseSerialGC：在新生代和老年代使用串行收集器
+-XX:+UseParNewGC：在新生代使用并行收集器
+-XX:+UseParallelGC ：新生代使用并行回收收集器，更加关注吞吐量
+-XX:+UseParallelOldGC：老年代使用并行回收收集器
+-XX:ParallelGCThreads：设置用于垃圾回收的线程数
+-XX:+UseConcMarkSweepGC：新生代使用并行收集器，老年代使用CMS+串行收集器
+-XX:ParallelCMSThreads：设定CMS的线程数量
+-XX:+UseG1GC：启用G1垃圾回收器

@@ -1,0 +1,16 @@
+Druid集群部署
+
+四台服务器：
+192.168.1.1  druid01  coordinator  overlord
+192.168.1.2  druid02  historical  middleManager
+192.168.1.3  druid03  historical middleManager
+192.168.1.4  druid04  broker
+
+安装包
+jdk1.8 、hadoop 2.7.3 、druid 0.12.2 、mysql5.7
+
+元数据存储：选用mysql
+流数据来源：对接kafka加载流数据
+UV计算：使用datasketches
+DeepStorage：深度存储 Hadoop2.7
+

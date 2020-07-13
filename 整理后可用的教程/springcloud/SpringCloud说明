@@ -1,0 +1,290 @@
+SpringCloud之Zuul网关原理及其配置
+使用Zuul，一般在微服务数量较多（多于10个）的时候推荐使用
+
+网关有以下几个作用：
+统一入口：未全部为服务提供一个唯一的入口，网关起到外部和内部隔离的作用，保障了后台服务的安全性。
+鉴权校验：识别每个请求的权限，拒绝不符合要求的请求。
+动态路由：动态的将请求路由到不同的后端集群中。
+减少客户端与服务端的耦合：服务可以独立发展，通过网关层来做映射。
+
+网关访问方式
+　　通过zuul访问服务的，URL地址默认格式为：http://zuulHostIp:port/要访问的服务名称/服务中的URL
+　　服务名称：properties配置文件中的spring.application.name。
+　　服务的URL：就是对应的服务对外提供的URL路径监听。
+
+<!-- spring cloud Eureka Client 启动器 -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-eureka</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-zuul</artifactId>
+</dependency>
+<!-- zuul网关的重试机制，不是使用ribbon内置的重试机制
+   是借助spring-retry组件实现的重试
+   开启zuul网关重试机制需要增加下述依赖
+ -->
+<dependency>
+   <groupId>org.springframework.retry</groupId>
+   <artifactId>spring-retry</artifactId>
+</dependency>
+
+@EnableZuulProxy - 开启Zuul网关。
+@EnableZipkinServer 开启zipkin server功能
+AlwaysSampler 类，它会导出所有的span,不能缺少该类
+Spring Boot 2.0 版本之后，官方已不推荐自己搭建Zipkin服务端了，而是直接提供了编译好的 jar 包。详情可以查看官网：https://zipkin.io/pages/quickstart.html
+java –jar zipkin.jar 默认端口号; 9411
+java -jar zipkin.jar --server.port=8080
+
+<dependency>
+    <groupId>io.zipkin.java</groupId>
+    <artifactId>zipkin-server</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>io.zipkin.java</groupId>
+    <artifactId>zipkin-autoconfigure-ui</artifactId>
+</dependency>
+
+客户端
+<dependency>
+      <groupId>org.springframework.cloud</groupId>
+     <artifactId>spring-cloud-starter-zipkin</artifactId>
+</dependency>
+
+Zipkin
+四个模块：
+Collector 接受或者收集各个应用传输的数据
+Storage：负责存储接收到的数据，默认是存储在内存当中的，也可以支持存在MySQL当中
+API：负责查询Storage中存储的数据，主要是提供给Web UI来使用
+Web：主要是提供简单的web界面
+
+工作流程
+一个应用的代码发起HTTP get请求，经过Trace框架拦截，然后
+把当前调用链的Trace信息添加到HTTP Header里面
+记录当前调用的时间戳
+发送HTTP请求，把trace相关的header信息携带上
+调用结束之后，记录当前调用话费的时间
+然后把上面流程产生的 信息汇集成一个span，把这个span信息上传到zipkin的Collector模块
+
+应用整合sleuth
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-sleuth</artifactId>
+</dependency>
+当使用了spring-cloud-starter-zipkin之后，前面添加spring-cloud-starter-sleuth就不需要了，因为前者包含了后者。
+spring:
+  zipkin:
+    base-url: http://localhost:9411/
+  sleuth:
+    sampler:
+      # 抽样率，默认是0.1（90%的数据会被丢弃）
+      # 这边为了测试方便，将其设置为1.0，即所有的数据都会上报给zipkin
+      probability: 1.0
+
+logging:
+  level:
+    org.springframework.cloud.sleuth: debug
+配置的用处是让sleuth打印更多的日志
+
+
+
+
+
+网关全局变量配置
+URL路径匹配
+# URL pattern
+# 使用路径方式匹配路由规则。
+# 参数key结构： zuul.routes.customName.path=xxx
+# 用于配置路径匹配规则。
+# 其中customName自定义。通常使用要调用的服务名称，方便后期管理
+# 可使用的通配符有： * ** ?
+# ? 单个字符
+# * 任意多个字符，不包含多级路径
+# ** 任意多个字符，包含多级路径
+zuul.routes.eureka-application-service.path=/api/**
+# 参数key结构： zuul.routes.customName.url=xxx
+# url用于配置符合path的请求路径路由到的服务地址。
+zuul.routes.eureka-application-service.url=http://127.0.0.1:8080/
+
+服务名称匹配
+# service id pattern 通过服务名称路由
+# key结构 ： zuul.routes.customName.path=xxx
+# 路径匹配规则
+zuul.routes.eureka-application-service.path=/api/**
+# key结构 ： zuul.routes.customName.serviceId=xxx
+# serviceId用于配置符合path的请求路径路由到的服务名称。
+zuul.routes.eureka-application-service.serviceId=eureka-application-service
+
+服务名称匹配也可以使用简化的配置：
+# simple service id pattern 简化配置方案
+# 如果只配置path，不配置serviceId。则customName相当于服务名称。
+# 符合path的请求路径直接路由到customName对应的服务上。
+zuul.routes.eureka-application-service.path=/api/**
+
+路由排除配置
+# ignored service id pattern
+# 配置不被zuul管理的服务列表。多个服务名称使用逗号','分隔。
+# 配置的服务将不被zuul代理。
+zuul.ignored-services=eureka-application-service
+
+# 此方式相当于给所有新发现的服务默认排除zuul网关访问方式，只有配置了路由网关的服务才可以通过zuul网关访问
+# 通配方式配置排除列表。
+zuul.ignored-services=*
+# 使用服务名称匹配规则配置路由列表，相当于只对已配置的服务提供网关代理。
+zuul.routes.eureka-application-service.path=/api/**
+
+# 通配方式配置排除网关代理路径。所有符合ignored-patterns的请求路径都不被zuul网关代理。
+zuul.ignored-patterns=/**/test/**
+zuul.routes.eureka-application-service.path=/api/**
+
+
+路由前缀配置
+# prefix URL pattern 前缀路由匹配
+# 配置请求路径前缀，所有基于此前缀的请求都由zuul网关提供代理。
+zuul.prefix=/api
+# 使用服务名称匹配方式配置请求路径规则。
+# 这里的配置将为：http://ip:port/api/appservice/**的请求提供zuul网关代理，可以将要访问服务进行前缀分类。
+# 并将请求路由到服务eureka-application-service中。
+zuul.routes.eureka-application-service.path=/appservice/**
+
+zuul网关其底层使用ribbon来实现请求的路由，并内置Hystrix，可选择性提供网关fallback逻辑。使用zuul的时候，并不推荐使用Feign作为application client端的开发实现。毕竟Feign技术是对ribbon的再封装，使用Feign本身会提高通讯消耗，降低通讯效率，只在服务相互调用的时候使用Feign来简化代码开发就够了。而且商业开发中，使用Ribbon+RestTemplate来开发的比例更高。
+
+Zuul网关过滤器
+　　Zuul中提供了过滤器定义，可以用来过滤代理请求，提供额外功能逻辑。如：权限验证，日志记录等。
+　　Zuul提供的过滤器是一个父类。父类是ZuulFilter。通过父类中定义的抽象方法filterType，来决定当前的Filter种类是什么。有前置过滤、路由后过滤、后置过滤、异常过滤。
+前置过滤：是请求进入Zuul之后，立刻执行的过滤逻辑。
+路由后过滤：是请求进入Zuul之后，并Zuul实现了请求路由后执行的过滤逻辑，路由后过滤，是在远程服务调用之前过滤的逻辑。
+后置过滤：远程服务调用结束后执行的过滤逻辑。
+异常过滤：是任意一个过滤器发生异常或远程服务调用无结果反馈的时候执行的过滤逻辑。无结果反馈，就是远程服务调用超时。
+
+
+过滤器实现方式
+继承父类ZuulFilter。在父类中提供了4个抽象方法，分别是：filterType, filterOrder, shouldFilter, run。其功能分别是：
+filterType：方法返回字符串数据，代表当前过滤器的类型。可选值有-pre, route, post, error。
+pre - 前置过滤器，在请求被路由前执行，通常用于处理身份认证，日志记录等；
+route - 在路由执行后，服务调用前被调用；
+error - 任意一个filter发生异常的时候执行或远程服务调用没有反馈的时候执行（超时），通常用于处理异常；
+post - 在route或error执行后被调用，一般用于收集服务信息，统计服务性能指标等，也可以对response结果做特殊处理。
+
+filterOrder：返回int数据，用于为同filterType的多个过滤器定制执行顺序，返回值越小，执行顺序越优先。
+shouldFilter：返回boolean数据，代表当前filter是否生效。
+run：具体的过滤执行逻辑。如pre类型的过滤器，可以通过对请求的验证来决定是否将请求路由到服务上；如post类型的过滤器，可以对服务响应结果做加工处理（如为每个响应增加footer数据）。
+
+Zuul中的服务降级处理
+Zuul提供了ZuulFallbackProvider的子接口FallbackProvider来提供fallback处理
+Zuul的fallback容错处理逻辑，只针对timeout异常处理
+
+Zuul网关组件也提供了限流保护。当请求并发达到阀值，自动触发限流保护，返回错误结果。只要提供error错误处理机制即可。
+　　Zuul的限流保护需要额外依赖spring-cloud-zuul-ratelimit组件。
+<dependency>
+    <groupId>com.marcosbarbero.cloud</groupId>
+    <artifactId>spring-cloud-zuul-ratelimit</artifactId>
+    <version>1.3.4.RELEASE</version>
+</dependency>
+
+全局限流配置
+使用全局限流配置，zuul会对代理的所有服务提供限流保护
+# 开启限流保护
+zuul.ratelimit.enabled=true
+# 60s内请求超过3次，服务端就抛出异常，60s后可以恢复正常请求
+zuul.ratelimit.default-policy.limit=3
+zuul.ratelimit.default-policy.refresh-interval=60
+# 针对IP进行限流，不影响其他IP
+zuul.ratelimit.default-policy.type=origin
+
+局部限流配置
+使用局部限流配置，zuul仅针对配置的服务提供限流保护
+# 开启限流保护
+zuul.ratelimit.enabled=true
+# hystrix-application-client服务60s内请求超过3次，服务抛出异常。
+zuul.ratelimit.policies.hystrix-application-client.limit=3
+zuul.ratelimit.policies.hystrix-application-client.refresh-interval=60
+# 针对IP限流。
+zuul.ratelimit.policies.hystrix-application-client.type=origin
+
+
+
+zuul中可配置的超时时长就有两个位置：Hystrix和ribbon
+# 开启zuul网关重试
+zuul.retryable=true
+# hystrix超时时间设置
+# 线程池隔离，默认超时时间1000ms
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=8000
+
+# ribbon超时时间设置：建议设置比Hystrix小
+# 请求连接的超时时间: 默认5000ms
+ribbon.ConnectTimeout=5000
+# 请求处理的超时时间: 默认5000ms
+ribbon.ReadTimeout=5000
+# 重试次数：MaxAutoRetries表示访问服务集群下原节点（同路径访问）；MaxAutoRetriesNextServer表示访问服务集群下其余节点（换台服务器）
+ribbon.MaxAutoRetries=1
+ribbon.MaxAutoRetriesNextServer=1
+# 开启重试
+ribbon.OkToRetryOnAllOperations=true
+
+
+
+网关，注册中心
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-gateway</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+</dependency>
+server:
+  port: 8088
+debug: true
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user_route
+          uri: http://localhost:10086
+          predicates:
+            - Path=/*
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        register: false
+
+
+NACOS配置中心和注册中心
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+</dependency>
+spring.cloud.nacos.discovery.server-addr=127.0.0.1:8848
+
+<dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+</dependency>
+增加bootstrap.properties
+//配置nacos作为配置服务器
+spring.cloud.nacos.config.server-addr=127.0.0.1:8848
+//配置模式为开发模式
+spring.profiles.active=dev
+//nacos配资使用yml 作为扩展名
+spring.cloud.nacos.config.file-extension=yml
+//下面的配置时公共配置，即可以在不同应用之间进行共享。
+spring.cloud.nacos.config.shared-dataids=common.yml
+spring.cloud.nacos.config.refreshable-dataids=common.yml
+
+@RefreshScope 是实现自动刷新配置。
+
+
+spring cloud bus 配置刷新使用
+
+
+===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+分布式事务  seata
+
+===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+

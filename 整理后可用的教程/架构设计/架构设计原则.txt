@@ -1,0 +1,10 @@
+1 模块分包原则
+2 框架扩展原则
+3 领域划分原则
+4 接口分离原则
+5 组件协作原则
+6 功能演进原则
+
+https://www.jianshu.com/p/293278af6695
+
+https://www.jianshu.com/p/f84254b03cd4

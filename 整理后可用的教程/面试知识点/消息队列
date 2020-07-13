@@ -1,0 +1,13 @@
+rabbitmq消息队列的延时队列问题
+1、最先超时的不是最小超时时间，而是消息头的失效时间，
+如：先加一个10s超时消息，后加入一个5s超时消息，最后5s和10s的一起超时，最后还是在消费队列中顺序出现
+
+死信设置
+x-message-ttl ：消息超时时间，单位为毫秒
+x-dead-letter-exchange : 死信交换机
+x-dead-letter-routing-key：死信RouteKey
+
+
+kafka适合 数据收集业务(行为跟踪，日志收集等)
+RabbitMQ 适合于企业级的开发
+RocketMQ 广泛应用于交易、充值、流计算、消息推送、日志流式处理、binglog分发等场景

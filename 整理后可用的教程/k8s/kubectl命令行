@@ -1,0 +1,20 @@
+查看状态、服务
+kubectl get
+获取命名空间
+kubectl get namespaces
+获取pods
+kubectl get pods
+获取pods详细信息
+kubectl describe pods
+查看log
+kubectl logs podname
+在pod中执行命令
+kubectl exec -ti podname bash
+
+k8s中的service是集群中一组pod的抽象。
+查看服务状态
+kubectl get service
+对外暴露服务
+kubectl expose deplyment/servicename --type="NodePort" --port 30080
+
+

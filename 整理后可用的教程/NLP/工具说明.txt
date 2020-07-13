@@ -1,0 +1,29 @@
+Keras
+可以轻松快速地进行原型设计。它支持各种 DNN，如RNN、CNN，甚至是两者的组合。
+Keras
+
+TensorFlow
+TensorFlow 是一个强大的库，用于执行大规模的数值计算，如矩阵乘法或自动微分。这两个计算是实现和训练 DNN 所必需的
+
+TensorBoard
+TensorBoard是Tensorflow自带的一个强大的可视化工具，也是一个web应用程序套件。
+
+TFlearn：TFlearn 是一个建立在 TensorFlow 之上的模块化和透明的深度学习库。它为 TensorFlow 提供更高级别的 API，以促进和加速实验。它目前支持最近的大多数深度学习模型，如卷积、LSTM、BatchNorm、BiRNN、PReLU、残差网络和生成网络。它只适用于TensorFlow 1.0 或更高版本。请使用 pip install tflearn 安装。
+
+Keras：Keras 也是神经网络的高级 API，它使用 TensorFlow 作为其后端。它可以运行在 Theano 和 CNTK 之上。添加图层只需要一行代码，非常用户友好，可以使用 pip install keras 来安装。
+
+
+
+任何深度学习网络都由四个重要部分组成：数据集、定义模型（网络结构）、训练/学习和预测/评估。
+
+一般来说，数据被分为三部分：训练数据、验证数据和测试数据。
+
+
+
+DNN 依赖于大量的数据。
+MNIST：这是最大的手写数字（0～9）数据库。它由 60000 个示例的训练集和 10000 个示例的测试集组成。该数据集存放在 Yann LeCun 的主页（http://yann.lecun.com/exdb/mnist/）中。这个数据集已经包含在tensorflow.examples.tutorials.mnist 的 TensorFlow 库中。
+CIFAR10：这个数据集包含了 10 个类别的 60000 幅 32×32 彩色图像，每个类别有 6000 幅图像。其中训练集包含 50000 幅图像，测试数据集包含 10000 幅图像。数据集的 10 个类别分别是：飞机、汽车、鸟、猫、鹿、狗、青蛙、马、船和卡车。该数据由多伦多大学计算机科学系维护（https://www.cs.toronto.edu/kriz/cifar.html）。
+WORDNET：这是一个英文的词汇数据库。它包含名词、动词、副词和形容词，被归为一组认知同义词（Synset），即代表相同概念的词语，例如 shut 和 close，car 和 automobile 被分组为无序集合。它包含 155287 个单词，组织在 117659 个同义词集合中，总共 206941 个单词对。该数据集由普林斯顿大学维护（https://wordnet.princeton.edu/）。
+ImageNET：这是一个根据 WORDNET 层次组织的图像数据集（目前只有名词）。每个有意义的概念（synset）由多个单词或单词短语来描述。每个子空间平均由 1000 幅图像表示。目前共有 21841 个同义词，共有 14197122 幅图像。自 2010 年以来，每年举办一次 ImageNet 大规模视觉识别挑战赛（ILSVRC），将图像分类到 1000 个对象类别中。这项工作是由美国普林斯顿大学、斯坦福大学、A9 和谷歌赞助（http://www.image-net.org/）。
+YouTube-8M：这是一个由数百万 YouTube 视频组成的大型标签视频数据集。它有大约 700 万个 YouTube 视频网址，分为 4716 个小类，并分为 24 个大类。它还提供预处理支持和框架功能。数据集由 Google Research（https://research.google.com/youtube8m/）维护。
+

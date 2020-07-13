@@ -1,0 +1,9 @@
+ZK UI这个ZooKeepe可视化WEB客户端作为日常基本操作
+https://github.com/zifangsky/zkui/releases
+Linux系统则相应执行start.sh即可
+访问：http://127.0.0.1:6060/
+
+下载下来
+maven clean install
+执行
+nohup java -jar zkui-2.0-SNAPSHOT-jar-with-dependencies.jar & 

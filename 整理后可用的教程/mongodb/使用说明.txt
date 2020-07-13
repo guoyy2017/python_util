@@ -1,0 +1,376 @@
+服务端使用说明
+启动
+----- ----- ----- ----- ----- ----- ----- -----
+
+----- ----- ----- ----- ----- ----- ----- -----
+
+固定集合（Capped Collections）
+----- ----- ----- ----- ----- ----- ----- -----
+就像一个环形队列，当集合空间用完后，再插入的元素就会覆盖最初始的头部的元素
+capped选项设置为true
+db.createCollection("cappedLogCollection",{capped:true,size:10000})
+指定文档个数,加上max:1000属性
+db.createCollection("cappedLogCollection",{capped:true,size:10000,max:1000})
+集合是否为固定集合
+db.cappedLogCollection.isCapped()
+将已存在的集合转换为固定集合可以使用以下命令
+db.runCommand({"convertToCapped":"posts",size:10000})
+使用$natural调整返回顺序
+db.cappedLogCollection.find().sort({$natural:-1})
+可以插入及更新,但更新不能超出collection的大小,否则更新失败,不允许删除,但是可以调用drop()删除集合中的所有行,但是drop后需要显式地重建集合
+
+固定集合属性及用法
+属性
+属性1:对固定集合进行插入速度极快
+属性2:按照插入顺序的查询输出速度极快
+属性3:能够在插入最新数据时,淘汰最早的数据
+用法
+用法1:储存日志信息
+用法2:缓存一些少量的文档
+----- ----- ----- ----- ----- ----- ----- -----
+
+
+
+Map Reduce
+----- ----- ----- ----- ----- ----- ----- -----
+db.collection.mapReduce(
+   function() {emit(key,value);},  //map 函数
+   function(key,values) {return reduceFunction},   //reduce 函数
+   {
+      out: collection,
+      query: document,
+      sort: document,
+      limit: number
+   }
+)
+使用 MapReduce 要实现两个函数 Map 函数和 Reduce 函数,Map 函数调用 emit(key, value), 遍历 collection 中所有的记录, 将key 与 value 传递给 Reduce 函数进行处理
+Map 函数必须调用 emit(key, value) 返回键值对。
+
+参数说明:
+map ：映射函数 (生成键值对序列,作为 reduce 函数参数)。
+reduce 统计函数，reduce函数的任务就是将key-values变成key-value，也就是把values数组变成一个单一的值value。。
+out 统计结果存放集合 (不指定则使用临时集合,在客户端断开后自动删除)。
+query 一个筛选条件，只有满足条件的文档才会调用map函数。（query。limit，sort可以随意组合）
+sort 和limit结合的sort排序参数（也是在发往map函数前给文档排序），可以优化分组机制
+limit 发往map函数的文档数量的上限（要是没有limit，单独使用sort的用处不大）
+
+返回值说明
+具体参数说明：
+result：储存结果的collection的名字,这是个临时集合，MapReduce的连接关闭后自动就被删除了。
+timeMillis：执行花费的时间，毫秒为单位
+input：满足条件被发送到map函数的文档个数
+emit：在map函数中emit被调用的次数，也就是所有集合中的数据总量
+ouput：结果集合中的文档个数（count对调试非常有帮助）
+ok：是否成功，成功为1
+err：如果失败，这里可以有失败原因，不过从经验上来看，原因比较模糊，作用不大
+----- ----- ----- ----- ----- ----- ----- -----
+
+
+索引限制
+----- ----- ----- ----- ----- ----- ----- -----
+索引的大小大于内存的限制，MongoDB会删除一些索引，这将导致性能下降
+索引不能被以下的查询使用：
+正则表达式及非操作符，如 $nin, $not, 等。
+算术运算符，如 $mod, 等。
+$where 子句
+
+最大范围
+集合中索引不能超过64个
+索引名的长度不能超过125个字符
+一个复合索引最多可以有31个字段
+----- ----- ----- ----- ----- ----- ----- -----
+
+副本集
+----- ----- ----- ----- ----- ----- ----- -----
+副本集特征：
+N 个节点的集群
+任何节点可作为主节点
+所有写入操作都在主节点上
+自动故障转移
+自动恢复
+
+通过指定 --replSet 选项来启动mongoDB
+mongod --port "PORT" --dbpath "YOUR_DB_DATA_PATH" --replSet "REPLICA_SET_INSTANCE_NAME"
+mongod --port 27017 --dbpath "D:\set up\mongodb\data" --replSet rs0
+命令rs.initiate()来启动一个新的副本集
+使用rs.conf()来查看副本集的配置
+查看副本集姿态使用 rs.status() 命令
+使用rs.add()方法来添加副本集的成员
+rs.add(HOST_NAME:PORT)
+是否为主节点可以使用命令db.isMaster()
+副本集在主机宕机后，副本会接管主节点成为主节点，不会出现宕机的情况
+----- ----- ----- ----- ----- ----- ----- -----
+
+分片配置
+----- ----- ----- ----- ----- ----- ----- -----
+三个主要组件：
+Shard:
+用于存储实际的数据块，实际生产环境中一个shard server角色可由几台机器组个一个relica set承担，防止主机单点故障
+Config Server:
+mongod实例，存储了整个 ClusterMetadata，其中包括 chunk信息。
+Query Routers:
+前端路由，客户端由此接入，且让整个集群看上去像单一数据库，前端应用可以透明使用。
+Shard Server 1：27020
+Shard Server 2：27021
+Shard Server 3：27022
+Shard Server 4：27023
+Config Server ：27100
+Route Process：40000
+
+mkdir -p /www/mongoDB/shard/s{0,1,2,3}
+mkdir -p /www/mongoDB/shard/log
+启动Shard Server
+/usr/local/mongoDB/bin/mongod --port 27020 --dbpath=/www/mongoDB/shard/s0 --logpath=/www/mongoDB/shard/log/s0.log --logappend --fork
+...
+
+启动Config Server
+mkdir -p /www/mongoDB/shard/config
+/usr/local/mongoDB/bin/mongod --port 27100 --dbpath=/www/mongoDB/shard/config --logpath=/www/mongoDB/shard/log/config.log --logappend --fork
+
+这里我们完全可以像启动普通mongodb服务一样启动，不需要添加—shardsvr和configsvr参数。因为这两个参数的作用就是改变启动端口的，所以我们自行指定了端口就可以
+
+启动Route Process
+/usr/local/mongoDB/bin/mongos --port 40000 --configdb localhost:27100 --fork --logpath=/www/mongoDB/shard/log/route.log --chunkSize 500
+mongos启动参数中，chunkSize这一项是用来指定chunk的大小的，单位是MB，默认大小为200MB.
+
+配置Sharding
+MongoDB Shell登录到mongos，添加Shard节点
+/usr/local/mongoDB/bin/mongo admin --port 40000
+db.runCommand({ addshard:"localhost:27020" })
+db.runCommand({ enablesharding:"test" }) #设置分片存储的数据库
+db.runCommand({ shardcollection: "test.log", key: { id:1,time:1}})
+----- ----- ----- ----- ----- ----- ----- -----
+
+配置说明
+----- ----- ----- ----- ----- ----- ----- -----
+
+----- ----- ----- ----- ----- ----- ----- -----
+
+客户端使用说明
+----- ----- ----- ----- ----- ----- ----- -----
+插入文档
+===== ===== ===== ===== ===== =====
+使用 insert() 或 save() 方法向集合中插入文档
+db.COLLECTION_NAME.insert(document)
+db.col.save(document) 命令。
+如果不指定 _id 字段 save() 方法类似于 insert() 方法。如果指定 _id 字段，则会更新该 _id 的数据
+
+===== ===== ===== ===== ===== =====
+
+更新文档
+===== ===== ===== ===== ===== =====
+使用 update() 和 save() 方法来更新集合中的文档
+update() 方法用于更新已存在的文档
+db.collection.update(
+   <query>,
+   <update>,
+   {
+     upsert: <boolean>,
+     multi: <boolean>,
+     writeConcern: <document>
+   }
+)
+参数说明：
+query : update的查询条件，类似sql update查询内where后面的。
+update : update的对象和一些更新的操作符（如$,$inc...）等，也可以理解为sql update查询内set后面的
+upsert : 可选，这个参数的意思是，如果不存在update的记录，是否插入objNew,true为插入，默认是false，不插入。
+multi : 可选，mongodb 默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。
+writeConcern :可选，抛出异常的级别。
+
+db.col.update({'title':'MongoDB 教程'},{$set:{'title':'MongoDB'}},{multi:true})
+
+save() 方法通过传入的文档来替换已有文档
+db.collection.save(
+   <document>,
+   {
+     writeConcern: <document>
+   }
+)
+参数说明：
+document : 文档数据。
+writeConcern :可选，抛出异常的级别。
+===== ===== ===== ===== ===== =====
+
+删除文档
+===== ===== ===== ===== ===== =====
+MongoDB remove()函数是用来移除集合中的数据。
+执行remove()函数前先执行find()命令来判断执行的条件是否正确
+db.collection.remove(
+   <query>,
+   <justOne>
+)
+MongoDB 是 2.6 版本以后的，语法格式如下：
+db.collection.remove(
+   <query>,
+   {
+     justOne: <boolean>,
+     writeConcern: <document>
+   }
+)
+参数说明：
+query :（可选）删除的文档的条件。
+justOne : （可选）如果设为 true 或 1，则只删除一个文档。
+writeConcern :（可选）抛出异常的级别。
+===== ===== ===== ===== ===== =====
+
+文档关系
+===== ===== ===== ===== ===== =====
+MongoDB 中的关系可以是：
+1:1 (1对1)
+1: N (1对多)
+N: 1 (多对1)
+N: N (多对多)
+
+嵌入式关系
+
+引用式关系
+通过引用文档的 id 字段来建立关系
+===== ===== ===== ===== ===== =====
+
+数据库引用
+===== ===== ===== ===== ===== =====
+MongoDB 引用有两种：
+手动引用（Manual References）
+DBRefs
+
+使用 DBRefs
+DBRef的形式：
+{ $ref : , $id : , $db :  }
+三个字段表示的意义为：
+$ref：集合名称
+$id：引用的id
+$db:数据库名称，可选参数
+
+===== ===== ===== ===== ===== =====
+
+覆盖索引查询
+===== ===== ===== ===== ===== =====
+覆盖查询是以下的查询：
+所有的查询字段是索引的一部分
+所有的查询返回字段在同一个索引中
+
+===== ===== ===== ===== ===== =====
+
+查询分析
+===== ===== ===== ===== ===== =====
+MongoDB 查询分析常用函数有：explain() 和 hint()
+explain 操作提供了查询信息，使用索引及查询统计等
+db.users.find({gender:"M"},{user_name:1,_id:0}).explain()
+～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ 
+indexOnly: 字段为 true ，表示我们使用了索引。
+cursor：因为这个查询使用了索引，MongoDB中索引存储在B树结构中，所以这是也使用了BtreeCursor类型的游标。如果没有使用索引，游标的类型是BasicCursor。这个键还会给出你所使用的索引的名称，你通过这个名称可以查看当前数据库下的system.indexes集合（系统自动创建，由于存储索引信息，这个稍微会提到）来得到索引的详细信息。
+n：当前查询返回的文档数量。
+nscanned/nscannedObjects：表明当前这次查询一共扫描了集合中多少个文档，我们的目的是，让这个数值和返回文档的数量越接近越好。
+millis：当前查询所需时间，毫秒数。
+indexBounds：当前查询具体使用的索引。
+～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ 
+
+使用hints来强迫MongoDB使用一个指定的索引
+db.users.find({gender:"M"},{user_name:1,_id:0}).hint({gender:1,user_name:1})
+db.users.find({gender:"M"},{user_name:1,_id:0}).hint({gender:1,user_name:1}).explain()
+===== ===== ===== ===== ===== =====
+
+查询
+===== ===== ===== ===== ===== =====
+db.COLLECTION_NAME.find()
+db.col.find().pretty()
+pretty() 方法以格式化的方式来显示所有文档
+findOne() 方法，它只返回一个文档
+
+MongoDB OR 条件语句使用了关键字 $or
+
+===== ===== ===== ===== ===== =====
+
+聚合
+===== ===== ===== ===== ===== =====
+MongoDB中聚合的方法使用aggregate()
+db.COLLECTION_NAME.aggregate(AGGREGATE_OPERATION)
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}])
+下表展示了一些聚合的表达式:
+～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ 
+表达式	描述	实例
+$sum	计算总和。	db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : "$likes"}}}])
+$avg	计算平均值	db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$avg : "$likes"}}}])
+$min	获取集合中所有文档对应值得最小值。	db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$min : "$likes"}}}])
+$max	获取集合中所有文档对应值得最大值。	db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$max : "$likes"}}}])
+$push	在结果文档中插入值到一个数组中。	db.mycol.aggregate([{$group : {_id : "$by_user", url : {$push: "$url"}}}])
+$addToSet	在结果文档中插入值到一个数组中，但不创建副本。	db.mycol.aggregate([{$group : {_id : "$by_user", url : {$addToSet : "$url"}}}])
+$first	根据资源文档的排序获取第一个文档数据。	db.mycol.aggregate([{$group : {_id : "$by_user", first_url : {$first : "$url"}}}])
+$last	根据资源文档的排序获取最后一个文档数据	db.mycol.aggregate([{$group : {_id : "$by_user", last_url : {$last : "$url"}}}])
+～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ 
+管道的概念
+聚合框架中常用的几个操作：
+～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ 
+$project：修改输入文档的结构。可以用来重命名、增加或删除域，也可以用于创建计算结果以及嵌套文档。
+$match：用于过滤数据，只输出符合条件的文档。$match使用MongoDB的标准查询操作。
+$limit：用来限制MongoDB聚合管道返回的文档数。
+$skip：在聚合管道中跳过指定数量的文档，并返回余下的文档。
+$unwind：将文档中的某一个数组类型字段拆分成多条，每条包含数组中的一个值。
+$group：将集合中的文档分组，可用于统计结果。
+$sort：将输入文档排序后输出。
+$geoNear：输出接近某一地理位置的有序文档。
+～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ 
+
+===== ===== ===== ===== ===== =====
+
+条件操作符
+===== ===== ===== ===== ===== =====
+条件操作符有：
+(>) 大于 - $gt
+(<) 小于 - $lt
+(>=) 大于等于 - $gte
+(<= ) 小于等于 - $lte
+===== ===== ===== ===== ===== =====
+
+排序sort()方法
+===== ===== ===== ===== ===== =====
+sort()方法对数据进行排序，sort()方法可以通过参数指定排序的字段，并使用 1 和 -1 来指定排序的方式，其中 1 为升序排列，而-1是用于降序排列
+db.COLLECTION_NAME.find().sort({KEY:1})
+===== ===== ===== ===== ===== =====
+
+Limit与Skip方法
+===== ===== ===== ===== ===== =====
+Limit() 方法
+如果你需要在MongoDB中读取指定数量的数据记录，可以使用MongoDB的Limit方法，limit()方法接受一个数字参数，该参数指定从MongoDB中读取的记录条数
+db.COLLECTION_NAME.find().limit(NUMBER)
+
+Skip() 方法
+使用skip()方法来跳过指定数量的数据，skip方法同样接受一个数字参数作为跳过的记录条数
+db.COLLECTION_NAME.find().limit(NUMBER).skip(NUMBER)
+===== ===== ===== ===== ===== =====
+
+$type 实例
+===== ===== ===== ===== ===== =====
+title 为 String 的数据，你可以使用以下命令
+db.col.find({"title" : {$type : 2}})
+===== ===== ===== ===== ===== =====
+----- ----- ----- ----- ----- ----- ----- -----
+
+
+名词概念
+----- ----- ----- ----- ----- ----- ----- -----
+索引
+===== ===== ===== ===== ===== =====
+ensureIndex() 方法来创建索引
+db.COLLECTION_NAME.ensureIndex({KEY:1})
+语法中 Key 值为你要创建的索引字段，1为指定按升序创建索引，如果你想按降序来创建索引指定为-1即可
+ensureIndex() 方法中你也可以设置使用多个字段创建索引（关系型数据库中称作复合索引）
+db.col.ensureIndex({"title":1,"description":-1})
+
+ensureIndex() 接收可选参数，可选参数列表如下：
+～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ 
+Parameter	Type	Description
+background	Boolean	建索引过程会阻塞其它数据库操作，background可指定以后台方式创建索引，即增加 "background" 可选参数。 "background" 默认值为false。
+unique	Boolean	建立的索引是否唯一。指定为true创建唯一索引。默认值为false.
+name	string	索引的名称。如果未指定，MongoDB的通过连接索引的字段名和排序顺序生成一个索引名称。
+dropDups	Boolean	在建立唯一索引时是否删除重复记录,指定 true 创建唯一索引。默认值为 false.
+sparse	Boolean	对文档中不存在的字段数据不启用索引；这个参数需要特别注意，如果设置为true的话，在索引字段中不会查询出不包含对应字段的文档.。默认值为 false.
+expireAfterSeconds	integer	指定一个以秒为单位的数值，完成 TTL设定，设定集合的生存时间。
+v	index version	索引的版本号。默认的索引版本取决于mongod创建索引时运行的版本。
+weights	document	索引权重值，数值在 1 到 99,999 之间，表示该索引相对于其他索引字段的得分权重。
+default_language	string	对于文本索引，该参数决定了停用词及词干和词器的规则的列表。 默认为英语
+language_override	string	对于文本索引，该参数指定了包含在文档中的字段名，语言覆盖默认的language，默认值为 language.
+～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～ ～～～～
+db.values.ensureIndex({open: 1, close: 1}, {background: true})
+===== ===== ===== ===== ===== =====
+----- ----- ----- ----- ----- ----- ----- -----

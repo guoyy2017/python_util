@@ -1,0 +1,28 @@
+Mycat 集群模式搭建
+环境：
+系统操作版本：CentOS7.2
+jdk版本：1.8
+mysql 版本：5.7.24
+Zoopeeker 版本：3.4.10 （http://mirrors.hust.edu.cn/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz）
+Mycat-Server 版本：1.5.1（https://github.com/MyCATApache/Mycat-download）
+Mycat-eye 版本：1.0（https://github.com/MyCATApache/Mycat-download）
+
+环境要求
+1　操作系统: centOS-7.0(ubuntu 16.4) 
+2  jdk :1.8
+3  haproxy: 1.2.27
+4  keepalived: 1.3.9 (keepalived-1.3.9)
+5  mycat: 1.6
+6  mysql: 5.7
+
+服务部署
+192.168.1.100  (vip　在192.168.1.1的主机上创建）
+192.168.1.1    server001 (mycat,haproxy,keepalive) master
+192.168.1.2    server002 (mycat,haproxy,keeaplive) slave
+192.168.1.3    server003 (mysql master)
+192.168.1.4    server004 (mysql slave)
+
+安装目录
+haproxy:/opt/haproxy
+mycat: /opt/mycat
+keepalived: /opt/keepalived 

@@ -1,0 +1,86 @@
+************************************************************************
+Paxos算法细节详解
+************************************************************************
+在paxos算法中，分为4种角色：
+  Proposer ：提议者
+  Acceptor：决策者
+  Client：产生议题者
+  Learner：最终决策学习者
+
+最终决策
+paxos算法中所有的行为：
+Proposer提出议题
+Acceptor初步接受 或者 Acceptor初步不接受
+如果上一步Acceptor初步接受则Proposer再次向Acceptor确认是否最终接受
+Acceptor 最终接受 或者Acceptor 最终不接受
+
+
+Paxos就是用于解决一致性问题的算法，有多个节点就会存在节点间通信的问题，存在着两种节点通讯模型：共享内存（Shared memory）、消息传递（Messages passing），Paxos是基于消息传递的通讯模型的。
+
+phase1（准备阶段）
+1. Proposer向超过半数（n/2+1）Acceptor发起prepare消息(发送编号)
+2. 如果prepare符合协议规则Acceptor回复promise消息，否则拒绝
+phase2（决议阶段或投票阶段）
+1. 如果超过半数Acceptor回复promise，Proposer向Acceptor发送accept消息
+2. Acceptor检查accept消息是否符合规则，消息符合则批准accept请求
+
+
+Phase1（准备阶段）
+每个Server都向Proposer发消息称自己要成为leader，Server1往Proposer1发、Server2往Proposer2发、Server3往Proposer3发；
+现在每个Proposer都接收到了Server1发来的消息但时间不一样，Proposer2先接收到了，然后是Proposer1，接着才是Proposer3；
+Proposer2首先接收到消息所以他从系统中取得一个编号1，Proposer2向Acceptor2和Acceptor3发送一条，编号为1的消息；
+接着Proposer1也接收到了Server1发来的消息，取得一个编号2，Proposer1向Acceptor1和Acceptor2发送一条，编号为2的消息；
+最后Proposer3也接收到了Server3发来的消息，取得一个编号3，Proposer3向Acceptor2和Acceptor3发送一条，编号为3的消息；
+这时Proposer1发送的消息先到达Acceptor1和Acceptor2，这两个都没有接收过请求所以接受了请求返回[2,null]给Proposer1，并承诺不接受编号小于2的请求；
+此时Proposer2发送的消息到达Acceptor2和Acceptor3，Acceprot3没有接收过请求返回[1,null]给Proposer2，并承诺不接受编号小于1的请求，但这时Acceptor2已经接受过Proposer1的请求
+并承诺不接受编号小于的2的请求了，所以Acceptor2拒绝Proposer2的请求；
+最后Proposer3发送的消息到达Acceptor2和Acceptor3，Acceptor2接受过提议，但此时编号为3大于Acceptor2的承诺2与Accetpor3的承诺1，所以接受提议返回[3,null]；
+Proposer2没收到过半的回复所以重新取得编号4，并发送给Acceptor2和Acceptor3，然后Acceptor2和Acceptor3都收到消息，此时编号4大于Acceptor2与Accetpor3的承诺3，所以接受提议返回[4,null]；
+
+Phase2（决议阶段）
+Proposer3收到过半（三个Server中两个）的返回，并且返回的Value为null，所以Proposer3提交了[3,server3]的议案；
+Proposer1收到过半返回，返回的Value为null，所以Proposer1提交了[2,server1]的议案；
+Proposer2收到过半返回，返回的Value为null，所以Proposer2提交了[4,server2]的议案；
+Acceptor1、Acceptor2接收到Proposer1的提案[2,server1]请求，Acceptor2承诺编号大于4所以拒绝了通过，Acceptor1通过了请求；
+Proposer2的提案[4,server2]发送到了Acceptor2、Acceptor3，提案编号为4所以Acceptor2、Acceptor3都通过了提案请求；
+Acceptor2、Acceptor3接收到Proposer3的提案[3,server3]请求，Acceptor2、Acceptor3承诺编号大于4所以拒绝了提案；
+此时过半的Acceptor都接受了Proposer2的提案[4,server2],Larner感知到了提案的通过，Larner学习提案，server2成为Leader；
+
+
+
+
+
+linearizable reads，线性一致性读
+只要写入成功，后续的所有读操作，都会读到最新的数据
+
+
+
+************************************************************************
+Raft的新一致性算法
+************************************************************************
+（1）Leader在时。由Leader向Follower同步日志。
+（2）Leader挂掉了，选一个新Leader，Leader选举算法。
+
+
+
+
+************************************************************************
+Zookeeper的ZAB
+************************************************************************
+
+zab和raft的重点在于，一开始启动的情况下就必要选主，然后再提供正常服务，如何能达到一致性的安全性，而后就是异常场景的恢复过程，都比较容易理解。
+
+
+************************************************************************
+CAP理论的核心思想是任何基于网络的数据共享系统最多只能满足数据一致性(Consistency)、可用性(Availability)和网络分区容忍(Partition Tolerance)三个特性中的两个。
+
+在互联网领域的绝大多数的场景，都需要牺牲强一致性来换取系统的高可用性，系统往往只需要保证“最终一致性”，只要这个最终时间是在用户可以接受的范围内即可。
+
+从服务端和客户端两个不同的视角，即内部一致性和外部一致性
+强一致性
+弱一致性
+最终一致性
+
+Two Phase指的是Commit-request阶段Commit阶段。
+Three Phase分别为CanCommit、PreCommit、DoCommit。
+************************************************************************

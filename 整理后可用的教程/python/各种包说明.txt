@@ -1,0 +1,50 @@
+Seaborn是基于matplotlib的图形可视化python包
+seaborn包依赖于scipy包
+pip install scipy
+pip install seaborn
+
+
+pip install rich
+用于在终端中显示富文本和精美格式
+
+pip install sklearn
+sklearn sklearn是python的重要机器学习库，其中封装了大量的机器学习算法，如：分类、回归、降维以及聚类；还包含了监督学习、非监督学习、数据变换三大模块
+==== ==== ==== ==== ==== ====
+监督学习
+sklearn.neighbors #近邻算法
+sklearn.svm #支持向量机
+sklearn.kernel_ridge #核-岭回归
+sklearn.discriminant_analysis #判别分析
+sklearn.linear_model #广义线性模型
+
+sklearn.ensemble #集成学习
+sklearn.tree #决策树
+sklearn.naive_bayes #朴素贝叶斯
+sklearn.cross_decomposition #交叉分解
+sklearn.gaussian_process #高斯过程
+
+sklearn.neural_network #神经网络
+sklearn.calibration #概率校准
+sklearn.isotonic #保守回归
+sklearn.feature_selection #特征选择
+sklearn.multiclass #多类多标签算法
+
+
+无监督学习
+sklearn.decomposition #矩阵因子分解
+sklearn.cluster # 聚类
+sklearn.manifold # 流形学习
+sklearn.mixture # 高斯混合模型
+sklearn.neural_network # 无监督神经网络
+sklearn.covariance # 协方差估计
+
+数据变换
+sklearn.feature_extraction # 特征提取
+sklearn.feature_selection # 特征选择
+sklearn.preprocessing # 预处理
+sklearn.random_projection # 随机投影
+sklearn.kernel_approximation # 核逼近
+
+数据集分割
+from sklearn.mode_selection import train_test_split
+==== ==== ==== ==== ==== ====

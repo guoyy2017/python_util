@@ -1,0 +1,412 @@
+JVM 内存使用
+JVM GC 模式 MinorGC FullGC
+JVM GC 各种模式使用
+
+java 线程池使用，配置参数说明
+java 线程生命周期
+java HashMap 原理 + 构造函数
+
+mysql 事务级别 默认事务级别
+mysql 锁 和各种锁机制
+mysql 主从同步binlog 三种模式
+Mybatis 分库分表组件 TSharding-Client
+
+redis 单线程机制
+
+rabbitmq 保证消息到达和唯一性机制
+rebbitmq 原理
+
+
+第二个面试问题
+为啥要用分布式配置中心
+1、不方便管理和维护
+配置文件都耦合在代码中，和应用一起打包，更改配置需要重新打包或重启
+2、安全性
+这一点主要是针对生产环境的配置来讲的，生产环境的数据库账号密码直接暴露给开发人员，增加了一定的风险
+
+ZooKeeper 并不适合做注册中心
+zookeeper 是 CP，意味着面对网络分区时，为了保持一致性，他是不可用的 核心算法是 Zab，所有设计都是为了一致性
+对于服务发现，可用性是第一位的
+注册中心使用最终一致性模型（AP）完全可以的
+
+注册中心应该是偏向 AP，而不是 CP
+zookeeper 所有的写操作都是 leader 处理的，在大规模服务注册写请求时，压力巨大，而且 leader 是单点，无法水平扩展
+
+zookeeper 的特长是做分布式协调服务，例如 kafka、hbase、flink、hadoop 等大项目都在用 zookeeper，用的挺好的，因为是用对了地方。
+
+
+
+分布式协调服务
+
+
+
+CAP + BASE
+在一个分布式系统中，当涉及读写操作时，只能保证一致性（Consistence）、可用性（Availability）、分区容错性（Partition Tolerance）3者中的2个，另一个必须被牺牲。
+一致性（Consistence)
+对某个指定的客户端来说，读操作保证能够返回最新的写操作结果。
+可用性（Availability）
+非故障节点在合理的时间内返回合理的响应。
+分区容忍性（Partition Tolerance）
+当出现网络分区后，系统能够继续履行职责。
+
+在分布式环境下，必须选择 P
+分布式系统理论上不可能选择 CA 架构，只能选择 CP 或者 AP
+
+BASE 是指
+基本可用（Basically Available）
+软状态（Soft State）
+最终一致性（Eventual Consistency）
+BASE理论是对 CAP 的延伸和补充，例如 AP 方案中牺牲一致性只是指分区期间，分区恢复后，系统应达到最终一致性。
+
+PAXOS
+
+
+分布式事务管理
+Seata 是阿里开源的分布式事务框架，属于二阶段提交模式
+
+Rabbitmq消息消费幂等
+用数据库唯一性ID处理
+用redis原子性处理
+如果可能可以指定不同的消息队列，不同的消费者处理，在本机解决跨机器的网络问题
+redis处理后可以删除同步到数据库，如果有访问数据库需要加锁访问，防止并发请求都打到数据库
+
+积压处理方案
+消息积压，暂停原始消费者，新建10-20个队列，新起消费者，把消息分配到新队列，起新的快速消费者消费10-20个队列数据
+恢复到正常状态，暂停分配，起原先的消费者
+批量重导 补救因为超时未处理的数据
+丢弃+批量重导 如果无法快速处理，可以先丢弃数据，后批量导入补救
+
+
+
+CQRS
+CQRS强调的是 command与query访问的数据模型不同，分别根据command与query需求的不同特性设计数据模型。
+Reveno是一个事件溯源的事务处理框架，提供了一个高性能、低延迟、支持容错、极其简单的一部事务处理、基于JVM的框架。
+Reveno有特定的DSL语法
+Axon 0.5，Java的CQRS框架
+
+
+------------- ------------- ------------- -------------
+
+Executors返回的线程池对象的弊端如下：
+1：FixedThreadPool 和 SingleThreadPool：
+允许的请求队列（底层实现是LinkedBlockingQueue）长度为Integer.MAX_VALUE，可能会堆积大量的请求，从而导致OOM
+2：CachedThreadPool 和 ScheduledThreadPool
+允许的创建线程数量为Integer.MAX_VALUE，可能会创建大量的线程，从而导致OOM。
+
+线程池参数
+corePoolSize：核心线程数量，会一直存在，除非allowCoreThreadTimeOut设置为true
+maximumPoolSize：线程池允许的最大线程池数量
+keepAliveTime：线程数量超过corePoolSize，空闲线程的最大超时时间
+unit：超时时间的单位
+workQueue：工作队列，保存未执行的Runnable 任务
+threadFactory：创建线程的工厂类
+handler：当线程已满，工作队列也满了的时候，会被调用。被用来实现各种拒绝策略。
+
+
+
+Rabbitmq系统最核心的组件是Exchange和Queue
+消息队列，提供了FIFO的处理机制，具有缓存消息的能力
+设置为持久化的队列，queue中的消息会在server本地硬盘存储一份，防止系统crash，数据丢失
+设置为临时队列，queue中的数据在系统重启之后就会丢失
+设置为自动删除的队列，当不存在用户连接到server，队列中的数据会被自动删除
+
+RabbitMQ内部主要包含以下四种Meta Data：
+vhost meta data：为RabbitMQ内部的Queue, Exchange, Binding提供命名空间级别的隔离
+exchange meta data：记录Exchange的名称、类型、属性等
+binding meta data：表示Routing Key和Queue之间的绑定关系，即描述如何将消息路由到队列Queue中
+queue meta data: 记录队列的名称及其属性
+
+Broker:它提供一种传输服务,它的角色就是维护一条从生产者到消费者的路线，保证数据能按照指定的方式进行传输, 
+Exchange：消息交换机,它指定消息按什么规则,路由到哪个队列。 
+Queue:消息的载体,每个消息都会被投到一个或多个队列。 
+Binding:绑定，它的作用就是把exchange和queue按照路由规则绑定起来. 
+Routing Key:路由关键字,exchange根据这个关键字进行消息投递。 
+vhost:虚拟主机,一个broker里可以有多个vhost，用作不同用户的权限分离。 
+Producer:消息生产者,就是投递消息的程序. 
+Consumer:消息消费者,就是接受消息的程序. 
+
+
+布隆过滤器
+三个不同的哈希函数 先用 k 个哈希函数对其计算
+Counting Bloom Filter 可删除数据的布隆过滤器
+Counting Bloom Filter 的出现，解决了上述问题，
+它将标准 Bloom Filter 位数组的每一位扩展为一个小的计数器（Counter）
+
+
+零拷贝知识  分一次拷贝和零拷贝 
+用户态内存和内核态内存的映射搞定，减少CPU内存拷贝过程
+mmap函数
+sendfile函数
+sendfile()系统调用也会引起用户态到内核态的切换
+系统调用sendfile()发起后，磁盘数据通过DMA方式读取到内核缓冲区，内核缓冲区中的数据通过DMA聚合网络缓冲区，然后一齐发送到网卡中
+
+直接内存
+jvm参数来设置：-XX:MaxDirectMemorySize
+-XX:MaxDirectMemorySize=40M
+-XX:+DisableExplicitGC，禁止代码中显式调用System.gc()
+其垃圾回收依赖于代码显式调用System.gc()
+Direct ByteBuffer分配出去的内存其实也是由GC负责回收的
+每个DirectByteBuffer对象在初始化时，都会创建一个对应的Cleaner对象，在Cleaner对象回收的时候回收这部分堆外内存
+
+
+Java内存模型即Java Memory Model，简称JMM
+JMM决定一个线程对共享变量的写入何时对另一个线程可见
+JMM定义了线程和主内存之间的抽象关系：
+线程之间的共享变量存储在主内存（main memory）中，
+每个线程都有一个私有的本地内存（local memory）
+本地内存中存储了该线程以读/写共享变量的副本
+Java内存模型把内存分成了两部分：线程栈区和堆区
+volatile修饰的
+写入这个字段之后插进一个Write-Barrier指令
+并在读这个字段之前插入一个Read-Barrier指令
+内存屏障 Memory Barrier会刷出cache中的所有先前的写入
+
+
+内存交互操作有8种，虚拟机实现必须保证每一个操作都是原子的，不可在分的（对于double和long类型的变量来说，load、store、read和write操作在某些平台上允许例外）
+
+lock     （锁定）：作用于主内存的变量，把一个变量标识为线程独占状态
+unlock （解锁）：作用于主内存的变量，它把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定
+read    （读取）：作用于主内存变量，它把一个变量的值从主内存传输到线程的工作内存中，以便随后的load动作使用
+load     （载入）：作用于工作内存的变量，它把read操作从主存中变量放入工作内存中
+use      （使用）：作用于工作内存中的变量，它把工作内存中的变量传输给执行引擎，每当虚拟机遇到一个需要使用到变量的值，就会使用到这个指令
+assign  （赋值）：作用于工作内存中的变量，它把一个从执行引擎中接受到的值放入工作内存的变量副本中
+store    （存储）：作用于主内存中的变量，它把一个从工作内存中一个变量的值传送到主内存中，以便后续的write使用
+write 　（写入）：作用于主内存中的变量，它把store操作从工作内存中得到的变量的值放入主内存的变量中
+　　JMM对这八种指令的使用，制定了如下规则：
+
+不允许read和load、store和write操作之一单独出现。即使用了read必须load，使用了store必须write
+不允许线程丢弃他最近的assign操作，即工作变量的数据改变了之后，必须告知主存
+不允许一个线程将没有assign的数据从工作内存同步回主内存
+一个新的变量必须在主内存中诞生，不允许工作内存直接使用一个未被初始化的变量。就是怼变量实施use、store操作之前，必须经过assign和load操作
+一个变量同一时间只有一个线程能对其进行lock。多次lock后，必须执行相同次数的unlock才能解锁
+如果对一个变量进行lock操作，会清空所有工作内存中此变量的值，在执行引擎使用这个变量前，必须重新load或assign操作初始化变量的值
+如果一个变量没有被lock，就不能对其进行unlock操作。也不能unlock一个被其他线程锁住的变量
+对一个变量进行unlock操作之前，必须把此变量同步回主内存
+
+
+
+
+
+
+
+分库分表涉及到迁移问题
+长时间停机分库分表
+第一步，停掉系统，拒绝访问，如晚上12点到凌晨3点进行维护，无法访问。
+第二步，启动后台临时程序，从旧的数据库里读取数据，基于分库分表中间件，将数据分离到其他库表中去。
+第三步，修改系统配置，通过数据库中间件，将数据写入到新库中。
+
+不停机双写方案
+第一步，修改系统中写库代码，同时写入到老库和新的分库分表。
+第二步，编写一个后台迁移工具，从老的库里读数据，写入到新库中去
+第三步，迁移完成之后，去比较一下新旧库表的数据，如果一模一样，则迁移完成，否则继续执行迁移。
+第四步，新旧库表数据无差异之后，将代码中写入旧的数据库代码删掉，只写新库。
+
+rabbitmq消息丢失补偿方案
+
+
+
+java jvm指令码
+http://www.nicegmly.cn/index.php/archives/78/
+0x00	nop	None
+|0x01| aconst_null |将 null 推送至栈顶
+|0x02| iconst_m1 |将 int 型-1 推送至栈顶
+|0x03| iconst_0 |将 int 型 0 推送至栈顶
+|0x04| iconst_1 |将 int 型 1 推送至栈顶
+|0x05| iconst_2 |将 int 型 2 推送至栈顶
+|0x06| iconst_3 |将 int 型 3 推送至栈顶
+|0x07| iconst_4 |将 int 型 4 推送至栈顶
+|0x08| iconst_5 |将 int 型 5 推送至栈顶
+|0x09| lconst_0 |将 long 型 0 推送至栈顶
+|0x0a| lconst_1 |将 long 型 1 推送至栈顶
+|0x0b| fconst_0 |将 float 型 0 推送至栈顶
+|0x0c| fconst_1 |将 float 型 1 推送至栈顶
+|0x0d| fconst_2 |将 float 型 2 推送至栈顶
+|0x0e| dconst_0 |将 double 型 0 推送至栈顶
+|0x0f| dconst_1 |将 double 型 1 推送至栈顶
+|0x10| bipush |将单字节的常量值 (-128~127) 推送至栈顶
+|0x11| sipush |将一个短整型常量 (-32768~32767) 推送至栈顶
+|0x12| ldc |将 int,float 或 String 型常量值从常量池中推送至栈顶
+|0x13| ldc_w |将 int,float 或 String 型常量值从常量池中推送至栈顶 (宽索引)
+|0x14| ldc2_w |将 long 或 double 型常量值从常量池中推送至栈顶 (宽索引)
+|0x15| iload |将指定的 int 型本地变量推送至栈顶
+|0x16| lload |将指定的 long 型本地变量推送至栈顶
+|0x17| fload |将指定的 float 型本地变量推送至栈顶
+|0x18| dload |将指定的 double 型本地变量推送至栈顶
+|0x19| aload |将指定的引用类型本地变量推送至栈顶
+|0x1a| iload_0 |将第一个 int 型本地变量推送至栈顶
+|0x1b| iload_1 |将第二个 int 型本地变量推送至栈顶
+|0x1c| iload_2 |将第三个 int 型本地变量推送至栈顶
+|0x1d| iload_3 |将第四个 int 型本地变量推送至栈顶
+|0x1e| lload_0 |将第一个 long 型本地变量推送至栈顶
+|0x1f| lload_1 |将第二个 long 型本地变量推送至栈顶
+|0x20| lload_2 |将第三个 long 型本地变量推送至栈顶
+|0x21| lload_3 |将第四个 long 型本地变量推送至栈顶
+|0x22| fload_0 |将第一个 float 型本地变量推送至栈顶
+|0x23| fload_1 |将第二个 float 型本地变量推送至栈顶
+|0x24| fload_2 |将第三个 float 型本地变量推送至栈顶
+|0x25| fload_3 |将第四个 float 型本地变量推送至栈顶
+|0x26| dload_0 |将第一个 double 型本地变量推送至栈顶
+|0x27| dload_1 |将第二个 double 型本地变量推送至栈顶
+|0x28| dload_2 |将第三个 double 型本地变量推送至栈顶
+|0x29| dload_3 |将第四个 double 型本地变量推送至栈顶
+|0x2a| aload_0 |将第一个引用类型本地变量推送至栈顶
+|0x2b| aload_1 |将第二个引用类型本地变量推送至栈顶
+|0x2c| aload_2 |将第三个引用类型本地变量推送至栈顶
+|0x2d| aload_3 |将第四个引用类型本地变量推送至栈顶
+|0x2e| iaload |将 int 型数组指定索引的值推送至栈顶
+|0x2f| laload |将 long 型数组指定索引的值推送至栈顶
+|0x30| faload |将 float 型数组指定索引的值推送至栈顶
+|0x31| daload |将 double 型数组指定索引的值推送至栈顶
+|0x32| aaload |将引用类型数组指定索引的值推送至栈顶
+|0x33| baload |将 boolean 或 byte 型数组指定索引的值推送至栈顶
+|0x34| caload |将 char 型数组指定索引的值推送至栈顶
+|0x35| saload |将 short 型数组指定索引的值推送至栈顶
+|0x36| istore |将栈顶 int 型数值存入指定本地变量
+|0x37| lstore |将栈顶 long 型数值存入指定本地变量
+|0x38| fstore |将栈顶 float 型数值存入指定本地变量
+|0x39| dstore |将栈顶 double 型数值存入指定本地变量
+|0x3a| astore |将栈顶引用类型数值存入指定本地变量
+|0x3b| istore_0 |将栈顶 int 型数值存入第一个本地变量
+|0x3c| istore_1 |将栈顶 int 型数值存入第二个本地变量
+|0x3d| istore_2 |将栈顶 int 型数值存入第三个本地变量
+|0x3e| istore_3 |将栈顶 int 型数值存入第四个本地变量
+|0x3f| lstore_0 |将栈顶 long 型数值存入第一个本地变量
+|0x40| lstore_1 |将栈顶 long 型数值存入第二个本地变量
+|0x41| lstore_2 |将栈顶 long 型数值存入第三个本地变量
+|0x42| lstore_3 |将栈顶 long 型数值存入第四个本地变量
+|0x43| fstore_0 |将栈顶 float 型数值存入第一个本地变量
+|0x44| fstore_1 |将栈顶 float 型数值存入第二个本地变量
+|0x45| fstore_2 |将栈顶 float 型数值存入第三个本地变量
+|0x46| fstore_3 |将栈顶 float 型数值存入第四个本地变量
+|0x47| dstore_0 |将栈顶 double 型数值存入第一个本地变量
+|0x48| dstore_1 |将栈顶 double 型数值存入第二个本地变量
+|0x49| dstore_2 |将栈顶 double 型数值存入第三个本地变量
+|0x4a| dstore_3 |将栈顶 double 型数值存入第四个本地变量
+|0x4b| astore_0 |将栈顶引用型数值存入第一个本地变量
+|0x4c| astore_1 |将栈顶引用型数值存入第二个本地变量
+|0x4d| astore_2 |将栈顶引用型数值存入第三个本地变量
+|0x4e| astore_3 |将栈顶引用型数值存入第四个本地变量
+|0x4f| iastore |将栈顶 int 型数值存入指定数组的指定索引位置
+|0x50| lastore |将栈顶 long 型数值存入指定数组的指定索引位置
+|0x51| fastore |将栈顶 float 型数值存入指定数组的指定索引位置
+|0x52| dastore |将栈顶 double 型数值存入指定数组的指定索引位置
+|0x53| aastore |将栈顶引用型数值存入指定数组的指定索引位置
+|0x54| bastore |将栈顶 boolean 或 byte 型数值存入指定数组的指定索引位置
+|0x55| castore |将栈顶 char 型数值存入指定数组的指定索引位置
+|0x56| sastore |将栈顶 short 型数值存入指定数组的指定索引位置
+|0x57| pop |将栈顶数值弹出 (数值不能是 long 或 double 类型的)
+|0x58| pop2 |将栈顶的一个 (对于非 long 或 double 类型) 或两个数值 (对于非 long 或 double 的其他类型) 弹出
+|0x59| dup |复制栈顶数值并将复制值压入栈顶
+|0x5a| dup_x1 |复制栈顶数值并将两个复制值压入栈顶
+|0x5b| dup_x2 |复制栈顶数值并将三个 (或两个) 复制值压入栈顶
+|0x5c| dup2 |复制栈顶一个 (对于 long 或 double 类型) 或两个 (对于非 long 或 double 的其他类型) 数值并将复制值压入栈顶
+|0x5d| dup2_x1 |dup_x1 指令的双倍版本
+|0x5e| dup2_x2 |dup_x2 指令的双倍版本
+|0x5f| swap |将栈顶最顶端的两个数值互换 (数值不能是 long 或 double 类型)
+|0x60| iadd |将栈顶两 int 型数值相加并将结果压入栈顶
+|0x61| ladd |将栈顶两 long 型数值相加并将结果压入栈顶
+|0x62| fadd |将栈顶两 float 型数值相加并将结果压入栈顶
+|0x63| dadd |将栈顶两 double 型数值相加并将结果压入栈顶
+|0x64| isub |将栈顶两 int 型数值相减并将结果压入栈顶
+|0x65| lsub |将栈顶两 long 型数值相减并将结果压入栈顶
+|0x66| fsub |将栈顶两 float 型数值相减并将结果压入栈顶
+|0x67| dsub |将栈顶两 double 型数值相减并将结果压入栈顶
+|0x68| imul |将栈顶两 int 型数值相乘并将结果压入栈顶
+|0x69| lmul |将栈顶两 long 型数值相乘并将结果压入栈顶
+|0x6a| fmul |将栈顶两 float 型数值相乘并将结果压入栈顶
+|0x6b| dmul |将栈顶两 double 型数值相乘并将结果压入栈顶
+|0x6c| idiv |将栈顶两 int 型数值相除并将结果压入栈顶
+|0x6d| ldiv |将栈顶两 long 型数值相除并将结果压入栈顶
+|0x6e| fdiv |将栈顶两 float 型数值相除并将结果压入栈顶
+|0x6f| ddiv |将栈顶两 double 型数值相除并将结果压入栈顶
+|0x70| irem |将栈顶两 int 型数值作取模运算并将结果压入栈顶
+|0x71| lrem |将栈顶两 long 型数值作取模运算并将结果压入栈顶
+|0x72| frem |将栈顶两 float 型数值作取模运算并将结果压入栈顶
+|0x73| drem |将栈顶两 double 型数值作取模运算并将结果压入栈顶
+|0x74| ineg |将栈顶 int 型数值取负并将结果压入栈顶
+|0x75| lneg |将栈顶 long 型数值取负并将结果压入栈顶
+|0x76| fneg |将栈顶 float 型数值取负并将结果压入栈顶
+|0x77| dneg |将栈顶 double 型数值取负并将结果压入栈顶
+|0x78| ishl |将 int 型数值左移指定位数并将结果压入栈顶
+|0x79| lshl |将 long 型数值左移指定位数并将结果压入栈顶
+|0x7a| ishr |将 int 型数值右 (带符号) 移指定位数并将结果压入栈顶
+|0x7b| lshr |将 long 型数值右 (带符号) 移指定位数并将结果压入栈顶
+|0x7c| iushr |将 int 型数值右 (无符号) 移指定位数并将结果压入栈顶
+|0x7d| lushr |将 long 型数值右 (无符号) 移指定位数并将结果压入栈顶
+|0x7e| iand |将栈顶两 int 型数值”按位与”并将结果压入栈顶
+|0x7f| land |将栈顶两 long 型数值”按位与”并将结果压入栈顶
+|0x80| ior |将栈顶两 int 型数值”按位或”并将结果压入栈顶
+|0x81| lor |将栈顶两 long 型数值”按位或”并将结果压入栈顶
+|0x82| ixor |将栈顶两 int 型数值”按位异或”并将结果压入栈顶
+|0x83| lxor |将栈顶两 long 型数值”按位异或”并将结果压入栈顶
+|0x84| iinc |将指定 int 型变量增加指定值 (如 i++, i–, i+=2 等)
+|0x85| i2l |将栈顶 int 型数值强制转换为 long 型数值并将结果压入栈顶
+|0x86| i2f |将栈顶 int 型数值强制转换为 float 型数值并将结果压入栈顶
+|0x87| i2d |将栈顶 int 型数值强制转换为 double 型数值并将结果压入栈顶
+|0x88| l2i |将栈顶 long 型数值强制转换为 int 型数值并将结果压入栈顶
+|0x89| l2f |将栈顶 long 型数值强制转换为 float 型数值并将结果压入栈顶
+|0x8a| l2d |将栈顶 long 型数值强制转换为 double 型数值并将结果压入栈顶
+|0x8b| f2i |将栈顶 float 型数值强制转换为 int 型数值并将结果压入栈顶
+|0x8c| f2l |将栈顶 float 型数值强制转换为 long 型数值并将结果压入栈顶
+|0x8d| f2d |将栈顶 float 型数值强制转换为 double 型数值并将结果压入栈顶
+|0x8e| d2i |将栈顶 double 型数值强制转换为 int 型数值并将结果压入栈顶
+|0x8f| d2l |将栈顶 double 型数值强制转换为 long 型数值并将结果压入栈顶
+|0x90| d2f |将栈顶 double 型数值强制转换为 float 型数值并将结果压入栈顶
+|0x91| i2b |将栈顶 int 型数值强制转换为 byte 型数值并将结果压入栈顶
+|0x92| i2c |将栈顶 int 型数值强制转换为 char 型数值并将结果压入栈顶
+|0x93| i2s |将栈顶 int 型数值强制转换为 short 型数值并将结果压入栈顶
+|0x94| lcmp |比较栈顶两 long 型数值大小, 并将结果 (1, 0 或-1) 压入栈顶
+|0x95| fcmpl |比较栈顶两 float 型数值大小, 并将结果 (1, 0 或-1) 压入栈顶;当其中一个数值为 NaN 时, 将-1 压入栈顶
+|0x96| fcmpg |比较栈顶两 float 型数值大小, 并将结果 (1, 0 或-1) 压入栈顶;当其中一个数值为 NaN 时, 将 1 压入栈顶
+|0x97| dcmpl |比较栈顶两 double 型数值大小, 并将结果 (1, 0 或-1) 压入栈顶;当其中一个数值为 NaN 时, 将-1 压入栈顶
+|0x98| dcmpg |比较栈顶两 double 型数值大小, 并将结果 (1, 0 或-1) 压入栈顶;当其中一个数值为 NaN 时, 将 1 压入栈顶
+|0x99| ifeq |当栈顶 int 型数值等于 0 时跳转
+|0x9a| ifne |当栈顶 int 型数值不等于 0 时跳转
+|0x9b| iflt |当栈顶 int 型数值小于 0 时跳转
+|0x9c| ifge |当栈顶 int 型数值大于等于 0 时跳转
+|0x9d| ifgt |当栈顶 int 型数值大于 0 时跳转
+|0x9e| ifle |当栈顶 int 型数值小于等于 0 时跳转
+|0x9f| if_icmpeq |比较栈顶两 int 型数值大小, 当结果等于 0 时跳转
+|0xa0| if_icmpne |比较栈顶两 int 型数值大小, 当结果不等于 0 时跳转
+|0xa1| if_icmplt |比较栈顶两 int 型数值大小, 当结果小于 0 时跳转
+|0xa2| if_icmpge |比较栈顶两 int 型数值大小, 当结果大于等于 0 时跳转
+|0xa3| if_icmpgt |比较栈顶两 int 型数值大小, 当结果大于 0 时跳转
+|0xa4| if_icmple |比较栈顶两 int 型数值大小, 当结果小于等于 0 时跳转
+|0xa5| if_acmpeq |比较栈顶两引用型数值, 当结果相等时跳转
+|0xa6| if_acmpne |比较栈顶两引用型数值, 当结果不相等时跳转
+|0xa7| goto |无条件跳转
+|0xa8| jsr |跳转至指定的 16 位 offset 位置, 并将 jsr 的下一条指令地址压入栈顶
+|0xa9| ret |返回至本地变量指定的 index 的指令位置 (一般与 jsr 或 jsr_w 联合使用)
+|0xaa| tableswitch |用于 switch 条件跳转, case 值连续 (可变长度指令)
+|0xab| lookupswitch |用于 switch 条件跳转, case 值不连续 (可变长度指令)
+|0xac| ireturn |从当前方法返回 int
+|0xad| lreturn |从当前方法返回 long
+|0xae| freturn |从当前方法返回 float
+|0xaf| dreturn |从当前方法返回 double
+|0xb0| areturn |从当前方法返回对象引用
+|0xb1| return |从当前方法返回 void
+|0xb2| getstatic |获取指定类的静态域, 并将其压入栈顶
+|0xb3| putstatic |为指定类的静态域赋值
+|0xb4| getfield |获取指定类的实例域, 并将其压入栈顶
+|0xb5| putfield |为指定类的实例域赋值
+|0xb6| invokevirtual |调用实例方法
+|0xb7| invokespecial |调用超类构建方法, 实例初始化方法, 私有方法
+|0xb8| invokestatic |调用静态方法
+|0xb9| invokeinterface |调用接口方法
+|0xba| invokedynamic |调用动态方法
+|0xbb| new |创建一个对象, 并将其引用引用值压入栈顶
+|0xbc| newarray |创建一个指定的原始类型 (如 int, float, char 等) 的数组,并将其引用值压入栈顶
+|0xbd| anewarray |创建一个引用型 (如类, 接口, 数组) 的数组, 并将其引用值压入栈顶
+|0xbe| arraylength |获取数组的长度值并压入栈顶
+|0xbf| athrow |将栈顶的异常抛出
+|0xc0| checkcast |检验类型转换, 检验未通过将抛出 ClassCastException
+|0xc1| instanceof |检验对象是否是指定类的实际, 如果是将 1 压入栈顶, 否则将 0 压入栈顶
+|0xc2| monitorenter |获得对象的锁, 用于同步方法或同步块
+|0xc3| monitorexit |释放对象的锁, 用于同步方法或同步块
+|0xc4| wide |扩展本地变量的宽度
+|0xc5| multianewarray |创建指定类型和指定维度的多维数组 (执行该指令时,操作栈中必须包含各维度的长度值), 并将其引用压入栈顶
+|0xc6| ifnull |为 null 时跳转
+|0xc7| ifnonnull |不为 null 时跳转
+|0xc8| goto_w |无条件跳转 (宽索引)
+|0xc9| jsr_w |跳转至指定的 32 位 offset 位置, 并将 jsr_w 的下一条指令地址压入栈顶
+

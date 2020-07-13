@@ -1,0 +1,34 @@
+k8s的特性：自动装箱，自我修复，水平扩展，服务发现和负载均衡，自动发布和回滚，密钥和配置管理，存储编排，批量处理执行。
+
+master：API Server ，Scheduler，Controller-Manager    (这三个是组件，也是守护进程)
+node：kubelet，docker，kube-proxy
+
+
+Pod分为两类（我自己给分的类）：
+自主式pod：自我管理的。没法实现全局进行调度。
+控制器管理的pod：（我们建议使用这种）正是由于控制器的设计，pod才被成为有生命周期的对象。
+Pod的常用控制器：
+ReplicationController：副本控制器，多退少补。
+ReplicaSet：副本集控制器，他不直接使用他有个声明式更新的控制器Deployment来管理。
+Deployment：（我们用的最多）只能负责管理那些无状态的应用，还支持二级控制器叫HPA（HorizontalPodAutoscaler：水平pod自动伸缩控制器）
+StatefulSet：有状态副本集，负责管理那些有状态的应用
+DaemonSet：我们需要在每一个node上运行一个副本而不是随意运行还需要DaemonSet
+job：要运行作业
+Ctonjob：周期性任务化作业
+HorizontalPodAutoscaler：可自动进行扩展
+
+
+
+各pod运行在一个网络中，而service是另外一个网络。
+service的地址和pod的地址是不同网段的。
+由外部访问时，先到达节点网络，
+由节点网络代为代理至集群网络，
+再由集群网络代为代理至pod网络
+
+kubeadm：这个工具是k8s官方的集群部署管理工具
+
+
+在master、nodes节点安装kubelet，kubeadm，docker
+在master节点上去运行 kubeadm init去初始化集群
+各nodes节点上分别执行kubeadm join加入到集群中
+

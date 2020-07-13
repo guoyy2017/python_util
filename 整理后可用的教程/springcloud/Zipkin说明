@@ -1,0 +1,97 @@
+zipkin指定ES作为数据源
+java -jar zipkin-server-2.10.1-exec.jar --STORAGE_TYPE=elasticsearch --DES_HOSTS=http://localhost:9200 
+
+#采样率，推荐0.1，百分之百收集的话存储可能扛不住
+spring.sleuth.sampler.percentage=1
+
+Elasticsearch 5-7版本都可以使用
+
+配置
+STORAGE_TYPE: 指定存储类型，可选项为：mysql, cassandra, elasticsearch
+ES_HOSTS：Elasticsearch地址，多个使用，分隔，默认http://localhost:9200
+ES_PIPELINE：指定span被索引之前的pipeline（Elasticsearch的概念）
+ES_TIMEOUT：连接Elasticsearch的超时时间，单位是毫秒；默认10000（10秒）
+ES_INDEX：zipkin所使用的索引前缀（zipkin会每天建立索引），默认zipkin
+ES_DATE_SEPARATOR：zipkin建立索引的日期分隔符，默认是-
+ES_INDEX_SHARDS：shard（Elasticsearch的概念）个数，默认5
+ES_INDEX_REPLICAS：副本（Elasticsearch的概念）个数，默认1
+ES_USERNAME/ES_PASSWORD：Elasticsearch账号密码
+ES_HTTP_LOGGING：控制Elasticsearch Api的日志级别，可选项为BASIC、HEADERS、BODY
+
+STORAGE_TYPE=elasticsearch ES_HOSTS=localhost:9200 java -jar zipkin-server-2.12.9-exec.jar
+
+配合消息队列
+<dependency>
+    <groupId>io.zipkin.java</groupId>
+    <artifactId>zipkin-autoconfigure-collector-rabbitmq</artifactId>
+    <version>2.11.8</version>
+</dependency>
+
+添加rabbitmq的配置（application.yaml）
+zipkin:
+  collector:
+    rabbitmq:
+      addresses: 127.0.0.1:5672
+      username: guest
+      password: guest
+
+java -jar zipkin-server-2.19.2-exec.jar --zipkin.collector.rabbitmq.addresses=127.0.0.1:5672 --zipkin.collector.rabbitmq.username=guest --zipkin.collector.rabbitmq.password=guest
+
+
+客户端
+在Sleuth-Zuul和Sleuth-Feign中加入rabbitmq依赖
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+</dependency>
+spring:
+  application:
+    name: sleuth-zuul
+  zipkin:
+#    base-url: http://127.0.0.1:8687/
+    sender:
+      type: rabbit
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+加入数据库存储
+<dependency>
+    <groupId>io.zipkin.java</groupId>
+    <artifactId>zipkin-autoconfigure-storage-mysql</artifactId>
+    <version>2.11.8</version>
+</dependency>
+<!--解决spring自带的版本不一致问题-->
+<dependency>
+    <groupId>org.jooq</groupId>
+    <artifactId>jooq</artifactId>
+    <version>3.12.3</version>
+</dependency>
+<!--解决spring自带的版本不一致问题-->
+zipkin:
+  storage:
+    type: mysql
+    mysql:
+      host: 127.0.0.1
+      port: 3306
+      username: root
+      password: root
+      db: spring-cloud-sleuth
+
+
+在Sleuth-Server中配置elasticsearch
+<dependency>
+    <groupId>io.zipkin.java</groupId>
+    <artifactId>zipkin-autoconfigure-storage-elasticsearch-http</artifactId>
+    <version>2.8.4</version>
+</dependency>
+zipkin:
+  storage:
+    type: elasticsearch
+  elasticsearch:
+    hosts: ["127.0.0.1:9200"]
+
+
+

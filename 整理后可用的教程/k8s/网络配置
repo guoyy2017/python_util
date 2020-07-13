@@ -1,0 +1,5 @@
+hostPort相当于docker run -p 8081:8080,不用创建svc,因此端口只在容器运行的vm上监听
+hostNetwork相当于 docker run --net=host ,不用创建svc,因此端口只在容器运行的vm上监听
+NodePort-svc级别,由kube-proxy操控,所有节点规则统一,逻辑上市全局的
+externalIPs 通过svc创建,在指定的node上监听端口
+适用场景: 想通过svc来负载,但要求某台指定的node上监听,而非像nodeport所有节点监听.

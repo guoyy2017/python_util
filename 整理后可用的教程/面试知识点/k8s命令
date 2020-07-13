@@ -1,0 +1,428 @@
+kubectl管理工具以及命令
+基础命令：create，delete，get，run，expose，set，explain，edit。
+
+create命令：根据文件或者输入来创建资源
+# 创建Deployment和Service资源
+kubectl create -f javak8s-deployment.yaml
+kubectl create -f javak8s-service.yaml
+
+delete命令：删除资源
+# 根据yaml文件删除对应的资源，但是yaml文件并不会被删除，这样更加高效
+kubectl delete -f javak8s-deployment.yaml 
+kubectl delete -f javak8s-service.yaml
+# 也可以通过具体的资源名称来进行删除，使用这个删除资源，需要同时删除pod和service资源才行
+kubectl delete 具体的资源名称
+
+get命令：获得资源信息
+# 查看所有的资源信息
+kubectl get all
+# 查看pod列表
+kubectl get pod
+# 显示pod节点的标签信息
+kubectl get pod --show-labels
+# 根据指定标签匹配到具体的pod
+kubectl get pods -l app=example
+# 查看node节点列表
+kubectl get node 
+# 显示node节点的标签信息
+kubectl get node --show-labels
+# 查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）
+kubectl get pod -o wide
+# 查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息
+kubectl get svc
+# 查看命名空间
+kubectl get ns
+# 查看所有pod所属的命名空间
+kubectl get pod --all-namespaces
+# 查看所有pod所属的命名空间并且查看都在哪些节点上运行
+kubectl get pod --all-namespaces  -o wide
+# 查看目前所有的replica set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息
+kubectl get rs
+# 查看目前所有的deployment
+kubectl get deployment
+# 查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息
+ kubectl get deploy -o wide
+
+run命令：在集群中创建并运行一个或多个容器镜像。
+# 基本语法
+run NAME --image=image [--env="key=value"] [--port=port] [--replicas=replicas] [--dry-run=bool] [--overrides=inline-json] [--command] -- [COMMAND] [args...]
+# 示例，运行一个名称为nginx，副本数为3，标签为app=example，镜像为nginx:1.10，端口为80的容器实例
+kubectl run nginx --replicas=3 --labels="app=example" --image=nginx:1.10 --port=80
+其他用法参见：http://docs.kubernetes.org.cn/468.html
+
+expose命令：创建一个service服务，并且暴露端口让外部可以访问
+# 创建一个nginx服务并且暴露端口让外界可以访问
+kubectl expose deployment nginx --port=88 --type=NodePort --target-port=80 --name=nginx-service
+关于expose的详细用法参见：http://docs.kubernetes.org.cn/475.html
+
+set命令： 配置应用的一些特定资源，也可以修改应用已有的资源
+# 使用kubectl set --help查看，它的子命令，env，image，resources，selector，serviceaccount，subject。
+set命令详情参见：http://docs.kubernetes.org.cn/669.html
+语法：
+resources (-f FILENAME | TYPE NAME) ([--limits=LIMITS & --requests=REQUESTS]
+kubectl set resources 命令
+这个命令用于设置资源的一些范围限制。
+
+kubectl set selector命令
+设置资源的selector（选择器）。
+注意：目前selector命令只能用于Service对象。
+
+kubectl set image命令
+​ 用于更新现有资源的容器镜像。
+
+explain命令：用于显示资源文档信息
+kubectl explain rs
+
+edit命令:用于编辑资源信息
+# 编辑Deployment nginx的一些信息
+kubectl edit deployment nginx
+# 编辑service类型的nginx的一些信息
+kubectl edit service/nginx
+
+设置命令：label，annotate，completion
+label命令:用于更新（增加、修改或删除）资源上的 label（标签）
+# 给名为foo的Pod添加label unhealthy=true
+kubectl label pods foo unhealthy=true
+# 给名为foo的Pod修改label 为 'status' / value 'unhealthy'，且覆盖现有的value
+kubectl label --overwrite pods foo status=unhealthy
+# 给 namespace 中的所有 pod 添加 label
+kubectl label  pods --all status=unhealthy
+# 仅当resource-version=1时才更新 名为foo的Pod上的label
+kubectl label pods foo status=unhealthy --resource-version=1
+# 删除名为“bar”的label 。（使用“ - ”减号相连）
+kubectl label pods foo bar-
+
+annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。
+# 更新Pod“foo”，设置annotation “description”的value “my frontend”，如果同一个annotation多次设置，则只使用最后设置的value值
+kubectl annotate pods foo description='my frontend'
+# 根据“pod.json”中的type和name更新pod的annotation
+kubectl annotate -f pod.json description='my frontend'
+# 更新Pod"foo"，设置annotation“description”的value“my frontend running nginx”，覆盖现有的值
+kubectl annotate --overwrite pods foo description='my frontend running nginx'
+# 更新 namespace中的所有pod
+kubectl annotate pods --all description='my frontend running nginx'
+# 只有当resource-version为1时，才更新pod ' foo '
+kubectl annotate pods foo description='my frontend running nginx' --resource-version=1
+# 通过删除名为“description”的annotations来更新pod ' foo '。#不需要- overwrite flag。
+kubectl annotate pods foo description-
+
+completion命令：用于设置kubectl命令自动补全
+
+kubectl 部署命令：rollout，rolling-update，scale，autoscale
+rollout命令:用于对资源进行管理
+可用资源包括：deployments，daemonsets。
+子命令：
+history（查看历史版本）
+pause（暂停资源）
+resume（恢复暂停资源）
+status（查看资源状态）
+undo（回滚版本）
+# 语法
+kubectl rollout SUBCOMMAND
+# 回滚到之前的deployment
+kubectl rollout undo deployment/abc
+# 查看daemonet的状态
+kubectl rollout status daemonset/foo
+rolling-update命令:执行指定ReplicationController的滚动更新。
+该命令创建了一个新的RC， 然后一次更新一个pod方式逐步使用新的PodTemplate，最终实现Pod滚动更新，new-controller.json需要与之前RC在相同的namespace下。
+
+# 语法
+rolling-update OLD_CONTROLLER_NAME ([NEW_CONTROLLER_NAME] --image=NEW_CONTAINER_IMAGE | -f NEW_CONTROLLER_SPEC)
+# 使用frontend-v2.json中的新RC数据更新frontend-v1的pod
+kubectl rolling-update frontend-v1 -f frontend-v2.json
+# 使用JSON数据更新frontend-v1的pod
+cat frontend-v2.json | kubectl rolling-update frontend-v1 -f -
+# 其他的一些滚动更新
+kubectl rolling-update frontend-v1 frontend-v2 --image=image:v2
+
+kubectl rolling-update frontend --image=image:v2
+
+kubectl rolling-update frontend-v1 frontend-v2 --rollback
+scale命令：扩容或缩容 Deployment、ReplicaSet、Replication Controller或 Job 中Pod数量
+
+scale也可以指定多个前提条件，如：当前副本数量或 --resource-version ，进行伸缩比例设置前，系统会先验证前提条件是否成立。这个就是弹性伸缩策略
+
+# 语法
+kubectl scale [--resource-version=version] [--current-replicas=count] --replicas=COUNT (-f FILENAME | TYPE NAME)
+# 将名为foo中的pod副本数设置为3。
+kubectl scale --replicas=3 rs/foo
+kubectl scale deploy/nginx --replicas=30
+# 将由“foo.yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3
+kubectl scale --replicas=3 -f foo.yaml
+# 如果当前副本数为2，则将其扩展至3。
+kubectl scale --current-replicas=2 --replicas=3 deployment/mysql
+# 设置多个RC中Pod副本数量
+kubectl scale --replicas=5 rc/foo rc/bar rc/baz
+autoscale命令： 这个比scale更加强大，也是弹性伸缩策略 ，它是根据流量的多少来自动进行扩展或者缩容
+
+指定Deployment、ReplicaSet或ReplicationController，并创建已经定义好资源的自动伸缩器。使用自动伸缩器可以根据需要自动增加或减少系统中部署的pod数量。
+
+# 语法
+kubectl autoscale (-f FILENAME | TYPE NAME | TYPE/NAME) [--min=MINPODS] --max=MAXPODS [--cpu-percent=CPU] [flags]
+# 使用 Deployment “foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间
+kubectl autoscale deployment foo --min=2 --max=10
+# 使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％
+kubectl autoscale rc foo --max=5 --cpu-percent=80
+
+
+集群管理命令：certificate，cluster-info，top，cordon，uncordon，drain，taint
+certificate命令：用于证书资源管理，授权等
+cluster-info命令：显示集群信息
+top命令：用于查看资源的cpu，内存磁盘等资源的使用率
+kubectl top pod --all-namespaces
+它需要heapster运行才行
+cordon命令：用于标记某个节点不可调度
+uncordon命令：用于标签节点可以调度
+drain命令： 用于在维护期间排除节点。
+taint命令：参见：https://blog.frognew.com/2018/05/taint-and-toleration.html
+
+
+集群故障排查和调试命令：describe，logs，exec，attach，port-foward，proxy，cp，auth
+describe命令：显示特定资源的详细信息
+
+# 语法
+kubectl describe TYPE NAME_PREFIX
+（首先检查是否有精确匹配TYPE和NAME_PREFIX的资源，如果没有，将会输出所有名称以NAME_PREFIX开头的资源详细信息）
+支持的资源包括但不限于（大小写不限）：pods (po)、services (svc)、 replicationcontrollers (rc)、nodes (no)、events (ev)、componentstatuses (cs)、 limitranges (limits)、persistentvolumes (pv)、persistentvolumeclaims (pvc)、 resourcequotas (quota)和secrets。
+#查看my-nginx pod的详细状态
+kubectl describe po my-nginx
+logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名
+
+# 语法
+kubectl logs [-f] [-p] POD [-c CONTAINER]
+
+# 返回仅包含一个容器的pod nginx的日志快照
+$ kubectl logs nginx
+# 返回pod ruby中已经停止的容器web-1的日志快照
+$ kubectl logs -p -c ruby web-1
+# 持续输出pod ruby中的容器web-1的日志
+$ kubectl logs -f -c ruby web-1
+# 仅输出pod nginx中最近的20条日志
+$ kubectl logs --tail=20 nginx
+# 输出pod nginx中最近一小时内产生的所有日志
+$ kubectl logs --since=1h nginx
+# 参数选项
+  -c, --container="": 容器名。
+  -f, --follow[=false]: 指定是否持续输出日志（实时日志）。
+      --interactive[=true]: 如果为true，当需要时提示用户进行输入。默认为true。
+      --limit-bytes=0: 输出日志的最大字节数。默认无限制。
+  -p, --previous[=false]: 如果为true，输出pod中曾经运行过，但目前已终止的容器的日志。
+      --since=0: 仅返回相对时间范围，如5s、2m或3h，之内的日志。默认返回所有日志。只能同时使用since和since-time中的一种。
+      --since-time="": 仅返回指定时间（RFC3339格式）之后的日志。默认返回所有日志。只能同时使用since和since-time中的一种。
+      --tail=-1: 要显示的最新的日志条数。默认为-1，显示所有的日志。
+      --timestamps[=false]: 在日志中包含时间戳。
+exec命令：进入容器进行交互，在容器中执行命令
+
+# 语法
+kubectl exec POD [-c CONTAINER] -- COMMAND [args...]
+#命令选项
+  -c, --container="": 容器名。如果未指定，使用pod中的一个容器。
+  -p, --pod="": Pod名。
+  -i, --stdin[=false]: 将控制台输入发送到容器。
+  -t, --tty[=false]: 将标准输入控制台作为容器的控制台输入。
+# 进入nginx容器，执行一些命令操作
+kubectl exec -it nginx-deployment-58d6d6ccb8-lc5fp bash
+attach命令：连接到一个正在运行的容器。
+
+#语法
+kubectl attach POD -c CONTAINER
+# 参数选项
+-c, --container="": 容器名。如果省略，则默认选择第一个 pod
+  -i, --stdin[=false]: 将控制台输入发送到容器。
+  -t, --tty[=false]: 将标准输入控制台作为容器的控制台输入。
+  
+# 获取正在运行中的pod 123456-7890的输出，默认连接到第一个容器
+kubectl attach 123456-7890
+# 获取pod 123456-7890中ruby-container的输出
+kubectl attach 123456-7890 -c ruby-container
+# 切换到终端模式，将控制台输入发送到pod 123456-7890的ruby-container的“bash”命令，并将其输出到控制台/
+# 错误控制台的信息发送回客户端。
+kubectl attach 123456-7890 -c ruby-container -i -t
+cp命令：拷贝文件或者目录到pod容器中
+
+用于pod和外部的文件交换,类似于docker 的cp，就是将容器中的内容和外部的内容进行交换。
+
+其他命令：api-servions，config，help，plugin，version
+api-servions命令：打印受支持的api版本信息
+
+
+help命令：用于查看命令帮助
+
+# 显示全部的命令帮助提示
+kubectl --help
+# 具体的子命令帮助，例如
+kubectl create --help
+config:用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）
+
+version命令：打印客户端和服务端版本信息
+
+[root@master ~]# kubectl version
+Client Version: version.Info{Major:"1", Minor:"15", GitVersion:"v1.15.3", GitCommit:"2d3c76f9091b6bec110a5e63777c332469e0cba2", GitTreeState:"clean", BuildDate:"2019-08-19T11:13:54Z", GoVersion:"go1.12.9", Compiler:"gc", Platform:"linux/amd64"}
+Server Version: version.Info{Major:"1", Minor:"9", GitVersion:"v1.9.0", GitCommit:"925c127ec6b946659ad0fd596fa959be43f0cc05", GitTreeState:"clean", BuildDate:"2017-12-15T20:55:30Z", GoVersion:"go1.9.2", Compiler:"gc", Platform:"linux/amd64"}
+plugin命令：运行一个命令行插件
+
+************ ************ ************ ************ ************ ************ ************ ************
+高级命令：apply，patch，replace，convert
+apply命令： 通过文件名或者标准输入对资源应用配置
+通过文件名或控制台输入，对资源进行配置。 如果资源不存在，将会新建一个。可以使用 JSON 或者 YAML 格式。
+# 语法
+kubectl apply -f FILENAME
+
+# 将pod.json中的配置应用到pod
+kubectl apply -f ./pod.json
+# 将控制台输入的JSON配置应用到Pod
+cat pod.json | kubectl apply -f -
+
+选项
+-f, --filename=[]: 包含配置信息的文件名，目录名或者URL。
+      --include-extended-apis[=true]: If true, include definitions of new APIs via calls to the API server. [default true]
+  -o, --output="": 输出模式。"-o name"为快捷输出(资源/name).
+      --record[=false]: 在资源注释中记录当前 kubectl 命令。
+  -R, --recursive[=false]: Process the directory used in -f, --filename recursively. Useful when you want to manage related manifests organized within the same directory.
+      --schema-cache-dir="~/.kube/schema": 非空则将API schema缓存为指定文件，默认缓存到'$HOME/.kube/schema'
+      --validate[=true]: 如果为true，在发送到服务端前先使用schema来验证输入。
+
+patch命令： 使用补丁修改，更新资源的字段，也就是修改资源的部分内容
+# 语法
+kubectl patch (-f FILENAME | TYPE NAME) -p PATCH
+
+replace命令： 通过文件或者标准输入替换原有资源
+# 语法
+kubectl replace -f FILENAME
+
+convert命令： 不同的版本之间转换配置文件
+# 语法
+kubectl convert -f FILENAME
+
+
+Helm之于Kubernetes好比yum之于RHEL。
+Helm是由helm CLI和Tiller组成，是典型的C/S应用。
+helm运行与客户端，提供命令行界面，而Tiller应用运行在Kubernetes内部。
+Helm管理的kubernetes资源包称之为Chart
+
+三种ip
+Node IP：Node节点的IP地址。 节点物理网卡ip
+ Pod IP：Pod的IP地址。 Docker Engine根据docker0网桥的IP地址段进行分配的，通常是一个虚拟的二层网络
+ Cluster IP：Service的IP地址。 属于Kubernetes集群内部的地址，无法在集群外部直接使用这个地址
+
+端口
+Yaml配置文件中的几种port如下：
+targetPort ：是pod上的端口
+containport：容器的port
+port：service的port
+将Service的端口号映射到物理机
+    方式一：nodeport：service的 port，kube-proxy开通宿主机的端口  默认端口范围30000-32768  实现集群外访问内容应用，但是这种方式无法解决负载均衡问题。可以使用经过反向代理kube-proxy流入后端pod的targetport，能实现负载均衡
+    方式二： 通过设置LoadBalancer映射到云服务商提供的LoadBalancer地址, 被提供的负载均衡器的信息将会通过 Service 的 status.loadBalancer 字段被发布出去。
+
+访问多集群
+将当前上下文更改为 exp-scratch：
+kubectl config  --kubeconfig=config-demo  use-context exp-scratch
+
+DaemonSet
+　　DaemonSet能够让所有（或者一些特定）的Node节点运行同一个pod。当节点加入到kubernetes集群中，pod会被（DaemonSet）调度到该节点上运行，当节点从kubernetes集群中被移除，被（DaemonSet）调度的pod会被移除，如果删除DaemonSet，
+所有跟这个DaemonSet相关的pods都会被删除。
+例如如下场景：
+　　每个Node上运行一个分布式存储的守护进程，例如glusterd，ceph
+　　每个Node上运行日志采集器，例如fluentd，logstash
+　　每个Node上运行监控的采集端，例如Prometheus Node Exporter, collectd等
+
+亲和性和反亲和性
+亲和性：应用A与应用B两个应用频繁交互，所以有必要利用亲和性让两个应用的尽可能的靠近，甚至在一个node上，以减少因网络通信而带来的性能损耗。
+反亲和性：当应用的采用多副本部署时，有必要采用反亲和性让各个应用实例打散分布在各个node上，以提高HA。
+
+NodeName和NodeSelector
+Pod.spec.nodeName用于强制约束将Pod放到到指定的Node名字节点上
+Pod.spec.nodeSelector是通kubernete的label-selector机制进行节点选择，
+由scheduler调度策略MatchNodeSelector进行label匹配，调度pod到目标节点，该匹配规则是强制约束。
+
+
+
+kubectl get cs
+在master部署flannel
+
+kubectl get ns
+
+kubectl get pods -n kube-system -o wide
+
+
+
+
+
+
+
+****** ****** ****** ****** ****** ****** ****** ************ ****** ****** ****** ****** ****** ****** ******
+单机版k8s环境搭建：centos7
+
+systemctl disabled firewalld
+
+systemctl stop firewalld
+
+安装etcd（高可用键值数据库）和k8s
+
+yum update    #多次尝试，确认网络连接
+
+yum install -y etcd kubernetes
+
+启动服务（进程）
+
+systemctl start etcd
+
+systemctl start docker                                 #容器创建管理
+
+systemctl start kube-apiserver                    #所有资源增、删、改、查等操作入口
+
+systemctl start kube-controller-manager     #自动化控制中心
+
+systemctl  start kube-scheduler                   #pod调度
+
+systemctl start kubelet                        #node节点进程，负责pod对应容器创建、起停
+
+sustemctl start kube-proxy                           #service通信及负载均衡机制组件
+
+常用操作命令
+
+kubectl get nodes                                         #查看集群中node个数
+
+kubectl descripe node <node_name>          #查看详细信息
+
+kubectl create  -f  *.yaml                               #创建yaml对应资源文件（即kind对象）
+
+kubectl get  对象名称                                    #查看对象信息
+
+kubectl get svc service_name -o yaml          #查看service ClusterIP
+
+kubectl get pods --namespace=namespace_name  #查看命名空间的中的对象
+
+基本概念
+
+k8s中所有资源对象都可以使用yaml或JSON文件定义或描述
+
+通常一个节点运行几百个pod
+
+master   集群控制节点   占用一个服务器，高可用占3个服务器
+
+node      node工作节点   可以是物理机或虚拟机，node IP物理网卡的IP地址
+
+pod        kind:pod，包含一个pause容器和其他业务容器（共享pause的网络栈和volume挂载卷），具有单独的ip地址及Endpoint（Pod IP+ContainerPort  pod之间彼此通信，流量通过TCP/IP node IP流出）
+
+Label   一个资源对象（node、pod、service、rc）可以任意多label，一个label可以任意多资源对象
+
+Replication Controller(RC)  描述期望pod的副本数，根据标签筛选目标pod，实际副本小于预期则根据模版创建pod
+
+Deployment  RC的升级，可以随时查看当前部署进度
+
+Horizontal Pod Autoscaler(HPA)  横向扩容，可以使用yaml定义之外的方式定义
+
+StatefulSet    用于管理有状态的集群，例如MySql集群，每个pod都有稳定唯一的网络标示及规范名称
+
+Service  具有虚拟IP（Cluster IP）不可ping属于k8s集群内部地址，yaml可定义多端口，可使用type=NodePort实现外部访问Service（例如web端的服务模块）,但有负载均衡问题，若运行在谷歌GCE公有云（type=LoardBalancer）则可以解决
+
+Volume 存储卷  Pod中能被多容器访问的共享目录
+
+Persistent Volume  网络存储
+
+Namespace 命名空间 实现多租户资源隔离，一旦创建就可以指定资源对象（×.yaml）在那个Namespace
+
+Annotation 注解
+
+

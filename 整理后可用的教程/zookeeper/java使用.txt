@@ -1,0 +1,197 @@
+Curator是Netflix公司开源的一套zookeeper客户端框架，解决了很多Zookeeper客户端非常底层的细节开发工作，包括连接重连、反复注册Watcher和NodeExistsException异常等等。
+
+<!-- Apache Curator -->
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-framework</artifactId>
+    <version>4.0.0</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-recipes</artifactId>
+    <version>4.0.0</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-x-discovery</artifactId>
+    <version>4.0.0</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-test</artifactId>
+    <version>4.0.0</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- 对zookeeper的底层api的一些封装 -->
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-framework</artifactId>
+    <version>2.12.0</version>
+</dependency>
+<!-- 封装了一些高级特性，如：Cache事件监听、选举、分布式锁、分布式Barrier -->
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-recipes</artifactId>
+    <version>2.12.0</version>
+</dependency>
+
+
+使用教程
+==== ====  ==== ==== ==== ==== 
+提供ZooKeeper各种应用场景(recipe， 比如：分布式锁服务、集群领导选举、共享计数器、缓存机制、分布式队列等)的抽象封装
+
+/**
+* baseSleepTimeMs：初始的重试等待时间
+* maxRetries：最多重试次数
+*/
+RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
+
+//创建 CuratorFrameworkImpl实例
+client = CuratorFrameworkFactory.newClient(SERVER, SESSION_TIMEOUT, CONNECTION_TIMEOUT, retryPolicy);
+//启动
+client.start();
+
+//创建永久节点
+client.create().forPath("/curator","/curator data".getBytes());
+
+//创建永久有序节点
+client.create().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/curator_sequential","/curator_sequential data".getBytes());
+
+//创建临时节点
+client.create().withMode(CreateMode.EPHEMERAL)
+.forPath("/curator/ephemeral","/curator/ephemeral data".getBytes());
+
+//创建临时有序节点
+client.create().withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
+.forPath("/curator/ephemeral_path1","/curator/ephemeral_path1 data".getBytes());
+client.create().withProtection().withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
+.forPath("/curator/ephemeral_path2","/curator/ephemeral_path2 data".getBytes());
+在创建临时有序节点的时候可以使用withProtection() 方法，该方法的作用是在创建的节点名前面添加GUID标识，其目的是为了避免出现“节点创建成功，但是ZooKeeper服务器在创建的节点名被返回给client前就出现了异常，从而导致临时节点没有被立即删除，而client也没法判断哪些节点被创建成功
+
+关于连接重试策略，Curator默认提供了以下几种：
+ExponentialBackoffRetry：重试一定次数，每次重试时间依次递增
+RetryNTimes：重试N次
+RetryOneTime：重试一次
+RetryUntilElapsed：重试一定时间
+
+检查某个节点是否存在
+Stat stat1 = client.checkExists().forPath("/curator");
+
+获取和设置节点数据
+//获取某个节点的所有子节点
+System.out.println(client.getChildren().forPath("/"));
+//获取某个节点数据
+System.out.println(new String(client.getData().forPath("/curator")));
+//设置某个节点数据
+client.setData().forPath("/curator","/curator modified data".getBytes());
+
+异步设置节点数据以及获取通知
+//创建监听器
+CuratorListener listener = new CuratorListener() {
+    @Override
+    public void eventReceived(CuratorFramework client, CuratorEvent event)
+            throws Exception {
+        System.out.println(event.getPath());
+    }
+};
+//添加监听器
+client.getCuratorListenable().addListener(listener);
+//异步设置某个节点数据
+client.setData().inBackground().forPath("/curator","/curator modified data with Async".getBytes());
+
+BackgroundCallback callback = new BackgroundCallback() {
+    @Override
+    public void processResult(CuratorFramework client, CuratorEvent event)
+            throws Exception {
+        System.out.println(event.getPath());
+    }
+};
+//异步设置某个节点数据
+client.setData().inBackground(callback).forPath("/curator","/curator modified data with Callback".getBytes());
+
+删除节点
+ //删除该节点
+client.delete().forPath("/curator/del_key1");
+//级联删除子节点
+client.delete().guaranteed().deletingChildrenIfNeeded().forPath("/curator/del_key2");   
+
+orSetData()方法：如果节点存在则Curator将会使用给出的数据设置这个节点的值，相当于 setData() 方法
+creatingParentContainersIfNeeded()方法：如果指定节点的父节点不存在，则Curator将会自动级联创建父节点
+guaranteed()方法：如果服务端可能删除成功，但是client没有接收到删除成功的提示，Curator将会在后台持续尝试删除该节点
+deletingChildrenIfNeeded()方法：如果待删除节点存在子节点，则Curator将会级联删除该节点的子节点
+
+事务管理
+//定义几个基本操作
+CuratorOp createOp = client.transactionOp().create()
+        .forPath("/curator/one_path","some data".getBytes());
+CuratorOp setDataOp = client.transactionOp().setData()
+        .forPath("/curator","other data".getBytes());
+CuratorOp deleteOp = client.transactionOp().delete()
+        .forPath("/curator");        
+//事务执行结果
+List<CuratorTransactionResult> results = client.transaction()
+        .forOperations(createOp,setDataOp,deleteOp);
+
+命名空间
+//创建带命名空间的连接实例
+CuratorFramework client2 = CuratorFrameworkFactory.builder()
+        .namespace("mydemo/v1")
+        .connectString(SERVER)
+        .sessionTimeoutMs(SESSION_TIMEOUT)
+        .connectionTimeoutMs(CONNECTION_TIMEOUT)
+        .retryPolicy(retryPolicy)
+        .build();
+
+选举节点
+LeaderLatch
+LeaderLatch leaderLatch = new LeaderLatch(client, PATH, "Client #" + i);
+leaderLatch.start();
+leaderLatch.close(); //关闭当前主节点‘
+
+选举策略是Leader Election
+继承LeaderSelectorListenerAdapter
+
+//创建LeaderSelectorListenerAdapter实例
+CustomLeaderSelectorListenerAdapter leaderSelectorListener = 
+	new CustomLeaderSelectorListenerAdapter(client, PATH, "Client #" + i);
+leaderSelectorListener.start();
+
+NodeCache: 对一个节点进行监听，监听事件包括指定路径的增删改操作
+//1. 创建一个NodeCache
+NodeCache nodeCache = new NodeCache(client, nodePath);
+//2. 添加节点监听器
+nodeCache.getListenable().addListener(() -> {
+    ChildData childData = nodeCache.getCurrentData();
+    if(childData != null){
+        System.out.println("Path: " + childData.getPath());
+        System.out.println("Stat:" + childData.getStat());
+        System.out.println("Data: "+ new String(childData.getData()));
+    }
+});
+//3. 启动监听器
+nodeCache.start();
+
+PathChildrenCache：对指定路径节点的一级子目录监听，不对该节点的操作监听，对其子目录的增删改操作监听
+//1. 创建一个PathChildrenCache
+PathChildrenCache pathChildrenCache = new PathChildrenCache(client, nodePath, true);
+//2. 添加目录监听器
+pathChildrenCache.getListenable().addListener(listener);
+//3. 启动监听器
+pathChildrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
+//4. 返回PathChildrenCache
+return pathChildrenCache;
+
+TreeCache：综合NodeCache和PathChildrenCahce的特性，可以对整个目录进行监听，同时还可以设置监听深度
+//1. 创建一个TreeCache
+TreeCache treeCache = TreeCache.newBuilder(client, nodePath)
+        .setCacheData(true)
+        .setMaxDepth(maxDepth)
+        .build();
+//2. 添加目录监听器
+treeCache.getListenable().addListener(listener);
+//3. 启动监听器
+treeCache.start();
+//4. 返回TreeCache
+return treeCache;
+==== ====  ==== ==== ==== ==== 

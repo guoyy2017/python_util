@@ -1,0 +1,100 @@
+PhxSQL是一个兼容MySQL、服务高可用、数据强一致的关系型数据库集群。PhxSQL以单Master多Slave方式部署，在集群内超过一半机器存活的情况下，可自身实现自动Master切换，且保证数据一致性。 
+PhxSQL基于Percona 5.6开发。Percona是MySQL的一个分支，功能和实现与MySQL基本一致。
+
+PhxSQL具有服务高可用、数据强一致、高性能、运维简单、和MySQL完全兼容的特点。
+服务高可用：PhxSQL集群内只要多数派节点存活就能正常提供服务；出于性能的考虑，集群会选举出一个Master节点负责写入操作；当Master失效，会自动重新选举新的Master。
+数据强一致：PhxSQL采用多节点冗余部署，在多个节点之间采用paxos协议同步流水，保证了集群内各节点数据的强一致。
+高性能：PhxSQL比MySQL SemiSync的写性能更好，得益于Paxos协议比SemiSync协议更加高效；
+运维简单：PhxSQL集群内机器出现短时间故障，能自动恢复数据，无需复杂的运维操作；PhxSQL更提供一键更换（新增/删除）集群内的机器，简化运维的工作。
+MySQL完全兼容：PhxSQL是基于Percona的研发，完全兼容MySQL的操作命令。 可通过MySQL提供的mysqlclient/perconaserverclient直接操作PhxSQL。
+
+
+下载地址
+https://github.com/Tencent/phxsql
+安装说明
+https://www.cnblogs.com/wayde-Z/p/phxsql-install.html
+
+其中代码使用到了微信团队自研的另外三个开源项目（phxpaxos,phxrpc,colib)。若需编译源代码，需额外下载，也可以在clone时通过--recurse-submodule获得代码。
+phxpaxos项目地址： http://github.com/Tencent/phxpaxos
+phxrpc项目地址： http://github.com/Tencent/phxrpc
+colib项目地址： http://github.com/Tencent/libco
+
+安装环境(不做强制要求):
+　　OS: centos 7 1503
+　　server: 3台
+　　phxsql版本:0.8.0
+　　gcc: 4.8.5
+
+依赖安装,先安装epel-release,再把下面的依赖一次性安装
+automake
+libtool
+ncurses
+readline
+zlib
+libstdc++*  (重要包,本人在此困住两小时)
+
+安装一键
+通过git clone或者直接下载release源码包。(本文主要写的)
+直接运行PhxSQL源码根目录build.sh，即可一键完成编译（需要保证网络通畅）
+
+
+git clone --recursive https://github.com/tencent-wechat/phxsql.git [PhxSQL放置目录]
+使用--recursive参数可以同时获得所依赖的第三方库glog,leveldb,protobuf源码，也同时获得所依赖的我们自己研发的库phxpaxos,phxrpc,colib。
+
+进入third_party目录。
+./autoinstall.sh
+如果安装成功会看到all done.字眼, 则可以直接跳到编译PhxSQL步骤
+
+编译leveldb
+编译流程是基于leveldb 1.19版本，如果你自行下载了其他版本，可能有编译上的不同
+进入third_party/leveldb目录。
+make，编译完成后会在out-static目录生成libleveldb.a文件。
+mkdir lib建立一个lib目录，然后cd lib;ln -s ../out-static/libleveldb.a libleveldb.a建立一个软链，PhxSQL通过lib这个目录来寻址静态库
+
+
+编译protobuf
+进入third_party/protobuf目录。
+./autogen.sh (这一步需要去googlecode拉取gmock源码，但已被墙，如没有vpn的筒子可自行下载gmock代码，或直接cp -r ../phxpaxos/third_party/gmock gmock，如果提示缺少autoreconf和AC_PROG_LIBTOOL则需先安装automake和libtool)
+./configure CXXFLAGS=-fPIC --prefix=[当前目录绝对路径], 这一步CXXFLAGS和--prefix都必须设置对。
+make && make install
+编译完成后检查是否在当前目录成功生成bin,include,lib三个子目录
+
+
+编译glog
+进入third_party/glog目录。
+./configure CXXFLAGS=-fPIC --prefix=[当前目录绝对路径], 这一步CXXFLAGS和--prefix都必须设置对。
+make && make install
+编译完成检查是否在当前目录成功生成lib子目录，并检查在lib目录是否成功生成静态库libglog.a.
+编译colib
+进入third_party/colib目录。
+make
+编译完成检查是否在当前目录成功生成lib子目录，并检查在lib目录是否成功生成静态库libcolib.a.
+编译phxpaxos
+进入third_party/phxpaxos/third_party目录。
+可以看到phxpaxos也依赖了glog,leveldb,protobuf这三个库，但由于我们刚才已经编译好了，所以这里无需再进行编译。
+rm -rf glog leveldb protobuf把这几个目录删掉。
+ln -s ../../glog glog 直接软链到刚才编译好的glog目录。
+ln -s ../../leveldb leveldb
+ln -s ../../protobuf protobuf
+cd ..回到phxpaxos根目录。
+./autoinstall.sh
+make && make install.
+编译完成后检查是否在当前目录成功生成lib子目录，并检查在lib目录是否成功生成静态库libphxpaxos.a.
+cd plugin; make && make install编译paxos plugin.
+编译成功检查上层lib目录下是否成功生成静态库libphxpaxos_plugin.a.
+
+编译phxrpc
+进入third_party/phxrpc/third_party目录。
+可以看到phxrpc也依赖了protobuf这个库，但由于我们刚才已经编译好了，所以这里无需再进行编译。
+rm -rf protobuf把这个目录删掉。
+ln -s ../../protobuf protobuf
+cd ..回到phxrpc根目录。
+make
+编译完成后检查是否生成lib子目录，并检查lib目录下是否生成静态库libphxrpc.a.
+
+编译PhxSQL
+下载percona源码percona-server-5.6.31-77.0.tar.gz，请注意只能使用percona-server-5.6_5.6.31-77.0版本。
+解压源码到PhxSQL根目录，并更名为percona.
+进入PhxSQL根目录。
+./autoinstall.sh (如果提示Curses library not found和Cannot find system readline libraries则需先安装这两个库再执行命令。
+make && make install (该步骤编译时间较长，请耐心等待)

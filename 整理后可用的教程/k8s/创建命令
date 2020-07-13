@@ -1,0 +1,101 @@
+创建应用
+创建 Deployment
+kubectl create -f ***.yaml
+
+镜像创建
+kubectl create deployment jerry-nginx-1982 --image=nginx
+----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+kubectl create -f https://kubernetes.io/docs/user-guide/nginx-deployment.yaml --record
+deployment "nginx-deployment" created
+----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+更新Deployment
+扩容：
+kubectl scale deployment nginx-deployment --replicas 10
+自动扩展
+kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80 
+更新镜像也比较简单:
+kubectl set image deployment/nginx-deployment nginx=nginx:1.9.1
+回滚到上一个版本：
+kubectl rollout undo deployment/nginx-deployment
+使用 --revision参数指定某个历史版本：
+ kubectl rollout undo deployment/nginx-deployment --to-revision=2
+deployment "nginx-deployment" rolled back
+
+历史记录
+kubectl rollout history deployment/alpine-fbgweb  
+查看单个revision 的详细信息 
+kubectl rollout history deployment alpine-fbgweb --revision=1
+
+扩容Pod的副本数目到10 kubectl scale relicationcontroller lykops --replicas=10
+缩容Pod的副本数目到1 kubectl scale relicationcontroller lykops --replicas=1
+
+升级
+kubecl rolling-update lykops-rc-v1 -f lykops-rc.yaml --update-period=10s
+直接使用images
+kubectl rolling-update lykops-rc --image=webapache:v3
+回退
+kubectl rolling-update lykops-v1 -f lykops-v2-rc.yaml --update-period=10s -–rollback
+
+RS不能使用kubectl rolling-update进行升级
+kubectl rolling-update专用于rc
+RS升级使用deployment或者kubectl replace命令
+
+
+Pod被ReplicaSet管理，ReplicaSet控制pod的数量；ReplicaSet被Deployment管理，Deployment控制pod应用的升级、回滚，当然也能控制pod的数量。Service提供一个统一固定入口，负责将前端请求转发给Pod。
+
+
+
+
+创建一个同名的service，类型为nodeport。
+kubectl create service nodeport jerry-nginx-1982 --tcp 80:80
+查看
+kubectl get svc
+************************  *****************************
+pod和service是通过名称关联的
+
+
+#在pod中运行命令
+ kubectl exec nginx-6f8cf9fbc4-lvsqj ls
+#进入pod
+ kubectl exec nginx-6f8cf9fbc4-lvsqj -it bash
+
+Pod 中有多个容器，使用 kubectl exec -c 指定容器
+Service 做服务发现 指定 Deployment 或者特定集合 Pod 的网络层抽象
+kube-proxy 代理到service后端的pod中
+
+查看endpoint
+ kubectl get endpoints
+
+#滚动升级/回滚
+ #升级nginx至1.9.1
+ kubectl set image deploy nginx nginx=nginx:1.9.1
+ #查看升级状态
+ kubectl rollout status deployment nginx 
+  #查看升级历史
+  kubectl rollout history deployment nginx 
+ #查看历史版本详情
+ kubectl rollout history deployment nginx --revision=2
+   #回滚操作
+  kubectl rollout undo deployment nginx
+  #查看deployment回滚详情
+  kubectl describe deployment nginx
+
+查看
+kubectl api-versions
+
+创建应用
+kubectl create -f deployment-demo.yaml
+
+kubectl get Deployment demo-deployment 来检查部署对象是否已经创建
+字段含义
+READY代表是否已就绪，左侧数字表示当前已运行的副本数，右侧表示所需的副本数。
+UP-TO-DATE表示已更新已实现预期状态的副本数。
+AVAILABLE则表示用户可以使用的应用程序副本数。
+AGE表示应用已运行的时间。
+
+查看副本集（ReplicaSet）对象
+kubectl get ReplicaSets -lapp=demo
+
+kubectl get pods -lapp=demo --show-labels
+

@@ -1,0 +1,104 @@
+ZooKeeper
+文件系统
+通知机制
+
+ZK UI这个ZooKeepe可视化WEB客户端作为日常基本操作
+https://github.com/zifangsky/zkui/releases
+Linux系统则相应执行start.sh即可
+访问：http://127.0.0.1:6060/
+
+
+Zookeeper 文件系统
+Zab 协议有两种模式，它们分别是恢复模式和广播模式
+
+ 四种类型的数据节点 Znode
+ PERSISTENT-持久节点
+ EPHEMERAL-临时节点
+ PERSISTENT_SEQUENTIAL-持久顺序节点
+ EPHEMERAL_SEQUENTIAL-临时顺序节点
+
+ Zookeeper Watcher 机制 – 数据变更通知
+ 工作机制：
+（1）客户端注册 watcher
+（2）服务端处理 watcher
+（3）客户端回调 watcher
+
+Watcher 特性总结
+一旦一个 Watcher 被 触 发 ，Zookeeper 都会将其从相应的存储中移除
+客户端串行执行
+客户端 Watcher 回调的过程是一个串行同步的过程
+
+注册 watcher getData、exists、getChildren
+触发 watcher create、delete、setData
+
+客户端注册 Watcher 实现
+（1）调用 getData()/getChildren()/exist()三个 API，传入 Watcher 对象
+（2）标记请求 request，封装 Watcher 到 WatchRegistration
+（3）封装成 Packet 对象，发服务端发送 request
+（4）收到服务端响应后，将 Watcher 注册到 ZKWatcherManager 中进行管理
+（5）请求返回，完成注册。
+
+服务端处理 Watcher 实现
+服务端接收 Watcher 并存储
+接收到客户端请求，处理请求判断是否需要注册 Watcher，需要的话将数据节点的节点路径和 ServerCnxn（ServerCnxn 代表一个客户端和服务端的连接，实现了 Watcher 的 process 接口，此时可以看成一个 Watcher 对象）存储在WatcherManager 的 WatchTable 和 watch2Paths 中去。
+
+Watcher 触发
+以服务端接收到 setData() 事务请求触发 NodeDataChanged 事件为例：
+
+客户端回调 Watcher
+客户端 SendThread 线程接收事件通知，交由 EventThread 线程回调 Watcher。
+客户端的 Watcher 机制同样是一次性的，一旦被触发后，该 Watcher 就失效了。
+
+
+ACL 权限控制机制
+UGO（User/Group/Others）
+ACL（Access Control List）访问控制列表
+权限模式（Scheme）
+（1）IP：从 IP 地址粒度进行权限控制
+（2）Digest：最常用，用类似于 username:password 的权限标识来进行权限配置，便于区分不同应用来进行权限控制
+（3）World：最开放的权限控制方式，是一种特殊的 digest 模式，只有一个权限标识“world:anyone”
+（4）Super：超级用户
+
+授权对象
+授权对象指的是权限赋予的用户或一个指定实体，例如 IP 地址或是机器灯。
+权限 Permission
+（1）CREATE：数据节点创建权限，允许授权对象在该 Znode 下创建子节点
+（2）DELETE：子节点删除权限，允许授权对象删除该数据节点的子节点
+（3）READ：数据节点的读取权限，允许授权对象访问该数据节点并读取其数据内容或子节点列表等
+（4）WRITE：数据节点更新权限，允许授权对象对该数据节点进行更新操作
+（5）ADMIN：数据节点管理权限，允许授权对象对该数据节点进行 ACL 相关设置操作
+
+Chroot 特性
+3.2.0 版本后，添加了 Chroot 特性，该特性允许每个客户端为自己设置一个命名空间。如果一个客户端设置了 Chroot，那么该客户端对服务器的任何操作，都将会被限制在其自己的命名空间下。
+通过设置 Chroot，能够将一个客户端应用于 Zookeeper 服务端的一颗子树相对应，在那些多个应用公用一个 Zookeeper 进群的场景下，对实现不同应用间的相互隔离非常有帮助。
+
+会话管理
+分桶策略：将类似的会话放在同一区块中进行管理，以便于 Zookeeper 对会话进行不同区块的隔离处理以及同一区块的统一处理。
+分配原则：每个会话的“下次超时时间点”（ExpirationTime）
+计算公式：
+ExpirationTime_ = currentTime + sessionTimeout
+ExpirationTime = (ExpirationTime_ / ExpirationInrerval + 1) *
+ExpirationInterval , ExpirationInterval 是指 Zookeeper 会话超时检查时间间隔，默认 tickTime
+
+
+服务器角色
+Leader
+Follower
+Observer
+
+
+服务器具有四种状态，分别是 LOOKING、FOLLOWING、LEADING、OBSERVING。
+（1）LOOKING：寻 找 Leader 状态。当服务器处于该状态时，它会认为当前集群中没有 Leader，因此需要进入 Leader 选举状态。
+（2）FOLLOWING：跟随者状态。表明当前服务器角色是 Follower。
+（3）LEADING：领导者状态。表明当前服务器角色是 Leader。
+（4）OBSERVING：观察者状态。表明当前服务器角色是 Observer。
+
+
+Zookeeper 有三种部署模式：
+单机部署：一台集群上运行；
+集群部署：多台集群运行；
+伪集群部署：一台集群启动多个 Zookeeper 实例运行。
+
+
+常用命令：ls get set create delete 等
+

@@ -1,0 +1,14 @@
+Attention注意力机制+Transformer详解 
+
+自注意力模型（self-Attention model）
+
+聚焦式（focus）注意力：自上而下的有意识的注意力，主动注意——是指有预定目的、依赖任务的、主动有意识地聚焦于某一对象的注意力；
+显著性（saliency-based）注意力：自下而上的有意识的注意力，被动注意——基于显著性的注意力是由外界刺激驱动的注意，不需要主动干预，也和任务无关；可以将max-pooling和门控（gating）机制来近似地看作是自下而上的基于显著性的注意力机制。
+
+
+
+
+bert-as-service
+pip install bert-serving-server  # server
+pip install bert-serving-client  # client, independent of `bert-serving-server`
+

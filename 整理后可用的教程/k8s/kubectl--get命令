@@ -1,0 +1,90 @@
+kubectl–get命令
+一、命令格式
+kubectl get resource名称
+1
+二、resource列表
+all
+certificatesigningrequests (aka ‘csr’)
+clusterrolebindings
+clusterrol
+componentstatuses (aka ‘cs’)
+configmaps (aka ‘cm’)
+controllerrevisions
+cronjobs
+customresourcedefinition (aka ‘crd’)
+daemonsets (aka ‘ds’)
+deployments (aka ‘deploy’)
+endpoints (aka ‘ep’)
+events (aka ‘ev’)
+horizontalpodautoscalers (aka ‘hpa’)
+ingresses (aka ‘ing’)
+jobs
+limitranges (aka ‘limits’)
+namespaces (aka ‘ns’)
+networkpolicies (aka ‘netpol’)
+nodes (aka ‘no’)
+persistentvolumeclaims (aka ‘pvc’)
+persistentvolumes (aka ‘pv’)
+poddisruptionbudgets (aka ‘pdb’)
+podpreset
+pods (aka ‘po’)
+podsecuritypolicies (aka ‘psp’)
+podtemplates
+replicasets (aka ‘rs’)
+replicationcontrollers (aka ‘rc’)
+resourcequotas (aka ‘quota’)
+rolebindings
+roles
+secrets
+serviceaccounts (aka ‘sa’)
+services (aka ‘svc’)
+statefulsets (aka ‘sts’)
+storageclasses (aka ‘sc’)
+三、可选参数
+用不同的格式查看
+
+-o wide/yaml/json
+
+看指定标签的pods，支持’=’, ‘==’, and ‘!=’操作符
+
+-l key=value
+
+查看指定的命名空间
+
+-n 命名空间
+
+
+
+# 查看Master状态
+kubectl get componentstatuses
+
+# 查看所有命名空间
+kubectl get namespace
+
+# 列出所有的pods
+kubectl get pods
+
+# 显示更多的pods列表信息(例如 pod的ip和所处的node)
+kubectl get pods -o wide
+
+# 列出名字为web的rc
+kubectl get replicationcontroller web
+
+# 获取名字为web-pod-13je7的pod的信息，并以json格式输出
+kubectl get -o json pod web-pod-13je7
+
+# 根据pod文件查找pod，并以json格式输出
+kubectl get -f pod.yaml -o json
+
+# 获取pod容器的状态
+kubectl get -o template pod/kube-dns-795f5f6f9c-ldxxs --template {{.status.phase}}
+
+# 同时获取所有的rc和service
+kubectl get rc,services
+
+# 获取符合条件的所有rc,svc,pod
+kubectl get rc/web service/frontend pods/web-pod-13je7
+
+# 获取所有resource
+kubectl get all
+

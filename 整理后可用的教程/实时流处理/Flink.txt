@@ -1,0 +1,82 @@
+Flink落地应用场景主要有三类：Event-driven Applications（事件驱动）、Data Analytics Applications（数据分析）、Data Pipeline Applications（管道式ETL）。
+
+典型的事件驱动类应用，包括欺诈检测(Fraud detection)、异常检测(Anomaly detection)、基于规则的告警(Rule-based alerting)、业务流程监控(Business process monitoring)、Web应用程序(社交网络)等。
+
+==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+https://flink.apache.org/zh/usecases.html
+下载地址
+https://www.apache.org/dyn/closer.lua/flink/flink-1.10.1/flink-1.10.1-bin-scala_2.12.tgz
+
+运行
+启动Flink
+start-cluster.sh
+
+管理平台
+http://localhost:8081
+
+本地提交任务 examples/batch
+flink run WordCount.jar 
+
+首先打包成JAR包，这里需要使用-c指定main函数
+flink run -c WordCount WordCount.jar
+
+流处理运行WordCount. examples/streaming
+flink run WordCount.jar 
+提交Jar包：
+flink run -c SocketWindowWordCount WordCountSteaming.jar --port 9000
+
+
+开发第一步
+第一步是创建一个 StreamExecutionEnvironment 
+StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+从本地端口号 9000 的 socket 中读取数据的数据源：
+DataStream text = env.socketTextStream("localhost", 9000, "\n");
+
+DataStream 是 Flink 中做流处理的核心 API，上面定义了非常多常见的操作（如，过滤、转换、聚合、窗口、关联等）
+
+
+
+==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+快速创建项目脚本
+使用quickstart脚本
+curl https://flink.apache.org/q/quickstart.sh | bash
+
+
+==== ==== ==== ==== ==== ==== 集群部署 ==== ==== ==== ==== ==== ====
+一个master节点， 配置conf/flink-conf.yaml
+----- ----- ----- ----- ----- -----
+vi conf/flink-conf.yaml 
+# 设置jobmanager.rpc.address 配置项为该节点的IP 或者主机名
+jobmanager.rpc.address: 10.108.4.202
+----- ----- ----- ----- ----- -----
+配置slaves
+将所有的worker节点（TaskManager）的IP或者主机名（一行一个）填入conf/slaves 文件中
+vi conf/slaves
+10.108.4.203
+10.108.4.204
+----- ----- ----- ----- ----- -----
+启动flink集群
+bin/start-cluster.sh
+----- ----- ----- ----- ----- -----
+停止flink集群
+bin/stop-cluster.sh
+----- ----- ----- ----- ----- -----
+以下都是非常重要的配置项：
+1、TaskManager总共能使用的内存大小（taskmanager.heap.mb）
+2、每一台机器上能使用的 CPU 个数（taskmanager.numberOfTaskSlots）
+3、集群中的总 CPU个数（parallelism.default）
+4、临时目录（taskmanager.tmp.dirs）
+----- ----- ----- ----- ----- -----
+添加JobManager或TaskManager实例到集群
+使用bin/jobmanager.sh和bin/taskmanager.sh脚本为运行中的集群添加JobManager和TaskManager实例
+
+添加jobmanager
+bin/jobmanager.sh  ((start|start-foreground) cluster)  | stop | stop-all
+添加taskmanager
+bin/taskmanager.sh start | start-foreground | stop | stop-all
+
+
+
+
+==== ==== ==== ==== ==== ==== 集群部署 ==== ==== ==== ==== ==== ====

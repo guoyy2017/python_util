@@ -1,0 +1,33 @@
+RDB 半持久化模式
+AOF 全持久化模式
+
+RDB保存过程
+配置save 
+==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== 
+save       900    1       #900秒内有至少1个键被更改则进行快照；
+save       300    10      #300秒内有至少10个键被更改则进行快照；
+save       60     10000        #60秒内有至少10000个键被更改则进行快照。
+==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+需要关闭RDB 删除save
+通过配置dir和dbfilename两个参数分别指定快照文件的存储路径和文件名
+
+rdbcompression 配置压缩
+
+
+appendfilename参数修改该名称
+==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== 
+appendonly  yes                    #开启AOF持久化功能；
+appendfilename appendonly.aof          #AOF持久化保存文件名；
+appendfsync always                     #每次执行写入都会执行同步，最安全也最慢；
+#appendfsync everysec                  #每秒执行一次同步操作；
+#appendfsync no                    #不主动进行同步操作，而是完全交由操作系统来做，每30秒一次，最快也最不安全；
+auto-aof-rewrite-percentage  100      #当AOF文件大小超过上一次重写时的AOF文件大小的百分之多少时会再次进行重写，如果之前没有重写过，则以启动时的AOF文件大小为依据；
+auto-aof-rewrite-min-size    64mb      #允许重写的最小AOF文件大小配置写入AOF文件后，要求系统刷新硬盘缓存的机制。
+==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== 
+
+Redis允许同时开启AOF和RDB
+
+主从配置
+slaveof  master-ip  master-port
+SLAVEOF NO ONE命令将从数据库提升成主数据库继续服务
+主数据库启动后使用SLAVE  OF命令将其设置成新的主数据库的从数据库，即可将数据同步回来

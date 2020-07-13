@@ -1,0 +1,43 @@
+Dubbo负载均衡
+在集群负载均衡时，dubbo提供了4中均衡策略，缺省为random随机调用，具体策略如下：
+--- --- --- --- --- --- --- ---
+Random LoadBalance
+随机，按权重设置随机概率。
+在一个截面上碰撞的概率高，但调用量越大分布越均匀，而且按概率使用权重后也比较均匀，有利于动态调整提供者权重。
+
+RoundRobin LoadBalance
+轮循，按公约后的权重设置轮循比率。
+存在慢的提供者累积请求问题，比如：第二台机器很慢，但没挂，当请求调到第二台时就卡在那，久而久之，所有请求都卡在调到第二台上。
+
+LeastActive LoadBalance
+最少活跃调用数，相同活跃数的随机，活跃数指调用前后计数差。
+使慢的提供者收到更少请求，因为越慢的提供者的调用前后计数差会越大。
+
+ConsistentHash LoadBalance
+一致性Hash，相同参数的请求总是发到同一提供者。
+当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动。
+
+--- --- --- --- --- --- --- ---
+直连提供者的三种方式
+1、在JVM启动参数中加入-D参数映射服务地址，如：
+(key为服务名，value为服务提供者url，此配置优先级最高，1.0.15及以上版本支持)
+java -Dcom.alibaba.xxx.XxxService=dubbo://localhost:20890
+
+2、如果服务比较多，也可以用文件映射，如：
+(用-Ddubbo.resolve.file指定映射文件路径，此配置优先级高于<dubbo:reference>中的配置，1.0.15及以上版本支持)
+(2.0以上版本自动加载${user.home}/dubbo-resolve.properties文件，不需要配置)
+java -Ddubbo.resolve.file=xxx.properties
+然后在映射文件xxx.properties中加入：
+(key为服务名，value为服务提供者url)
+com.alibaba.xxx.XxxService=dubbo://localhost:20890
+以上两种方式，dubbo强烈不推荐在复杂的线上环境使用，提供的目的仅仅是为了在开发测试环境方便调试；
+
+3、如果是线上需求需要点对点，可在中配置url指向提供者，将绕过注册中心，多个地址用分号隔开，配置如下：(1.0.6及以上版本支持)
+interface="com.alibaba.xxx.XxxService" url="dubbo://localhost:20890"/>
+
+--- --- --- --- --- --- --- ---
+动态配置路由规则
+dubbo是支持写入路由规则的，如在服务调用前，加入下面代码：
+RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getAdaptiveExtension();
+Registry registry = registryFactory.getRegistry(URL.valueOf("zookeeper://10.20.153.10:2181"));
+registry.register(URL.valueOf("condition://0.0.0.0/com.foo.BarService?category=routers&dynamic=false&rule="+ URL.encode("http://10.20.160.198/wiki/display/dubbo/host = 10.20.153.10 => host = 10.20.153.11") + "));

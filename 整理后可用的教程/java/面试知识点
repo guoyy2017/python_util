@@ -19,6 +19,37 @@ https://mp.weixin.qq.com/s?__biz=MzI3ODcxMzQzMw==&mid=2247486113&idx=2&sn=10febe
 注解加切面，实现动态数据源操作
 
 
+AbstractQueuedSynchronizer（AQS）
+AQS定义了一套多线程访问共享资源的同步器框架，许多同步类实现都依赖于它
+AQS定义两种资源共享方式：Exclusive（独占，只有一个线程能执行，如ReentrantLock）和Share（共享，多个线程可同时执行，如Semaphore/CountDownLatch）
+
+
+https://cloud.tencent.com/developer/article/1488120
+高性能的I/O设计中，有两个著名的模型：Reactor模型和Proactor模型，其中Reactor模型用于同步I/O，而Proactor模型运用于异步I/O操作
+2种fd
+listenfd：一般情况，只有一个。用来监听一个特定的端口(如80)。
+connfd：每个连接都有一个connfd。用来收发数据。
+3种事件
+listenfd进行accept阻塞监听，创建一个connfd
+用户态/内核态copy数据。每个connfd对应着2个应用缓冲区：readbuf和writebuf。
+处理connfd发来的数据。业务逻辑处理，准备response到writebuf。
+
+Reactor模型中定义的三种角色：
+Reactor：负责监听和分配事件，将I/O事件分派给对应的Handler。新的事件包含连接建立就绪、读就绪、写就绪等。
+Acceptor：处理客户端新连接，并分派请求到处理器链中。
+Handler：将自身与事件绑定，执行非阻塞读/写任务，完成channel的读入，完成处理业务逻辑后，负责将结果写出channel。可用资源池来管理。
+单Reactor单线程模型
+单Reactor多线程模型
+主从Reactor多线程模型
+
+Proactor模型
+Procator Initiator负责创建Procator和Handler，并将Procator和Handler都通过Asynchronous operation processor注册到内核。
+Asynchronous operation processor负责处理注册请求，并完成IO操作。完成IO操作后会通知procator。
+procator根据不同的事件类型回调不同的handler进行业务处理。handler完成业务处理，handler也可以注册新的handler到内核进程。
+
+
+
+
 
 STOMP即Simple (or Streaming) Text Orientated Messaging Protocol，简单(流)文本定向消息协议
 

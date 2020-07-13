@@ -1,0 +1,103 @@
+python 主要分两个环境 python2.7 python3.5
+安装python 
+下载https://www.python.org/downloads/
+解压
+执行 configure 
+make && make install
+
+
+conda 安装依赖
+
+先安装pip（如果未安装）
+easy_install pip
+
+可以使用虚拟环境来创建不同环境下python项目2或者3
+安装虚拟环境
+pip install virtualenv
+
+创建一个虚拟环境
+virtualenv -p /usr/local/bin/python3  py3env 
+
+cd py3env  # 进入虚拟环境  
+source bin/activate  # 激活虚拟环境  
+python --version    #看下版本号是否为python3
+
+deactivate  退出环境
+
+安装虚拟环境管理包virtualenvwrapper   
+执行virtualenvwrapper安装命令
+pip install virtualenvwrapper
+
+mac pro 提示six版本冲突时执行
+pip install virtualenvwrapper -v --ignore-install six
+
+
+安装出错执行
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pbr
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple--no-deps stevedore
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple--no-deps virtualenvwrapper
+
+配置virtualenvwrapper.sh运行前需要的环境
+vim ~/.bash_profile    
+export WORKON_HOME=~/py_envs
+source /usr/local/bin/virtualenvwrapper.sh
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+
+列出当前所有的python虚拟环境
+lsvirtualenv -b
+
+创建虚拟环境
+mkvirtualenv -p /usr/local/bin/python  py2env 
+
+启动或切换虚拟环境
+workon py2env 
+
+退出虚拟环境
+deactivate
+
+删除虚拟环境
+rmvirtualenv  py3env   
+
+virtualenvwrapper --help进行查看，这里列出几个常用的：
+创建基本环境：mkvirtualenv [环境名]
+删除环境：rmvirtualenv [环境名]
+激活环境：workon [环境名]
+退出环境：deactivate
+列出所有环境：workon或者lsvirtualenv -b
+
+
+
+pip 换源
+临时换源
+永久换源
+
+阿里源 http://mirrors.aliyun.com/pypi/simple/
+
+临时换源  加上一个-i参数后接源的url即可
+
+在根目录下创建/修改～/.pip/pip.confpip配置文件
+进入文件新增/修改内容；
+[global]
+index-url=http://pypi.douban.com/simple
+[install]
+trusted-host=pypi.douban.com
+
+
+
+whl文件的命名规则
+tensorflow_gpu-1.0.0-cp35-cp35m-win_amd64.whl
+{distribution}-{version}(-{build tag})?-{python tag}-{abi tag}-{platform tag}.whl
+
+cp35指的是python3.5版本,
+cp35m指的是ABI的版本号
+ABI: 应用程序二进制接口,描述了应用程序和操作系统之间，一个应用和它的库之间，或者应用的组成部分之间的低接口.
+AMD64是AMD所推出的64位架构处理器
+X84 64一般来说其都是被引申为Intel推出的64位架构处理器，其实不是如此，X86架构是开源的设计，其存在标准化组织的标准，X86 64就是这样的一个标准。而在这个标准之上AMD设计了AMD64
+
+
+
+
+
+
+
+

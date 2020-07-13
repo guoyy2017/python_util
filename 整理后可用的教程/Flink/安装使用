@@ -1,0 +1,43 @@
+需要有 Java 8.x 和 maven 环境
+
+java -version
+mvn -version
+
+
+下载flink
+https://flink.apache.org/downloads.html#apache-flink-1110
+
+解压flink
+执行
+./bin/start-cluster.sh  # Start Flink
+关闭
+./bin/stop-cluster.sh
+
+
+
+Standalone模式
+master  work1 work2
+修改conf目录下配置文件flink-conf.yaml
+三台机器搭建
+
+
+Flink On Yarn模式
+bin/yarn-session.sh -n 2 -s 2 -jm 768 -tm 768
+    -n : TaskManager的数量，相当于executor的数量
+    -s : 每个JobManager的core的数量，executor-cores。建议将slot的数量设置每台机器的处理器数量
+    -tm : 每个TaskManager的内存大小，executor-memory
+    -jm : JobManager的内存大小，driver-memory
+    -s : 每个taskmanager的slot槽位数  默认是1
+
+提交任务：
+/data/app/flink-1.10.0/bin/flink run  -m yarn-cluster -yid application_1585709615515_0004  -ys 2    /data/app/flink-1.10.0/examples/batch/WordCount.jar
+    -m :  指定运行模式 这里是yarn-cluster集群模式
+    -yid : 就是你启动的yarn-session在yarn上的任务ID,重启yarn这个ID会变化；
+    -ys:  每个taskmanager上的槽位数slot
+
+直接在yarn上运行任务
+/data/app/flink-1.10.0/bin/flink run -ytm 1024  -ys 2  /data/app/flink-1.10.0/examples/batch/WordCount.jar
+
+
+提交任务
+flink run -c com.zhisheng.flink.SocketTextStreamWordCount /Users/zhisheng/IdeaProjects/flink/word-count/target/original-word-count-1.0-SNAPSHOT.jar 127.0.0.1 9000
