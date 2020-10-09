@@ -1366,8 +1366,3 @@ MLlib (Spark)是Apache Spark的可扩展机器学习库。虽然是Java，但该
 H2O是用于智能应用的机器学习API。它在大数据上对统计学、机器学习和数学进行了规模化。H2O可扩展，开发者可以在核心部分使用简单的数学知识。
 ELKI： https://elki-project.github.io/ Environment for Developing KDD-Applications Supported by Index-Structures，即 由索引结构支持的 KDD 应用开发环境 ，Environment for Developing KDD-Applications Supported by Index-Structures，即 由索引结构支持的 KDD 应用开发环境
 Neo4j ：Neo4j是一个世界领先的开源图形数据库。 它是由Neo技术使用Java语言完全开发的。图形数据库是以图形结构的形式存储数据的数据库。 它以节点，关系和属性的形式存储应用程序的数据。 正如RDBMS以表的“行，列”的形式存储数据，GDBMS以“图形”的形式存储数据。https://neo4j.com/ 教程：https://www.w3cschool.cn/neo4j/
----------------------
-作者：忍耐恒_至拙胜至巧
-来源：CSDN
-原文：https://blog.csdn.net/panrenlong/article/details/79246349
-版权声明：本文为博主原创文章，转载请附上博文链接！

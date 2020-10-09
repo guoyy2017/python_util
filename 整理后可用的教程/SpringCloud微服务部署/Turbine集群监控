@@ -1,0 +1,47 @@
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-turbine</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+
+加@EnableTurbine注解,开启Turbine,
+添加@EnableHystrixDashboard注解开启Hystrix仪表盘,
+@EnableEurekaClient注册服务
+
+修改yml配置文件
+turbine.aggregator.cluster-config: 指定聚合哪些集群,多个使用","分割，默认为default。
+turbine.app-config: 配置监控服务的列表，表明监控哪些服务多个使用","分割
+turbine.cluster-name-expression: 用于指定集群名称，当服务数量非常多的时候，可以启动多个Turbine服务来构建不同的聚合集群，而该参数可以用来区分这些不同的聚合集群，同时该参数值可以再Hystrix仪表盘中用来定位不同的聚合集群，
+只需在Hystrix Stream的URL中通过cluster参数来指定
+当clusterNameExpression: metadata['cluster']时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster: ABC，则需要配置，同时turbine.aggregator.clusterConfig: ABC
+turbine.combine-host-port参数设置为true，可以让同一主机上的服务通过主机名与端口号的组合来进行区分，默认情况下会以host来区分不同的服务，这会使得在本机调试的时候，本机上的不同服务聚合成一个服务来统计。
+
+turbine:
+  combine-host-port: true
+  app-config: eureka-consumer-ribbon,eureka-consumer-ribbon2
+  cluster-name-expression: metadata['cluster']
+  aggregator:
+    cluster-config: ribbon
+  instanceUrlSuffix: /hystrix.stream
+
+eureka.instance.metadata-map.cluster用于集群，集群名为ribbon，正好对应Turbine配置文件的集群名
+
+
+数据聚合
+TurbineDataMonitor：数据监听，从实例处获取指标
+TurbineDataDispatcher：派发器，将数据聚合后输出到客户端或者下游的数据监听
+TurbineDataHandler：数据处理
+
+http://localhost:9900/turbine.stream?cluster=ribbon
+
+turbine.instanceUrlSuffix=/hystrix.stream
+
+spring-cloud-netflix-archaius 库进入 Archaius是Apache的Commons Configuration库的扩展
+

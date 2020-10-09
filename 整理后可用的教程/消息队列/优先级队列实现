@@ -1,0 +1,11 @@
+可以使用redis的blpop/brpop实现
+高优先级的使用rpush 遇到低优先级的使用lpush
+设置三个list 高中低 brpop high middle low 0
+
+
+
+rabbitmq设置消息优先级、队列优先级配置
+声明队列的时候，要加上x-max-priority属性
+
+
+channel.basicQos()，该方法是允许信道上消费者最大未确认消息数量。他是针对信道而言的，一个连接可以有多个信道，一个信道可以有多个队列. prefetchSize. prefetchCount global

@@ -1,0 +1,13 @@
+taskset
+查询 PID（TID）= 11498 的线程可用的CPU核心
+taskset -pc 11498
+查看机器几核
+cat /proc/cpuinfo | grep process
+查询 PID（TID）= 11498 的线程可用的CPU核心，掩码形式表示
+taskset -p 11498
+设置 PID（TID）= 11498 的线程可用的CPU核心到#0、#2上
+taskset -pc 0,2 11498
+设置 PID（TID）= 11498 的线程可用的CPU核心到除#0之外的核心上，掩码形式表示
+taskset -p 7 11498
+
+ taskset [options] [mask | cpu-list] [pid | cmd [args...]]

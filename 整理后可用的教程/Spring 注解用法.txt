@@ -10,6 +10,10 @@ https://www.cnblogs.com/hjwublog/p/10332042.html
 需要启动加注解
 @EnableScheduling
 
+
+@EnableTask
+CommandLineRunner
+
 任务使用线程池，需要@Bean 注解 TaskScheduler类
 
 Cloud Task 任务注解 短任务模式

@@ -1,0 +1,4 @@
+在 Yarn 中有三种调度器可以选择：FIFO Scheduler ，Capacity Scheduler，Fair
+Scheduler。
+
+Hadoop YARN为Spark提供资源调度框架

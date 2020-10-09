@@ -69,3 +69,64 @@ a = (a ^ n) & ~b;
 右边开始累积加/乘，结果缺少左边的值
 左右相加/乘刚好是结果
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+基数估计的应用比较广泛，对于存储空间和实时要求比较高，但是精度要求能容忍一定误差的时候，基数估计是个很好的选择。
+Linear Counting
+LogLog Counting
+Adaptive Counting
+HyperLogLog Counting
+HyperLogLog++ Counting
+
+哈希函数采用murmurhash32（HyperLogLog++采用murmurhash64）
+Redis规定分桶个数为16384个，每一个桶内的数据采用6bit大小来存放
+Redis此处存放的不是该元素，而是存放第一次出现“1”的位置的值，6bit可以表示0~64位，即可以支持[公式]个基数。
+registers部分占用内存为（16384*6+7）/8 = 12288个字节，另外加上HLL结构的头占用了16个字节，加起来一共12304个字节，也就是说一个hyperloglog键占用了12KB左右的大小，最多可以计算[公式]个不同元素的基数。
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+五个常用好用的数据结构(BloomFilter、Hyperloglog等)
+https://blog.csdn.net/keyboard2000/article/details/91424889
+各种算法数据结构
+Bloom filter、Count–min sketch、Cuckoo filter、HyperLogLog、Kinetic hanger、Kinetic heater、Locality-sensitive hashing、MinHash、Quotient filter、Random binary tree、Random tree、Rapidly-exploring random tree、SimHash、Skip list、Treap
+
+Hyperloglog
+基数统计（cardinality estimation）是指用概率算法的思想，估计一个集合中不同的数的个数。
+BloomFilter
+判断一个元素是不是在一个集合里，一般想到的是将集合中所有元素保存起来，然后通过比较确定
+MinHash是一种基于 Jaccard Index 相似度的算法，用于快速估计两个集合的相似度
+Count-min Sketch 是一个概率数据结构，和BloomFilter的统计机制类似，用作统计数据流中事件的频率
+T-Digest算法则通过一定计算，将数据集的分布情况粗略地记录下来，从而估计出指定的分位数值。
+
+通过牺牲准确性来提升时间与空间的利用效率的，在大量数据的场景有很大的应用价值
+stream-lib是比较有名的java实时计算与基数统计工具库，有兴趣的可以翻下github： https://github.com/addthis/stream-lib
+
+<!-- https://mvnrepository.com/artifact/com.addthis/stream-lib -->
+<dependency>
+    <groupId>com.addthis</groupId>
+    <artifactId>stream-lib</artifactId>
+    <version>3.0.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.clearspring.analytics/stream -->
+<dependency>
+    <groupId>com.clearspring.analytics</groupId>
+    <artifactId>stream</artifactId>
+    <version>2.9.8</version>
+</dependency>
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+负载均衡算法
+
+轮询法：
+加权轮询法：加权轮询分为：简单的轮询、平滑的轮询
+平滑的轮询，就是把每个不同的服务，平均分布
+随机法：
+加权随机法：
+IP_Hash算法：
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+

@@ -1,0 +1,40 @@
+阿里开源的缓存框架JetCache
+https://github.com/alibaba/jetcache
+有四个实现，RedisCache、TairCache（此部分未在github开源）、CaffeineCache(in memory)和一个简易的LinkedHashMapCache(in memory)
+
+
+<dependency>
+    <groupId>com.alicp.jetcache</groupId>
+    <artifactId>jetcache-starter-redis</artifactId>
+    <version>2.5.11</version>
+</dependency>
+
+
+配置内容：
+# 采用Java序列化存储
+jetcache.remote.default.valueDecoder = java
+# Key的转换器
+jetcache.remote.default.keyConvertor = fastjson
+# 是否加入缓存key前缀
+jetcache.areaInCacheName = false
+jetcache.remote.default.valueEncoder = java
+# 缓存类型。tair、redis为当前支持的远程缓存；linkedhashmap、caffeine为当前支持的本地缓存类型
+jetcache.local.default.type = linkedhashmap
+# 控制台输出统计数据，统计间隔，0表示不统计
+jetcache.statIntervalMinutes = 15
+jetcache.local.default.keyConvertor = fastjson
+jetcache.remote.default.uri = redis://192.168.0.210:6379/
+
+
+remote 表示远程缓存
+local表示本地缓存
+
+springboot
+@EnableMethodCache
+用于激活@Cached注解的使用
+@EnableCreateCacheAnnotation
+用于激活@CreateCache注解的使用
+
+@CreateCache(expire = 100)
+@Cached(name="getUser.", key="#id", expire = 8, cacheType=CacheType.BOTH)
+

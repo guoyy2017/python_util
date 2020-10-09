@@ -1,0 +1,22 @@
+raft把算法流程分为三个子问题：
+ 选举（Leader election）
+ 日志复制（Log replication）
+ 安全性（Safety）
+
+ 简单易懂的共识算法 依靠状态机 和 主从同步的方式，在各个节点之间实现数据的一致性
+
+ Raft算法为节点定义了三种角色
+ 1.Leader（主节点）：领导者-日志管理
+负责日志的同步管理，处理来自客户端的请求，与Follower保持着heartBeat的联系。
+ 2.Follower（从节点）：追随者-日志同步
+刚启动时候所有节点为Follower状态，响应Leader的日志同步请求，响应Candidate请求，把请求到Follower的事务转发给Leader
+ 3.Candidate（参与投票竞争的节点）：候选者-负责选票
+负责选举投票，Raft刚启动时候由一个节点从Follower转为Candidate发起选举，选举出Leader后从Candidate转为Leader状态。
+
+
+任期（Term）
+选举（Election）
+超时时间（Election Timeout）
+
+RequestVote RPC：它由选举过程中的candidate发起，用于拉取选票
+AppendEntries RPC：它由leader发起，用于复制日志或者发送心跳信号。

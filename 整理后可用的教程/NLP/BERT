@@ -47,3 +47,8 @@ bc.encode(['一二三四五六七八', '今天您吃了吗？'])
 
 交叉验证（Cross Validation）法，其基本思路如下：将训练集划分为K份，每次采用其中K-1份作为训练集，另外一份作为验证集，验证集上K次误差的平均作为该模型的误差。
 
+
+单独服务
+https://github.com/macanv/BERT-BiLSTM-CRF-NER
+pip install bert-base==0.0.9 -i https://pypi.python.org/simple
+

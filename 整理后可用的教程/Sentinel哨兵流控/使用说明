@@ -1,0 +1,215 @@
+SphU 使用入口 try-catch
+SphO 使用入口 if-else
+SentinelResource 使用入口 注解 指定 blockHandler 和 fallback 方法
+Env 使用环境
+EntryType 资源控制方向
+AsyncEntry 异步资源
+Entry 同步资源。CtEntry实现类
+CtSph  Sph 资源获取类
+InitExecutor 初始化执行器
+StringResourceWrapper 资源包装器
+ResourceTypeConstants 资源类型
+Context 上下文 分为 NullContext 
+Constants.ON 全局开关
+ProcessorSlot 流控链路
+MetricCallbackInit 初始化函数类
+MetricEntryCallback 进入回调类
+MetricExitCallback 退出回调类
+StatisticSlotCallbackRegistry 统计回掉注册类
+ProcessorSlotEntryCallback 资源进入回调
+ProcessorSlotExitCallback 资源退出回调
+FlowRule 调用流规则
+RuleConstant 规则常量
+FlowRuleManager 规则管理器
+DegradeRule 降级规则
+DegradeRuleManager 降级规则管理器
+SystemRule 系统保护规则
+SystemRuleManager 系统保护规则管理器
+TrafficShapingController：流量整形的实现，不同流控效果有不同算法
+ClusterFlowConfig 集群限流规则配置
+CircuitBreaker 断路器
+FlowSlot  VVVV
+FlowRuleChecker
+ClusterFlowRuleManager  规则加载到集群模式
+Node
+ClusterNode
+ServerTransportConfig 指定提供TokenService的端口和地址
+ClusterServerConfigManager 加载配置
+ClusterClientConfig 客户端规则
+ClusterClientConfigManager Client指定配置
+ClusterClientAssignConfig 指定TokenServer的Ip和地址
+
+ClusterFlowRuleManager.propertySupplier 属性
+ServerTransportConfig
+ServerFlowConfig
+ClusterClientAssignConfig
+ClusterClientConfig
+TokenService 
+TokenResult
+ClusterResponse
+token client：集群流控客户端
+token server：即集群流控服务端
+Sentinel 集群流控支持限流规则和热点规则两种规则
+ContextUtil 上下文管理器
+StringResourceWrapper
+MethodResourceWrapper
+CtEntry
+SlotChainBuilder 作为 SPI 接口
+Metric
+ArrayMetric
+LeapArray
+SystemSlot
+AuthorityRuleChecker
+AuthorityRule
+StatisticNode
+ClusterNode
+DefaultNode和ClusterNode
+SentinelProperty
+PropertyListener
+DynamicSentinelProperty
+ParamFlowRuleManager
+ParamFlowRule
+
+WarmUpController
+RateLimiterController
+WarmUpRateLimiterController
+DefaultController
+
+InitExecutor.init
+HeartbeatSenderInitFunc
+CommandCenterInitFunc
+
+@InitOrder 注解来指定 InitFunc 执行的顺序，order 的值越小越先执行
+手动调用 InitExecutor.doInit() 函数
+
+一个Context中包含了三个核心的对象：
+1）当前调用链的根节点：EntranceNode
+2）当前的入口：Entry
+3）当前入口所关联的节点：Node
+
+
+FlowRuleManager.loadRules(List<FlowRule> rules); // 修改流控规则
+DegradeRuleManager.loadRules(List<DegradeRule> rules); // 修改降级规则
+SystemRuleManager.loadRules(List<SystemRule> rules); // 修改系统规则
+AuthorityRuleManager
+
+api 来进行 token server 与 token client 的切换
+http://<ip>:<port>/setClusterMode?mode=<xxx>
+其中 mode 为 0 代表 client，1 代表 server，-1 代表关闭。
+
+
+FlowRuleManager.loadRules(rules);
+DegradeRuleManager.loadRules(rules);
+SystemRuleManager.loadRules(rules);   只关注EntryType.IN流量
+
+Env.slotsChainbuilder.build()
+
+限流处理器插槽：FlowSlot
+
+
+
+配置持久化配置
+Converter
+FileRefreshableDataSource
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-datasource-extension</artifactId>
+    <version>x.y.z</version>
+</dependency>
+FlowRuleManager.register2Property();
+
+RedisDataSource
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-datasource-redis</artifactId>
+    <version>x.y.z</version>
+</dependency>
+
+NacosDataSource
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-datasource-nacos</artifactId>
+    <version>x.y.z</version>
+</dependency>
+
+ZookeeperDataSource
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-datasource-zookeeper</artifactId>
+    <version>x.y.z</version>
+</dependency>
+
+ApolloDataSource
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-datasource-apollo</artifactId>
+    <version>x.y.z</version>
+</dependency>
+
+热点限流 sentinel-extension 模块
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-parameter-flow-control</artifactId>
+    <version>x.y.z</version>
+</dependency>
+ParamFlowRule
+// 定义热点限流的规则，对第一个参数设置 qps 限流模式，阈值为5
+ParamFlowRule rule = new ParamFlowRule(resourceName)
+        .setParamIdx(0)
+        .setGrade(RuleConstant.FLOW_GRADE_QPS)
+        .setCount(5);
+ParamFlowRuleManager.loadRules(Collections.singletonList(rule));
+
+
+
+
+计数器算法  
+漏桶算法（Leaky Bucket） 
+令牌桶算法（Token Bucket）
+
+漏桶算法 RateLimiterController
+令牌桶算法 Warm Up
+
+ClusterStateManager.setToServer();
+ClusterStateManager.setToClient();
+cluster 模式又可按 server 的性质分为 独立 server 模式、嵌入 server 模式
+
+
+流量效果控制器：TrafficShapingController
+
+
+
+各个框架使用不同的适配器
+sentinel-dubbo-adapter
+
+
+资源管理链路
+Map<ResourceWrapper, ProcessorSlotChain> chainMap
+        = new HashMap<ResourceWrapper, ProcessorSlotChain>()
+
+
+Sentinel 实现限流降级、熔断降级、黑白名单限流降级、系统自适应限流降级以及热点参数限流降级都是由 ProcessorSlot、Checker、Rule、RuleManager 组合完成。ProcessorSlot 作为调用链路的切入点，负责调用 Checker 检查当前请求是否可以放行；Checker 则根据资源名称从 RuleManager 中拿到为该资源配置的 Rule（规则），取 ClusterNode 统计的实时指标数据与规则对比，如果达到规则的阈值则抛出 Block 异常，抛出 Block 异常意味着请求被拒绝，也就实现了限流或熔断。
+
+可以总结为以下三个步骤：
+在 ProcessorSlot#entry 方法中调用 Checker#check 方法，并将 DefaultNode 传递给 Checker。
+Checker 从 DefaultNode 拿到 ClusterNode，并根据资源名称从 RuleManager 获取为该资源配置的规则。
+Checker 从 ClusterNode 中获取当前时间窗口的某项指标数据（QPS、avgRt 等）与规则的阈值对比，如果达到规则的阈值则抛出 Block 异常（也有可能将 check 交给 Rule 去实现）。
+
+学习地址
+https://github.com/all4you/sentinel-tutorial
+
+
+
+
+sentinel-core 核心模块，限流、降级、系统保护等都在这里实现
+sentinel-dashboard 控制台模块，可以对连接上的sentinel客户端实现可视化的管理
+sentinel-transport 传输模块，提供了基本的监控服务端和客户端的API接口，以及一些基于不同库的实现
+sentinel-extension 扩展模块，主要对DataSource进行了部分扩展实现
+sentinel-adapter 适配器模块，主要实现了对一些常见框架的适配
+sentinel-demo 样例模块，可参考怎么使用sentinel进行限流、降级等
+sentinel-benchmark 基准测试模块，对核心代码的精确性提供基准测试
+
+
+持久化，：ReadableDataSource 和 WritableDataSource
+
+

@@ -1,0 +1,111 @@
+DataStream API 流式处理的接口，
+DataSet API 面相批处理的接口
+FlinkML:机器学习   
+CEP:复杂事件处理   
+Gelly图计算  
+针对流式和批处理的Table API
+
+Flink运行时包含了两种类型的处理器：JobManager处理器，TaskManager处理器
+
+无界数据流：以特定的顺序获取event,立即处理
+有界数据流：处理有界流不需要有序获取，因为可以始终对有界数据集进行排序，有界的处理也称为批处理
+
+
+TaskManager与slots
+
+
+
+-------********&&&&&&&&&*********-------
+“map”就是做一些映射，比如我们把两个字符串合并成一个字符串，把一个字符串拆成两个或者三个字符串。
+
+“flatMap”类似于把一个记录拆分成两条、三条、甚至是四条记录,例如把一个字符串分割成一个字符数组。
+
+“Filter”就类似于过滤。
+
+“keyBy”就等效于SQL里的group by。
+
+“aggregate”是一个聚合操作，如计数、求和、求平均等。
+
+“reduce”就类似于MapReduce里的reduce。
+
+“join”操作就有点类似于我们数据库里面的join。
+
+“connect”实现把两个流连成一个流。
+
+“repartition”是一个重新分区操作（还没研究）。
+
+“project”操作就类似于SQL里面的snacks（还没研究）。
+
+常见的操作有filter、map、flatMap、keyBy(分组)、aggregate(聚合)
+-------********&&&&&&&&&*********-------
+TumblingProcessingTimeWindows
+TumblingEventTimeWindows
+
+
+　Watermark: 是一种衡量Event Time进展的机制，它是数据本身的一个隐藏属性；包含: eventTime / IngestionTime / processTime
+　　DataStream 流处理， DataSet 批处理；
+　　Window： TumblingWindow / SlidingWindow / SessionWindow / CountWindow
+　　Map: 一对一映射数据流，flatMap: 一对N数据流映射；
+　　Filter: 过滤返回false的数据，keyBy: 将相同key的DataStream分配到同一分区以便进行聚合计算， reduce: 将数据合并为一个新的数据；
+　　Sink: 输出，RichSinkFunction 实现自定义输出；基于文件的：如 writeAsText()、writeAsCsv()、writeUsingOutputFormat、FileOutputFormat。 写到socket： writeToSocket。 用于显示的：print、printToErr。 自定义Sink： addSink。connectors 用于给接入第三方数据提供接口，现在支持的connectors 包括：Apache Kafka/Apache Cassandra/Elasticsearch/Hadoop FileSystem/RabbitMQ/Apache NiFi
+　　SnapShot:由于 Flink 的 checkpoint 是通过分布式快照实现的，接下来我们将 snapshot 和 checkpoint 这两个词交替使用。由于 Flink checkpoint 是通过分布式 snapshot 实现的，snapshot 和 checkpoint 可以互换使用。
+　　Backpressure: 反压通常产生于这样的场景：短时负载高峰导致系统接收数据的速率远高于它处理数据的速率。许多日常问题都会导致反压，例如，垃圾回收停顿可能会导致流入的数据快速堆积，或者遇到大促或秒杀活动导致流量陡增。反压如果不能得到正确的处理，可能会导致资源耗尽甚至系统崩溃。
+
+
+FlinkML是Flink的机器学习（ML）库
+<dependency>
+  <groupId>org.apache.flink</groupId>
+  <artifactId>flink-ml_2.11</artifactId>
+  <version>1.8.0</version>
+</dependency>
+FlinkML的一个关键概念是其scikit-learn启发的流水线机制。
+
+
+Flink基于Chandy-Lamport算法实现了一个分布式的一致性的快照
+https://cloud.tencent.com/developer/article/1448608
+Flink CEP  
+目标：从简单事件流中发现一些高阶特征
+输入：一个或者多个简单事件构成的事件流
+处理：检测简单事件之间的联系，多个事件组合一起符合匹配规则，将该多个事件构成复杂事件
+输出：符合规则的复杂事件
+
+事件处理语言（EPL，Event processing language）
+事件间的关系主要有5种：
+时间关联
+空间关联
+依赖关系
+	事物的状态属性之间彼此的依赖关系和约束关系。
+因果关系
+
+事件驱动架构(Event-Driven Architecture，EDA) 基于消息传递
+<dependency>
+  <groupId>org.apache.flink</groupId>
+  <artifactId>flink-cep_2.11</artifactId>
+  <version>1.5.0</version>
+</dependency>
+
+flink 操作rocketmq
+https://github.com/apache/rocketmq-externals/tree/master/rocketmq-flink
+
+rocketmq扩展库
+https://github.com/apache/rocketmq-externals.git
+
+RocksDBStateBackend是Flink中内置的第三方状态管理器
+<dependency>
+         <groupId>org.apache.flink</groupId>
+         <artifactId>flink-statebackend-rocksdb_2.11</artifactId>
+         <version>1.7.0</version>
+  </dependency>
+
+<dependency>
+  <groupId>org.apache.flink</groupId>
+  <artifactId>flink-connector-redis_2.10</artifactId>
+  <version>1.1.5</version>
+</dependency>
+
+基础知识点
+Apache Flink - 常见数据流类型
+https://www.cnblogs.com/ooffff/p/9522440.html
+
+基于flink 1.8 源码二次开发
+https://github.com/wangxianghu/Flink-CEPplus

@@ -1,0 +1,57 @@
+树状数组
+C1 = A1
+C2 = C1 + A2 = A1 + A2
+C3 = A3
+C4 = C2 + C3 + A4 = A1 + A2 + A3 + A4
+C5 = A5
+C6 = C5 + A6 = A5 + A6
+C7 = A7
+C8 = C4 + C6 + C7 + A8 = A1 + A2 + A3 + A4 + A5 + A6 + A7 + A8
+m==7 sum(7) = C7 + C6 + C4
+对于查询的m，将它转换成二进制后，不断对末尾的1的位置进行-1的操作，直到全部为0停止
+
+lowbit也是树状数组的核心
+int lowbit(int m){
+    return m&(-m);
+}
+
+m = m - lowbit(m)代表不断对二进制末尾1进行-1操作，不断执行直到m == 0结束
+求前缀和的代码
+int ans = 0;
+int getSum(int m){
+    while(m > 0){
+        ans += C[m];
+        m -= lowbit(m);
+    }
+}
+对于n次前缀和的查询，时间复杂度为O(nlogn)
+
+单点更新值
+对于要更新x位置的值，我们把x转换成二进制，不断对二进制最后一个1的位置+1，直到达到数组下标的最大值n结束
+void update(int x, int value){
+    A[x] += value;    //不能忘了对A数组进行维护，尽善尽美嘛
+    while(x <= n){
+        C[x] += value;
+        x += lowbit(x);
+    }
+}
+对于n次更新操作，时间复杂度同样为O(nlogn)
+
+事实上，对于一个输入的数组A，我们一次读取的过程，就可以想成是一个不断更新值的过程（把A1~An从0更新成我们输入的A[i]），所以一边读入A[i]，一边将C[i]涉及到的祖先节点值更新，完成输入后树状数组C也就建立成功了
+
+/* 
+ * 假设树状数组为 T，长度为 n，序号 [1, ..., n]
+ */
+     
+ // 获取区间 [x, y] 的和
+int getSum(int x, int y) {
+    return getSum(y) - getSum(x - 1);
+}
+// 获取区间 [1, x] 的和
+int getSum(int x) {
+    int ret = 0;
+    for (int i = x; i > 0; i-=LOWBIT(x)) {
+        ret += T[i];
+    }
+    return ret;
+}

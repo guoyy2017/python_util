@@ -1,2 +1,4 @@
 Seata 分布式事务中间件
 TCC模式
+
+AT、TCC、SAGA 和 XA 事务模式

@@ -1,0 +1,27 @@
+Table.writeToSink(TableSink sink) 自动匹配 schema
+Table.insertInto(String sinkTable) 使用特定 schema
+
+Table API的特点
+Table API和SQL都是Apache Flink中最高层的分析API
+声明式 - 用户只关心做什么，不用关心怎么做；
+高性能 - 支持查询优化，可以获取最好的执行性能；
+流批统一 - 相同的统计逻辑，既可以流模式运行，也可以批模式运行；
+标准稳定 - 语义遵循SQL标准，语法语义明确，不易变动。
+
+表达方式的扩展性 - 在Flink中可以为Table API开发很多便捷性功能，如：Row.flatten(), map/flatMap 等
+功能的扩展性 - 在Flink中可以为Table API扩展更多的功能，如：Iteration，flatAggregate 等新功能
+编译检查 - Table API支持java和scala语言开发，支持IDE中进行编译检查。
+
+外部数据源，比如Kafka, Rabbitmq, CSV 等等；
+查询计算逻辑，比如最简单的数据导入select，双流Join，Window Aggregate 等；
+外部结果存储，比如Kafka，Cassandra，CSV等。
+
+TableSoruce Code - 用于创建数据源的代码
+Table API Query - 用于进行word count统计的Table API 查询逻辑
+TableSink Code - 用于保存word count计算结果的结果表代码
+
+
+
+其中Source即为Flink计算的数据源，
+Transformation即为进行分布式流式计算的算子，也是计算的核心，
+Sink即为计算后的数据输出端。

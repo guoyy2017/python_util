@@ -161,3 +161,37 @@ Paxos 算法解决的问题是一个分布式系统如何就某个值(决议)达
 只支持innodb储存引擎
 至少三节点;
 
+
+
+
+
+设置事务
+==== ==== ==== ==== ==== ====  ==== ==== ==== ==== ==== ==== 
+//查看当前事物级别：
+SELECT @@tx_isolation;
+//设置mysql的隔离级别：
+set session transaction isolation level 设置事务隔离级别
+//设置read uncommitted级别：
+set session transaction isolation level read uncommitted;
+//设置read committed级别：
+set session transaction isolation level read committed;
+//设置repeatable read级别：
+set session transaction isolation level repeatable read;
+//设置serializable级别：
+set session transaction isolation level serializable;
+==== ==== ==== ==== ==== ====  ==== ==== ==== ==== ==== ==== 
+控制语句
+（1）BEGIN或START TRANSACTION：显式地开启一个事务；
+（2）COMMIT：提交事务，并使已对数据库进行的所有修改成为永久性的；
+（3）ROLLBACK：结束用户的事务，并撤销正在进行的所有未提交的修改；
+（4）SAVEPOINT：允许在事务中创建一个保存点，一个事务中可以有多个 SAVEPOINT；
+（5）RELEASE SAVEPOINT：删除一个事务的保存点，当没有指定的保存点时，执行该语句会抛出一个异常；
+（6）ROLLBACK TO：把事务回滚到标记点；
+（7）SET TRANSACTION：设置事务的隔离级别。InnoDB存储引擎提供事务的隔离级别有READ UNCOMMITTED、READ COMMITTED、REPEATABLE READ 和 SERIALIZABLE。
+
+
+
+
+federated引擎
+
+

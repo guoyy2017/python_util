@@ -1,0 +1,6 @@
+MapReduce 是一个分布式运算程序的编程框架
+MapReduce采用"分而治之"的思想，把对大规模数据集的操作，分发给一个主节点管理下的各个分节点共同完成，然后通过整合各个节点的中间结果，得到最终结果
+MapReduce核心就是map+shuffle+reducer
+
+
+MR框架是由一个单独运行在主节点上的JobTracker和运行在每个集群从节点上的TaskTracker共同组成。

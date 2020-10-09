@@ -1,0 +1,35 @@
+用jclasslib工具可以查看class类文件的结构
+
+
+jconsole，Java Monitoring and Management Console是从java5开始，在JDK中自带的java监控
+和管理控制台，用于对JVM中内存，线程和类等的监控
+jvisualvm，jdk自带全能工具，可以分析内存快照、线程快照；监控内存变化、GC变化等。
+MAT，Memory Analyzer Tool，一个基于Eclipse的内存分析工具，是一个快速、功能丰富的Java
+heap分析工具，它可以帮助我们查找内存泄漏和减少内存消耗
+GChisto，一款专业分析gc日志的工具
+
+jps，JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程。
+jstat，JVM statistics Monitoring是用于监视虚拟机运行时状态信息的命令，它可以显示出虚拟机
+进程中的类装载、内存、垃圾收集、JIT编译等运行数据。
+jmap，JVM Memory Map命令用于生成heap dump文件
+jhat，JVM Heap Analysis Tool命令是与jmap搭配使用，用来分析jmap生成的dump，jhat内置了
+一个微型的HTTP/HTML服务器，生成dump的分析结果后，可以在浏览器中查看
+jstack，用于生成java虚拟机当前时刻的线程快照。
+jinfo，JVM Configuration info 这个命令作用是实时查看和调整虚拟机运行参数。
+
+
+
+
+调优过程
+jps 查看进程编号
+
+jstat 查看各个内存区的占用和使用过程 调整内存区分配比例
+jstat 查看gc执行计划，分析是不是内存分配比例还大小配置不合理，调整
+
+jstack 查看线程执行状态，查看线程死锁情况
+
+jmap core dump java内存数据
+
+使用jhat Eclipse Memory Analyzer 、IBM HeapAnalyzer 分析内存数据
+
+结合代码分析漏洞和异常

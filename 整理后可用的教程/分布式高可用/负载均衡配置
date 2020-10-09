@@ -1,0 +1,31 @@
+Ribbon是Netflix发布的云中间层服务开源项目，主要功能是提供客户端实现负载均衡算法。
+================一期说明================================
+策略						说明
+RoundRobinRule 			轮询策略	默认值，启动的服务被循环访问
+RandomRule 				随机选择	随机从服务器列表中选择一个访问
+BestAvailableRule 		最大可用策略	先过滤出故障服务器，再选择一个当前并发请求数最小的服务
+WeightedResponseTimeRule 带有加权的轮询策略	对各个服务器响应时间进行加权处理，再采用轮询的方式获取相应的服务器
+AvailabilityFilteringRule 可用过滤策略先过滤出故障的或并发请求大于阈值的服务实例，再以线性轮询的方式从过滤后的实例清单中选出一个
+ZoneAvoidanceRule 区域感知策略	先使用主过滤条件（区域负载器，选择最优区域）对所有实例过滤并返回过滤后的实例清单，依次使用次过滤条件列表中的过滤条件对主过滤条件的结果进行过滤，判断最小过滤数（默认1）和最小过滤百分比（默认0），最后对满足条件的服务器则使用RoundRobinRule(轮询方式)选择一个服务器实例
+
+
+================二期说明================================
+策略类	命名	说明
+RandomRule	随机策略	随机选择 Server
+RoundRobinRule	轮训策略	按顺序循环选择 Server
+RetryRule	重试策略	在一个配置时问段内当选择 Server 不成功，则一直尝试选择一个可用的 Server
+BestAvailableRule	最低并发策略	逐个考察 Server，如果 Server 断路器打开，则忽略，再选择其中并发连接最低的 Server
+AvailabilityFilteringRule	可用过滤策略	过滤掉一直连接失败并被标记为 circuit tripped 的 Server，过滤掉那些高并发连接的 Server（active connections 超过配置的网值）
+ResponseTimeWeightedRule	响应时间加权策略	根据 Server 的响应时间分配权重。响应时间越长，权重越低，被选择到的概率就越低；响应时间越短，权重越高，被选择到的概率就越高。这个策略很贴切，综合了各种因素，如：网络、磁盘、IO等，这些因素直接影响着响应时间
+ZoneAvoidanceRule	区域权衡策略	综合判断 Server 所在区域的性能和 Server 的可用性轮询选择 Server，并且判定一个 AWS Zone 的运行性能是否可用，剔除不可用的 Zone 中的所有 Server
+
+
+全局策略设置
+=======增加 Ribbon 负载均衡策略配置类
+/**
+     * 随机规则
+     */
+    @Bean
+    public IRule ribbonRule() {
+        return new RandomRule();
+    }

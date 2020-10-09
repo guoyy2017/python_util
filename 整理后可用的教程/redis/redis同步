@@ -1,0 +1,11 @@
+https://github.com/alibaba/RedisShake
+
+
+https://github.com/delano/redis-dump
+
+
+
+混合持久化需要在配置文件中配置两个地方。
+1、appendonly yes
+
+2、aof-use-rdb-preamble yes

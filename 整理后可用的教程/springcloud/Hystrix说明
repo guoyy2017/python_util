@@ -1,0 +1,72 @@
+Hystrix是Netflix开源的一个延迟和容错库，它主要实现了以下几点：
+
+包裹请求
+使用HystrixCommand（或HystrixObservableCommand）包裹对依赖的调用逻辑，每个命令在独立线程中执行。
+跳闸机制
+当某服务的错误率超过一定阈值时，Hystrix可以自动或手动跳闸，停止请求该服务一段时间。
+资源隔离
+Hystrix为每个依赖都维护了一个小型的线程池（或信号量），如果该线程池已满，发往该依赖的请求就被立即拒绝。
+监控
+Hystrix可以近乎实时地监控运行指标和配置的变化。
+回退机制
+当请求失败、超时、被拒绝，或者当断路器打开时，执行回退逻辑。
+自我修复
+当断路器打开一段时间后，会自动进入“半打开”状态，允许一个请求访问依赖的服务，如果该请求成功，则关闭断路器，否则继续保持打开状态。
+
+
+Hystrix提供了4种执行命令的方法，execute()和queue() 适用于HystrixCommand对象，而observe()和toObservable()适用于HystrixObservableCommand对象。
+execute()实际是调用了queue().get()
+queue()实际调用了toObservable().toBlocking().toFuture()
+observe()实际调用toObservable()获得一个cold Observable，再创建一个ReplaySubject对象订阅Observable，将源Observable转化为hot Observable。因此调用observe()会自动触发执行run()/construct()。
+
+资源隔离
+资源隔离主要指对线程的隔离。Hystrix提供了两种线程隔离方式：线程池和信号量。
+
+Circuit Breaker主要包括如下6个参数：
+1、circuitBreaker.enabled
+是否启用熔断器，默认是TRUE。
+2 、circuitBreaker.forceOpen
+熔断器强制打开，始终保持打开状态，不关注熔断开关的实际状态。默认值FLASE。
+3、circuitBreaker.forceClosed
+熔断器强制关闭，始终保持关闭状态，不关注熔断开关的实际状态。默认值FLASE。
+4、circuitBreaker.errorThresholdPercentage
+错误率，默认值50%，例如一段时间（10s）内有100个请求，其中有54个超时或者异常，那么这段时间内的错误率是54%，大于了默认值50%，这种情况下会触发熔断器打开。
+5、circuitBreaker.requestVolumeThreshold
+默认值20。含义是一段时间内至少有20个请求才进行errorThresholdPercentage计算。比如一段时间了有19个请求，且这些请求全部失败了，错误率是100%，但熔断器不会打开，总请求数不满足20。
+6、circuitBreaker.sleepWindowInMilliseconds
+半开状态试探睡眠时间，默认值5000ms。如：当熔断器开启5000ms之后，会尝试放过去一部分流量进行试探，确定依赖服务是否恢复。
+
+
+使用RabbitMQ 集群监控
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-netflix-hystrix-stream</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+</dependency>
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-turbine-stream</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+</dependency>
+@EnableTurbine修改为@EnableTurbineStream
+
+
+hystrix-javanica
+<dependency>
+    <groupId>com.netflix.hystrix</groupId>
+    <artifactId>hystrix-javanica</artifactId>
+    <version>x.y.z</version>
+</dependency>

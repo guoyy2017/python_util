@@ -1,0 +1,101 @@
+节点i的权值=她的左儿子权值+她的右儿子权值
+tree[i].l和tree[i].r分别表示这个点代表的线段的左右下标，tree[i].sum表示这个节点表示的线段和
+tree[i].sum=tree[i*2].sum+tree[i*2+1].sum;
+
+
+void build(int i,int l,int r){//递归建树
+    tree[i].l=l;tree[i].r=r;
+    if(l==r){//如果这个节点是叶子节点
+        tree[i].sum=input[l];
+        return ;
+    }
+    int mid=(l+r)>>1;
+    build(i*2,l,mid);//分别构造左子树和右子树
+    build(i*2+1,mid+1,r);
+    tree[i].sum=tree[i*2].sum+tree[i*2+1].sum;//刚才我们发现的性质return ;
+}
+
+线段树的查询方法：
+1、如果这个区间被完全包括在目标区间里面，直接返回这个区间的值
+2、如果这个区间的左儿子和目标区间有交集，那么搜索左儿子
+3、如果这个区间的右儿子和目标区间有交集，那么搜索右儿子
+
+int search(int i,int l,int r){
+    if(tree[i].l>=l && tree[i].r<=r)//如果这个区间被完全包括在目标区间里面，直接返回这个区间的值
+        return tree[i].sum;
+    if(tree[i].r<l || tree[i].l>r)  return 0;//如果这个区间和目标区间毫不相干，返回0
+    int s=0;
+    if(tree[i*2].r>=l)  s+=search(i*2,l,r);//如果这个区间的左儿子和目标区间又交集，那么搜索左儿子
+    if(tree[i*2+1].l<=r)  s+=search(i*2+1,l,r);//如果这个区间的右儿子和目标区间又交集，那么搜索右儿子
+    return s;
+}
+
+void add(int i,int dis,int k){
+    if(tree[i].l==tree[i].r){//如果是叶子节点，那么说明找到了
+        tree[i].sum+=k;
+        return ;
+    }
+    if(dis<=tree[i*2].r)  add(i*2,dis,k);//在哪往哪跑
+    else  add(i*2+1,dis,k);
+    tree[i].sum=tree[i*2].sum+tree[i*2+1].sum;//返回更新
+    return ;
+}
+
+void add(int i,int l,int r,int k){
+    if(tree[i].l>=l && tree[i].r<=r){//如果这个区间被完全包括在目标区间里面，讲这个区间标记k
+        tree[i].sum+=k;
+        return ;
+    }
+    if(tree[i*2].r>=l)
+        add(i*2,l,r,k);
+    if(tree[i*2+1].l<=r)
+        add(i*2+1,l,r,k);
+}
+
+void search(int i,int dis){
+    ans+=tree[i].num;//一路加起来
+    if(tree[i].l==tree[i].r)
+        return ;
+    if(dis<=tree[i*2].r)
+        search(i*2,dis);
+    if(dis>=tree[i*2+1].l)
+        search(i*2+1,dis);
+}
+
+
+void add(int i,int l,int r,int k)
+{
+    if(tree[i].r<=r && tree[i].l>=l)//如果当前区间被完全覆盖在目标区间里，讲这个区间的sum+k*(tree[i].r-tree[i].l+1)
+    {
+        tree[i].sum+=k*(tree[i].r-tree[i].l+1);
+        tree[i].lz+=k;//记录lazytage
+        return ;
+    }
+    push_down(i);//向下传递
+    if(tree[i*2].r>=l)
+        add(i*2,l,r,k);
+    if(tree[i*2+1].l<=r)
+        add(i*2+1,l,r,k);
+    tree[i].sum=tree[i*2].sum+tree[i*2+1].sum;
+    return ;
+}
+
+
+void push_down(int i)
+{
+    if(tree[i].lz!=0)
+    {
+        tree[i*2].lz+=tree[i].lz;//左右儿子分别加上父亲的lz
+        tree[i*2+1].lz+=tree[i].lz;
+        init mid=(tree[i].l+tree[i].r)/2;
+        tree[i*2].data+=tree[i].lz*(mid-tree[i*2].l+1);//左右分别求和加起来
+        tree[i*2+1].data+=tree[i].lz*(tree[i*2+1].r-mid);
+        tree[i].lz=0;//父亲lz归零
+    }
+    return ;
+}
+
+
+
+
+每个结点存什么，结点下标是什么，如何建树

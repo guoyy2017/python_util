@@ -39,6 +39,37 @@ SpringFactoriesLoader加载的，而且也能看出是找的spring.factories文�
 
 
 @EnableTransactionManagement 开启事务支持
+@EnableCircuitBreaker注解之后，就可以使用断路器功能
+请求转发由 SimpleHostRoutingFilter、RibbonRoutingFilter 完成，前者通过Apache HttpClient来转发请求，后者与Ribbon、Hystrix一起，完成客户端负载均衡及应用守护工作。
+动态路由可以通过拓展RouteLocator来完成
+DiscoveryClientRouteLocator
+动态添加Route
+刷新路由
+CompositeRouteLocator 组合多个RouteLocator的能力
+Zuul 提供了 ZuulRefreshListener，监听到 RoutesRefreshedEvent 后，会调用ZuulHandlerMapping 的reset()方法，进而调用RouteLocator的refresh()方法。
+========= ========= ========= ========= 
+zuul.routes.<route>.path=/xxx/**： 来指定映射路径。<route>是自定义的路由名
+zuul.routes.<route>.serviceId=service-provider：来指定服务名。
+zuul.routes.<route>.url=http://localhost:8080/ :传统配置
+简化
+zuul.routes.<serviceId>=<path>
+Zuul就指定了默认的路由规则
+服务名为：service-provider，则默认的映射路径就 是：/service-provider/**
+zuul.prefix=/api # 添加路由前缀
+
+Zuul动态路由和Zuul动态加载过滤器文件
+
+StaticResponseFilter：StaticResponseFilter允许从Zuul本身生成响应，而不是将请求转发到源。
+SurgicalDebugFilter：SurgicalDebugFilter允许将特定请求路由到分隔的调试集群或主机。
+========= ========= ========= =========
+========= ========= ========= =========
+eureka 配置服务中心
+eureka.client.serviceUrl.defaultZone=http://mu01:8761/,http://cu02:8763/
+========= ========= ========= =========
+使用 @Transactional 注解来声明一个函数需要被事务管理
+注解 @EnableTransactionManagement 开启事务支持
+Service方法上添加注解 @Transactional 便可
+
 
 
 @ComponentScan：
@@ -99,11 +130,191 @@ Feign 整合了 Ribbon，具有负载均衡的能力，整合了Hystrix，具有
 
 @EnableDiscoveryClient注解
 
+Turbine集群监控
+<dependency>
+	<groupId>org.springframework.cloud</groupId>
+	<artifactId>spring-cloud-starter-turbine</artifactId>
+</dependency>
+@EnableTurbine注解开启Turbine
+
+
+Consul
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+</dependency>
+spring:
+  application:
+    name: service-consumer
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        service-name: service-consumer
+
+Hystrix的熔断特性
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>  
+
+Gateway限流需要使用Redis
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+</dependency>
+
+授权服务
+<dependency>
+<groupId>org.springframework.security.oauth</groupId>
+<artifactId>spring-security-oauth2</artifactId>
+<version>2.0.12.RELEASE</version>
+</dependency>
+
+开启授权服务器
+@EnableAuthorizationServer
+OAuth2ServerConfiguration extends AuthorizationServerConfigurerAdapter
+
+开启资源服务器
+@EnableResourceServer
+ResourceServerConfiguration extends ResourceServerConfigurerAdapter
+
+spring-cloud-starter-netflix-archaius 
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-archaius</artifactId>
+</dependency>
+
+actuator 配置
+management: 
+  port: 54001 
+  health: 
+    mail: 
+      enabled: false 
+====== ====== ====== ====== ====== ======
+HTTP方法 路径 描述 鉴权
+GET /autoconfig 查看自动配置的使用情况 true
+GET /configprops 查看配置属性，包括默认配置 true
+GET /beans 查看bean及其关系列表 true
+GET /dump 打印线程栈 true
+GET /env 查看所有环境变量 true
+GET /env/{name} 查看具体变量值 true
+GET /health 查看应用健康指标 false
+GET /info 查看应用信息（需要自己在application.properties里头添加信息，比如info.contact.email=easonjim@163.com） false
+GET /mappings 查看所有url映射 true
+GET /metrics 查看应用基本指标 true
+GET /metrics/{name} 查看具体指标 true
+POST /shutdown 关闭应用（要真正生效，得配置文件开启endpoints.shutdown.enabled: true） true
+GET /trace 查看基本追踪信息 true
+====== ====== ====== ====== ====== ======
+配置文件中 加入  默认 /actuator
+management.endpoints.web.base-path=/jiankong
+如果需要公开所有 则在配置文件中继续加入
+management.endpoints.web.exposure.include=*
+
+SpringBoot 实现热部署
+Spring Loaded
+Spring-boot-devtools
+
+配置多环境
+提供多套配置文件：
+applcation.yml
+application-dev.yml
+application-test.yml
+application-pro.yml
+通过改变applcation里的profiles.active值来加载对应的环境。
+spring:
+  profiles:
+    active: dev
 
 
 
+Hystrix-dashboard是一款针对Hystrix进行实时监控的工具
+查看 单个应用内的服务信息, 
+Hystrix Dashboard监控单体应用
+整合Turbine对集群进行监控
+
+注册servlet到web服务
+ServletRegistrationBean
+//注入ServletRegistrationBean
+@Bean
+public ServletRegistrationBean getServlet() {
+    HystrixMetricsStreamServlet streamServlet = new HystrixMetricsStreamServlet();
+    ServletRegistrationBean registrationBean = new ServletRegistrationBean(streamServlet);
+    registrationBean.setLoadOnStartup(1);
+    registrationBean.addUrlMappings("/hystrix.stream");
+    registrationBean.setName("HystrixMetricsStreamServlet");
+    return registrationBean;
+}
+
+@EnableHystrixDashboard  //开启Hystrix仪表盘
+查看服务 http://127.0.0.1:6001/hystrix
+<!--断路器仪表盘-->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+</dependency>
+<!--断路器-->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
+Cluster via Turbine (default cluster): http://turbine-hostname:port/turbine.stream    ----查看默认集群地址示例
+Cluster via Turbine (custom cluster): http://turbine-hostname:port/turbine.stream?cluster=[clusterName]   ----查看指定集群地址示例
+Single Hystrix App: http://hystrix-app:port/hystrix.stream   ---查看单个应用的监控地址示例
+
+查看集群监控
+http://127.0.0.1:6002/turbine.stream
+集群监控turbine
+<!--自省和监控的集成功能-->
+ <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-actuator</artifactId>
+ </dependency>   
+
+ <!--集群监控-->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-turbine</artifactId>
+</dependency>
+</dependency>
+<!--断路器-->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
 
 
 
+在 properties文件里面设置 spring.resources.static-locations=classpath:/dist
+spring.resources.static-locations 的默认值是：classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+spring.mvc.static-path-pattern=/static/**, 当访问/static/css/demo.css时，会拿/css/demo.css到spring.resources.static-locations配置的目录中去查找。
+
+@EnableTransactionManagement 
+PlatformTransactionManager
+
+@EnableConfigurationProperties
+@ConfigurationProperties
+@ConfigurationProperties注解的作用是把yml或者properties配置文件转化为bean。
+@EnableConfigurationProperties注解的作用是使@ConfigurationProperties注解生效。如果只配置@ConfigurationProperties注解，在spring容器中是获取不到yml或者properties配置文件转化的bean的。
+
+@Configuration的作用上面我们已经知道了，被注解的类将成为一个bean配置类。
+@ComponentScan的作用就是自动扫描并加载符合条件的组件，比如@Component和@Repository等，最终将这些bean定义加载到spring容器中。
+@EnableAutoConfiguration 这个注解的功能很重要，借助@Import的支持，收集和注册依赖包中相关的bean定义。
+
+
+@EnableAutoConfiguration注解引入了@AutoConfigurationPackage和@Import
+@AutoConfigurationPackage的作用就是自动配置的包，@Import导入需要自动配置的组件
+@AutoConfigurationPackage，发现也是引入了@Import注解
+ AutoConfigurationImportSelector类
+ SpringFactoriesLoader.loadFactoryNames方法调用loadSpringFactories方法从所有的jar包中读取META-INF/spring.factories文件信息。
+
+ org.springframework.boot.autoconfigure.EnableAutoConfiguration的值定义了需要自动配置的bean，通过读取这个配置获取一组@Configuration类
+
+
+ 1、使用 @Configuration与@Bean 注解
+2、使用@Controller @Service @Repository @Component 注解标注该类，然后启用@ComponentScan自动扫描
+3、使用@Import 方法
 
 

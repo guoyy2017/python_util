@@ -1,0 +1,40 @@
+Hadoop分布式文件系统（HDFS）和分布式运算编程框架（MapReduce）为核心
+
+master节点会有NameNode进程，slave节点会有DataNode进程
+
+Hadoop HDFS为Spark提供底层的分布式文件存储
+
+HDFS的NameNode 和SecondNameNode ,DataNode 的各个作用
+
+
+Master. NameNode SecondaryNameNode ResourceManager
+Slave. DataNode NodeManager
+
+hadoop分为几大部分：yarn负责资源和任务管理、hdfs负责分布式存储、map-reduce负责分布式计算
+yarn的两个部分：资源管理、任务调度。
+
+HDFS采用主从（Master/Slave）结构模型，一个HDFS集群是由一个NameNode和若干个DataNode组成的
+NameNode是管理者，DataNode是文件存储者、Client是需要获取分布式文件系统的应用程序。
+
+
+数据存储：HDFS（Hadoop Distributed File System）
+数据分析：MapReduce
+
+
+Hadoop====》》
+主节点Master ---》》管理
+从节点Slave ---》》干活
+
+HDFS====》》》
+主节点：NameNode-----》》决定着数据存储到那个DataNode上
+从节点：DataNode-----》》存储数据
+
+
+MapReduce====》》
+map task----》》单独处理每一部分的数据
+reduce task---》》合并map task的输出
+
+YARN====》》》分布式集群资源管理框架，管理者集群的资源（Memory,cpu core）
+合理调度分配给各个程序（MapReduce）使用
+主节点：resourceManager-----》》》掌管集群中的资源
+从节点：nodeManager-----》》》管理每台集群资源

@@ -5,6 +5,13 @@
     <version>1.0.0</version>
 </dependency>
 
+Apache 公共包commons-codec 加解密包
+<dependency>
+    <groupId>commons-codec</groupId>
+    <artifactId>commons-codec</artifactId>
+    <version>1.15</version>
+</dependency>
+
 //-- html 内容解析包
 <dependency>
     <groupId>org.jsoup</groupId>
@@ -62,3 +69,110 @@ UnixSocket 工具包
     <artifactId>jnr-unixsocket</artifactId>
     <version>0.18</version>
 </dependency>
+
+hoe 是一个 Java 基础操作库，包括 String，number，random 等常规操作
+<dependency>
+    <groupId>com.github.caspar-chen</groupId>
+    <artifactId>hoe</artifactId>
+    <version>0.0.2</version>
+</dependency>
+
+
+java 基础类型集合操作库
+<!-- https://mvnrepository.com/artifact/net.sf.trove4j/trove4j -->
+<dependency>
+    <groupId>net.sf.trove4j</groupId>
+    <artifactId>trove4j</artifactId>
+    <version>3.0.3</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/commons-primitives/commons-primitives -->
+<dependency>
+    <groupId>commons-primitives</groupId>
+    <artifactId>commons-primitives</artifactId>
+    <version>1.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.carrotsearch/hppc -->
+<dependency>
+    <groupId>com.carrotsearch</groupId>
+    <artifactId>hppc</artifactId>
+    <version>0.8.2</version>
+</dependency>
+
+
+java-dirty 是一个快速的基于文件的对象存储系统，只能往存储里添加对象，使用内存映射文件技术。
+<dependency>
+    <groupId>uk.co.probablyfine</groupId>
+    <artifactId>java-dirty</artifactId>
+    <version>1.4</version>
+</dependency>
+
+
+接口缓存
+<!-- https://mvnrepository.com/artifact/com.alicp.jetcache/jetcache-core -->
+<dependency>
+    <groupId>com.alicp.jetcache</groupId>
+    <artifactId>jetcache-core</artifactId>
+    <version>2.6.0</version>
+</dependency>
+jetcache-anno-api：定义jetcache的注解和常量，不传递依赖。如果你想把Cached注解加到接口上，又不希望你的接口jar传递太多依赖，可以让接口jar依赖jetcache-anno-api。
+jetcache-core：核心api，完全通过编程来配置操作Cache，不依赖Spring。两个内存中的缓存实现LinkedHashMapCache和CaffeineCache也由它提供。
+jetcache-anno：基于Spring提供@Cached和@CreateCache注解支持。
+jetcache-redis：使用jedis提供Redis支持。
+jetcache-redis-lettuce（需要JetCache2.3以上版本）：使用lettuce提供Redis支持，实现了JetCache异步访问缓存的的接口。
+jetcache-starter-redis：Spring Boot方式的Starter，基于Jedis。
+jetcache-starter-redis-lettuce（需要JetCache2.3以上版本）：Spring Boot方式的Starter，基于Lettuce。
+
+EnableMethodCache，EnableCreateCacheAnnotation这两个注解分别激活Cached和CreateCache注解
+
+@CreateCache创建的Cache接口实例
+@Cached, @CacheUpdate, @CacheInvalidate
+
+<dependency>
+    <groupId>com.alicp.jetcache</groupId>
+    <artifactId>jetcache-starter-redis</artifactId>
+    <version>2.5.11</version>
+</dependency>
+
+
+缓存使用说明
+GuavaCache是一款非常优秀的进程缓存框架
+进程缓存Caffeine
+<!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
+<dependency>
+    <groupId>com.github.ben-manes.caffeine</groupId>
+    <artifactId>caffeine</artifactId>
+    <version>2.8.5</version>
+</dependency>
+
+
+
+Apache下基于HttpClient的流式组件fluent-hc
+<dependency>
+            <!--fluent-hc是HttpClient基于流式API封装的客户端-->
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>fluent-hc</artifactId>
+            <version>4.5.8</version>
+  </dependency>
+
+
+JMH(Java Microbenchmark Harness)是用于代码微基准测试的工具套件，主要是基于方法层面的基准测试，精度可以达到纳秒级
+JMH 是 JDK9 自带的，如果是 JDK9 之前的版本需要加入如下依赖
+  <dependency>
+    <groupId>org.openjdk.jmh</groupId>
+    <artifactId>jmh-core</artifactId>
+    <version>1.23</version>
+</dependency>
+<dependency>
+    <groupId>org.openjdk.jmh</groupId>
+    <artifactId>jmh-generator-annprocess</artifactId>
+    <version>1.23</version>
+</dependency>
+https://jmh.morethan.io/
+可视化地址
+
+
+常用网址
+https://www.cnblogs.com/dimple91/p/12320317.html
+
+
+

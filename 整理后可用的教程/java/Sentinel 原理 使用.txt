@@ -88,3 +88,39 @@ SystemRuleManager.loadRules(List<SystemRule> rules); // 修改系统规则
     <version>x.y.z</version>
 </dependency>
 
+
+
+
+
+在 Sentinel 里面，所有的资源都对应一个资源名称以及一个 Entry。Entry 可以通过对主流框架的适配自动创建，也可以通过注解的方式或调用 API 显式创建；每一个 Entry 创建的时候，同时也会创建一系列功能插槽（slot chain）。这些插槽有不同的职责，例如:
+NodeSelectorSlot 负责收集资源的路径，并将这些资源的调用路径，以树状结构存储起来，用于根据调用路径来限流降级；
+ClusterBuilderSlot 则用于存储资源的统计信息以及调用者信息，例如该资源的 RT, QPS, thread count 等等，这些信息将用作为多维度限流，降级的依据；
+StatisticSlot 则用于记录、统计不同纬度的 runtime 指标监控信息；
+FlowSlot 则用于根据预设的限流规则以及前面 slot 统计的状态，来进行流量控制；
+AuthoritySlot 则根据配置的黑白名单和调用来源信息，来做黑白名单控制；
+DegradeSlot 则通过统计信息以及预设的规则，来做熔断降级；
+SystemSlot 则通过系统的状态，例如 load1 等，来控制总的入口流量；
+
+一系列的slot都是在
+      entry = SphU.entry("HelloWorld");
+中创建的，并且是每个资源对应唯一一个slot chain(ProcessorSlotChain)。
+ProcessorSlotChain
+
+因为一个资源与对应唯一一个SlotChain，所以在应用中一个资源就唯一对应一个NodeSelectorSlot、ClusterBuilderSlot、LogSlot、StatisticSlot、SystemSlot、AuthoritySlot、FlowSlot、DegradeSlot。
+
+
+NodeSelectorSlot: 建立树状结构（调用链路）
+ClusterBuilderSlot: 根据资源保存统计簇点
+StatisticSlot: 实时数据统计
+FlowSlot: 流量控制
+DegradeSlot: 熔断降级
+SystemSlot: 系统负载保护
+
+Sentinel 将 ProcessorSlot 作为 SPI 接口进行扩展（1.7.2 版本以前 SlotChainBuilder 作为 SPI），使得 Slot Chain 具备了扩展的能力。您可以自行加入自定义的 slot 并编排 slot 间的顺序，从而可以给 Sentinel 添加自定义的功能。
+ContextUtil.enter() 创建了一个名为 entrance1 的上下文，同时指定调用发起者为 appA
+
+
+sentinel-cluster-common-default: 公共模块，包含公共接口和实体
+sentinel-cluster-client-default: 默认集群流控 client 模块，使用 Netty 进行通信，提供接口方便序列化协议扩展
+sentinel-cluster-server-default: 默认集群流控 server 模块，使用 Netty 进行通信，提供接口方便序列化协议扩展；同时提供扩展接口对接规则判断的具体实现（TokenService），默认实现是复用 sentinel-core 的相关逻辑
+

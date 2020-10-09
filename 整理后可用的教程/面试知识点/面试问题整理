@@ -1,0 +1,200 @@
+死锁—各种锁
+
+java gc配置
+
+Cpu标高查询
+
+分库分表迁移问题
+
+多线程计数问题
+
+分布式锁
+
+跨库事务问题
+
+springboot 事务管理
+
+springcloud 中threadlocal的用法
+
+token盗取 访问安全 防刷
+
+事务级别 插入查询能否查到 MVCC 幻读
+
+BugFree
+
+
+jepsen是一个分布式测试库，我们可以使用它对某个分布式系统执行一系列操作，并最终验证这些操作是否正确执行。
+TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP）的融合型分布式数据库产品
+https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb
+
+自动化接口和文档 ORM 库 APIJSON  
+https://github.com/APIJSON/APIJSON
+http://apijson.org/
+git clone https://github.com/TommyLemon/APIJSON.git
+
+
+SQL 解析工具
+Apache Calcite
+
+ QueryDSL
+
+KUDU 的定位是 「Fast Analytics on Fast Data」，是一个既支持随机读写、又支持 OLAP 分析的大数据存储引擎
+KUDU 是一个「折中」的产品，在 HDFS 和 HBase 这两个偏科生中平衡了随机读写和批量分析的性能
+
+全球级的分布式数据库 Google Spanner
+
+Drools是一款基于Java的开源规则引擎
+RETE算法
+HAL算法
+Jess 是完全由 Java 语言编写的规则引擎和脚本环境
+
+反应式微服务框架Flower
+https://github.com/zhihuili/flower
+
+响应式编程
+Reactor 3是一个围绕Reactive Streams规范构建的库
+
+
+Apache NiFi 是一个易于使用、功能强大而且可靠的数据拉取、数据处理和分发系统，用于自动化管理系统间的数据流
+
+
+
+数据分析的数据库
+ClickHouse
+
+mysql archive存储引擎
+用于表归档
+MySQL 高性能存储引擎：TokuDB
+
+多级缓存的机制
+首先从ReadOnlyCacheMap里查缓存的注册表。
+若没有，就找ReadWriteCacheMap里缓存的注册表。
+如果还没有，就从内存中获取实际的注册表数据。
+
+会在内存中更新变更的注册表数据，同时过期掉ReadWriteCacheMap。
+此过程不会影响ReadOnlyCacheMap提供人家查询注册表。
+一段时间内（默认30秒），各服务拉取注册表会直接读ReadOnlyCacheMap
+30秒过后，Eureka Server的后台线程发现ReadWriteCacheMap已经清空了，也会清空ReadOnlyCacheMap中的缓存
+下次有服务拉取注册表，又会从内存中获取最新的数据了，同时填充各个缓存。
+
+
+
+垃圾回收必须会
+新生代 GC（Minor GC）
+老年代 GC（Major GC/Full GC）
+引用计数法  可达性分析算法
+“GC Roots” 的对象作为起点
+两次标记过程 对象是否有必要执行 finalize 方法。当对象没有覆盖 finalize 方法，或 finalize 方法已经被虚拟机调用过时
+
+对象的引用的分类
+强引用 软引用（SoftReference） 弱引用（WeakReference） 虚引用（PhantomReference）
+
+方法区主要回收的是无用的类
+该类所有的实例都已经被回收，也就是 Java 堆中不存在该类的任何实例
+加载该类的 ClassLoader 已经被回收
+该类对应的 java.lang.Class 对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法。
+
+垃圾回收算法
+标记-清除算法 Mark-Sweep
+复制算法 Copying （新生代）
+标记整理算法 Mark-Compact（老年代）
+分代收集算法：（新生代的GC+老年代的GC）
+
+垃圾收集器
+Serial 收集器 “Stop The World” 
+ParNew 收集器 ParNew 收集器其实就是 Serial 收集器的多线程版本
+Parallel Scavenge 收集器  Parallel Scavenge 收集器关注点是吞吐量（高效率的利用 CPU）
+Serial Old 收集器  Serial 收集器的老年代版本，它同样是一个单线程收集器。
+Parallel Old 收集器 Parallel Scavenge 收集器的老年代版本。使用多线程和 “标记 - 整理” 算法
+CMS 收集器 CMS（Concurrent Mark Sweep）收集器是一种以获取最短回收停顿时间为目标的收集器。
+>>初始标记>>并发标记>>重新标记>>并发清除
+G1 收集器 G1 从整体来看是基于 “标记整理” 算法实现的收集器
+>>初始标记>>并发标记>>最终标记>>筛选回收
+
+-XX:+UserSerialGC 新生代、老年代使用串行回收
+-XX:+UseParNewGC 新生代并行收集器 老年代仍然使用串行回收器
+-XX:ParallelGCThreads 限制线程的数量
+-XX:+UseParallelGC:使用Parallel收集器+老年代串行
+-XX:+UseParallelOldGC:使用Parallel收集器+老年代并行
+-XX:MaxGCPauseMills:最大停顿时间，单位毫秒，GC尽力保证回收时间不超过设定值
+-XX:GCTimeRatio:垃圾收集时间占总时间的比，这里的时间是指CPU的时间，默认是99，即最大允许1%的时间用来做GC
+-XX:+UseConcMarkSweepGC 
+-XX:+UseCMSCompactAtFullCollection:在Full GC后进行一次内存整理，整理过程是独占的，需要发生全局停顿，原因是需要移动可用对象的位置，有可能引起停顿时间变长。
+-XX:+CMSFullGCsBeforeCompaction:设置进行多少次Full GC后，进行一次碎片整理。
+-XX:ParallelCMSThreads:设置CMS的线程数量，该值一般设置为约等于CPU的可用核数，不宜设置的过大。
+
+
+
+
+
+Atomikos
+为XA和非XA提供内置的JDBC适配器
+
+
+ThreadPoolExecutor使用的三种缓存队列详解（ArrayBlockingQueue+LinkedBlockingQueue+SynchronousQueue）
+
+
+
+分析型数据库AnalyticDB
+分析型数据库AnalyticDB(下文简称ADB），是阿里巴巴自主研发、唯一经过超大规模以及核心业务验证的PB级实时数据仓库
+
+未设置索引会插入
+select _rowid from table
+分析表和检查表. 优化表
+analyze table tbl
+check table tbl
+optimize table tbl
+alter table tbl
+以上操作会锁表
+大量插入，失效索引，再生效索引，加速插入
+disable keys。 enable keys  打开和关闭myisam表非唯一索引的更新
+
+关闭唯一性校验提高插入效率
+set unique_checks=0;
+set unique_checks=1;
+关闭自动提交可以提速
+set autocommit=0;
+set autocommit=1;
+
+联合索引 聚集索引  回表查询 索引覆盖
+
+
+
+阿里开源Canal
+做缓存同步使用
+无锁环形缓冲RingBuffer
+下载
+https://github.com/alibaba/canal/releases/download/canal-1.1.4/canal.deployer-1.1.4.tar.gz
+https://gitee.com/topsales/canal
+https://github.com/alibaba/canal/wiki/ClientExample
+ <dependency>
+       <groupId>com.alibaba.otter</groupId>
+       <artifactId>canal.client</artifactId>
+       <version>1.0.25</version>
+  </dependency>
+  <dependency>
+       <groupId>redis.clients</groupId>
+       <artifactId>jedis</artifactId>
+       <version>2.9.0</version>
+ </dependency>
+
+ 并发编程框架 Disruptor
+
+hashmap多线程问题
+在jdk1.7中，在多线程环境下，扩容时会造成环形链或数据丢失。
+在jdk1.8中，在多线程环境下，会发生数据覆盖的情况。
+JDK1.8中，放弃了Segment臃肿的设计，取而代之的是采用Node + CAS + Synchronized来保证并发安全进行实现，synchronized只锁定当前链表或红黑二叉树的首节点
+
+求最小生成树的Prim算法和Kruskal算法都是漂亮的贪心算法
+
+
+ Tiny Url 设计问题
+ long_url hash 分到不同的机器上生成short_url
+ 用Base62 生成
+ 分散到62台机器，
+ 第一位是机器编号
+ short_url 找原链接，先取第一位，找到机器，返回原链接
+ 读写请求的量分析是设计注意点
+
+ 抢红包设计问题
+

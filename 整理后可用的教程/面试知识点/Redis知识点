@@ -31,3 +31,39 @@ Redis允许同时开启AOF和RDB
 slaveof  master-ip  master-port
 SLAVEOF NO ONE命令将从数据库提升成主数据库继续服务
 主数据库启动后使用SLAVE  OF命令将其设置成新的主数据库的从数据库，即可将数据同步回来
+
+
+监听key失效事件 subscribe
+__keyevent@0__:expired
+接收到的事件的类型只有两种：keyspace和keyevent
+系统会发布两个事件
+PUBLISH keyspace@0:mykey del
+PUBLISH keyevent@0:del mykey
+notify-keyspace-events “” 配置事件通知
+========== ========== ========== ========== ========== ==========
+K     Keyspace events, published with __keyspace@<db>__ prefix.
+E     Keyevent events, published with __keyevent@<db>__ prefix.
+g     Generic commands (non-type specific) like DEL, EXPIRE, RENAME, ...
+$     String commands
+l     List commands
+s     Set commands
+h     Hash commands
+z     Sorted set commands
+x     Expired events (events generated every time a key expires)
+e     Evicted events (events generated when a key is evicted for maxmemory)
+A     Alias for g$lshzxe, so that the "AKE" string means all the events.
+========== ========== ========== ========== ========== ==========
+
+
+Redis进行监控的插件：
+1、redis-stat
+2、redis-live
+3、redis-faina
+4、redis-broswer
+
+
+主从设置超时
+通过设置合理的超时时间
+repl-timeout
+提高ping指令发送的频度
+repl-ping-slave-period

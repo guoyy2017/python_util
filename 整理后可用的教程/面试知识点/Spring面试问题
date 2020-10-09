@@ -16,3 +16,99 @@ setter循环依赖
 
 
 Spring是使用ApplicationContext的属性SetsingletonsCurrentlyInCreation来保存的，而半成品的A对象则是通过MapsingletonFactories来保存的
+
+
+Spring 通过一个 BeanPostProcessor 对 @Autowired 进行解析，所以要让 @Autowired 起作用必须事先在 Spring 容器中声明 AutowiredAnnotationBeanPostProcessor Bean。
+
+sql 执行顺序 from--where--group by--having--select--order by---limit
+
+Spring Cloud Security Oauth2认证流程
+@EnableAuthorizationServer注解
+开启auth功能
+
+jjwt是一个Java对jwt的支持库，我们使用这个库来创建、解码token
+<dependency>
+	<groupId>io.jsonwebtoken</groupId>
+	<artifactId>jjwt</artifactId>
+	<version>0.9.0</version>
+</dependency>
+
+
+AspectJAutoProxyBeanDefinitionParser
+AnnotationAwareAspectJAutoProxyCreator 代理实现用到的类
+ObjenesisCglibAopProxy
+JdkDynamicAopProxy
+AdvisedSupport
+ProxyFactoryBean
+
+调用链监控
+CAT	Zipkin	PinPoint
+#如果是使用rabbitmq则需要下面的配置
+spring.zipkin.sender.type= rabbit
+
+@EnableHystrix   //断路器
+HystrixCommandAspect
+@EnableCircuitBreaker
+@Import初始化EnableCircuitBreakerImportSelector类
+集成txlcn-tc 做分布式事务
+
+
+JetCache 是由阿里巴巴开源的一款通用缓存访问框架
+目前支持的缓存系统包括以下4个：
+Caffeine（基于本地内存）
+LinkedHashMap（基于本地内存，JetCache自己实现的简易LRU缓存）
+Alibaba Tair（相关实现未在Github开源，在阿里内部Gitlab上可以找到）
+Redis
+主要是：@Cached(缓存新增)、@CacheUpdate(缓存更新)、@CacheInvalidate(缓存删除)，还有用于配置自动刷新和加载保护的“大杀器”：@CacheRefresh、@CachePenetrationProtect
+@EnableMethodCache
+用于激活@Cached注解的使用
+@EnableCreateCacheAnnotation
+用于激活@CreateCache注解的使用
+
+
+阿里Sentinel整合Zuul网关详解
+SentinelZuulPreFilter
+pre过滤器，在请求路由之前匹配routeId和api，进行限流操作
+SentinelZuulPostFilter
+post过滤器，路由之后恢复资源
+SentinelZuulErrorFilter
+error过滤器，异常后的处理
+
+
+父依赖配置
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+    <version>0.2.2.RELEASE</version>
+     <type>pom</type>
+    <scope>import</scope>
+</dependency>
+
+
+修改spring连接数
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    max-connections: 20000
+
+修改使用jetty
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-jetty</artifactId>
+</dependency>
+
+####Jetty specific properties########
+server.jetty.acceptors= # Number of acceptor threads to use.
+server.jetty.max-http-post-size=0 # Maximum size in bytes of the HTTP post or put content.
+server.jetty.selectors= # Number of selector threads to use.

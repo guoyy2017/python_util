@@ -1,4 +1,5 @@
 redis 4.0以后版本使用
+https://oss.redislabs.com/redisbloom/
 https://redis.io/modules
 
 RedisEx
@@ -21,6 +22,9 @@ RedisBloom
 https://github.com/RedisBloom/RedisBloom
 redis-server --loadmodule /path/to/redisbloom.so
 可以使用
+BF.ADD newFilter foo
+BF.EXISTS newFilter foo
+
 
 异或修改 redis.conf
 loadmodule
@@ -33,4 +37,85 @@ java客户端使用
       <version>1.2.0</version>
     </dependency>
   </dependencies>
+
+<!-- https://mvnrepository.com/artifact/com.redislabs/jrebloom -->
+<dependency>
+    <groupId>com.redislabs</groupId>
+    <artifactId>jrebloom</artifactId>
+    <version>2.0.0</version>
+</dependency>
+
+
+
+countminsketch
+https://github.com/RedisLabsModules/countminsketch
+make
+--loadmodule /path/to/module.so
+
+
+扩展命令
+https://oss.redislabs.com/redisbloom/Quick_Start/
+布隆过滤器
+Bloom: Adding new items to the filter
+BF.ADD newFilter foo
+Bloom: Checking if an item exists in the filter
+BF.EXISTS newFilter foo
+Bloom: Adding and checking multiple items
+BF.MADD myFilter foo bar baz
+BF.MEXISTS myFilter foo nonexist bar
+Bloom: Creating a new filter with custom properties
+BF.RESERVE {key} {error_rate} {capacity}
+BF.RESERVE customFilter 0.0001 600000
+BF.MADD customFilter foo bar baz
+
+布谷鸟过滤器
+首先要说明布谷鸟过滤器并不是使用位图实现的, 而是一维数组. 它所存储的是数据的指纹(fingerprint).
+布谷鸟过滤器使用两个 hash 算法将新来的元素映射到数组的两个位置. 如果两个位置中有一个位置位空, 那么就可以将元素直接放进去. 但是如果这两个位置都满了, 它就会随机踢走一个, 然后自己霸占了这个位置.
+H3(key) = key’s fingerprint = hash(key)
+H1(key) = hash1(key)
+H2(key) = H1(key) ^ H1(key’s fingerprint) // 异或
+||||||||||||||||||||||||||
+CF.RESERVE {key} {capacity} [BUCKETSIZE bucketSize] [MAXITERATIONS maxIterations] [EXPANSION expansion]
+Cuckoo: Adding new items to a filter
+CF.RESERVE newCuckooFilter 1000
+CF.ADD newCuckooFilter foo
+Cuckoo: Checking whether item exists
+CF.EXISTS newCuckooFilter foo
+Cuckoo: Deleting item from filter 
+CF.DEL newCuckooFilter foo
+CF.ADDNX {key} {item}
+CF.INSERT {key} [CAPACITY {cap}] [NOCREATE] ITEMS {item ...}
+CF.INSERTNX {key} [CAPACITY {cap}] [NOCREATE] ITEMS {item ...}
+CF.COUNT {key} {item}
+CF.INFO {key}
+
+CMS.INITBYDIM key width depth
+CMS.INITBYPROB test 0.001 0.01
+CMS.INCRBY key item increment [item increment ...]
+CMS.QUERY key item [item ...]
+CMS.MERGE dest numKeys src1 [src2 ...] [WEIGHTS weight1 ...] 
+CMS.MERGE dest 2 test1 test2 WEIGHTS 1 3
+CMS.INFO key
+
+TOPK.RESERVE key topk width depth decay
+TOPK.ADD key item [item ...]
+TOPK.INCRBY key item increment [item increment ...]
+TOPK.QUERY key item [item ...]
+TOPK.COUNT key item [item ...]
+TOPK.LIST key
+
+
+
+Counting Bloom Filter. 它的原理就是把位图的位 升级为计数器(Counter). 
+
+
+
+
+
+
+
+ShardedJedisPool 分布式jedis操作
+使用一致性hash实现操作 jedis集群
+JedisShardInfo 连接配置
+
 

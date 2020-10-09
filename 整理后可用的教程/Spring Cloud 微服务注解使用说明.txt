@@ -5,3 +5,36 @@
 
 @ConfigurationProperties()
 开启配置到类绑定
+
+
+@EnableCircuitBreaker注解
+开启断路器
+
+@SpringCloudApplication 注解
+聚合注解
+
+@HystrixCommand(fallbackMethod = "getMsgFallback")
+增加断路器功能
+HystrixCollapser请求合并
+ @HystrixCollapser(batchMethod = "testAll", collapserProperties = {
+        @HystrixProperty(name = "timerDelayInMilliseconds", value = "3000")
+})
+@HystrixCollapser Scope.REQUEST Scope.GLOBAL 合并作用域的区别
+
+HystrixCommandMetrics，请求的成功数，失败的数量就是使用这个组件来实现
+
+
+@FeignClient注解的fallback属性来位MessageServiceClient指定一个自定义的fallback处理类
+Feign结合Hystrix
+@FeignClient(name = "message-service", fallback = MessageServiceFallback.class)
+feign:
+  hystrix:
+    enabled: true
+
+
+Actuator是Springboot提供的用来对应用系统进行自省和监控的功能模块，借助于Actuator开发者可以很方便地对应用系统某些监控指标进行查看、统计等。
+
+@EnableHystrixDashboard注解
+访问 http://localhost:8781/hystrix ，打开Hystrix-Dashboard监控首页
+
+

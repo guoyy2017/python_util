@@ -1,0 +1,30 @@
+netty知识点总结
+Channel
+Channel接口实现类是NioServerSocketChannel（服务端）和NioSocketChannel（客户端）
+Netty 的 Channel 接口所提供的 API，大大地降低了直接使用 Socket 类的复杂性
+
+EventLoop
+EventLoop 的主要作用实际就是负责监听网络事件并调用事件处理器进行相关 I/O 操作的处理
+
+ChannelFuture
+ChannelFuture 接口的 addListener() 方法注册一个 ChannelFutureListener，当操作执行成功或者失败时，监听就会自动触发返回结果
+通过ChannelFuture 的 channel() 方法获取关联的Channel
+
+ChannelHandler 和 ChannelPipeline
+ChannelHandler 是消息的具体处理器。他负责处理读写操作、客户端连接等事情
+ChannelPipeline 为 ChannelHandler 的链，提供了一个容器并定义了用于沿着链传播入站和出站事件流的 API 。
+
+EventloopGroup
+Thread 和 EventLoop 属于 1 : 1 的关系，从而保证线程安全
+
+Bootstrap 是客户端的启动引导类/辅助类
+ServerBootstrap 客户端的启动引导类/辅助类
+
+Netty 自带的解码器
+LineBasedFrameDecoder : 发送端发送数据包的时候，每个数据包之间以换行符作为分隔
+DelimiterBasedFrameDecoder : 可以自定义分隔符解码器
+FixedLengthFrameDecoder: 固定长度解码器，它能够按照指定的长度对消息进行相应的拆包
+自定义序列化编解码器
+
+IdleStateHandler 心跳处理
+

@@ -1,0 +1,22 @@
+<dependency>
+  <groupId>org.redisson</groupId>
+  <artifactId>redisson</artifactId>
+  <version>3.3.2</version>
+</dependency>
+
+
+程序化配置方法
+Config config = new Config();
+config. useSingleServer().setAddress("127.0.0.1:6379");
+RedissonClient redisson = Redisson.create(config);
+文件方式配置
+Config config = Config.fromJSON(new File("config-file.json"));
+Config config = Config.fromYAML(new File("config-file.yaml")); 
+RedissonClient RedissonClient  redisson = Redisson.create(config);
+
+验证是否成功
+redisson.getConfig().toJSON().toString()
+
+RedissonClient client = Redisson.create(config);
+RedissonReactiveClient client = Redisson.createReactive(config);
+

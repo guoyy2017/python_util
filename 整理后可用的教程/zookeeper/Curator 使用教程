@@ -1,0 +1,77 @@
+选举操作
+Leader Latch 分布式计算
+Leader Election初始化Curator领导者推选技巧
+
+LeaderSelector  客户端不间断的轮流做Leader
+LeaderLatch 选举出Leader，除非有客户端挂掉重新触发选举，否则不会交出领导权
+ConnectionStateListener
+
+锁
+Shared Reentrant Lock 完全地分布式锁，那个是一个全局同步
+Shared Lock 和Shared Reentrant Lock相似
+Shared Reentrant Read Write Lock 一个跨JVMs运行的凹角读/写互斥
+Shared Semaphore 一个跨JVM运行的计数信号
+Multi Shared Lock 一个容器管理多个锁作为一个单一的实体。 当release()调用时，所有锁都会释放
+
+阻塞
+Barrier 分布式系统使用阻塞去阻塞一个集合节点的处理操作
+Double Barrier 双倍阻塞能够使客户端去同步一个计算的开始和结束
+
+计数器
+Shared Counter 管理一个共享的integer数。
+Distributed Atomic Long 一个尝试原子递增的计数器。
+
+缓存
+Path Cache 一个路径缓存用来watch一个ZooKeeper的节点。
+Node Cache 一个实用工具类尝试保持数据从一个节点到本地缓存。
+Tree Cache 一个实用工具类尝试保持所有的数据从一个ZooKeeper路径上的所有孩子本地化缓存。
+
+队列
+Distributed Queue 一个分布式队列ZooKeeper 技巧（recipe）的实现。
+Distributed Id Queue 分布式队里的一个版本，它允许ID关联队列中的数据项。
+Distributed Priority Queue 分布式优先级队列的一个实现。
+Distributed Delay Queue 一个分布式延迟队列的一个实现。
+Simple Distributed Queue 一个直接替换ZK自带的DistributedQueue。
+
+
+可重入锁：InterProcessMutex(CuratorFramework client, String path)
+不可重入锁：InterProcessSemaphoreMutex
+可重入读写锁：InterProcessReadWriteLock
+信号量：InterProcessSemaphoreV2
+多锁对象：InterProcessMultiLock
+DistributedAtomicInteger
+DistributedBarrier  setBarrier()方法设置栏栅  waitOnBarrier()方法等待放行条件  removeBarrier()方法移除栏栅
+双栏栅：DistributedDoubleBarrier，双栏栅允许客户端在计算的开始和结束时同步。
+ 
+
+
+
+
+
+Curator框架中使用链式编程风格，易读性更强，使用工厂方法创建zookeeper客户端对象。
+1.使用CuratorFrameworkFactory的两个静态工厂方法（参数不同）来创建zookeeper客户端对象。
+参数1：connectString，zookeeper服务器地址及端口号，多个zookeeper服务器地址以“,”分隔。
+参数2：sessionTimeoutMs，会话超时时间，单位毫秒，默认为60000ms。
+参数3：connectionTimeoutMs，连接超时时间，单位毫秒，默认为15000ms。
+参数4：retryPolicy，重试连接策略，有四种实现，分别为：ExponentialBackoffRetry（重试指定的次数, 且每一次重试之间停顿的时间逐渐增加）、RetryNtimes（指定最大重试次数的重试策略）、RetryOneTimes（仅重试一次）、RetryUntilElapsed（一直重试直到达到规定的时间）
+
+
+create创建节点方法可选的链式项：creatingParentsIfNeeded（是否同时创建父节点）、withMode（创建的节点类型）、forPath（创建的节点路径）、withACL（安全项）
+delete删除节点方法可选的链式项：deletingChildrenIfNeeded（是否同时删除子节点）、guaranteed（安全删除）、withVersion（版本检查）、forPath（删除的节点路径）
+inBackground绑定异步回调方法。比如在创建节点时绑定一个回调方法，该回调方法可以输出服务器的状态码以及服务器的事件类型等信息，还可以加入一个线程池进行优化操作。
+
+
+
+Curator Cache主要提供了一下三组类，分别用于实现对节点的监听，子节点的监听和二者的混合：
+  1.NodeCache,NodeCacheListener，ChildData，节点创建，节点数据内容变更，不能监听节点删除。
+  2.PathChildrenCache，PathChildrenCacheListener，PathChildrenCacheEvent监听指定节点的子节点的变更包括添加，删除，子节点数据数据变更这三类。
+  3.TreeCache，TreeCacheListener，TreeCacheEvent，TreeCacheSelector
+
+
+Curator是一个博物馆或者其它集合的监管者或者管理者，Curator有以下几个组件组成：
+Recipes: 实现了通用ZooKeeper的recipes, 该组件是在Framework组件为基础构建起来。
+Framework: 简化了用来ZooKeeper的高级API, 并增加了一些管理到ZooKeeper集群的连接和重试操作服务的新功能。
+Client: 是附加的ZooKeeper类（ZooKeeper客户端包）的一个替代品, 提供了一些底层处理和一些有用的工具类。
+Utilities: 各种ZooKeeper的工具类，在使用ZooKeeper时非常有用。
+Errors: 如何处理异常, 连接问题, 从异常中恢复等。
+Extensions: curator-recipe扩展服务功能，提供了一些其它的服务功能，比如服务发现、命名规范curator-x-name等。

@@ -1,0 +1,6 @@
+linux 安装过程
+yum install memcached
+
+memcached的集群方案
+一种是客户端支持集群，
+一种是代理端支持集群（性能会有所损耗，大概20%）

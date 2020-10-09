@@ -19,6 +19,7 @@ Spring Cloud Zuul需要做一些灰度，降级，标签路由，限流，WAF封
 Spring Cloud推出自己的Spring Cloud Gateway
 Spring Cloud Gateway支持Netty和Http2
 spring cloud Zuul动态路由
+ZuulServletFilter 过滤器配置
 
 服务网关 = 路由转发 + 过滤器
 

@@ -1,0 +1,1018 @@
+/*全局样式*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+[v-cloak] {
+  display: none;
+}
+html {
+  font-size: 50px;
+}
+body {
+  background: #f9f9f9;
+  font-family: "PingFang SC", "FZLanTingHei-R-GBK", "Lantinghei SC", "华文黑体", "Microsoft YaHei", "Helvetica Neue", Arial;
+  overflow-x: hidden;
+  word-break: break-all !important;
+  font-size: .28rem;
+  color: #333;
+  line-height: 1.4;
+  -webkit-overflow-scrolling: touch;
+}
+input,
+button,
+textarea,
+button:focus,
+input[type=button]:focus {
+  -webkit-appearance: none;
+  outline: none;
+}
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn:active:focus,
+.btn:focus {
+  outline: none!important;
+}
+.imgVerMiddle {
+  vertical-align: middle;
+}
+label {
+  font-weight: normal;
+}
+img {
+  vertical-align: middle;
+}
+ul,
+li {
+  list-style: none;
+}
+i {
+  font-style: normal;
+}
+::-webkit-input-placeholder {
+  color: #ccc;
+}
+.vertival {
+  vertical-align: middle;
+}
+.clearfix:after,
+.clearfix:before {
+  clear: both;
+  content: '';
+  display: table;
+}
+a {
+  outline: none;
+  cursor: pointer;
+  color: #666;
+  text-decoration: none;
+}
+a:hover,
+a:active,
+a:focus {
+  text-decoration: none;
+  color: #999;
+  outline: none!important;
+}
+.red {
+  color: red;
+}
+.orange {
+  color: #ff9a00;
+}
+.green {
+  color: #02c300;
+}
+.fade-enter-active,
+.fade-leave-active {
+  -webkit-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.fade-enter-active {
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  opacity: 1;
+}
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+  transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+}
+.slide-enter-active,
+.slide-leave-active {
+  -webkit-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.slide-enter-active {
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+.slide-enter,
+.slide-leave-active {
+  transform: translate3d(0, 100%, 0);
+  -webkit-transform: translate3d(0, 100%, 0);
+}
+.textcenter {
+  text-align: center;
+}
+.fixed {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 0;
+}
+.fixedbottom {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.flex-start {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  justify-content: flex-start;
+  -webkit-justify-content: flex-start;
+  align-items: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -webkit-box-align: center;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+}
+.flex-center {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -webkit-box-align: center;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+}
+.flex-between {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  -webkit-box-pack: justify;
+  align-items: center;
+  -webkit-align-items: center;
+}
+#topback {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  text-align: center;
+  background: #fff;
+  height: .8rem;
+  line-height: .8rem;
+  border-bottom: 1px solid #E1E1E1;
+  z-index: 13;
+}
+#topback .fanhui {
+  position: absolute;
+  left: .3rem;
+  top: .02rem;
+  color: #666;
+  font-size: .28rem;
+}
+/*提示*/
+.tip {
+  min-width: 4.5rem;
+  padding: 10px;
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  color: #fff;
+  text-align: center;
+  opacity: 0;
+  transition: all linear .1s;
+  -webkit-transition: all linear .1s;
+  z-index: 1001;
+}
+.tip.ani {
+  top: 30%;
+  opacity: 1;
+}
+.toast {
+  position: fixed;
+  width: 4.5rem;
+  text-align: center;
+  z-index: 100;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5);
+  padding: .2rem;
+  border-radius: 6px;
+  color: #fff;
+  display: none;
+}
+.modelblack {
+  background: rgba(255, 255, 255, 0);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}
+.modelblack .model-box {
+  width: 80%;
+  padding: 10px;
+  line-height: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  text-align: center;
+}
+/*遮罩层*/
+.mask,
+.popup {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: 0;
+  top: 0;
+  display: none;
+  z-index: 11;
+}
+/*全局modal提示*/
+.modal-common {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  width: 6rem;
+  background: #fff;
+  box-shadow: 0 2px 12px 0 rgba(169, 180, 192, 0.65);
+  border-radius: 4px;
+  padding: .42rem;
+  display: none;
+  transition: all linear .1s;
+  -webkit-transition: all linear .1s;
+  z-index: 102;
+}
+.modal-common.ani {
+  top: 50%;
+  opacity: 1;
+  display: block;
+}
+.modal-common .modal-common-title {
+  text-align: center;
+  color: #333333;
+  font-size: .26rem;
+  font-weight: 600;
+}
+.modal-common .modal-common-title .iconfont-chat {
+  color: #E54240;
+  margin-right: 5px;
+}
+.modal-common .modal-common-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+.modal-common .modal-common-footer .btn {
+  padding: 6px 12px;
+  position: relative;
+}
+.modal-common .modal-common-footer .btn input[type=file] {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+/*loading*/
+.loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  color: #fff;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 110;
+}
+.loading .loading-box {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -webkit-box-align: center;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+@-webkit-keyframes am-rotate2 {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -444px 0;
+  }
+}
+@-webkit-keyframes slideIn {
+  from {
+    transform: translate3d(100%, 0, 0);
+    -webkit-transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+}
+.contact-kefu {
+  /* position: fixed;
+  left: 50%;
+  bottom: .4rem;
+  transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  text-align: center;
+  z-index: 2;*/
+}
+.contact-kefu .fixed-chat {
+  width: 1.8rem;
+  height: .52rem;
+  line-height: .52rem;
+  display: block;
+  border-radius: 0.26rem;
+  -webkit-border-radius: 0.26rem;
+  text-align: center;
+  margin: .3rem auto;
+  color: #333333;
+  font-size: .24rem;
+  border: 1px solid #979797;
+}
+.contact-kefu .fixed-chat .icon-kf-chat {
+  display: inline-block;
+  width: .28rem;
+  height: .28rem;
+  background: url(/static/img/flow_recharge/icon-kf-gray.png) no-repeat;
+  background-size: contain;
+  margin-right: .1rem;
+  vertical-align: middle;
+}
+.order-see {
+  width: 1.64rem;
+  height: 0.6rem;
+  background: #FE7C04;
+  border-bottom-left-radius: 1rem;
+  border-top-left-radius: 1rem;
+  position: fixed;
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  justify-content: flex-start;
+  -webkit-justify-content: flex-start;
+  align-items: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  -webkit-box-align: stretch;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  right: 0;
+  top: 1rem;
+  z-index: 2;
+}
+.order-see .order-see-a {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -webkit-box-align: center;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+}
+.order-see .order-see-a img {
+  display: block;
+  width: 0.2rem;
+  height: 0.24rem;
+}
+.order-see .order-see-a span {
+  display: block;
+  width: 1.04rem;
+  font-size: 0.26rem;
+  color: #fff;
+  margin-left: 0.1rem;
+}
+.swiper-container {
+  width: 7.1rem;
+  height: 2rem;
+  border-radius: .18rem;
+  margin: 0 auto;
+}
+.swiper-container .swiper-pagination-bullets {
+  bottom: .1rem;
+}
+.swiper-container .swiper-slide img {
+  width: 7.1rem;
+  height: 2rem;
+  border-radius: .18rem;
+}
+.swiper-pagination-bullet {
+  width: .1rem;
+  height: .1rem;
+}
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+  background: #fff;
+}
+@font-face {
+  font-family: "DINAlternate";
+  src: url('/assets/fonts/DIN Alternate Bold.ttf');
+}
+body {
+  background: #41ADFF;
+  padding-bottom: .2rem;
+  background-image: -webkit-linear-gradient(top, #67aaff 0%, #4d7dff 60%);
+  background-image: -o-linear-gradient(top, #67aaff 0%, #4d7dff 60%);
+  background-image: linear-gradient(to bottom, #67aaff 0%, #4d7dff 60%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff67aaff', endColorstr='#ff4d7dff', GradientType=0);
+}
+.btn {
+  border: 0;
+}
+.contract-page .page-title {
+  position: relative;
+  width: 7.5rem;
+  height: 5.58rem;
+  margin-top: 0.8rem;
+  z-index: 1;
+}
+.contract-page .page-title img {
+  display: block;
+  width: 7.5rem;
+}
+.contract-page .page-title .titlebox {
+  width: 7rem;
+  height: 1.6rem;
+  position: absolute;
+  display: block;
+  left: 50%;
+  margin-left: -3.5rem;
+  bottom: 0.2rem;
+  background: #FFFFFF;
+  border-radius: 0 0 .24rem 0.24rem;
+  padding: 0 0.3rem;
+  box-sizing: border-box;
+  background-image: -webkit-linear-gradient(top, rgba(64, 122, 233, 0.45) 0%, #ffffff 40%);
+  background-image: -o-linear-gradient(top, rgba(64, 122, 233, 0.45) 0%, #ffffff 40%);
+  background-image: linear-gradient(to bottom, rgba(64, 122, 233, 0.45) 0%, #ffffff 40%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#73407ae9', endColorstr='#ffffffff', GradientType=0);
+}
+.contract-page .page-title .titlebox .titlebox-desc {
+  padding: 0.28rem 0 0.08rem;
+  line-height: 0.33rem;
+  color: #333333;
+  font-size: 0.24rem;
+}
+.contract-page .page-title .titlebox .titlebox-content {
+  display: flex;
+  line-height: 0.7rem;
+}
+.contract-page .page-title .titlebox .titlebox-content .titlebox-content-num {
+  flex: auto;
+}
+.contract-page .page-title .titlebox .titlebox-content .titlebox-content-num input[type=text] {
+  border: 0;
+  background: none;
+  width: 100%;
+  height: 100%;
+  color: #333333;
+  font-size: 0.5rem;
+  font-weight: 500;
+}
+.contract-page .page-title .titlebox .titlebox-content .titlebox-content-num input[type=text]::-webkit-input-placeholder {
+  color: #333333;
+  opacity: .4;
+}
+.contract-page .page-title .titlebox .titlebox-content .titlebox-content-change {
+  width: 80px;
+  flex: none;
+  font-size: 0.28rem;
+  color: #FB5600;
+  text-align: right;
+  font-weight: 500;
+  text-decoration: underline;
+}
+.contract-page .page-product {
+  position: relative;
+  margin-top: 0.16rem;
+}
+.contract-page .page-product .page-product-inner {
+  padding: 0.2rem 0;
+  box-sizing: border-box;
+  border-radius: 0.24rem;
+}
+.contract-page .page-product .product-title {
+  text-align: center;
+  margin: 0 .1rem;
+}
+.contract-page .page-product .product-title img {
+  width: 3.05rem;
+}
+.contract-page .page-product .product-list {
+  position: relative;
+  width: 100%;
+  z-index: 2;
+  margin-top: 0.16rem;
+  min-height: 4rem;
+}
+.contract-page .page-product .product-list .product-list-li {
+  position: relative;
+  width: 6.94rem;
+  height: 3.6rem;
+  background: url("/static/img/huafei/ykhy_gdlt_lipic.png") no-repeat center;
+  background-size: contain;
+  margin: 0 auto;
+  font-size: .3rem;
+  padding-top: 1.03rem;
+}
+.contract-page .page-product .product-list .product-list-li:first-child {
+  width: 6.94rem;
+  height: 3.07rem;
+  padding-top: .35rem;
+  background: url("/static/img/huafei/ykhy_gdlt_lipic_first.png") no-repeat center;
+  background-size: contain;
+}
+.contract-page .page-product .product-list .product-list-li .pay-btn {
+  background-color: #4c6fff;
+  width: 1.8rem;
+  height: 0.68rem;
+  display: inline-block;
+  border-radius: 0.24rem;
+  font-size: .25rem;
+  color: white;
+  line-height: .68rem;
+  text-align: center;
+  margin: 0 auto;
+  margin-left: .2rem;
+}
+.contract-page .page-product .product-list .product-list-li .price {
+  font-size: .25rem;
+  padding-left: .23rem;
+}
+.contract-page .page-product .product-list .product-list-li .price span {
+  font-size: .7rem;
+  font-family: "DINAlternate";
+  margin: 0 .03rem;
+}
+.contract-page .page-product .product-list .product-list-li .price.price1 {
+  color: #333333;
+  margin-left: .22rem;
+}
+.contract-page .page-product .product-list .product-list-li .price.price1 span {
+  color: #1399ff;
+}
+.contract-page .page-product .product-list .product-list-li .price.price2 {
+  color: #FF603A;
+}
+.contract-page .page-product .product-list .product-list-li .use-rule {
+  position: absolute;
+  left: 0;
+  bottom: .31rem;
+  width: 100%;
+  text-align: center;
+  color: #0E0D0D;
+  font-size: .24rem;
+}
+.contract-page .product-rule {
+  margin: 0.7rem .3rem 0;
+  color: #fff;
+}
+.contract-page .product-rule .rule-title {
+  font-size: 0.32rem;
+  font-weight: 600;
+  margin-bottom: 0.16rem;
+}
+.contract-page .product-rule .rule-ul {
+  position: relative;
+}
+.contract-page .product-rule .rule-ul .rule-li {
+  display: flex;
+  margin-bottom: .1rem;
+}
+.contract-page .product-rule .rule-ul .rule-li .rule-li-content {
+  flex: auto;
+  line-height: 0.4rem;
+  font-size: 0.24rem;
+}
+.contract-page .page-btn {
+  width: 7.1rem;
+  background-image: -webkit-linear-gradient(top, #ff6e39 0%, #f93420 100%);
+  background-image: -o-linear-gradient(top, #ff6e39 0%, #f93420 100%);
+  background-image: linear-gradient(to bottom, #ff6e39 0%, #f93420 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff6e39', endColorstr='#fff93420', GradientType=0);
+  height: 0.96rem;
+  text-align: center;
+  line-height: 0.96rem;
+  position: fixed;
+  bottom: 0.2rem;
+  left: 50%;
+  margin-left: -3.55rem;
+  color: #ffffff;
+  font-weight: bolder;
+  font-size: 0.36rem;
+  border-radius: 0.96rem;
+  -webkit-box-shadow: 0 3px 4px rgba(208, 57, 25, 0.38);
+  box-shadow: 0 3px 4px rgba(208, 57, 25, 0.38);
+}
+.contract-page .paybox {
+  position: fixed;
+  height: 9rem;
+  background: #fff;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  -webkit-transition: transform linear 0.1s;
+  -o-transition: transform linear 0.1s;
+  transition: transform linear 0.1s;
+  transform: translate(0, 100%);
+  -webkit-transform: translate(0, 100%);
+  z-index: 12;
+}
+.contract-page .paybox.open {
+  transform: translate(0, 0);
+  -webkit-transform: translate(0, 0);
+}
+.contract-page .paybox .head {
+  font-size: .32rem;
+  border-bottom: 1px solid #E6E6E6;
+  padding: .24rem;
+  text-align: center;
+}
+.contract-page .paybox .head .close-pay {
+  position: absolute;
+  right: .4rem;
+  top: 0;
+  padding-top: .15rem;
+  display: block;
+  width: .35rem;
+}
+.contract-page .paybox .order-inf {
+  font-size: .28rem;
+  color: #666666;
+  margin-bottom: .02rem;
+  margin-top: .4rem;
+  text-align: center;
+}
+.contract-page .paybox .tishi {
+  background: #FFEDED;
+  color: #FF0000;
+  font-size: .26rem;
+  text-align: left;
+  font-weight: 500;
+  padding: .17rem .3rem;
+  margin-bottom: .3rem;
+}
+.contract-page .paybox .recharge-pay-mobile {
+  color: #333333;
+  font-size: .52rem;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: .34rem;
+}
+.contract-page .paybox .content-info {
+  padding: .2rem .3rem;
+}
+.contract-page .paybox .content-info .info-li {
+  -ms-flex-pack: justify;
+  -webkit-box-pack: justify;
+  /* Safari, Chrome, and Opera 的老语法支持写法*/
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  align-items: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -webkit-box-align: center;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  margin-bottom: .23rem;
+}
+.contract-page .paybox .content-info .info-li:last-child {
+  margin-bottom: 0;
+}
+.contract-page .paybox .content-info .info-li .info-li-name {
+  width: 1.6rem;
+  flex: none;
+  font-size: 0.28rem;
+  color: #666666;
+}
+.contract-page .paybox .content-info .info-li .info-li-text {
+  font-size: 0.28rem;
+  color: #333333;
+  font-weight: 500;
+}
+.contract-page .paybox ul.pay-way-wrap {
+  padding-top: .4rem;
+}
+.contract-page .paybox ul.pay-way-wrap li {
+  -ms-flex-pack: justify;
+  -webkit-box-pack: justify;
+  /* Safari, Chrome, and Opera 的老语法支持写法*/
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  align-items: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -webkit-box-align: center;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  border-bottom: 1px solid #E6E6E6;
+  padding: .3rem;
+  position: relative;
+}
+.contract-page .paybox ul.pay-way-wrap li img {
+  margin-right: .2rem;
+}
+.contract-page .paybox ul.pay-way-wrap li .value {
+  color: #999999;
+  font-size: .32rem;
+  border: 0;
+  -webkit-appearance: none;
+  opacity: 0;
+  -webkit-transition: opacity linear 0.1s;
+  -o-transition: opacity linear 0.1s;
+  transition: opacity linear 0.1s;
+}
+.contract-page .paybox ul.pay-way-wrap li .value.active {
+  opacity: 1;
+}
+.contract-page .paybox ul.pay-way-wrap li .value.pay-way .iconfont {
+  color: #333;
+  margin-left: .04rem;
+}
+.contract-page .paybox .btn-box {
+  width: 100%;
+  position: absolute;
+  padding: .3rem;
+  bottom: 0;
+  left: 0;
+}
+.contract-page .paybox .btn-box .btn-pay {
+  width: 100%;
+  height: .8rem;
+  line-height: .8rem;
+  font-size: .32rem;
+  background: #0fb636;
+  color: #fff;
+  border: 0;
+}
+.contract-page .modal-mobile-check {
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 100;
+}
+.contract-page .modal-mobile-check.show {
+  display: flex;
+  display: -webkit-flex;
+}
+.contract-page .modal-mobile-check .modal {
+  width: 6.5rem;
+  border-radius: .18rem;
+  background: #fff;
+}
+.contract-page .modal-mobile-check .modal .title {
+  color: #000000;
+  font-weight: 500;
+  font-size: .32rem;
+  text-align: center;
+  margin-bottom: .45rem;
+  margin-top: .4rem;
+}
+.contract-page .modal-mobile-check .modal .content {
+  margin-bottom: .82rem;
+  position: relative;
+  padding: 0 .49rem;
+}
+.contract-page .modal-mobile-check .modal .content .item {
+  -ms-flex-pack: justify;
+  -webkit-box-pack: justify;
+  /* Safari, Chrome, and Opera 的老语法支持写法*/
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  align-items: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -webkit-box-align: center;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  border-bottom: 1px solid #BDBDBD;
+}
+.contract-page .modal-mobile-check .modal .content .item.item1 {
+  display: block;
+  border-bottom: 0;
+  margin-bottom: .3rem;
+}
+.contract-page .modal-mobile-check .modal .content .item.item1 span {
+  color: red;
+  font-weight: 500;
+}
+.contract-page .modal-mobile-check .modal .content .item input {
+  width: 3.4rem;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: #333333;
+  font-size: .3rem;
+  padding-bottom: .17rem;
+}
+.contract-page .modal-mobile-check .modal .content .item .btn {
+  color: #fff;
+  font-size: .3rem;
+  border-radius: .33rem;
+  width: 2rem;
+  height: .66rem;
+  line-height: .66rem;
+  padding: 0;
+}
+.contract-page .modal-mobile-check .modal .content .item .btn:disabled {
+  opacity: .4;
+}
+.contract-page .modal-mobile-check .modal .content .item .btn.btn-gray {
+  background: #aaa;
+}
+.contract-page .modal-mobile-check .modal .content .item .btn.btn-green {
+  background: #0FB636;
+}
+.contract-page .modal-mobile-check .modal .content #mobileWarning {
+  font-size: .22rem;
+  color: #FF0000;
+  position: absolute;
+  left: 0;
+  top: .7rem;
+}
+.contract-page .modal-mobile-check .modal .btn-box {
+  height: .99rem;
+  line-height: .99rem;
+  border-top: 1px solid #E3E3E3;
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -webkit-box-align: center;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  font-size: .32rem;
+  color: #212121;
+}
+.contract-page .modal-mobile-check .modal .btn-box span {
+  flex: 1;
+  text-align: center;
+}
+.contract-page .modal-mobile-check .modal .btn-box span:first-child {
+  border-right: 1px solid #E3E3E3;
+}
+.contract-page .nodata {
+  text-align: center;
+  padding: 1rem 0 2.5rem;
+  font-size: .26rem;
+  color: #333333;
+}

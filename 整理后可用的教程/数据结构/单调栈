@@ -1,0 +1,9 @@
+单调栈主要解决以下问题：
+
+寻找下一个更大元素
+寻找前一个更大元素
+寻找下一个更小元素
+寻找前一个更小元素
+qualified 的 窗口的 max/min
+sliding window max/min
+

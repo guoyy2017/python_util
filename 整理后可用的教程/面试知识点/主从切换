@@ -1,0 +1,50 @@
+mysql 主从切换
+下载mha 主从自动切换
+从库执行
+stop slave io_thread;    #关闭io进程
+show processlist;          #查看还有什么进程在运行。
+当进程运行到最后，显示Slave has read all relay log; waiting for more updates，则证明relay  log已被完全读取并执行完毕。
+show slave status \G;   查看从库slave状态
+从库关于master的信息全部写在mysql.slave_master_info中
+select * from mysql.slave_master_info; 
+看到master_log的pos记录是155.
+登录上所有的从库，并重复上述查看master信息的步骤，对比各自pos的值，并选取最大值得从库作为下一个master。
+
+清除从库的master信息，配置从库成为master。
+停掉slave；
+stop slave;
+drop table  mysql.slave_master_info;                                                                  #删除master_info信息表
+create user 'test'@'%' identified with mysql_native_password by 'tqw961110';   #创建一个新的用户
+grant replication slave on *.* to 'test'@'%';                                                           #授权
+flush privileges;                                                                                                     #刷新
+删除relay log
+rm -f *relay*
+编辑配置文件
+如果有log-slaves-updates和read-only则要注释掉
+重启mysql
+reset  master  （也可以不执行）
+show master status ;    #查看master信息
+
+修改其余从库的master信息
+stop  slave;
+change master to master_host='172.16.1.22', master_user='test', master_user='tqw961110', master_log_file='mysql-bin.000001', master_log_pos=155;
+start  slave;
+show slave status \G;
+假如io和sql两个线程都启动了，证明切换成功
+
+
+redis 主从切换
+手工切换
+从节点设置成主节点
+redis-cli -h <从节点ip> -p <从节点端口号> slaveof no one
+当原来的主节点从宕机中进行恢复，则将临时主节点的数据进行保存，将AOF文件与RDB文件拷贝替换原主节点下的AOF文件与RDB文件。
+
+哨兵模式
+Sentinel实例可以自动的将主节点下的其中一个从节点升级为新的主节点，由这个新的主节点继续处理写请求
+哨兵实际上一共有三个任务：监控(Monitoring)、提醒(Notification)、自动故障迁移(Automatic failover)
+哨兵检测到主节点宕机一般有两种状态：sdown(主观宕机)和odown(客观宕机)。
+
+解决数据丢失方案
+使用命令：
+min-slaves-to-write 1
+min-slaves-max-lag 10

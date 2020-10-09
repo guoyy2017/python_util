@@ -1,0 +1,36 @@
+ServiceLoader
+按照使用说明文档，应该分下面几个步骤来使用：
+创建一个接口文件
+在resources资源目录下创建META-INF/services文件夹
+在services文件夹中创建文件，以接口全名命名
+创建接口实现类
+
+google开源的AutoService 实现
+生成代码的库javapoet
+https://github.com/square/javapoet
+
+================================================
+https://github.com/google/auto/tree/master/service
+<dependencies>
+  <dependency>
+    <groupId>com.google.auto.service</groupId>
+    <artifactId>auto-service-annotations</artifactId>
+    <version>${auto-service.version}</version>
+  </dependency>
+</dependencies>
+
+<plugins>
+  <plugin>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+      <annotationProcessorPaths>
+        <path>
+          <groupId>com.google.auto.service</groupId>
+          <artifactId>auto-service</artifactId>
+          <version>${auto-service.version}</version>
+        </path>
+      </annotationProcessorPaths>
+    </configuration>
+  </plugin>
+</plugins>
+================================================

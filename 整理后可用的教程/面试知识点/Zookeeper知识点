@@ -1,0 +1,31 @@
+Znode的引用方式是路径引用，类似文件路径
+ data:Znode存储的数据信息
+ACL:记录Znode的访问权限，即哪些ip可以访问本节点
+stat:包含Znode的各种元数据，比如版本号，时间戳
+child:当前节点的子节点
+
+Znode四种状态
+  持久节点
+   持久节点有序节点
+  临时节点
+  临时节点有序节点
+
+zookeeper角色
+领导者(leader)
+学习者<跟随者(follower) 观察者(observer)>
+客户端(client)
+Zab协议有两种模式，它们分 别是恢复模式（选主）和广播模式（同步）
+
+
+Server 三种状态
+LOOKING：当前Server不知道leader是谁，正在搜寻
+LEADING：当前Server即为选举出来的leader
+FOLLOWING：leader已经选举出来，当前Server与之同步
+
+
+
+观察者的机器的zk的配置文件
+peerType=observer
+server.3=ip:2888:3888:observer
+更改其他机器的配置文件，加：
+server.3=ip:2888:3888:observer

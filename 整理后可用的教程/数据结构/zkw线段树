@@ -1,0 +1,54 @@
+zkw线段树
+
+普通线段树是自顶向下
+void Maintain(int rt) {
+    // 这里以区间和为例
+    tree[rt].sum = tree[rt<<1].sum + tree[rt<<1|1].sum;
+}
+void Build(int rt, int l,int r) {
+    tree[rt].l = l;
+    tree[rt].r = r;
+    // l==r -> 到达叶子结点
+    if(l == r) {
+        tree[rt].sum = read(); // 读入数据
+        return;
+    }
+    int mid = (l+r) >> 1; // 求出l,r的中点
+    Build(rt<<1, l, mid); // 建立左区间(儿子)
+    Build(rt<<1|1, mid+1, r); // 建立右区间(儿子)
+    Maintain(rt); // 收集儿子们的信息给爹地
+}
+
+Zkw线段树建树的方式就是首先输入叶子结点的信息然后再一路向上传递信息，直到根结点
+轻松地计算出来第一个结点的位置是： 2**k+1
+比 N 大的最小的 2**K
+void Maintain(int x) {
+    tree[x] = tree[lson(x)] + tree[rson(x)];
+}
+
+void Build() {
+    for(M=1;M<N;M<<=1);
+    for(int i=M+1;i<=M+N;++i) scanf("%d", &tree[i]);
+    for(int i=M-1;i;--i) Maintain(i);
+}
+
+void Update(int pos,int v) {
+    pos += M;
+    tree[pos] = v;
+    for(pos>>=1;pos;pos>>=1) Maintain(pos);
+}
+频繁的单点修改，Zkw线段树会是一个非常好的选择
+
+
+int Sum(int l,int r) {
+    int ans = 0;
+    // l=l+M-1->将查询区间改为L-1，r=r+M+1->将查询区间改为R+1
+    // l^r^1 -> 相当于判断l与r是否是兄弟节点
+    for(l=l+M-1,r=r+M+1;l^r^1;l>>=1,r>>=1) {
+        if(~l&1) // l % 2 == 0 即l是l/2的左儿子
+            ans += tree[l^1];
+        if(r&1) // r % 2 == 1 即r是r/2的右儿子
+            ans += tree[r^1];
+    }
+    return ans;
+}

@@ -31,3 +31,10 @@ Spring 非web 程序
    <groupId>org.springframework.boot</groupId>
    <artifactId>spring-boot-maven-plugin</artifactId>
 </plugin>
+
+任务
+<dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-task</artifactId>
+        <version>${spring-cloud-task.version}</version>
+    </dependency>

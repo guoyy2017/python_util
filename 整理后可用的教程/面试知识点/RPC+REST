@@ -1,0 +1,23 @@
+Protocol Buffer 
+
+
+MessagePack 序列化框架
+<dependency>
+    <groupId>org.msgpack</groupId>
+    <artifactId>msgpack</artifactId>
+    <version>0.6.10</version>
+</dependency>
+<dependency>
+    <groupId>org.msgpack</groupId>
+    <artifactId>msgpack-core</artifactId>
+    <version>0.8.17</version>
+</dependency>
+
+messagepack和thrift都还有自己的rpc调用框架
+
+
+
+
+RPC 适用于内网服务调用，对外提供服务请走 REST。
+IO 密集的服务调用用 RPC，低频服务用 REST
+服务调用过于密集与复杂，RPC 就比较适用

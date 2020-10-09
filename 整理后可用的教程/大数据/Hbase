@@ -1,0 +1,21 @@
+HBase以表的形式存储数据，表有行和列组成，列划分为若干个列族/列簇(column family)
+HBase是一个分布式的、面向列的开源数据库
+HBase的运行有三种模式：单机模式、伪分布式模式、分布式模式。
+
+
+HBase 列式数据库，表中必须有列族，列的个数可以实时的增加，支持实时的查询。
+HMaster 负责监控各个HRegionServer,且与ZK通信
+HregionServer 管理各个HRegion ,向ZK注册
+一个HRegionServer 中有多个HRegion,一个HRegion相当于一个map任务
+
+
+HBase的实现包括三个主要的功能组件
+1、库函数：链接到每个客户端
+2、一个Master主服务器
+3、许多个Region服务器
+
+HBase表被划分成多个Region
+
+Hive整合HBase
+Hive与HBase的整合功能从Hive0.6.0版本已经开始出现，利用两者对外的API接口互相通信，通信主要依靠hive_hbase-handler.jar工具包(Hive Storage Handlers)。
+

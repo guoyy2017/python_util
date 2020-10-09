@@ -1,0 +1,6 @@
+<!-- https://mvnrepository.com/artifact/io.pravega/pravega-common -->
+<dependency>
+    <groupId>io.pravega</groupId>
+    <artifactId>pravega-common</artifactId>
+    <version>0.8.0</version>
+</dependency>
